@@ -1,0 +1,996 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[风行的博客]]></title>
+  <link href="http://lijingcheng.github.io/atom.xml" rel="self"/>
+  <link href="http://lijingcheng.github.io/"/>
+  <updated>2016-04-22T14:01:35+08:00</updated>
+  <id>http://lijingcheng.github.io/</id>
+  <author>
+    <name><![CDATA[风行]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Objective-C Runtime开发]]></title>
+    <link href="http://lijingcheng.github.io/blog/2015/09/21/objective-c-runtimekai-fa/"/>
+    <updated>2015-09-21T14:30:27+08:00</updated>
+    <id>http://lijingcheng.github.io/blog/2015/09/21/objective-c-runtimekai-fa</id>
+    <content type="html"><![CDATA[<p><br/></p>
+
+<p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/runtime.jpg" width="150" height="150"  ></p>
+
+<blockquote><p><strong>Runtime - <em>使用C和汇编实现的运行时代码库，Objective-C中有很多语言特性都是通过它来实现。</em></strong> <br/>
+了解Runtime开发可以帮助我们更灵活的使用Objective-C这门语言，我们可以将程序功能推迟到运行时再去决定怎么做，还可以利用Runtime来解决项目开发中的一些设计和技术问题，使开发过程更加具有灵活性。</p></blockquote>
+
+<p><br/></p>
+
+<!-- more -->
+
+
+<h1>一些关键字</h1>
+
+<ul>
+<li>self：类的隐藏参数变量，指向当前调用方法的对象</li>
+<li>super：是编译器的标示符，通过super调用方法会被翻译成objc_msgSendSuper(self,_cmd,&hellip;)</li>
+<li>SEL：以方法名为内容的C字符串</li>
+<li>IMP：指向方法实现的函数指针</li>
+<li>id：指向类对象或实例对象的指针</li>
+<li>isa：为id对象所属类型(objc_class)，OC中的继承就是通过isa指针找到objc_class，然后再通过super_class去找对应的父类</li>
+<li>metaclass：在OC中，类本身也是对象，实例对象的isa指向它所属的类，而类对象的isa指向元类(metaclass)，元类的isa直接指向根元类，根元类的isa指向它自己，它们之间的关系如下图所示。</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/ios_runtime_class.png" width="400" height="400"  ></span></code></pre></td></tr></table></div></figure>
+
+
+<p><br/></p>
+
+<h1>消息传递(Messaging)</h1>
+
+<p>实际上就是沿着它的isa指针寻找真正函数地址</p>
+
+<p>Objective-C对于调用对象的某个方法这种行为叫做给对象发送消息，实际上就是沿着它的isa指针去查找真正的函数地址。下面我们来了解一下这个过程：</p>
+
+<ul>
+<li>我们写一个给对象发送消息的代码</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">array</span> <span class="nl">insertObject</span><span class="p">:</span><span class="n">obj</span> <span class="nl">atIndex</span><span class="p">:</span><span class="mi">5</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>编译器首先会将上面代码翻译成这种样子</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">objc_msgSend</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="k">@selector</span><span class="p">(</span><span class="nl">insertObject</span><span class="p">:</span><span class="nl">atIndex</span><span class="p">:),</span> <span class="n">obj</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<ul>
+<li>系统在运行时会通过array对象的isa指针找到对应的class（如果是给类发消息，则找到的是metaclass）。</li>
+<li>在class的cache方法列表中用SEL去找对应method，如果找不到便去class的方法列表中去找</li>
+<li>如果在方法列表中也找不对对应method时，便沿着继承体系继续向上查找
+
+<ul>
+<li>找到后将method放入cache，以便下次能快速定位，然后再去执行method的IMP</li>
+<li>找不到时系统便报错：unrecognized selector sent to insertObject:atIndex:</li>
+</ul>
+</li>
+</ul>
+
+
+<p><br/>
+<strong>Runtime提供了三种方法避免因为找不到方法而崩溃</strong></p>
+
+<ul>
+<li>当找不到方法实现时，Runtime会先发送"+resolveInstanceMethod:&ldquo;或&rdquo;+resolveClassMethod:&ldquo;消息，我们可以重写它然后为对象指定一个处理方法。</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">void</span> <span class="nf">dynamicXXXMethod</span><span class="p">(</span><span class="kt">id</span> <span class="n">obj</span><span class="p">,</span> <span class="kt">SEL</span> <span class="n">_cmd</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;ok...&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">+</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">resolveInstanceMethod:</span><span class="p">(</span><span class="kt">SEL</span><span class="p">)</span><span class="nv">aSEL</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span><span class="p">(</span><span class="n">aSEL</span> <span class="o">==</span> <span class="k">@selector</span><span class="p">(</span><span class="nl">xxx</span><span class="p">:))</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">class_addMethod</span><span class="p">([</span><span class="nb">self</span> <span class="k">class</span><span class="p">],</span> <span class="n">aSEL</span><span class="p">,</span> <span class="p">(</span><span class="kt">IMP</span><span class="p">)</span><span class="n">dynamicXXXMethod</span><span class="p">,</span> <span class="s">&quot;v@:&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="nb">super</span> <span class="n">resolveInstanceMethod</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>class_addMethod方法的最后一个参数用来指定所添加方法的参数及返回值，叫<a href="https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html">Type Encodings</a>。</p></blockquote>
+
+<ul>
+<li>如果resolve方法返回"NO"，Runtime会发送"-forwardingTargetForSelector:&ldquo;消息，允许我们将消息转发给能处理它的其它对象。</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">forwardingTargetForSelector:</span><span class="p">(</span><span class="kt">SEL</span><span class="p">)</span><span class="nv">aSelector</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span><span class="p">(</span><span class="n">aSelector</span> <span class="o">==</span> <span class="k">@selector</span><span class="p">(</span><span class="nl">xxx</span><span class="p">:)){</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">otherObject</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="nb">super</span> <span class="nl">forwardingTargetForSelector</span><span class="p">:</span><span class="n">aSelector</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>当"-forwardingTargetForSelector:&ldquo;返回"nil"时，Runtime会发送&rdquo;-methodSignatureForSelector:&ldquo;和&rdquo;-forwardInvocation:&ldquo;消息。我们可以选择忽略消息、抛出异常、将消息转由当前对象或其它对象的任意消息来处理。</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//根据SEL生成NSInvocation对象，然后再由&quot;-forwardInvocation:&quot;方法进行转发。</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSMethodSignature</span> <span class="o">*</span><span class="p">)</span><span class="nf">methodSignatureForSelector:</span><span class="p">(</span><span class="kt">SEL</span><span class="p">)</span><span class="nv">aSelector</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="bp">NSMethodSignature</span> <span class="o">*</span><span class="n">signature</span> <span class="o">=</span> <span class="p">[</span><span class="nb">super</span> <span class="nl">methodSignatureForSelector</span><span class="p">:</span><span class="n">aSelector</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">signature</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">signature</span> <span class="o">=</span> <span class="p">[</span><span class="n">otherObject</span> <span class="nl">instanceMethodSignatureForSelector</span><span class="p">:</span><span class="n">aSelector</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">signature</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">forwardInvocation:</span><span class="p">(</span><span class="bp">NSInvocation</span> <span class="o">*</span><span class="p">)</span><span class="nv">invocation</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">SEL</span> <span class="n">sel</span> <span class="o">=</span> <span class="n">invocation</span><span class="p">.</span><span class="n">selector</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span><span class="p">([</span><span class="n">otherObject</span> <span class="nl">respondsToSelector</span><span class="p">:</span><span class="n">sel</span><span class="p">])</span> <span class="p">{</span>
+</span><span class='line'>        <span class="p">[</span><span class="n">invocation</span> <span class="nl">invokeWithTarget</span><span class="p">:</span><span class="n">otherObject</span><span class="p">];</span><span class="c1">//转发消息</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>        <span class="p">[</span><span class="nb">self</span> <span class="nl">doesNotRecognizeSelector</span><span class="p">:</span><span class="n">sel</span><span class="p">];</span><span class="c1">//抛出异常</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><br/></p>
+
+<h1>KVO</h1>
+
+<p>当我们为对象添加观察者后，Runtime会在运行时创建这个对象所在类的子类，并且将该对象的isa指针指向这个子类，然后重写监听属性的set方法并在方法中调用"-willChangeValueForKey:&ldquo;和&rdquo;-didChangeValueForKey:&ldquo;来通知观察者，当移除观察者后，Runtime便会将这个子类删除。所以isa指针并不总是指向实例对象所属的类，也有可能指向一个中间类，所以不能依靠它来确定类型，而是应该用class方法来确定实例对象的类。</p>
+
+<p><br/></p>
+
+<h1>关联对象(Associated Objects)</h1>
+
+<p>在Category中可以为类添加实例方法或类方法，但是不支持添加实例变量，所以即使我们在category中为类添加了property，也不能直接使用它，Runtime可以解决这个问题，我们只需要定义一个指针，然后通过"objc_setAssociatedObject"方法将指针与对象进行关联并指定内存管理方式，runtime会将它们以KeyValue的形式存储在一个HashMap里。</p>
+
+<p>注：Category中的方法都会在runtime时添加到主类中，如果添加的方法与原类中的一样，添加的方法会放在方法列表的上面，而并不是替换掉原方法。在调用此名称的方法时，runtime会顺着方法列表查找方法，优先找到的便是我们添加的这个方法。如果有多个Category添加同样名称的方法，那么这些方法在方法列表中的顺序取决于他们的编译顺序，也就是这些Category文件在"Compile Sources"中的顺序。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@interface</span> <span class="bp">NSObject</span> <span class="nl">(JC)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">copy</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">ID</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@end</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">@implementation</span> <span class="bp">NSObject</span> <span class="nl">(JC)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">static</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">IDKey</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">ID</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">objc_getAssociatedObject</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">IDKey</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setID:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">ID</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">objc_setAssociatedObject</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">IDKey</span><span class="p">,</span> <span class="n">ID</span><span class="p">,</span> <span class="n">OBJC_ASSOCIATION_COPY_NONATOMIC</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+<br/></p>
+
+<h1>AOP(Method Swizzling)</h1>
+
+<p>我们可以通过继承、Category、AOP方式来扩展类的功能。</p>
+
+<ul>
+<li>继承比较适合在设计底层代码架构时使用，不适当的使用会让代码看起来很啰嗦，并且增加维护难度。</li>
+<li>Category适合为现有类添加方法。</li>
+<li>当需要修改现有类的方法并且拿不到源码时，继承和AOP都能解决问题，但是用AOP来解决代码耦合度更低。其实就算能拿到源码，往往直接去改源码也不是个好办法。</li>
+</ul>
+
+
+<p><br/>
+在Objective-C中，可以通过"Method Swizzling"技术来实现AOP，下面我们通过交换两个方法的实现代码来向已存在的方法中添加其它功能。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &lt;objc/runtime.h&gt; </span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@implementation</span> <span class="bp">UIViewController</span> <span class="nl">(Tracking)</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">load</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">static</span> <span class="kt">dispatch_once_t</span> <span class="n">onceToken</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">dispatch_once</span><span class="p">(</span><span class="o">&amp;</span><span class="n">onceToken</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'>        <span class="kt">Class</span> <span class="n">aClass</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span> <span class="k">class</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="kt">SEL</span> <span class="n">originalSelector</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="nl">viewWillAppear</span><span class="p">:);</span>
+</span><span class='line'>        <span class="kt">SEL</span> <span class="n">swizzledSelector</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="nl">swizzled_viewWillAppear</span><span class="p">:);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">Method</span> <span class="n">originalMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="n">aClass</span><span class="p">,</span> <span class="n">originalSelector</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Method</span> <span class="n">swizzledMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="n">aClass</span><span class="p">,</span> <span class="n">swizzledSelector</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// 如果要对类方法进行交换，使用下面注释的代码</span>
+</span><span class='line'>        <span class="c1">// Class aClass = object_getClass((id)self);</span>
+</span><span class='line'>        <span class="c1">// </span>
+</span><span class='line'>        <span class="c1">// Method originalMethod = class_getClassMethod(aClass, originalSelector);</span>
+</span><span class='line'>        <span class="c1">// Method swizzledMethod = class_getClassMethod(aClass, swizzledSelector);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="c1">//交换两个方法的实现</span>
+</span><span class='line'>        <span class="kt">BOOL</span> <span class="n">didAddMethod</span> <span class="o">=</span> <span class="n">class_addMethod</span><span class="p">(</span><span class="n">aClass</span><span class="p">,</span> <span class="n">originalSelector</span><span class="p">,</span> <span class="n">method_getImplementation</span><span class="p">(</span><span class="n">swizzledMethod</span><span class="p">),</span> <span class="n">method_getTypeEncoding</span><span class="p">(</span><span class="n">swizzledMethod</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">didAddMethod</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">class_replaceMethod</span><span class="p">(</span><span class="n">aClass</span><span class="p">,</span> <span class="n">swizzledSelector</span><span class="p">,</span> <span class="n">method_getImplementation</span><span class="p">(</span><span class="n">originalMethod</span><span class="p">),</span> <span class="n">method_getTypeEncoding</span><span class="p">(</span><span class="n">originalMethod</span><span class="p">));</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">method_exchangeImplementations</span><span class="p">(</span><span class="n">originalMethod</span><span class="p">,</span> <span class="n">swizzledMethod</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#pragma mark - Method Swizzling </span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//由于方法实现已经被交换，所以系统在调用&quot;viewWillAppear:&quot;时，实际上会调用&quot;swizzled_viewWillAppear:&quot;</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">swizzled_viewWillAppear:</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nv">animated</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="c1">//下面代码表面上看起来会引起递归调用，由于函数实现已经被交换，实际上会调用&quot;viewWillAppear:&quot;</span>
+</span><span class='line'>   <span class="p">[</span><span class="nb">self</span> <span class="nl">swizzled_viewWillAppear</span><span class="p">:</span><span class="n">animated</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//在原有基础上添加其它功能(写日志等)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+<br/></p>
+
+<h1>其它</h1>
+
+<p>我们可以通过Runtime特性来获得类的所有属性名称和类型，然后再通过KVC将Json中的值填充给该类的对象。还可以在程序运行时为类添加方法或替换方法从而使对象能够更灵活的根据需要来选择实现方法。总之Runtime库就象一堆积木，只要发挥想象力便能实现各种各样的功能，但前提是你需要了解它。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iOS应用的生命周期]]></title>
+    <link href="http://lijingcheng.github.io/blog/2015/03/28/iosying-yong-de-sheng-ming-zhou-qi/"/>
+    <updated>2015-03-28T11:23:29+08:00</updated>
+    <id>http://lijingcheng.github.io/blog/2015/03/28/iosying-yong-de-sheng-ming-zhou-qi</id>
+    <content type="html"><![CDATA[<p><br/>
+<img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/app-lifecycle.jpeg" width="160" height="160"  ></p>
+
+<blockquote><p><strong>生命周期 - <em>程序的生命周期是指应用程序从启动到结束整个阶段的全过程.</em></strong> <br/>
+点击iOS应用图标打开程序，系统会首先通过main函数进行相关设置，然后通过runloop保持程序能够始终运行并监听处理分发事件，当没有事件发生时runloop便处于睡眠状态，节省资源。当发生事件后，runloop将事件对象分发给相应视图处理。当用户按下home键，应用会在进入后台后短暂运行，直到被系统挂起。</p></blockquote>
+
+<p><br/></p>
+
+<!-- more -->
+
+
+<h1>main函数</h1>
+
+<p>main函数是app的入口函数</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">@autoreleasepool</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">UIApplicationMain</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="nb">nil</span><span class="p">,</span> <span class="n">NSStringFromClass</span><span class="p">([</span><span class="n">AppDelegate</span> <span class="k">class</span><span class="p">]));</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<ul>
+<li>@autoreleasepool 作为app主线程的自动释放池，用来管理所有主线程中标记为自动释放的对象。</li>
+<li>UIApplicationMain 根据传入参数以及info.plist文件来初始化app
+
+<ul>
+<li>argc和argv参数在iOS应用中用不到</li>
+<li>第三个参数为app的首要类名，用来监听并管理应用的生命周期，默认使用UIApplication</li>
+<li>最后一个参数为app首要类的代理类，它负责实际处理UIApplication监听到的应用程序生命周期事件，具体参考"UIApplicationDelegate"</li>
+<li>main函数会在初始化app后启动主线程及runloop</li>
+</ul>
+</li>
+</ul>
+
+
+<h1>runloop</h1>
+
+<p>runloop能够保持程序始终运行并监听处理分发事件，当没有事件发生时进入休眠状态，有事件发生时系统会将接收到的事件放在一个队列里，然后唤醒runloop依次处理事件，使用队列不仅可以解决线程同步问题也促使我们要把更新UI的代码放在主线程中运行，以免由于多个线程抢占资源产生奇怪的问题。runloop可以接收的事件来自两种不同的来源，分别是输入源和定时源，输入源传递异步事件，事件通常来自于其他线程或程序，如一些UI事件等。定时源则传递同步事件，发生在特定时间或者重复的时间间隔，如NSTimer。runloop每处理完一个事件后便清理自动释放池。</p>
+
+<p><br/>
+每个线程都有自己的runloop, 主线程是默认开启的，子线程需要手动开启，并且在开启后必须至少添加一个事件源，否则runloop在启动后会立即结束。那么什么情况下需要我们在子线程中开启并使用runloop呢？</p>
+
+<ul>
+<li>在线程中需要持续监测某个事件。例如使用NSURLConnection异步请求数据，如果没有开启runloop，会因为子线程的结束导致相关delegate方法不会被触发。(如果你使用AFNetworking，那么就不用考虑这个问题了，因为它已经帮你做了)</li>
+<li>线程间需要持续交互，例如当多个线程之间产生同步问题时，可以根据情况考虑将多个线程定义成多个事件源，然后让它们运行在同一线程的runloop下。</li>
+<li>使用NSTimer或performSelector系列方法。
+
+<ul>
+<li>performSelecter:afterDelay: 会创建timer并添加到当前线程的runloop中。</li>
+<li>performSelector:onThread: 会创建timer并添加到指定线程的runloop中。</li>
+</ul>
+</li>
+</ul>
+
+
+<p><br/>
+不同的事件源会运行在runloop的不同模式中，它们只有在相匹配的情况下才会被处理。</p>
+
+<ul>
+<li>NSTimer运行在NSDefaultRunLoopMode模式下。</li>
+<li>列表滚动事件运行在UITrackingRunLoopMode模式下。</li>
+<li>NSRunLoopCommonModes包含NSDefaultRunLoopMode和UITrackingRunLoopMode。</li>
+</ul>
+
+
+<p>我们在Cell上放置一个timer，然后在滚动表格时会发现timer没有正常执行，要解决这个问题，只要将timer运行在NSRunLoopCommonModes模式下，便可以在表格静止以及滚动时都能够正常运行。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[[</span><span class="bp">NSRunLoop</span> <span class="n">currentRunLoop</span><span class="p">]</span> <span class="nl">addTimer</span><span class="p">:</span><span class="n">timer</span> <span class="nl">forMode</span><span class="p">:</span><span class="n">NSRunLoopCommonModes</span><span class="p">];</span><span class="c1">//NSTimer并不是以子线程的方式运行，它只是在runloop里注册了一下，runloop会根据timer的设置情况去检测并触发，如果runloop比较忙卡住了也会影响到timer。</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><br/>
+因为RunLoop中需要处理各种事件，所以可能会导致NSTimer不精确，如果对精确度有要求的话，可以使用dispatch_time，GCD不受RunLoop影响。</p>
+
+<p><br/></p>
+
+<h1>事件传递&amp;响应者链</h1>
+
+<p>当发生触摸操作后，系统会将这一事件封装成UIEvent对象并放到由UIApplication管理的事件队列中，再由runloop接收事件并传递给触摸点所在的视图，该视图即为"hit-test视图"，而查找这一视图的过程就叫做"hit-testing"。hit-testing过程大致如下:</p>
+
+<ul>
+<li>runloop将接收到的事件分发给UIWindow。</li>
+<li>UIWindow通过"hitTest:withEvent:&ldquo;方法在视图树中递归查找触摸点所在的视图。</li>
+<li>当前视图通过hitTest方法调用"pointInside:withEvent:&ldquo;来判定触摸点是否在当前视图，如果不在hitTest返回nil，在的话则从当前视图的subViews末尾向前遍历，依次向每个subView发送hitTest消息，以此规则一直到某个subView不再返回nil或遍历完成。</li>
+<li>最终由返回不是nil的视图作为"hit-test视图"。</li>
+</ul>
+
+
+<p>在这过程中如果视图不具备响应事件的条件(userInteractionEnabled或enabled为NO，hidden=YES或alpha=0)，那么hitTest就不会调用pointInside方法，会直接返回nil，该视图的子视图也就不会被遍历到，如果我们想改变这一点，或者有别的需求需要改变事件传递的规则，那么需要自定义父视图并重写以下方法来控制子视图。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">UIView</span> <span class="o">*</span><span class="p">)</span><span class="nf">hitTest:</span><span class="p">(</span><span class="bp">CGPoint</span><span class="p">)</span><span class="nv">point</span> <span class="nf">withEvent:</span><span class="p">(</span><span class="bp">UIEvent</span> <span class="o">*</span><span class="p">)</span><span class="nv">event</span><span class="p">;</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">pointInside:</span><span class="p">(</span><span class="bp">CGPoint</span><span class="p">)</span><span class="nv">point</span> <span class="nf">withEvent:</span><span class="p">(</span><span class="bp">UIEvent</span> <span class="o">*</span><span class="p">)</span><span class="nv">event</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><br/>
+如果想在某种情况下不响应事件，可以在适当时调用UIApplication的以下方法停止和恢复事件接收和分发。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">beginIgnoringInteractionEvents</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">endIgnoringInteractionEvents</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><br/>
+如果hit-test视图不处理收到的事件，则通过响应者链机制寻找其它响应者来处理。响应链由一系列链接在一起的响应者组成。如果一个响应者不能处理事件，则会将事件沿着响应链传到下一响应者。下一响应者有可能是它的父视图也可能是它所在的ViewController，系统会以此类推一直传递到UIApplication。如果整个过程都没有响应者响应事件，该事件就会被丢弃。否则事件便会停止传递交由响应者处理。</p>
+
+<p><br/></p>
+
+<h1>前后台切换</h1>
+
+<p>在程序进入后台后仍然能够在短时间里执行一些代码，然后便进入挂起状态，程序在挂起后仍然会驻留在内存中，但是不能执行代码，直到iOS系统内存降低发出警告后才会把相对耗内存的挂起程序清除掉。</p>
+
+<p>当程序在前后台切换时，系统会调用"UIApplicationDelegate"的相关代理方法并发送通知，我们可以在不同情况下做出不同处理，例如在进入后台时暂停某些操作或存储某些数据，当恢复到前台时再恢复之前的暂停操作或读取之前存储的数据。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[用CocoaPods为iOS项目做依赖管理]]></title>
+    <link href="http://lijingcheng.github.io/blog/2015/02/11/yong-cocoapodswei-iosxiang-mu-zuo-yi-lai-guan-li/"/>
+    <updated>2015-02-11T15:10:58+08:00</updated>
+    <id>http://lijingcheng.github.io/blog/2015/02/11/yong-cocoapodswei-iosxiang-mu-zuo-yi-lai-guan-li</id>
+    <content type="html"><![CDATA[<p><br/></p>
+
+<p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/cocoapods.png" width="190" height="190"  ></p>
+
+<blockquote><p><strong><a href="http://www.cocoapods.org">CocoaPods</a> - <em>Get on with building your app, not duplicating code.</em></strong> <br/>
+可以为Cocoa和Swift项目使用的第三方类库和我们自己的私有类库提供依赖管理，就像Java领域的Maven。
+我们只需要告诉它要使用的类库名称和版本，然后再执行一条命令，它就会自动将这个类库的源码从github上下载到本地，并且为工程设置好相应的系统依赖和编译选项。使用CocoaPods可以大大节省我们在设置和更新类库时所花的时间。</p></blockquote>
+
+<!-- more -->
+
+
+<p><br/></p>
+
+<h1>准备工作</h1>
+
+<p>由于CocoaPods是用ruby写的，并且主要用于管理github上的第三方类库，所以在安装前需要有Ruby环境和Git环境。Git环境可以通过下载Xcode中的Command Line Tools建立。Ruby环境可以使用Mac系统默认提供的版本，也可以通过以下命令将它更新至最新版。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo gem update –system</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+<br/>
+为了提高下载速度，还需要将ruby的源更改为淘宝的</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem sources -a https://ruby.taobao.org/  (添加)
+</span><span class='line'>gem sources -r https://rubygems.org/  (删除)
+</span><span class='line'>gem sources -l  (检查一下)</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p><br/></p>
+
+<h1>安装并使用CocoaPods</h1>
+
+<ul>
+<li>安装CocoaPods</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo gem install cocoapods (更新命令也是这个)</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>下载CocoaPods维护的所有podspec文件到"~/.cocoapods/repos/master/Specs"</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>pod setup</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>更新spec也用这个命令，podspec文件主要用来描述依赖库的名称、版本、作者、下载地址等信息。通过CocoaPods下载第三方类库，其实就是根据我们指定的类库名称找到相关的podspec，然后再根据podspec文件中指定的地址去下载。</p></blockquote>
+
+<ul>
+<li>查看CocoaPods管理的依赖库信息</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>pod search 依赖库的名字</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>新建Podfile文件，此文件用于配置项目所需要使用的依赖库</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd "项目根目录"
+</span><span class='line'>pod init</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>打开Podfile文件，按下面内容配置依赖关系，Podfile的更详细配置方法可参照<a href="http://guides.cocoapods.org/syntax/podfile.html">官方文档</a></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>source 'https://github.com/CocoaPods/Specs.git'
+</span><span class='line'>
+</span><span class='line'>platform :ios, '7.0'
+</span><span class='line'>inhibit_all_warnings!
+</span><span class='line'>
+</span><span class='line'>pod 'AFNetworking', '2.5.1' </span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>上面内容的意思是，specs文件由CocoaPods提供，项目需要使用支持ios7.0及以上的依赖库，并且为主target配置了2.5.1版本的AFNetworking，并忽略依赖库中的所有警告。依赖库的版本号建议明确指定，这样可以避免更新依赖库后对现有工程造成影响，而且可以保证团队所有开发人员使用的版本一致。</p></blockquote>
+
+<p>如果你的项目有多个target，那么需要按下面的方式配置pod，否则依赖关系只能作用于主target。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#Tests target 不仅使用主target的依赖库还需要添加自己的
+</span><span class='line'>target 'Tests' do
+</span><span class='line'>  pod "Tests需要的依赖库"
+</span><span class='line'>end
+</span><span class='line'>或
+</span><span class='line'>#Tests target不需要主target的依赖库
+</span><span class='line'>target 'Tests', :exclusive =&gt; true do
+</span><span class='line'>  pod "Tests需要的依赖库"
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>根据Podfile下载安装依赖库</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>pod install (添加或删除依赖库后也是通过此命令更新)</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p><strong>Cocoapods会先更新相关podspec文件，然后自动为项目工程设置好相应的系统依赖和编译参数，当依赖库安装完成后，打开项目根目录，会发现多了以下文件及文件夹</strong></p>
+
+<ol>
+<li>&ldquo;.xcworkspace"，以后必须通过此workspace打开项目。</li>
+<li>&ldquo;Pods"，CocoaPods将Profile中配置的所有依赖库都下载到这里，并且将所有依赖库打包成单独的静态库供主项目使用。</li>
+<li>&ldquo;Podfile.lock"，用于保存已经安装的依赖库版本信息。如果在配置依赖库时没有明确指定版本，那么必须将此文件加入到版本控制中，否则有可能造成团队开发中不同成员使用的依赖库版本不一致。</li>
+</ol>
+</blockquote>
+
+<ul>
+<li>查看所下载的依赖库是否有新版本</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>pod outdated</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>下载新版本</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>pod update</span></code></pre></td></tr></table></div></figure>
+
+
+<p><br/></p>
+
+<h1>让自己的开源项目支持Cocoapods</h1>
+
+<h4>通过Cocoapods创建项目会让整个事情变的简单一些</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>pod lib create FMDBHelper</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p><strong>创建完成后项目根目录会包含以下文件及文件夹</strong></p>
+
+<ol>
+<li>&ldquo;.travis.yml"，通过"travis-ci"做持续集成要用到的配置文件，一般情况下使用默认配置就可以，如果需要使用持续集成服务，还需要以github帐号登录<a href="https://travis-ci.org">travis-ci</a>，并打开对应项目开关。</li>
+<li>&ldquo;.gitignore"，建议将Pods目录也加入到忽略范围</li>
+<li>&ldquo;LICENSE"，默认为MIT</li>
+<li>&ldquo;FMDBHelper.podspec"，通过Cocoapods下载项目时要用到的项目配置文件。</li>
+<li>&ldquo;README.md"，通过markdown语法编写此文件，用于在github上显示项目介绍。</li>
+<li>&ldquo;Pod"，将自己的开源代码和资源文件放到这里</li>
+<li>&ldquo;Example"，demo工程，包含测试用的target。</li>
+</ol>
+</blockquote>
+
+<h4>在demo工程中开发并测试</h4>
+
+<ul>
+<li>将源代码和资源文件分别放到"Pod/Classes"和"Pod/Assets"目录下</li>
+<li>用"pod install"命令为demo工程安装依赖库，以后只要新增依赖库的代码或资源文件都需要更新</li>
+<li>开发测试完成后还需要修改podspec文件</li>
+</ul>
+
+
+<h4>将podspec发布到CocoaPods的Git库中</h4>
+
+<ul>
+<li>向cocoapods注册你的信息，需要输入邮箱(与podspec中写的一致)和名字，稍后还需要验证email</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>pod trunk register bj_lijingcheng@163.com "lijingcheng"</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>登录github，release一版项目并打上标签，标签要与podspec中定义的一致</li>
+<li>检查spec文件是否合格</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>pod spec lint FMDBHelper.podspec</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>检查并发布spec文件，以后需要升级也是用这个命令</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>pod trunk push FMDBHelper.podspec</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>更新本地spec</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>pod setup (稍后便可以在"~/.cocoapods/repos/master/Specs"下看到你的开源项目了)</span></code></pre></td></tr></table></div></figure>
+
+
+<p><br/></p>
+
+<h1>通过Cocoapods安装私有库</h1>
+
+<p>对于不能放在CocoaPods公共Git仓库中的类库，可选择以下方式设置</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>pod 'FMDBHelper', :podspec =&gt; 'https://.../FMDBHelper.podspec'
+</span><span class='line'>pod 'FMDBHelper', :git =&gt; 'https://.../FMDBHelper.git'
+</span><span class='line'>pod 'FMDBHelper', :path =&gt; '~/documents/code/Pods/'</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[在Mac下用Github Pages + Octopress搭建博客]]></title>
+    <link href="http://lijingcheng.github.io/blog/2015/01/04/zai-macxia-tong-guo-github-pages-plus-octopressda-jian-bo-ke/"/>
+    <updated>2015-01-04T14:51:02+08:00</updated>
+    <id>http://lijingcheng.github.io/blog/2015/01/04/zai-macxia-tong-guo-github-pages-plus-octopressda-jian-bo-ke</id>
+    <content type="html"><![CDATA[<p><br/></p>
+
+<blockquote><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/github-octopress.png" width="220" height="220"  >
+<strong><a href="https://pages.github.com">Github Pages</a> - <em>Websites for you and your projects.</em></strong> <br/>
+可用来搭建静态网站，它提供免费的域名、空间、无限流量，并且在世界各地都有较好的访问速度。不过网站也会轻易被人Clone，如果在意的话可以付费给github，然后将相关版本库建成私有的。
+<br/><br/>
+<strong><a href="http://octopress.org">Octopress</a> - <em>A blogging framework for hackers.</em></strong><br/>
+作为一款开源的静态博客系统，可以用来为我们的静态网站提供所需的HTML页面。</p></blockquote>
+
+<!-- more -->
+
+
+<p><br/></p>
+
+<h1>准备工作</h1>
+
+<ul>
+<li>需要git环境并且已经将创建好的ssh keys添加到github帐户下。</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd ~/.ssh (检查本地有没有ssh keys)
+</span><span class='line'>ssh-keygen -t rsa -C "注册github时用的email" (创建ssh keys)
+</span><span class='line'>用记事本打开id_rsa.pub，复制里面的东西到github帐户下</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>在github上新建名为“yourname.github.io”的版本库，之后可通过“yourname.github.io”域名来访问，如果你有自己的域名，可通过配置Octopress的CNAME文件进行映射。</li>
+<li>需要有1.9.3及以上版本的ruby环境。(可通过ruby &ndash;version来查看版本，如需升级可用rvm或rbenv)</li>
+<li>更改ruby的源为淘宝，可提高下载速度</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem sources -a https://ruby.taobao.org/  (添加)
+</span><span class='line'>gem sources -r https://rubygems.org/  (删除)
+</span><span class='line'>gem sources -l  (检查一下)</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p><br/></p>
+
+<h1>Octopress环境搭建</h1>
+
+<ul>
+<li>安装</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://github.com/imathis/octopress.git octopress
+</span><span class='line'>cd octopress</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>安装所需依赖</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo gem install bundler 
+</span><span class='line'>rbenv rehash 
+</span><span class='line'>bundle install</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>安装默认模板，也可以安装<a href="https://github.com/shashankmehta/greyshade">第三方模板</a></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake install</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>配置网站</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>通过"/octopress/_config.yml"文件配置，参考：http://octopress.org/docs/configuring
+</span><span class='line'>自己修改html和css，将twitter以及google相关的内容删掉，可以提高访问速度</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>关联github pages</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake setup_github_pages (然后输入 git@github.com:yourname/yourname.github.io.git)</span></code></pre></td></tr></table></div></figure>
+
+
+<p><br/></p>
+
+<h1>写博客</h1>
+
+<ul>
+<li>新建文章，会在"\octopress\source\_posts"目录下生成扩展名为"markdown"的文件，推荐使用<a href="http://25.io/mou/">&ldquo;Mou&rdquo;</a>编辑器编写markdown文件并尽量采用<a href="http://wowubuntu.com/markdown/">Markdown语法</a>。</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake new_post["new_blog_title"]</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>将octopress生成的html等文件提交到master分支</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake generate (生成静态网站)
+</span><span class='line'>rake preview (通过http://localhost:4000预览，修改markdown文件后直接刷新即可)
+</span><span class='line'>rake deploy push git</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>将octopress的相关文件提交到source分支</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git add .
+</span><span class='line'>git commit -m ‘your commit message’
+</span><span class='line'>git push origin source</span></code></pre></td></tr></table></div></figure>
+
+
+<p><br/></p>
+
+<h1>添加评论系统</h1>
+
+<ul>
+<li>通过在多说网<a href="http://duoshuo.com/create-site">新建站点</a>来获取网站的short_name</li>
+<li>在_config.yml中添加以下内容，并替换"your_short_name"</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># duoshuo comments 
+</span><span class='line'>duoshuo_comments: true 
+</span><span class='line'>duoshuo_short_name: your_short_name</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>新建"source/_includes/post/duoshuo.html"并添加下面内容，还需要替换"your_short_name"</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="nx">div</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;ds-thread&quot;</span><span class="o">&gt;&lt;</span><span class="err">/div&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span><span class="o">&gt;</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">duoshuoQuery</span> <span class="o">=</span> <span class="p">{</span><span class="nx">short_name</span><span class="o">:</span><span class="s2">&quot;your_short_name&quot;</span><span class="p">};</span>
+</span><span class='line'><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">ds</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;script&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">ds</span><span class="p">.</span><span class="nx">type</span> <span class="o">=</span> <span class="s1">&#39;text/javascript&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="nx">ds</span><span class="p">.</span><span class="nx">async</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+</span><span class='line'>    <span class="nx">ds</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="s1">&#39;http://static.duoshuo.com/embed.js&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="nx">ds</span><span class="p">.</span><span class="nx">charset</span> <span class="o">=</span> <span class="s1">&#39;UTF-8&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">&#39;head&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]).</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">ds</span><span class="p">);</span>
+</span><span class='line'><span class="p">})();</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>在"source/_layouts/post.html"中嵌入刚才新建的duoshuo.html</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="p">{</span><span class="o">%</span> <span class="k">if</span> <span class="nx">site</span><span class="p">.</span><span class="nx">duoshuo_short_name</span> <span class="nx">and</span> <span class="nx">site</span><span class="p">.</span><span class="nx">duoshuo_comments</span> <span class="o">==</span> <span class="kc">true</span> <span class="nx">and</span> <span class="nx">page</span><span class="p">.</span><span class="nx">comments</span> <span class="o">==</span> <span class="kc">true</span> <span class="o">%</span><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">section</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="err">评论</span><span class="o">&lt;</span><span class="err">/h1&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&quot;comments&quot;</span> <span class="nx">aria</span><span class="o">-</span><span class="nx">live</span><span class="o">=</span><span class="s2">&quot;polite&quot;</span><span class="o">&gt;</span><span class="p">{</span><span class="o">%</span> <span class="nx">include</span> <span class="nx">post</span><span class="o">/</span><span class="nx">duoshuo</span><span class="p">.</span><span class="nx">html</span> <span class="o">%</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/div&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/section&gt;</span>
+</span><span class='line'><span class="p">{</span><span class="o">%</span> <span class="nx">endif</span> <span class="o">%</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+</feed>
