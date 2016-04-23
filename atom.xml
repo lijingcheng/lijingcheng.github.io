@@ -4,7 +4,7 @@
   <title><![CDATA[风行的博客]]></title>
   <link href="http://lijingcheng.github.io/atom.xml" rel="self"/>
   <link href="http://lijingcheng.github.io/"/>
-  <updated>2016-04-22T15:08:43+08:00</updated>
+  <updated>2016-04-23T11:05:26+08:00</updated>
   <id>http://lijingcheng.github.io/</id>
   <author>
     <name><![CDATA[风行]]></name>
@@ -50,8 +50,6 @@
 <p><br/></p>
 
 <h1>消息传递(Messaging)</h1>
-
-<p>实际上就是沿着它的isa指针寻找真正函数地址</p>
 
 <p>Objective-C对于调用对象的某个方法这种行为叫做给对象发送消息，实际上就是沿着它的isa指针去查找真正的函数地址。下面我们来了解一下这个过程：</p>
 
