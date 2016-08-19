@@ -1,0 +1,499 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>iOS APP的组件化设计 - 风行的博客</title>
+  <meta name="author" content="风行">
+
+  
+  <meta name="description" content="组件化 - 简单来说就是将项目按层级、模块拆分成不同组件，实现即插即拔的效果。 随着APP功能和体积的增长，也带来了一些问题，例如编译速度缓慢、commit代码经常要merge、业务代码混在一起、开发功能类似的新项目时需要从头搭建。组件化可以有效解决这些问题。 将APP拆分成多个组件 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://lijingcheng.github.io/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="风行的博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">风行的博客</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss email">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+    <li><a href="mailto:bj_lijingcheng@163.com" rel="subscribe-email" title="subscribe via email">邮箱</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="lijingcheng.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/archives">归档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">iOS APP的组件化设计</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-09-05T18:40:19+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>6:40 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/component.jpg" width="200" height="200"  >
+<strong>组件化 - <em>简单来说就是将项目按层级、模块拆分成不同组件，实现即插即拔的效果。</em></strong></p>
+
+<p>随着APP功能和体积的增长，也带来了一些问题，例如编译速度缓慢、commit代码经常要merge、业务代码混在一起、开发功能类似的新项目时需要从头搭建。组件化可以有效解决这些问题。</p>
+
+<!-- more -->
+
+
+<p><br></p>
+
+<h1>将APP拆分成多个组件</h1>
+
+<p>一般一个APP对应一个工程，还有一些APP会有一个静态库形式的framework，然后再通过workspace管理APP工程和framework，但是随着APP功能的增多以及开发团队的扩大，便带来了上面提到的那些问题，我们通过组件化解决这些问题时首先要做的就是对项目结构进行拆分，形成组件，每个组件都对应于一个APP工程，并且都需要能够独立运行，拆分方式如下</p>
+
+<ul>
+<li>跨APP的框架，通用性较高，可适用于所有项目</li>
+<li>APP内跨各业务模块的框架，仅适用于单个项目</li>
+<li>业务模块在拆分时尽量按大的功能模块拆分，例如"首页"、"电影"、"个人中心"等，也可以将其中较独立的功能点拆分出来，如"订单"、"支付"等，但是不建议分太细，不好管理</li>
+<li>APP主工程，用于提交上线的工程</li>
+</ul>
+
+
+<p><br></p>
+
+<h1>各组件间的依赖关系</h1>
+
+<ul>
+<li>业务模块依赖于框架</li>
+<li>业务模块之间尽量避免横向依赖</li>
+<li>禁止框架依赖业务模块</li>
+<li>各模块都可以独立运行</li>
+</ul>
+
+
+<p><br></p>
+
+<h1>管理各组件及第三方依赖库</h1>
+
+<p>Cocoapods是个好东西，不仅可以用来管理第三方依赖库，还可以实现APP的组件化，通过它可以将多个组件工程中的代码及资源与APP主工程进行整合，建立依赖关系，每个组件工程都以iPhone项目工程的方式建立，都可以独立运行，并且至少需要一个podspec文件，用于定义组件工程中需要打包的代码及资源(xib、storyboard、assets、国际化文件)，然后再通过主工程中的Podfile来定义各组件工程间的依赖关系</p>
+
+<ul>
+<li>项目的Podfile大致按如下方式定义</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>source 'https://github.com/CocoaPods/Specs.git'
+</span><span class='line'>platform :ios, "7.0"
+</span><span class='line'>inhibit_all_warnings!
+</span><span class='line'>
+</span><span class='line'>#使用自己建的workspace
+</span><span class='line'>workspace 'XXWorkSpace'
+</span><span class='line'>xcodeproj 'XXCommon/XXCommon.xcodeproj'
+</span><span class='line'>xcodeproj 'XXHome/XXHome.xcodeproj'
+</span><span class='line'>xcodeproj 'XXTicket/XXTicket.xcodeproj'
+</span><span class='line'>xcodeproj 'XXMine/XXMine.xcodeproj'
+</span><span class='line'>xcodeproj 'APPProject.xcodeproj'
+</span><span class='line'>
+</span><span class='line'>#跨APP级的框架
+</span><span class='line'>target :XXFoundation do
+</span><span class='line'>    xcodeproj 'XXFoundation/XXFoundation'
+</span><span class='line'>    
+</span><span class='line'>    pod "SDWebImage", "3.8.1"
+</span><span class='line'>end
+</span><span class='line'>
+</span><span class='line'>#跨业务级的框架
+</span><span class='line'>target :XXCommon do
+</span><span class='line'>    xcodeproj 'XXCommon/XXCommon'
+</span><span class='line'>    
+</span><span class='line'>    pod "XXFoundation", :path =&gt; 'XXFoundation/XXFoundation'
+</span><span class='line'>    
+</span><span class='line'>    pod "Masonry", "0.6.4"
+</span><span class='line'>
+</span><span class='line'>    #不在github上维护的第三方库可放到主工程目录中，然后通过podspec文件定义打包内容
+</span><span class='line'>    pod "WeixinSDK", :path =&gt; 'Vendors/WeixinSDK/WeixinSDK.podspec'
+</span><span class='line'>end
+</span><span class='line'>
+</span><span class='line'>#定义通用依赖
+</span><span class='line'>def common_pods
+</span><span class='line'>    pod "XXFoundation", :path =&gt; 'XXFoundation/XXFoundation'
+</span><span class='line'>    pod "XXCommon", :path =&gt; 'XXCommon/XXCommon'
+</span><span class='line'>end
+</span><span class='line'>
+</span><span class='line'>#首页组件
+</span><span class='line'>target :XXHome do
+</span><span class='line'>    xcodeproj 'XXHome/XXHome'
+</span><span class='line'>    common_pods
+</span><span class='line'>end
+</span><span class='line'>
+</span><span class='line'>#购票组件
+</span><span class='line'>target :XXTicket do
+</span><span class='line'>    xcodeproj 'XXTicket/XXTicket'
+</span><span class='line'>    common_pods
+</span><span class='line'>    
+</span><span class='line'>    #个别组件工程中可定义两个podspec，一个用于将所有资源打包进主工程，另一个做业务组件间横向依赖用，这个podspec里打包的资源会很少
+</span><span class='line'>    pod "XXMineLight", :path =&gt; 'XXMine/XXMine'
+</span><span class='line'>end
+</span><span class='line'>
+</span><span class='line'>#个人中心组件
+</span><span class='line'>target :XXMine do
+</span><span class='line'>    xcodeproj 'XXMine/XXMine'
+</span><span class='line'>    common_pods
+</span><span class='line'>end
+</span><span class='line'>
+</span><span class='line'>#主工程
+</span><span class='line'>target :APPProject do
+</span><span class='line'>    xcodeproj 'APPProject'
+</span><span class='line'>    common_pods
+</span><span class='line'>    
+</span><span class='line'>    pod "XXHome", :path =&gt; 'XXHome/XXHome'
+</span><span class='line'>    pod "XXTicket", :path =&gt; 'XXTicket/XXTicket'
+</span><span class='line'>    pod "XXMine", :path =&gt; 'XXMine/XXMine'
+</span><span class='line'>end
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>各组件的Podspec定义大致如下</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Pod::Spec.new do |s|
+</span><span class='line'>  s.name         = "XXFoundation"
+</span><span class='line'>  s.version      = "0.0.1"
+</span><span class='line'>  s.license      = "MIT"
+</span><span class='line'>  s.summary      = 'XXFoundation for cocoapods.'
+</span><span class='line'>  s.author       = { "lijingcheng" =&gt; "jingcheng.li@xx.com" }
+</span><span class='line'>  s.homepage     = "http://xx.com"
+</span><span class='line'>  s.platform     = :ios, "7.0"
+</span><span class='line'>  s.prefix_header_file = "XXFoundationPrefixHeader.pch"
+</span><span class='line'>  s.source       =   { :path =&gt; "." }
+</span><span class='line'>  
+</span><span class='line'>  #需要打包的代码，**会递归查找目录下的所有相关文件
+</span><span class='line'>  s.source_files = ["Classes/XXFoundation.h", "Classes/**/*.{h,m}"]
+</span><span class='line'>  
+</span><span class='line'>  #需要打包的资源和国际化文件，由于xcassets实际上是文件夹，所以用这种方式打包png
+</span><span class='line'>  s.resource = ["Classes/**/*.{xib,storyboard}", "*.xcassets/**/*.png", "zh-Hans.lproj", "en.lproj"]
+</span><span class='line'>  
+</span><span class='line'>  #依赖了第三方库，这里需要指出
+</span><span class='line'>  s.dependency     'SDWebImage', '3.8.1'
+</span><span class='line'>
+</span><span class='line'>  #默认ARC，由于用到的ASIHTTPRequest为MRC，所以这里需要指明
+</span><span class='line'>  s.subspec "ASIHTTPRequest" do |sp|
+</span><span class='line'>    sp.requires_arc = false
+</span><span class='line'>    sp.source_files = "Vendors/ASIHTTPRequest/*.{h,m}"
+</span><span class='line'>  end
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>没有在github上维护的第三方库，可放在本地Vendors目录中，并通过Podspec定义需要打包的资源，Podspec定义大致如下</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Pod::Spec.new do |s|
+</span><span class='line'>  s.name         = "WeixinSDK"
+</span><span class='line'>  s.version      = "1.7.1"
+</span><span class='line'>  s.license      = "MIT"
+</span><span class='line'>  s.summary      = 'WeixinSDK for cocoapods.'
+</span><span class='line'>  s.author       = { "lijingcheng" =&gt; "jingcheng.li@xx.com" }
+</span><span class='line'>  s.homepage     = "http://xx.com"
+</span><span class='line'>  s.platform     = :ios, "7.0"
+</span><span class='line'>  
+</span><span class='line'>  #podspec文件与SDK中的文件放在同一目录下
+</span><span class='line'>  s.source       =   { :path =&gt; "." }
+</span><span class='line'>  
+</span><span class='line'>  #打包所有头文件
+</span><span class='line'>  s.source_files = "*.h"
+</span><span class='line'>  
+</span><span class='line'>  #打包静态库
+</span><span class='line'>  s.vendored_libraries = "libWeChatSDK.a"
+</span><span class='line'>  
+</span><span class='line'>  #静态库依赖于以下系统framework
+</span><span class='line'>  s.frameworks   = "SystemConfiguration", "CoreTelephony"
+</span><span class='line'>  
+</span><span class='line'>  #静态库依赖于以下系统lib
+</span><span class='line'>  s.libraries    = "z", "stdc++", "sqlite3"
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
+
+
+<p><br></p>
+
+<h1>需要注意一些问题</h1>
+
+<ul>
+<li><p>由于各工程间的代码和资源是通过类似“快捷方式”的形式互相引用，所以如果在某个工程中新增或删除了类文件或资源文件，在另一个工程中想要响应此变化则需要重新执行"pod update &ndash;no-repo-update"更新工程间的引用状态，如果仅仅是修改类文件或xib中的内容，则不需要此步骤</p></li>
+<li><p>通过"pod update &ndash;no-repo-update"进行更新，可跳过同步本地spec仓库这一步，有必要时再用"pod update"</p></li>
+<li><p>Pod第三方依赖库必须明确指定版本号，否则有可能造成大家使用的依赖库版本不一致。例如：pod &ldquo;Masonry&rdquo;, &ldquo;0.6.4&rdquo;</p></li>
+<li><p>不要用系统自带的文本编辑器修改Podfile文件，会造成编码问题，可用Vim、Sublime Text或Xcode等工具打开</p></li>
+<li><p>Assets.xcassets中图片的名字和实际文件的名字必须保持一致</p></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">风行</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-09-05T18:40:19+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>6:40 pm</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/08/09/ioskai-fa-tips/" title="Previous Post: iOS开发tips">&laquo; iOS开发tips</a>
+      
+      
+    </p>
+  </footer>
+</article>
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="最新">
+    
+      <li class="post">
+        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS APP的组件化设计</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/08/09/ioskai-fa-tips/">iOS开发tips</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/08/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/08/03/liao-jie-block/">了解block</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/07/12/iosnei-cun-guan-li/">iOS内存管理</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub</h1>
+  <a href="https://github.com/lijingcheng">@lijingcheng</a> on GitHub
+</section>
+
+
+
+<section>
+  <h1>Weibo</h1>
+  <a href="https://weibo.com/lijingcheng1984">@lijingcheng1984</a> on Weibo
+</section>
+
+
+
+<section>
+  <h1>Weixin</h1>
+  <a href="http://7x00ed.com1.z0.glb.clouddn.com/qrcode.png">@bj_lijingcheng</a> on Weixin
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - 风行 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+</body>
+</html>

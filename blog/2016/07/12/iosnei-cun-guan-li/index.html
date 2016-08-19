@@ -1,0 +1,517 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>iOS内存管理 - 风行的博客</title>
+  <meta name="author" content="风行">
+
+  
+  <meta name="description" content="内存管理 - 指程序在运行时申请内存，并在使用完后释放内存的过程 内存管理不当造成的主要问题便是内存泄漏和过度释放，虽然 ARC 使我们可以不去关注内存管理上的一些细节问题，但掌握一些相关知识还是很有必要的。 一些概念 MRC：manual reference counting， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://lijingcheng.github.io/blog/2016/07/12/iosnei-cun-guan-li/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="风行的博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">风行的博客</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss email">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+    <li><a href="mailto:bj_lijingcheng@163.com" rel="subscribe-email" title="subscribe via email">邮箱</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="lijingcheng.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/archives">归档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">iOS内存管理</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-07-12T15:07:54+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>3:07 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/memory.jpg" width="200" height="200"  >
+<strong>内存管理 - <em>指程序在运行时申请内存，并在使用完后释放内存的过程</em></strong></p>
+
+<p>内存管理不当造成的主要问题便是内存泄漏和过度释放，虽然 ARC 使我们可以不去关注内存管理上的一些细节问题，但掌握一些相关知识还是很有必要的。</p>
+
+<!-- more -->
+
+
+<p><br></p>
+
+<h1>一些概念</h1>
+
+<ul>
+<li><p>MRC：manual reference counting，自己编写内存管理代码（retain、release、autorelease&hellip;）</p></li>
+<li><p>ARC：automatic reference counting，编译器会在编译阶段为代码加上优化过的内存管理代码，这样就可以让我们不必花费大量时间在内存管理上面，可以将更多的精力放在业务代码上。</p></li>
+<li><p>内存泄漏：不再使用的对象内存没有释放掉，将导致内存占用无限增长</p></li>
+<li><p>内存过度释放：释放了仍在使用中的对象，将导致应用崩溃</p></li>
+</ul>
+
+
+<p><br></p>
+
+<h1>内存管理规则</h1>
+
+<p>内存管理是建立在对象的拥有关系上的，当拥有对象后就要负责释放它，并且不要释放非自己持有的对象，具体规则如下：</p>
+
+<ul>
+<li>拥有对象所有权
+
+<ul>
+<li>通过 alloc/new/copy/mutableCopy 创建对象</li>
+<li>在某些场景里避免一个对象被移除，可以对它进行 retain</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">Student</span> <span class="o">*</span> <span class="n">stu1</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Student</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Student</span> <span class="o">*</span> <span class="n">stu2</span> <span class="o">=</span> <span class="p">[</span><span class="n">stu1</span> <span class="k">retain</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>放弃对象拥有权
+
+<ul>
+<li>立即释放：给对象发送一个 release 消息</li>
+<li>延迟释放：给对象发送一个 autorelease 消息</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">+</span> <span class="p">(</span><span class="n">Student</span> <span class="o">*</span><span class="p">)</span><span class="nf">studentWithName:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">name</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">Student</span> <span class="o">*</span><span class="n">stu</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Student</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithName</span><span class="p">:</span><span class="n">name</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">stu</span> <span class="n">autorelease</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>实现 dealloc 方法来释放对象自身内存与它所持有的资源，此方法由系统在该对象被销毁时自动调用</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">dealloc</span> <span class="p">{</span>
+</span><span class='line'>  <span class="p">[</span><span class="n">_firstName</span> <span class="k">release</span><span class="p">];</span>
+</span><span class='line'>  <span class="p">[</span><span class="n">_lastName</span> <span class="k">release</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">[</span><span class="nb">super</span> <span class="n">dealloc</span><span class="p">];</span> <span class="c1">// 必须先释放自己占有的资源再通过此行代码释放自己</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><br></p>
+
+<h3>ARC带来的变化</h3>
+
+<ul>
+<li>不能够自己调用 retain/release/autorelease，由编译器自动插入</li>
+<li>dealloc 方法中不能调用 [super dealloc] ，由编译器自动插入，只需要释放一些资源，如通知、KVO等</li>
+</ul>
+
+
+<p><br></p>
+
+<h1>引用计数</h1>
+
+<p>内存管理规则中的对象所有权是通过引用计数来实现，除了常量以外，每个对象都有一个引用计数。</p>
+
+<ul>
+<li>创建对象时，计数为1</li>
+<li>给对象发送 retain 消息时，计数加1</li>
+<li>给对象发送 release 消息时，计数减1</li>
+<li>给对象发送 autorelease 消息时，计数在当前自动释放池代码块结束时减1</li>
+<li>当对象的计数为0时将被销毁</li>
+</ul>
+
+
+<blockquote><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/retaincount.png" width="700" height="700"  ></p></blockquote>
+
+<p><br></p>
+
+<h1>属性修饰符</h1>
+
+<h3>MRC中包括 assign/copy/retain</h3>
+
+<ul>
+<li>assign：表示在"setter"中仅是简单的赋值，不改变引用计数，一般用来修饰基本类型和delegate属性</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">assign</span><span class="p">)</span> <span class="bp">NSInteger</span> <span class="n">count</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">assign</span><span class="p">)</span> <span class="kt">id</span> <span class="n">delegate</span><span class="p">;</span> <span class="c1">// 避免引用循环，但要在适当时候设置为 nil</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 对应 setter 方法</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setCount:</span><span class="p">(</span><span class="bp">NSInteger</span><span class="p">)</span><span class="nv">count</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">_count</span> <span class="o">=</span> <span class="n">count</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>copy：表示在"setter"中将参数进行内存copy后再进行赋值，一般用于不可变字符串、字典、Block</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">copy</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">str</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 对应 setter 方法</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setUserName:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">userName</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">userName</span> <span class="o">!=</span> <span class="n">_userName</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="p">[</span><span class="n">_userName</span> <span class="k">release</span><span class="p">];</span>
+</span><span class='line'>      
+</span><span class='line'>      <span class="n">_userName</span> <span class="o">=</span> <span class="p">[</span><span class="n">userName</span> <span class="k">copy</span><span class="p">];</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>retain：表示在"setter"中将参数对象 retain 后再进行赋值，一般用于可变字符串、可变字典及其他对象</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">retain</span><span class="p">)</span> <span class="bp">NSMutableString</span> <span class="o">*</span><span class="n">str</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 对应 setter 方法</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setUserName:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">userName</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">userName</span> <span class="o">!=</span> <span class="n">_userName</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="p">[</span><span class="n">_userName</span> <span class="k">release</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">_userName</span> <span class="o">=</span> <span class="p">[</span><span class="n">userName</span> <span class="k">retain</span><span class="p">];</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><br></p>
+
+<h3>ARC中包括 assign/weak/unsafe_unretained/copy/strong</h3>
+
+<ul>
+<li>assign：同 MRC 中的 assign 一样，只是不再用来修饰 delegate 对象</li>
+<li>weak：用来修饰对象，但在"setter"中是简单赋值，不改变引用计数，和 assign 的区别在于属性被销毁后会被设置为 nil，所以能在继续使用该属性时避免程序崩溃，一般用来修饰 delegate 对象和 IBOutlet 对象</li>
+<li>unsafe_unretained：和 weak 相似，区别在于被销毁时不会置为 nil (unsafe)，它主要是为了兼容4.0系统而存在(iOS4 以及之前没有 weak)，由于 weak 会对性能有一点影响，因此对性能要求很高的地方可以考虑使用 unsafe_unretained 替换 weak</li>
+<li>copy：同 MRC 中的 copy 一样</li>
+<li>strong：同 MRC 中的 retain 一样</li>
+</ul>
+
+
+<h3>列出几种有问题的写法</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">str</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 当源字符串是 NSMutableString 类型时，strong 是浅拷贝，copy 才是深拷贝，所以 str 会随着源字符串的修改而变化</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">copy</span><span class="p">)</span> <span class="bp">NSMutableString</span> <span class="o">*</span><span class="n">str</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 当源字符串是 NSString 类型时，不管用 strong 还是 copy 都是浅拷贝，所以这里 str 指向的仍然是 NSString 对象，当用 str 调用 NSMutableString 类的 insert 等方法时会报错&quot;找不到该方法&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">assign</span><span class="p">)</span> <span class="kt">id</span> <span class="n">delegate</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// MRC 下需要自己在 dealloc 中将 delegate 设置为 nil， ARC 下需要用 weak 修饰 delegate 属性</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">copy</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">newString</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// ARC下编译器不允许方法名以 alloc/init/new/copy/mutableCopy 开头，newString属性对应的 getter 也叫 newString，编译器会认为这是在创建对象</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><br></p>
+
+<h1>Autorelease Pool</h1>
+
+<p>当不再使用一个对象时应该将其释放，但是在某些情况下，我们很难理清一个对象什么时候不再使用，Objc 提供的自动释放池可以解决这个问题，只需要给这种对象发送 autorelease 消息，就会将该对象放到离它最近的池子里，当池子被清理时，会给池里所有的对象发送release消息。</p>
+
+<ul>
+<li>自动释放池的创建：每个 runloop 对应一个线程，每个线程维护自己的一个或多个池子，池子以堆栈形式存储，池内的对象也是以堆栈形式存储，通常我们不需要自己创建自动释放池，使用线程自己维护的就好了</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// MRC</span>
+</span><span class='line'><span class="bp">NSAutoreleasePool</span> <span class="o">*</span><span class="n">pool</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSAutoreleasePool</span> <span class="n">alloc</span><span class="p">]</span><span class="n">init</span><span class="p">];</span>
+</span><span class='line'><span class="p">...</span>
+</span><span class='line'><span class="p">[</span><span class="n">pool</span> <span class="k">release</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// ARC</span>
+</span><span class='line'><span class="k">@autoreleasepool</span> <span class="p">{</span>
+</span><span class='line'>  <span class="p">...</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>什么时候需要自己去创建
+
+<ul>
+<li>当循环次数较大或者事件处理占用内存较大时，会导致内存占用不断增长</li>
+<li>创建新的线程后需要同时创建该线程的自动释放池，否则自动释放对象会累积，使内存占用率持续增加。</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000000</span><span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">@autoreleasepool</span> <span class="p">{</span>
+</span><span class='line'>      <span class="bp">NSString</span> <span class="o">*</span><span class="n">str</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&quot;%d&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span> <span class="n">str</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>自动释放池的清理：可以由我们主动 drain，也可以交由 runloop 在每次事件结束时自动进行清理，如果是我们自己创建的池子，会在出了 @autoreleasepool 的大括号后进行 drain。</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">风行</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-07-12T15:07:54+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>3:07 pm</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/06/03/iosduo-xian-cheng-kai-fa/" title="Previous Post: iOS多线程开发">&laquo; iOS多线程开发</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2016/08/03/liao-jie-block/" title="Next Post: 了解block">了解block &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="最新">
+    
+      <li class="post">
+        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS APP的组件化设计</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/08/09/ioskai-fa-tips/">iOS开发tips</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/08/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/08/03/liao-jie-block/">了解block</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/07/12/iosnei-cun-guan-li/">iOS内存管理</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub</h1>
+  <a href="https://github.com/lijingcheng">@lijingcheng</a> on GitHub
+</section>
+
+
+
+<section>
+  <h1>Weibo</h1>
+  <a href="https://weibo.com/lijingcheng1984">@lijingcheng1984</a> on Weibo
+</section>
+
+
+
+<section>
+  <h1>Weixin</h1>
+  <a href="http://7x00ed.com1.z0.glb.clouddn.com/qrcode.png">@bj_lijingcheng</a> on Weixin
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - 风行 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+</body>
+</html>

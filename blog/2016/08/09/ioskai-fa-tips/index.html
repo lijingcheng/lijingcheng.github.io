@@ -1,0 +1,496 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>iOS开发tips - 风行的博客</title>
+  <meta name="author" content="风行">
+
+  
+  <meta name="description" content="tips - 记录一些东西，希望也能帮助到有需要的人。 用模拟器调试动画功能时，让动画执行的慢一些 1
+模拟器菜单：Debug -&gt; Show Animations 取两位整数，不够补0 1
+NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://lijingcheng.github.io/blog/2016/08/09/ioskai-fa-tips/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="风行的博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">风行的博客</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss email">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+    <li><a href="mailto:bj_lijingcheng@163.com" rel="subscribe-email" title="subscribe via email">邮箱</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="lijingcheng.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/archives">归档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">iOS开发tips</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-08-09T10:58:59+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:58 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/tips.jpg" width="200" height="200"  >
+<strong>tips - <em>记录一些东西，希望也能帮助到有需要的人。</em></strong></p>
+
+<p><br>
+<br></p>
+
+<!-- more -->
+
+
+<p><br></p>
+
+<ul>
+<li>用模拟器调试动画功能时，让动画执行的慢一些</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>模拟器菜单：Debug -&gt; Show Animations</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>取两位整数，不够补0</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>NSLog(@"%@", [NSString stringWithFormat:@"%02d月", 3]);</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>在不知道谁是第一响应者时隐藏键盘</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[[[UIApplication sharedApplication] keyWindow] endEditing:YES];</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>iOS8的API，用来检测系统版本</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>if ([NSProcessInfo.processInfo isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){9,3,0}]) {
+</span><span class='line'>  NSLog(@"&gt; iOS 9.3");
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Provisioning Profiles所在路径</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>~/Library/MobileDevice/Provisioning Profiles</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>解码cms加密后的描述文件</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>终端：security cms -D -i example.mobileprovision</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>查找代码中的中文字符串，做国际化适配时会用到</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Xcode左侧导航处：Find -&gt; Regular Expression，然后输入@"[^"]*[\u4E00-\u9FA5]+[^"\n]*?"</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>获取全局唯一标示符</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[[NSProcessInfo processInfo] globallyUniqueString];</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>关闭UINavigationController滑动返回功能</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>self.navigationController.interactivePopGestureRecognizer.enabled = NO;</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>自定义leftBarButtonItem后，左滑返回手势失效</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>self.navigationController.interactivePopGestureRecognizer.delegate = self;</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>在xib中给UILabel或UITextView设置多行文字</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>输入文字后，用"control + enter"来插入换行符，相当于在代码中添加"\n"</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>获取当前视图控制器</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[[UIApplication sharedApplication].windows firstObject].rootViewController</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>禁用UIButton并且颜色不变灰</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>button.userInteractionEnabled = NO;</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>UITableView的分割线左边顶头</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>tableView.separatorInset = UIEdgeInsetsZero;
+</span><span class='line'>cell.layoutMargins = UIEdgeInsetsZero;</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>修改约束后，用动画展示</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[UIView animateWithDuration:0.3f animations:^{
+</span><span class='line'>    [myView layoutIfNeeded];
+</span><span class='line'>}];</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>给UIView设置透明度后不影响subviews</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[view.backgroundColor colorWithAlphaComponent:0.5];</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>隐藏Grouped TableView上边多余的间隔</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>去掉UITableView下面多余空行</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>self.tableView.tableFooterView = [[UIView alloc] init];</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>隐藏UITextField的光标</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>self.textField.tintColor = [UIColor clearColor];</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>修改UITextField的placeholder的字体颜色</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[self.textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>修改UIPageControl的小圆点为自定义图片</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[pageControl setValue:[UIImage imageNamed:@"pageImage"] forKeyPath:@"_pageImage"];
+</span><span class='line'>[pageControl setValue:[UIImage imageNamed:@"currentPageImage"] forKeyPath:@"_currentPageImage"];</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>编译出error后继续编译</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Xcode -&gt; preference -&gt; general -&gt; 勾选 Continue building after errors</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>自定义类后，禁止通过 init 方法初始化对象</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (instancetype)init UNAVAILABLE_ATTRIBUTE;
+</span><span class='line'>或
+</span><span class='line'>- (instancetype)init __attribute__((unavailable("init方法不可用，请用initWithName:")));</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>忽略可以忽略的警告，<a href="http://fuckingclangwarnings.com">更多警告</a></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#pragma clang diagnostic push
+</span><span class='line'>#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+</span><span class='line'>
+</span><span class='line'>#pragma clang diagnostic pop
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>中文转拼音</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>NSMutableString *str = [[NSMutableString alloc] initWithString:@"风行"];
+</span><span class='line'>
+</span><span class='line'>if (CFStringTransform((__bridge CFMutableStringRef)str, NULL, kCFStringTransformMandarinLatin, NO)) {
+</span><span class='line'>    CFStringTransform((__bridge CFMutableStringRef)str, NULL, kCFStringTransformStripDiacritics, NO);
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>NSLog(@"%@", str);
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>KVC</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>NSArray *numbers = @[@4, @81, @2]; // @[@{@"price": @4}, @{@"price": @81}, @{@"price": @2}]
+</span><span class='line'>
+</span><span class='line'>NSLog(@"max = %@", [numbers valueForKeyPath:@"@max.self"]); // @max.price
+</span><span class='line'>NSLog(@"min = %@", [numbers valueForKeyPath:@"@min.self"]); // @min.price
+</span><span class='line'>NSLog(@"sum = %@", [numbers valueForKeyPath:@"@sum.self"]); // @sum.price
+</span><span class='line'>NSLog(@"avg = %@", [numbers valueForKeyPath:@"@avg.self"]); // @avg.price
+</span><span class='line'>
+</span><span class='line'>//数组去重
+</span><span class='line'>NSArray *devices = @[@"iPhone6", @"iPhone5", @"iPhone6 Plus", @"iPhone6", @"iPhone5"];
+</span><span class='line'>
+</span><span class='line'>NSLog(@"devices = %@", [devices valueForKeyPath:@"@distinctUnionOfObjects.self"]); // iPhone5, iPhone6, iPhone6 Plus
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">风行</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-08-09T10:58:59+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:58 am</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/08/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/" title="Previous Post: 代码重构">&laquo; 代码重构</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/" title="Next Post: iOS APP的组件化设计">iOS APP的组件化设计 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="最新">
+    
+      <li class="post">
+        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS APP的组件化设计</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/08/09/ioskai-fa-tips/">iOS开发tips</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/08/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/08/03/liao-jie-block/">了解block</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/07/12/iosnei-cun-guan-li/">iOS内存管理</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub</h1>
+  <a href="https://github.com/lijingcheng">@lijingcheng</a> on GitHub
+</section>
+
+
+
+<section>
+  <h1>Weibo</h1>
+  <a href="https://weibo.com/lijingcheng1984">@lijingcheng1984</a> on Weibo
+</section>
+
+
+
+<section>
+  <h1>Weixin</h1>
+  <a href="http://7x00ed.com1.z0.glb.clouddn.com/qrcode.png">@bj_lijingcheng</a> on Weixin
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - 风行 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+</body>
+</html>
