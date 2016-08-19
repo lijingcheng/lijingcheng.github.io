@@ -84,13 +84,10 @@
   </header>
 
 
-<div class="entry-content"><p><br/>
-<img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/app-lifecycle.jpeg" width="160" height="160"  ></p>
-
-<blockquote><p><strong>生命周期 - <em>程序的生命周期是指应用程序从启动到结束整个阶段的全过程.</em></strong> <br/>
-点击iOS应用图标打开程序，系统会首先通过main函数进行相关设置，然后通过runloop保持程序能够始终运行并监听处理分发事件，当没有事件发生时runloop便处于睡眠状态，节省资源。当发生事件后，runloop将事件对象分发给相应视图处理。当用户按下home键，应用会在进入后台后短暂运行，直到被系统挂起。</p></blockquote>
-
-<p><br/></p>
+<div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/app-lifecycle.jpeg" width="160" height="160"  >
+<strong>生命周期 - <em>程序的生命周期是指应用程序从启动到结束整个阶段的全过程.</em></strong> <br/>
+<br>
+点击iOS应用图标打开程序，系统会首先通过main函数进行相关设置，然后通过runloop保持程序能够始终运行并监听处理分发事件，当没有事件发生时runloop便处于睡眠状态，节省资源。当发生事件后，runloop将事件对象分发给相应视图处理。当用户按下home键，应用会在进入后台后短暂运行，直到被系统挂起。</p>
 
 <!-- more -->
 
@@ -141,8 +138,8 @@
 <li>使用NSTimer或performSelector系列方法。
 
 <ul>
-<li>performSelecter:afterDelay: 会创建timer并添加到当前线程的runloop中。</li>
-<li>performSelector:onThread: 会创建timer并添加到指定线程的runloop中。</li>
+<li>performSelecter:afterDelay: 会创建timer并添加到当前线程的runloop中，如果当前线程没有RunLoop，此方法失效。</li>
+<li>performSelector:onThread: 会创建timer并添加到指定线程的runloop中，如果指定线程没有RunLoop，此方法失效。</li>
 </ul>
 </li>
 </ul>
@@ -170,7 +167,7 @@
 
 <p><br/></p>
 
-<h1>事件传递&amp;响应者链</h1>
+<h1>事件传递&amp;事件响应</h1>
 
 <p>当发生触摸操作后，系统会将这一事件封装成UIEvent对象并放到由UIApplication管理的事件队列中，再由runloop接收事件并传递给触摸点所在的视图，该视图即为"hit-test视图"，而查找这一视图的过程就叫做"hit-testing"。hit-testing过程大致如下:</p>
 
@@ -202,7 +199,9 @@
 
 
 <p><br/>
-如果hit-test视图不处理收到的事件，则通过响应者链机制寻找其它响应者来处理。响应链由一系列链接在一起的响应者组成。如果一个响应者不能处理事件，则会将事件沿着响应链传到下一响应者。下一响应者有可能是它的父视图也可能是它所在的ViewController，系统会以此类推一直传递到UIApplication。如果整个过程都没有响应者响应事件，该事件就会被丢弃。否则事件便会停止传递交由响应者处理。</p>
+如果hit-test视图不处理收到的事件（没有重写touches方法，或者只是在touches方法里调用[super touches..]），则通过响应者链机制寻找其它响应者来处理。</p>
+
+<p>响应链由一系列链接在一起的响应者组成。如果一个响应者不能处理事件，则会将事件沿着响应链传到下一响应者。下一响应者有可能是它的父视图也可能是它所在的ViewController，系统会以此类推一直传递到UIApplication。如果整个过程都没有响应者响应事件，该事件就会被丢弃。否则事件便会停止传递交由响应者处理。</p>
 
 <p><br/></p>
 
@@ -258,19 +257,23 @@
   <ul id="最新">
     
       <li class="post">
-        <a href="/blog/2015/09/21/objective-c-runtimekai-fa/">Objective-C Runtime开发</a>
+        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS APP的组件化设计</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2015/03/28/iosying-yong-de-sheng-ming-zhou-qi/">iOS应用的生命周期</a>
+        <a href="/blog/2016/08/09/ioskai-fa-tips/">iOS开发tips</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2015/02/11/yong-cocoapodswei-iosxiang-mu-zuo-yi-lai-guan-li/">用CocoaPods为iOS项目做依赖管理</a>
+        <a href="/blog/2016/08/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2015/01/04/zai-macxia-tong-guo-github-pages-plus-octopressda-jian-bo-ke/">在Mac下用Github Pages + Octopress搭建博客</a>
+        <a href="/blog/2016/08/03/liao-jie-block/">了解block</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/07/12/iosnei-cun-guan-li/">iOS内存管理</a>
       </li>
     
   </ul>

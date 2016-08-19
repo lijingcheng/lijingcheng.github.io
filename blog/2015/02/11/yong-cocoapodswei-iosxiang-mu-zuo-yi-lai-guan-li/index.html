@@ -85,13 +85,11 @@
   </header>
 
 
-<div class="entry-content"><p><br/></p>
-
-<p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/cocoapods.png" width="190" height="190"  ></p>
-
-<blockquote><p><strong><a href="http://www.cocoapods.org">CocoaPods</a> - <em>Get on with building your app, not duplicating code.</em></strong> <br/>
+<div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/cocoapods.png" width="190" height="190"  >
+<strong><a href="http://www.cocoapods.org">CocoaPods</a> - <em>Get on with building your app, not duplicating code.</em></strong> <br/>
+<br>
 可以为Cocoa和Swift项目使用的第三方类库和我们自己的私有类库提供依赖管理，就像Java领域的Maven。
-我们只需要告诉它要使用的类库名称和版本，然后再执行一条命令，它就会自动将这个类库的源码从github上下载到本地，并且为工程设置好相应的系统依赖和编译选项。使用CocoaPods可以大大节省我们在设置和更新类库时所花的时间。</p></blockquote>
+我们只需要告诉它要使用的类库名称和版本，然后再执行一条命令，它就会自动将这个类库的源码从github上下载到本地，并且为工程设置好相应的系统依赖和编译选项。使用CocoaPods可以大大节省我们在设置和更新类库时所花的时间。</p>
 
 <!-- more -->
 
@@ -130,7 +128,17 @@
 
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo gem install cocoapods (更新命令也是这个)</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo gem install cocoapods (更新命令也是这个)
+</span><span class='line'>
+</span><span class='line'>// 新版OSX安装时会报下面这个错，可另外指定cocoapods的安装目录
+</span><span class='line'>ERROR:  While executing gem ... (Errno::EPERM) Operation not permitted - /usr/bin/xcodeproj
+</span><span class='line'>
+</span><span class='line'>sudo gem install -n /usr/local/bin cocoapods</span></code></pre></td></tr></table></div></figure>
 
 
 <ul>
@@ -235,12 +243,21 @@
 
 
 <ul>
-<li>下载新版本</li>
+<li>下载新版本（默认会更新本地podspec仓库）</li>
 </ul>
 
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>pod update</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>下载新版本，且不更新本地podspec仓库（速度会快很多）</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>pod update --no-repo-update</span></code></pre></td></tr></table></div></figure>
 
 
 <p><br/></p>
@@ -357,7 +374,7 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/01/04/zai-macxia-tong-guo-github-pages-plus-octopressda-jian-bo-ke/" title="Previous Post: 在Mac下用Github Pages + Octopress搭建博客">&laquo; 在Mac下用Github Pages + Octopress搭建博客</a>
+        <a class="basic-alignment left" href="/blog/2015/01/04/zai-macxia-tong-guo-github-pages-plus-octopressda-jian-bo-ke/" title="Previous Post: 用Github Pages + Octopress搭建博客">&laquo; 用Github Pages + Octopress搭建博客</a>
       
       
         <a class="basic-alignment right" href="/blog/2015/03/28/iosying-yong-de-sheng-ming-zhou-qi/" title="Next Post: iOS应用的生命周期">iOS应用的生命周期 &raquo;</a>
@@ -374,19 +391,23 @@
   <ul id="最新">
     
       <li class="post">
-        <a href="/blog/2015/09/21/objective-c-runtimekai-fa/">Objective-C Runtime开发</a>
+        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS APP的组件化设计</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2015/03/28/iosying-yong-de-sheng-ming-zhou-qi/">iOS应用的生命周期</a>
+        <a href="/blog/2016/08/09/ioskai-fa-tips/">iOS开发tips</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2015/02/11/yong-cocoapodswei-iosxiang-mu-zuo-yi-lai-guan-li/">用CocoaPods为iOS项目做依赖管理</a>
+        <a href="/blog/2016/08/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2015/01/04/zai-macxia-tong-guo-github-pages-plus-octopressda-jian-bo-ke/">在Mac下用Github Pages + Octopress搭建博客</a>
+        <a href="/blog/2016/08/03/liao-jie-block/">了解block</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/07/12/iosnei-cun-guan-li/">iOS内存管理</a>
       </li>
     
   </ul>
