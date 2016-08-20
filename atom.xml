@@ -4,7 +4,7 @@
   <title><![CDATA[风行的博客]]></title>
   <link href="http://lijingcheng.github.io/atom.xml" rel="self"/>
   <link href="http://lijingcheng.github.io/"/>
-  <updated>2016-08-19T18:21:04+08:00</updated>
+  <updated>2016-08-21T00:01:02+08:00</updated>
   <id>http://lijingcheng.github.io/</id>
   <author>
     <name><![CDATA[风行]]></name>
@@ -125,22 +125,12 @@
 <span class='line-number'>60</span>
 <span class='line-number'>61</span>
 <span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>source 'https://github.com/CocoaPods/Specs.git'
 </span><span class='line'>platform :ios, "7.0"
 </span><span class='line'>inhibit_all_warnings!
 </span><span class='line'>
 </span><span class='line'>#使用自己建的workspace
 </span><span class='line'>workspace 'XXWorkSpace'
-</span><span class='line'>xcodeproj 'XXCommon/XXCommon.xcodeproj'
-</span><span class='line'>xcodeproj 'XXHome/XXHome.xcodeproj'
-</span><span class='line'>xcodeproj 'XXTicket/XXTicket.xcodeproj'
-</span><span class='line'>xcodeproj 'XXMine/XXMine.xcodeproj'
-</span><span class='line'>xcodeproj 'APPProject.xcodeproj'
 </span><span class='line'>
 </span><span class='line'>#跨APP级的框架
 </span><span class='line'>target :XXFoundation do
