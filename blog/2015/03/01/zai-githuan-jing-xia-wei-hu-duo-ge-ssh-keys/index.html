@@ -1,0 +1,252 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>在 Git 环境下维护多个 SSH Keys - 风行的博客</title>
+  <meta name="author" content="风行">
+
+  
+  <meta name="description" content="SSH Key - 通过 SSH 密钥登录服务器，可以避免密码在网络中传输，也就保证了登录过程的安全，也不会因此受到中间人攻击，如果在 SSH 密钥登录基础上再加上密码短语 （passphrase）的使用，安全性便会再次提高。 作为一个程序猿，我们经常会往公司的 Git 服务器上提交代码， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://lijingcheng.github.io/blog/2015/03/01/zai-githuan-jing-xia-wei-hu-duo-ge-ssh-keys/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="风行的博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">风行的博客</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss email">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+    <li><a href="mailto:bj_lijingcheng@163.com" rel="subscribe-email" title="subscribe via email">邮箱</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="lijingcheng.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/archives">归档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">在 Git 环境下维护多个 SSH Keys</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-03-01T18:11:42+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>6:11 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/ssh_key.jpg" width="220" height="220"  >
+ SSH Key - 通过 SSH 密钥登录服务器，可以避免密码在网络中传输，也就保证了登录过程的安全，也不会因此受到中间人攻击，如果在 SSH 密钥登录基础上再加上密码短语 （passphrase）的使用，安全性便会再次提高。</p>
+
+<p><br/></p>
+
+<!-- more -->
+
+
+<p>作为一个程序猿，我们经常会往公司的 Git 服务器上提交代码，还有很多猿在 GitHub 上也有自己的开源项目，不管是公司的服务器还是 GitHub 服务器都会在你提交代码时通过维护在服务器上的公钥进行验证，如果你希望能够以不同身份向不同服务器提交代码，那么你需要在机器上维护多个 SSH Key，并且将不同的公钥添加到不同的服务器中。</p>
+
+<p>下面介绍下在已经拥有一个用于公司服务器的 SSH Key 后，如何再添加一个用于 GitHub 的 SSH Key。</p>
+
+<p>首先进入 .ssh 目录</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd ~/.ssh</span></code></pre></td></tr></table></div></figure>
+
+
+<p>创建用于 GitHub 的 SSH Key，根据提示将名字设置为 id_rsa_github</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ssh-keygen -t rsa -C "注册 GitHub 时用的 Email"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>因为 Git 默认只读取 id_rsa，为了让 SSH 识别新的私钥，需将 id_rsa_github 添加到 SSH Agent 中</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ssh-add id_rsa_github</span></code></pre></td></tr></table></div></figure>
+
+
+<p>将 id_rsa_github.pub 中的公钥复制到 GitHub 帐户中，并为 GitHub 项目指定提交代码时使用哪个用户</p>
+
+<pre><code>- 通过 SourceTree 设置：项目 -&gt; 设置 -&gt; 高级 -&gt; 直接修改用户名和邮箱
+- 进入项目根目录，然后打开 .git 目录下的 config 文件，修改 [user] 部分
+</code></pre>
+
+<p>如果 .ssh 目录下没有 config 文件，便新增一个</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>touch config</span></code></pre></td></tr></table></div></figure>
+
+
+<p>配置 config 文件，指明服务器及所使用的密钥</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Host github.com
+</span><span class='line'>IdentityFile ~/.ssh/id_rsa_github
+</span><span class='line'>
+</span><span class='line'>Host gitlab.xxx.com
+</span><span class='line'>IdentityFile ~/.ssh/id_rsa</span></code></pre></td></tr></table></div></figure>
+
+
+<p><br></p>
+
+<blockquote><p>如果你使用 SourceTree 的话，也可以在添加 GitHub 帐户时直接生成密钥，它会帮你配置好一切并上传，这样就省去了上面一切操作步骤，但仅支持添加 GitHub 和 BitBucket 账号。</p></blockquote>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">风行</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-03-01T18:11:42+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>6:11 pm</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/02/11/yong-cocoapodswei-iosxiang-mu-zuo-yi-lai-guan-li/" title="Previous Post: 使用 CocoaPods 做依赖管理">&laquo; 使用 CocoaPods 做依赖管理</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/03/28/iosying-yong-de-sheng-ming-zhou-qi/" title="Next Post: iOS 应用的生命周期">iOS 应用的生命周期 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>最近更新</h1>
+  <ul id="最新">
+    
+      <li class="post">
+        <a href="/blog/2016/12/05/tong-guo-xcodebuildda-bao-ipabing-shang-chuan-pu-gong-ying/">使用 Xcodebuild 打包 IPA 并上传蒲公英</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS 应用的组件化设计</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/06/09/ioskai-fa-tips/">iOS 开发 Tips</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/03/liao-jie-block/">了解 Block</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub</h1>
+  <a href="https://github.com/lijingcheng">@lijingcheng</a> on GitHub
+</section>
+
+
+
+<section>
+  <h1>Weibo</h1>
+  <a href="https://weibo.com/lijingcheng1984">@lijingcheng1984</a> on Weibo
+</section>
+
+
+
+<section>
+  <h1>Weixin</h1>
+  <a href="http://7x00ed.com1.z0.glb.clouddn.com/qrcode.png">@bj_lijingcheng</a> on Weixin
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - 风行 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+</body>
+</html>

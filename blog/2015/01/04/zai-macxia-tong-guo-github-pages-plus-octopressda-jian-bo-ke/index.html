@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>用Github Pages + Octopress搭建博客 - 风行的博客</title>
+  <title>GitHub Pages + Octopress 搭博客 - 风行的博客</title>
   <meta name="author" content="风行">
 
   
-  <meta name="description" content="Github Pages - Websites for you and your projects. 可用来搭建静态网站，它提供免费的域名、空间、无限流量，并且在世界各地都有较好的访问速度。不过网站也会轻易被人Clone，如果在意的话可以付费给github，然后将相关版本库建成私有的。 &hellip;">
+  <meta name="description" content="Github Pages - Websites for you and your projects. 可用来搭建静态网站，提供免费的域名、空间、无限流量，并且在世界各地都有较好的访问速度。不过网站也会轻易被人 clone，如果在意的话可以付费给 GitHub，然后将版本库建成私有的。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,7 +68,7 @@
   
   <header>
     
-      <h1 class="entry-title">用Github Pages + Octopress搭建博客</h1>
+      <h1 class="entry-title">GitHub Pages + Octopress 搭博客</h1>
     
     
       <p class="meta">
@@ -86,10 +86,10 @@
 
 <div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/github-octopress.png" width="200" height="200"  >
 <strong><a href="https://pages.github.com">Github Pages</a> - <em>Websites for you and your projects.</em></strong> <br/>
-可用来搭建静态网站，它提供免费的域名、空间、无限流量，并且在世界各地都有较好的访问速度。不过网站也会轻易被人Clone，如果在意的话可以付费给github，然后将相关版本库建成私有的。
+可用来搭建静态网站，提供免费的域名、空间、无限流量，并且在世界各地都有较好的访问速度。不过网站也会轻易被人 clone，如果在意的话可以付费给 GitHub，然后将版本库建成私有的。
 <br/><br/>
 <strong><a href="http://octopress.org">Octopress</a> - <em>A blogging framework for hackers.</em></strong><br/>
-开源的静态博客系统，可用来为我们的静态网站提供所需的HTML。</p>
+开源的静态博客系统，可用来为我们的静态网站提供所需的 HTML。</p>
 
 <!-- more -->
 
@@ -99,29 +99,17 @@
 <h1>准备工作</h1>
 
 <ul>
-<li>需要git环境并且已经将创建好的ssh keys添加到github帐户下。</li>
+<li>需要有 Git 环境，最好为 GitHub 另外维护一个 SSH Key</li>
+<li>在 GitHub 上新建名为 yourname.github.io 的版本库，之后可通过 yourname.github.io 域名来访问博客，如果你有自己的域名，可通过配置 Octopress 的 CNAME 文件进行关联</li>
+<li>需要有 1.9.3 及以上版本的 ruby 环境。(通过 ruby &ndash;version 查看，如需升级可用 rvm 或 rbenv)</li>
+<li>更改 ruby 的源，可提高下载速度</li>
 </ul>
 
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cd ~/.ssh (检查本地有没有ssh keys)
-</span><span class='line'>ssh-keygen -t rsa -C "注册github时用的email" (创建ssh keys)
-</span><span class='line'>用记事本打开id_rsa.pub，复制里面的东西到github帐户下</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>在github上新建名为“yourname.github.io”的版本库，之后可通过“yourname.github.io”域名来访问，如果你有自己的域名，可通过配置Octopress的CNAME文件进行映射。</li>
-<li>需要有1.9.3及以上版本的ruby环境。(可通过ruby &ndash;version来查看版本，如需升级可用rvm或rbenv)</li>
-<li>更改ruby的源为淘宝，可提高下载速度</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>gem sources -a https://ruby.taobao.org/  (添加)
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem sources -a https://gems.ruby-china.org/  (添加)
 </span><span class='line'>gem sources -r https://rubygems.org/  (删除)
 </span><span class='line'>gem sources -l  (检查一下)</span></code></pre></td></tr></table></div></figure>
 
@@ -130,21 +118,19 @@
 
 <p><br/></p>
 
-<h1>Octopress环境搭建</h1>
+<h1>Octopress 环境搭建</h1>
 
 <ul>
-<li>安装</li>
+<li>安装 Octopress</li>
 </ul>
 
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://github.com/imathis/octopress.git octopress
-</span><span class='line'>cd octopress</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://github.com/imathis/octopress.git octopress</span></code></pre></td></tr></table></div></figure>
 
 
 <ul>
-<li>安装所需依赖</li>
+<li>clone 完成后 cd octopress，然后安装所需依赖</li>
 </ul>
 
 
@@ -157,7 +143,7 @@
 
 
 <ul>
-<li>安装默认模板，也可以安装<a href="https://github.com/shashankmehta/greyshade">第三方模板</a></li>
+<li>安装默认模板</li>
 </ul>
 
 
@@ -166,31 +152,27 @@
 
 
 <ul>
-<li>配置网站</li>
+<li>关联 GitHub Pages</li>
 </ul>
 
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>通过"/octopress/_config.yml"文件配置，参考：http://octopress.org/docs/configuring
-</span><span class='line'>自己修改html和css，将twitter以及google相关的内容删掉，可以提高访问速度</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake setup_github_pages
+</span><span class='line'>git@github.com:yourname/yourname.github.io.git</span></code></pre></td></tr></table></div></figure>
 
 
 <ul>
-<li>关联github pages</li>
+<li>配置 <a href="http://octopress.org/docs/configuring">Octopress</a>，建议同时删除 HTML 和 CSS 中用不到的东西，可提高访问速度</li>
 </ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake setup_github_pages (然后输入 git@github.com:yourname/yourname.github.io.git)</span></code></pre></td></tr></table></div></figure>
 
 
 <p><br/></p>
 
-<h1>写博客</h1>
+<h1>写博客并发布</h1>
 
 <ul>
-<li>新建文章，会在"\octopress\source\_posts"目录下生成扩展名为"markdown"的文件，推荐使用<a href="http://25.io/mou/">&ldquo;Mou&rdquo;</a>编辑器编写markdown文件并尽量采用<a href="http://wowubuntu.com/markdown/">Markdown语法</a>。</li>
+<li>新建文章（博客存储为 markdown 文件，位于 \octopress\source\_posts 目录下）</li>
 </ul>
 
 
@@ -199,20 +181,34 @@
 
 
 <ul>
-<li>将octopress生成的html等文件提交到master分支</li>
+<li>生成静态网站</li>
 </ul>
 
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake generate (生成静态网站)
-</span><span class='line'>rake preview (通过http://localhost:4000预览，修改markdown文件后直接刷新即可)
-</span><span class='line'>rake deploy push git</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake generate</span></code></pre></td></tr></table></div></figure>
 
 
 <ul>
-<li>将octopress的相关文件提交到source分支</li>
+<li>通过 <a href="http://localhost:4000">http://localhost:4000</a> 预览静态网站，之后修改 markdown 后直接刷新即可</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake preview</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>将 Octopress 生成的 HTML 等文件提交到 master 分支</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake deploy push git</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>将 Octopress 修改过的 markdown 等资源文件提交到 source 分支</li>
 </ul>
 
 
@@ -222,76 +218,6 @@
 </pre></td><td class='code'><pre><code class=''><span class='line'>git add .
 </span><span class='line'>git commit -m ‘your commit message’
 </span><span class='line'>git push origin source</span></code></pre></td></tr></table></div></figure>
-
-
-<p><br/></p>
-
-<h1>添加评论系统</h1>
-
-<ul>
-<li>通过在多说网<a href="http://duoshuo.com/create-site">新建站点</a>来获取网站的short_name</li>
-<li>在_config.yml中添加以下内容，并替换"your_short_name"</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'># duoshuo comments 
-</span><span class='line'>duoshuo_comments: true 
-</span><span class='line'>duoshuo_short_name: your_short_name</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>新建"source/_includes/post/duoshuo.html"并添加下面内容，还需要替换"your_short_name"</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="nx">div</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;ds-thread&quot;</span><span class="o">&gt;&lt;</span><span class="err">/div&gt;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span><span class="o">&gt;</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">duoshuoQuery</span> <span class="o">=</span> <span class="p">{</span><span class="nx">short_name</span><span class="o">:</span><span class="s2">&quot;your_short_name&quot;</span><span class="p">};</span>
-</span><span class='line'><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">ds</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;script&#39;</span><span class="p">);</span>
-</span><span class='line'>    <span class="nx">ds</span><span class="p">.</span><span class="nx">type</span> <span class="o">=</span> <span class="s1">&#39;text/javascript&#39;</span><span class="p">;</span>
-</span><span class='line'>    <span class="nx">ds</span><span class="p">.</span><span class="nx">async</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-</span><span class='line'>    <span class="nx">ds</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="s1">&#39;http://static.duoshuo.com/embed.js&#39;</span><span class="p">;</span>
-</span><span class='line'>    <span class="nx">ds</span><span class="p">.</span><span class="nx">charset</span> <span class="o">=</span> <span class="s1">&#39;UTF-8&#39;</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">&#39;head&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]).</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">ds</span><span class="p">);</span>
-</span><span class='line'><span class="p">})();</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/script&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>在"source/_layouts/post.html"中嵌入刚才新建的duoshuo.html</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="p">{</span><span class="o">%</span> <span class="k">if</span> <span class="nx">site</span><span class="p">.</span><span class="nx">duoshuo_short_name</span> <span class="nx">and</span> <span class="nx">site</span><span class="p">.</span><span class="nx">duoshuo_comments</span> <span class="o">==</span> <span class="kc">true</span> <span class="nx">and</span> <span class="nx">page</span><span class="p">.</span><span class="nx">comments</span> <span class="o">==</span> <span class="kc">true</span> <span class="o">%</span><span class="p">}</span>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">section</span><span class="o">&gt;</span>
-</span><span class='line'>    <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="err">评论</span><span class="o">&lt;</span><span class="err">/h1&gt;</span>
-</span><span class='line'>    <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&quot;comments&quot;</span> <span class="nx">aria</span><span class="o">-</span><span class="nx">live</span><span class="o">=</span><span class="s2">&quot;polite&quot;</span><span class="o">&gt;</span><span class="p">{</span><span class="o">%</span> <span class="nx">include</span> <span class="nx">post</span><span class="o">/</span><span class="nx">duoshuo</span><span class="p">.</span><span class="nx">html</span> <span class="o">%</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/div&gt;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/section&gt;</span>
-</span><span class='line'><span class="p">{</span><span class="o">%</span> <span class="nx">endif</span> <span class="o">%</span><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
 
 </div>
 
@@ -324,7 +250,7 @@
     <p class="meta">
       
       
-        <a class="basic-alignment right" href="/blog/2015/02/11/yong-cocoapodswei-iosxiang-mu-zuo-yi-lai-guan-li/" title="Next Post: 用CocoaPods为iOS项目做依赖管理">用CocoaPods为iOS项目做依赖管理 &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2015/02/11/yong-cocoapodswei-iosxiang-mu-zuo-yi-lai-guan-li/" title="Next Post: 使用 CocoaPods 做依赖管理">使用 CocoaPods 做依赖管理 &raquo;</a>
       
     </p>
   </footer>
@@ -334,27 +260,27 @@
 <aside class="sidebar">
   
     <section>
-  <h1>Recent Posts</h1>
+  <h1>最近更新</h1>
   <ul id="最新">
     
       <li class="post">
-        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS APP的组件化设计</a>
+        <a href="/blog/2016/12/05/tong-guo-xcodebuildda-bao-ipabing-shang-chuan-pu-gong-ying/">使用 Xcodebuild 打包 IPA 并上传蒲公英</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/08/09/ioskai-fa-tips/">iOS开发tips</a>
+        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS 应用的组件化设计</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/08/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
+        <a href="/blog/2016/06/09/ioskai-fa-tips/">iOS 开发 Tips</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/08/03/liao-jie-block/">了解block</a>
+        <a href="/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/07/12/iosnei-cun-guan-li/">iOS内存管理</a>
+        <a href="/blog/2015/12/03/liao-jie-block/">了解 Block</a>
       </li>
     
   </ul>

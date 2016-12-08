@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>用CocoaPods为iOS项目做依赖管理 - 风行的博客</title>
+  <title>使用 CocoaPods 做依赖管理 - 风行的博客</title>
   <meta name="author" content="风行">
 
   
-  <meta name="description" content="CocoaPods - Get on with building your app, not duplicating code. 可以为Cocoa和Swift项目使用的第三方类库和我们自己的私有类库提供依赖管理，就像Java领域的Maven。
-我们只需要告诉它要使用的类库名称和版本， &hellip;">
+  <meta name="description" content="CocoaPods - Get on with building your app, not duplicating code. 可以为 Cocoa 和 Swift 项目使用的第三方类库和我们自己的私有类库提供依赖管理，我们只需要告诉它要使用的类库名称和版本，然后再执行一条命令， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -69,7 +68,7 @@
   
   <header>
     
-      <h1 class="entry-title">用CocoaPods为iOS项目做依赖管理</h1>
+      <h1 class="entry-title">使用 CocoaPods 做依赖管理</h1>
     
     
       <p class="meta">
@@ -88,8 +87,7 @@
 <div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/cocoapods.png" width="190" height="190"  >
 <strong><a href="http://www.cocoapods.org">CocoaPods</a> - <em>Get on with building your app, not duplicating code.</em></strong> <br/>
 <br>
-可以为Cocoa和Swift项目使用的第三方类库和我们自己的私有类库提供依赖管理，就像Java领域的Maven。
-我们只需要告诉它要使用的类库名称和版本，然后再执行一条命令，它就会自动将这个类库的源码从github上下载到本地，并且为工程设置好相应的系统依赖和编译选项。使用CocoaPods可以大大节省我们在设置和更新类库时所花的时间。</p>
+可以为 Cocoa 和 Swift 项目使用的第三方类库和我们自己的私有类库提供依赖管理，我们只需要告诉它要使用的类库名称和版本，然后再执行一条命令，它就会自动将这个类库的源码从 GitHub 上下载到本地，并且为工程设置好相应的系统依赖和编译项。使用 CocoaPods 可以大大节省我们在设置和更新类库时所花的时间。</p>
 
 <!-- more -->
 
@@ -98,7 +96,7 @@
 
 <h1>准备工作</h1>
 
-<p>由于CocoaPods是用ruby写的，并且主要用于管理github上的第三方类库，所以在安装前需要有Ruby环境和Git环境。Git环境可以通过下载Xcode中的Command Line Tools建立。Ruby环境可以使用Mac系统默认提供的版本，也可以通过以下命令将它更新至最新版。</p>
+<p>由于 CocoaPods 是用 Ruby 写的，并且主要用于管理 GitHub 上的第三方类库，所以在安装前需要有 Ruby 环境和 Git 环境。Git 环境可以通过下载 Xcode 中的 Command Line Tools 建立。Ruby 环境可以使用 Mac 系统默认提供的版本，也可以通过以下命令将它更新至最新版。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>sudo gem update –system</span></code></pre></td></tr></table></div></figure>
@@ -106,12 +104,12 @@
 
 <p>
 <br/>
-为了提高下载速度，还需要将ruby的源更改为淘宝的</p>
+为了提高下载速度，还需要将 Ruby 的源更改为 ruby-china</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>gem sources -a https://ruby.taobao.org/  (添加)
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem sources -a https://gems.ruby-china.org/  (添加)
 </span><span class='line'>gem sources -r https://rubygems.org/  (删除)
 </span><span class='line'>gem sources -l  (检查一下)</span></code></pre></td></tr></table></div></figure>
 
@@ -120,10 +118,10 @@
 
 <p><br/></p>
 
-<h1>安装并使用CocoaPods</h1>
+<h1>安装并使用 CocoaPods</h1>
 
 <ul>
-<li>安装CocoaPods</li>
+<li>安装 CocoaPods</li>
 </ul>
 
 
@@ -133,16 +131,20 @@
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>sudo gem install cocoapods (更新命令也是这个)
 </span><span class='line'>
-</span><span class='line'>// 新版OSX安装时会报下面这个错，可另外指定cocoapods的安装目录
+</span><span class='line'>// 新版 OSX 安装时会报下面这个错，可另外指定 CocoaPods 的安装目录
 </span><span class='line'>ERROR:  While executing gem ... (Errno::EPERM) Operation not permitted - /usr/bin/xcodeproj
 </span><span class='line'>
-</span><span class='line'>sudo gem install -n /usr/local/bin cocoapods</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>sudo gem install -n /usr/local/bin cocoapods
+</span><span class='line'>或者安装 pre release 版本
+</span><span class='line'>sudo gem install -n /usr/local/bin cocoapods --pre</span></code></pre></td></tr></table></div></figure>
 
 
 <ul>
-<li>下载CocoaPods维护的所有podspec文件到"~/.cocoapods/repos/master/Specs"</li>
+<li>下载 CocoaPods 维护的所有 podspec 文件到"~/.cocoapods/repos/master/Specs"</li>
 </ul>
 
 
@@ -150,10 +152,10 @@
 </pre></td><td class='code'><pre><code class=''><span class='line'>pod setup</span></code></pre></td></tr></table></div></figure>
 
 
-<blockquote><p>更新spec也用这个命令，podspec文件主要用来描述依赖库的名称、版本、作者、下载地址等信息。通过CocoaPods下载第三方类库，其实就是根据我们指定的类库名称找到相关的podspec，然后再根据podspec文件中指定的地址去下载。</p></blockquote>
+<blockquote><p>更新 spec 也用这个命令，podspec 文件主要用来描述依赖库的名称、版本、作者、下载地址等信息。通过 CocoaPods 下载第三方类库，其实就是根据我们指定的类库名称找到相关的 podspec，然后再根据 podspec 文件中指定的地址去下载。</p></blockquote>
 
 <ul>
-<li>查看CocoaPods管理的依赖库信息</li>
+<li>查看 CocoaPods 管理的依赖库信息</li>
 </ul>
 
 
@@ -162,7 +164,7 @@
 
 
 <ul>
-<li>新建Podfile文件，此文件用于配置项目所需要使用的依赖库</li>
+<li>新建 Podfile 文件，此文件用于配置项目所需要使用的依赖库</li>
 </ul>
 
 
@@ -173,7 +175,7 @@
 
 
 <ul>
-<li>打开Podfile文件，按下面内容配置依赖关系，Podfile的更详细配置方法可参照<a href="http://guides.cocoapods.org/syntax/podfile.html">官方文档</a></li>
+<li>打开 Podfile 文件，按下面内容配置依赖关系，Podfile 的更详细配置方法可参照<a href="http://guides.cocoapods.org/syntax/podfile.html">官方文档</a></li>
 </ul>
 
 
@@ -191,9 +193,9 @@
 </span><span class='line'>pod 'AFNetworking', '2.5.1' </span></code></pre></td></tr></table></div></figure>
 
 
-<blockquote><p>上面内容的意思是，specs文件由CocoaPods提供，项目需要使用支持ios7.0及以上的依赖库，并且为主target配置了2.5.1版本的AFNetworking，并忽略依赖库中的所有警告。依赖库的版本号建议明确指定，这样可以避免更新依赖库后对现有工程造成影响，而且可以保证团队所有开发人员使用的版本一致。</p></blockquote>
+<blockquote><p>上面内容的意思是，specs 文件由 CocoaPods 提供，项目需要使用支持 ios7.0 及以上的依赖库，并且为主 target 配置了 2.5.1 版本的 AFNetworking，并忽略依赖库中的所有警告。依赖库的版本号建议明确指定，这样可以避免更新依赖库后对现有工程造成影响，而且可以保证团队所有开发人员使用的版本一致。</p></blockquote>
 
-<p>如果你的项目有多个target，那么需要按下面的方式配置pod，否则依赖关系只能作用于主target。</p>
+<p>如果你的项目有多个 target，那么需要按下面的方式配置 pod，否则依赖关系只能作用于主 target。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -204,19 +206,19 @@
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#Tests target 不仅使用主target的依赖库还需要添加自己的
+</pre></td><td class='code'><pre><code class=''><span class='line'>#Tests target 不仅使用主 target 的依赖库还需要添加自己的
 </span><span class='line'>target 'Tests' do
-</span><span class='line'>  pod "Tests需要的依赖库"
+</span><span class='line'>  pod "Tests 需要的依赖库"
 </span><span class='line'>end
 </span><span class='line'>或
-</span><span class='line'>#Tests target不需要主target的依赖库
+</span><span class='line'>#Tests target 不需要主 target 的依赖库
 </span><span class='line'>target 'Tests', :exclusive =&gt; true do
-</span><span class='line'>  pod "Tests需要的依赖库"
+</span><span class='line'>  pod "Tests 需要的依赖库"
 </span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
 
 
 <ul>
-<li>根据Podfile下载安装依赖库</li>
+<li>根据 Podfile 下载安装依赖库</li>
 </ul>
 
 
@@ -224,11 +226,11 @@
 </pre></td><td class='code'><pre><code class=''><span class='line'>pod install (添加或删除依赖库后也是通过此命令更新)</span></code></pre></td></tr></table></div></figure>
 
 
-<blockquote><p><strong>Cocoapods会先更新相关podspec文件，然后自动为项目工程设置好相应的系统依赖和编译参数，当依赖库安装完成后，打开项目根目录，会发现多了以下文件及文件夹</strong></p>
+<blockquote><p><strong>CocoaPods 会先更新相关 podspec 文件，然后自动为项目工程设置好相应的系统依赖和编译参数，当依赖库安装完成后，打开项目根目录，会发现多了以下文件及文件夹</strong></p>
 
 <ol>
-<li>&ldquo;.xcworkspace"，以后必须通过此workspace打开项目。</li>
-<li>&ldquo;Pods"，CocoaPods将Profile中配置的所有依赖库都下载到这里，并且将所有依赖库打包成单独的静态库供主项目使用。</li>
+<li>&ldquo;.xcworkspace"，以后必须通过此 workspace 打开项目。</li>
+<li>&ldquo;Pods"，CocoaPods 将 Profile 中配置的所有依赖库都下载到这里，并且将所有依赖库打包成单独的静态库供主项目使用。</li>
 <li>&ldquo;Podfile.lock"，用于保存已经安装的依赖库版本信息。如果在配置依赖库时没有明确指定版本，那么必须将此文件加入到版本控制中，否则有可能造成团队开发中不同成员使用的依赖库版本不一致。</li>
 </ol>
 </blockquote>
@@ -243,7 +245,7 @@
 
 
 <ul>
-<li>下载新版本（默认会更新本地podspec仓库）</li>
+<li>下载新版本（默认会更新本地 podspec 仓库）</li>
 </ul>
 
 
@@ -252,7 +254,7 @@
 
 
 <ul>
-<li>下载新版本，且不更新本地podspec仓库（速度会快很多）</li>
+<li>下载新版本，且不更新本地 podspec 仓库（速度会快很多）</li>
 </ul>
 
 
@@ -260,11 +262,22 @@
 </pre></td><td class='code'><pre><code class=''><span class='line'>pod update --no-repo-update</span></code></pre></td></tr></table></div></figure>
 
 
+<ul>
+<li>将 CocoaPods 从项目中移除，并还原其对 Xcode 的配置修改（1.0 版本开始支持，以前需要用第三方提供的方式）</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>pod deintegrate</span></code></pre></td></tr></table></div></figure>
+
+
+<p>PS: 如果你使用的是 CocoaPods 1.0+，那么你可以下载 CocoaPods app 试一下，可以省去一些命令操作，并且在修改 Podfile 文件时，会有代码提示。</p>
+
 <p><br/></p>
 
-<h1>让自己的开源项目支持Cocoapods</h1>
+<h1>让自己的开源项目支持 CocoaPods</h1>
 
-<h4>通过Cocoapods创建项目会让整个事情变的简单一些</h4>
+<h4>通过 CocoaPods 创建项目会让整个事情变的简单一些</h4>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>pod lib create FMDBHelper</span></code></pre></td></tr></table></div></figure>
@@ -273,29 +286,29 @@
 <blockquote><p><strong>创建完成后项目根目录会包含以下文件及文件夹</strong></p>
 
 <ol>
-<li>&ldquo;.travis.yml"，通过"travis-ci"做持续集成要用到的配置文件，一般情况下使用默认配置就可以，如果需要使用持续集成服务，还需要以github帐号登录<a href="https://travis-ci.org">travis-ci</a>，并打开对应项目开关。</li>
-<li>&ldquo;.gitignore"，建议将Pods目录也加入到忽略范围</li>
-<li>&ldquo;LICENSE"，默认为MIT</li>
-<li>&ldquo;FMDBHelper.podspec"，通过Cocoapods下载项目时要用到的项目配置文件。</li>
-<li>&ldquo;README.md"，通过markdown语法编写此文件，用于在github上显示项目介绍。</li>
+<li>&ldquo;.travis.yml"，通过 travis-ci 做持续集成要用到的配置文件，一般情况下使用默认配置就可以，如果需要使用持续集成服务，还需要以 GitHub 帐号登录 <a href="https://travis-ci.org">travis-ci</a>，并打开对应项目开关。</li>
+<li>&ldquo;.gitignore"，建议将 Pods 目录也加入到忽略范围</li>
+<li>&ldquo;LICENSE"，默认为 MIT</li>
+<li>&ldquo;FMDBHelper.podspec"，通过 Cocoapods 下载项目时要用到的项目配置文件。</li>
+<li>&ldquo;README.md"，通过 markdown 语法编写此文件，用于在 GitHub 上显示项目介绍。</li>
 <li>&ldquo;Pod"，将自己的开源代码和资源文件放到这里</li>
-<li>&ldquo;Example"，demo工程，包含测试用的target。</li>
+<li>&ldquo;Example"，demo 工程，包含测试用的 target。</li>
 </ol>
 </blockquote>
 
-<h4>在demo工程中开发并测试</h4>
+<h4>在 demo 工程中开发并测试</h4>
 
 <ul>
-<li>将源代码和资源文件分别放到"Pod/Classes"和"Pod/Assets"目录下</li>
-<li>用"pod install"命令为demo工程安装依赖库，以后只要新增依赖库的代码或资源文件都需要更新</li>
-<li>开发测试完成后还需要修改podspec文件</li>
+<li>将源代码和资源文件分别放到 Pod/Classes 和 Pod/Assets 目录下</li>
+<li>用 pod install 命令为 demo 工程安装依赖库，以后只要新增依赖库的代码或资源文件都需要更新</li>
+<li>开发测试完成后还需要修改 podspec 文件</li>
 </ul>
 
 
-<h4>将podspec发布到CocoaPods的Git库中</h4>
+<h4>将 podspec 发布到 CocoaPods 的 Git 库中</h4>
 
 <ul>
-<li>向cocoapods注册你的信息，需要输入邮箱(与podspec中写的一致)和名字，稍后还需要验证email</li>
+<li>向 CocoaPods 注册你的信息，需要输入邮箱(与 podspec 中写的一致)和名字，稍后还需要验证 email</li>
 </ul>
 
 
@@ -304,8 +317,8 @@
 
 
 <ul>
-<li>登录github，release一版项目并打上标签，标签要与podspec中定义的一致</li>
-<li>检查spec文件是否合格</li>
+<li>登录 GitHub，release 一版项目并打上标签，标签要与 podspec 中定义的一致</li>
+<li>检查 spec 文件是否合格</li>
 </ul>
 
 
@@ -314,7 +327,7 @@
 
 
 <ul>
-<li>检查并发布spec文件，以后需要升级也是用这个命令</li>
+<li>检查并发布 spec 文件，以后需要升级也是用这个命令</li>
 </ul>
 
 
@@ -323,26 +336,27 @@
 
 
 <ul>
-<li>更新本地spec</li>
+<li>更新本地 spec</li>
 </ul>
 
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>pod setup (稍后便可以在"~/.cocoapods/repos/master/Specs"下看到你的开源项目了)</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>pod setup (稍后便可以在 ~/.cocoapods/repos/master/Specs 下看到你的开源项目了)</span></code></pre></td></tr></table></div></figure>
 
 
 <p><br/></p>
 
-<h1>通过Cocoapods安装私有库</h1>
+<h1>通过 CocoaPods 安装私有库</h1>
 
-<p>对于不能放在CocoaPods公共Git仓库中的类库，可选择以下方式设置</p>
+<p>可以按<a href="https://guides.cocoapods.org/making/private-cocoapods.html">官方指导</a>来做，大致步骤与在 GitHub 上维护开源项目相似，区别如下：</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>pod 'FMDBHelper', :podspec =&gt; 'https://.../FMDBHelper.podspec'
-</span><span class='line'>pod 'FMDBHelper', :git =&gt; 'https://.../FMDBHelper.git'
-</span><span class='line'>pod 'FMDBHelper', :path =&gt; '~/documents/code/Pods/'</span></code></pre></td></tr></table></div></figure>
+<ul>
+<li>需要通过 Git 建立自己的 spec 仓库，并在 Podfile 文件中填加 source</li>
+<li>通过 pod repo add repo_name source_url 在 ~/.cocoapods/repos/ 目录下新建自己的 spec 仓库</li>
+<li>通过 pod repo push 命令将已经写好的 podspec 文件填加到 spec 仓库中</li>
+<li>在 Podfile 中可直接通过 pod repo_name 安装私有库</li>
+<li>以后私有库新增版本后需要打 tag 并修改 podspec 文件中的 version，然后再次更新 spec 仓库</li>
+</ul>
 
 </div>
 
@@ -374,10 +388,10 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/01/04/zai-macxia-tong-guo-github-pages-plus-octopressda-jian-bo-ke/" title="Previous Post: 用Github Pages + Octopress搭建博客">&laquo; 用Github Pages + Octopress搭建博客</a>
+        <a class="basic-alignment left" href="/blog/2015/01/04/zai-macxia-tong-guo-github-pages-plus-octopressda-jian-bo-ke/" title="Previous Post: GitHub Pages + Octopress 搭博客">&laquo; GitHub Pages + Octopress 搭博客</a>
       
       
-        <a class="basic-alignment right" href="/blog/2015/03/28/iosying-yong-de-sheng-ming-zhou-qi/" title="Next Post: iOS应用的生命周期">iOS应用的生命周期 &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2015/03/01/zai-githuan-jing-xia-wei-hu-duo-ge-ssh-keys/" title="Next Post: 在 Git 环境下维护多个 SSH Keys">在 Git 环境下维护多个 SSH Keys &raquo;</a>
       
     </p>
   </footer>
@@ -387,27 +401,27 @@
 <aside class="sidebar">
   
     <section>
-  <h1>Recent Posts</h1>
+  <h1>最近更新</h1>
   <ul id="最新">
     
       <li class="post">
-        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS APP的组件化设计</a>
+        <a href="/blog/2016/12/05/tong-guo-xcodebuildda-bao-ipabing-shang-chuan-pu-gong-ying/">使用 Xcodebuild 打包 IPA 并上传蒲公英</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/08/09/ioskai-fa-tips/">iOS开发tips</a>
+        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS 应用的组件化设计</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/08/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
+        <a href="/blog/2016/06/09/ioskai-fa-tips/">iOS 开发 Tips</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/08/03/liao-jie-block/">了解block</a>
+        <a href="/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/07/12/iosnei-cun-guan-li/">iOS内存管理</a>
+        <a href="/blog/2015/12/03/liao-jie-block/">了解 Block</a>
       </li>
     
   </ul>

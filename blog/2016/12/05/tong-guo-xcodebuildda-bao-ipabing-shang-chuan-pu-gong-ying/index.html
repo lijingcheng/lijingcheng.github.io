@@ -1,0 +1,376 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>使用 Xcodebuild 打包 IPA 并上传蒲公英 - 风行的博客</title>
+  <meta name="author" content="风行">
+
+  
+  <meta name="description" content="xcodebuild - 是苹果提供的项目自动构建工具，包含在 Command Line Tools 中，可以完成 iOS 项目的编译、打包和签名等工作。 shell script - 是一种命令语言，有点像 Windows 下的批处理，但更强大，它可以跑在 Linux/Unix 系统的 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://lijingcheng.github.io/blog/2016/12/05/tong-guo-xcodebuildda-bao-ipabing-shang-chuan-pu-gong-ying/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="风行的博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">风行的博客</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss email">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+    <li><a href="mailto:bj_lijingcheng@163.com" rel="subscribe-email" title="subscribe via email">邮箱</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="lijingcheng.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/archives">归档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">使用 Xcodebuild 打包 IPA 并上传蒲公英</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-12-05T18:49:45+08:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>6:49 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/xcodebuild.jpg" width="200" height="200"  >
+ xcodebuild - 是苹果提供的项目自动构建工具，包含在 Command Line Tools 中，可以完成 iOS 项目的编译、打包和签名等工作。<br/>
+ <br/>
+ shell script - 是一种命令语言，有点像 Windows 下的批处理，但更强大，它可以跑在 Linux/Unix 系统的 shell 程序中。</p>
+
+<!-- more -->
+
+
+<p><br/></p>
+
+<h2>为什么要用 xcodebuild</h2>
+
+<p>通过 Xcode 对项目进行编译打包，并将 IPA 分发给测试人员这一过程操作步骤多并繁琐，而在 shell 脚本中使用 xcodebuild 命令执行这一过程便会非常方便快捷，特别是当项目进入测试阶段，每天都会打一个或多个测试包时，使用脚本进行自动化打包能够大大提高我们的工作效率。</p>
+
+<h2>以前的作法</h2>
+
+<p>AFNetworking 的作者 mattt 曾经提供了一个名为 <a href="https://github.com/nomad/shenzhen">shenzhen</a> 的打包服务，使用起来非常简单方便，并且能够在打包后上传到很多分发平台上，可惜已经有两年多没有再维护了。</p>
+
+<h2>造个轮子</h2>
+
+<p>因为打包脚本写起来比较简单，并且它也会随着 Xcode 的发展而改变，所以在这里我们还是选择自己写一个脚本使用并维护，下面的介绍不会太详细，如果有更多需求可以使用以下命令来查看帮助，并修改脚本。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>xcodebuild --help</span></code></pre></td></tr></table></div></figure>
+
+
+<p>完成打包并分发这一过程通常分为四个步骤： &ldquo;build 工程 -> 生成 xcarchive 文件 -> 生成 ipa 文件 -> 上传到分发平台&rdquo;</p>
+
+<h2>完整脚本</h2>
+
+<p>新建 xxx.sh 文件，然后将下面脚本复制过去，如果你也在用 CocoaPods，并且只需要打 Release 包，那么只需要用蒲公英提供给你的 userKey 和 apiKey 替换掉脚本里的就可以了。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#!/bin/sh</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">##########################################################################</span>
+</span><span class='line'><span class="cp">######   1.执行 chmod +x ./xxx.sh 使脚本具有执行权限                    ######</span>
+</span><span class='line'><span class="cp">######   2.通过 ./xxx.sh 执行脚本，./ 不能省略                          ######</span>
+</span><span class='line'><span class="cp">######   3.Xcode 需要配置好证书，并且不能连接非测试机，否则会签名失败        ######</span>
+</span><span class='line'><span class="cp">######   4.将 .xcarchive 中的 .dSYM 文件备份一下                       ######</span>
+</span><span class='line'><span class="cp">######   5.在蒲公英网站的应用设置中添加成员后，便会在上传成功后给他发邮件     ######</span>
+</span><span class='line'><span class="cp">##########################################################################</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp"># CocoaPods 打包需要使用 workspace 名字</span>
+</span><span class='line'><span class="n">WorkSpace_Name</span><span class="o">=</span><span class="err">`</span><span class="n">find</span> <span class="p">.</span> <span class="o">-</span><span class="n">name</span> <span class="o">*</span><span class="p">.</span><span class="n">xcworkspace</span> <span class="o">|</span> <span class="n">awk</span> <span class="o">-</span><span class="n">F</span> <span class="s">&quot;[/.]&quot;</span> <span class="err">&#39;</span><span class="p">{</span><span class="n">print</span> <span class="err">$</span><span class="p">(</span><span class="n">NF</span><span class="o">-</span><span class="mi">1</span><span class="p">)}</span><span class="err">&#39;`</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp"># 要打包的 scheme 名字，默认与 workspace 名字一样</span>
+</span><span class='line'><span class="n">Scheme_Name</span><span class="o">=</span><span class="err">$</span><span class="p">{</span><span class="n">WorkSpace_Name</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp"># build 文件目录</span>
+</span><span class='line'><span class="n">Build_File_Path</span><span class="o">=</span><span class="err">$</span><span class="p">(</span><span class="n">PWD</span><span class="p">)</span><span class="o">/</span><span class="n">build</span><span class="o">/</span><span class="n">Release</span><span class="o">-</span><span class="n">iphoneos</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp"># build 文件名字 (archive/ipa)</span>
+</span><span class='line'><span class="n">Build_File_Name</span><span class="o">=</span><span class="err">$</span><span class="p">{</span><span class="n">Build_File_Path</span><span class="p">}</span><span class="o">/</span><span class="err">$</span><span class="p">{</span><span class="n">Scheme_Name</span><span class="p">}</span><span class="err">$</span><span class="p">(</span><span class="n">date</span> <span class="o">+%</span><span class="n">Y</span><span class="o">%</span><span class="n">m</span><span class="o">%</span><span class="n">d</span><span class="o">%</span><span class="n">H</span><span class="o">%</span><span class="n">M</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp"># 蒲公英</span>
+</span><span class='line'><span class="n">PGY_User_Key</span><span class="o">=</span><span class="s">&quot;由蒲公英提供&quot;</span>
+</span><span class='line'><span class="n">PGY_API_Key</span><span class="o">=</span><span class="s">&quot;由蒲公英提供&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp"># 开始时间</span>
+</span><span class='line'><span class="n">Start_Time</span><span class="o">=</span><span class="err">`</span><span class="n">date</span> <span class="o">+%</span><span class="n">s</span><span class="err">`</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">echo</span> <span class="s">&quot;================= 开始编译 =================&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">xcodebuild</span> <span class="n">clean</span> <span class="o">-</span><span class="n">workspace</span> <span class="err">$</span><span class="p">{</span><span class="n">WorkSpace_Name</span><span class="p">}.</span><span class="n">xcworkspace</span> <span class="o">-</span><span class="n">scheme</span> <span class="err">$</span><span class="p">{</span><span class="n">Scheme_Name</span><span class="p">}</span> <span class="o">-</span><span class="n">configuration</span> <span class="n">Release</span> <span class="o">-</span><span class="n">sdk</span> <span class="n">iphoneos</span> <span class="n">SYMROOT</span><span class="o">=</span><span class="err">$</span><span class="p">(</span><span class="n">PWD</span><span class="p">)</span><span class="o">/</span><span class="n">build</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="o">!</span> <span class="p">[</span> <span class="err">$</span><span class="o">?</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">];</span> <span class="n">then</span>
+</span><span class='line'>    <span class="n">exit</span> <span class="mi">1</span>
+</span><span class='line'><span class="n">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">echo</span> <span class="s">&quot;================= 开始构建 =================&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">xcodebuild</span> <span class="n">archive</span> <span class="o">-</span><span class="n">workspace</span> <span class="err">$</span><span class="p">{</span><span class="n">WorkSpace_Name</span><span class="p">}.</span><span class="n">xcworkspace</span> <span class="o">-</span><span class="n">scheme</span> <span class="err">$</span><span class="p">{</span><span class="n">Scheme_Name</span><span class="p">}</span> <span class="o">-</span><span class="n">archivePath</span> <span class="err">$</span><span class="p">{</span><span class="n">Build_File_Name</span><span class="p">}.</span><span class="n">xcarchive</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="o">!</span> <span class="p">[</span> <span class="o">-</span><span class="n">d</span> <span class="s">&quot;${Build_File_Name}.xcarchive&quot;</span> <span class="p">];</span> <span class="n">then</span>
+</span><span class='line'>    <span class="n">exit</span> <span class="mi">1</span>
+</span><span class='line'><span class="n">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">echo</span> <span class="s">&quot;================= 导出ipa =================&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">xcodebuild</span> <span class="o">-</span><span class="n">exportArchive</span> <span class="o">-</span><span class="n">archivePath</span> <span class="err">$</span><span class="p">{</span><span class="n">Build_File_Name</span><span class="p">}.</span><span class="n">xcarchive</span> <span class="o">-</span><span class="n">exportPath</span> <span class="err">$</span><span class="p">{</span><span class="n">Build_File_Path</span><span class="p">}</span> <span class="o">-</span><span class="n">exportOptionsPlist</span> <span class="err">$</span><span class="p">(</span><span class="n">PWD</span><span class="p">)</span><span class="o">/</span><span class="n">exportOptions</span><span class="p">.</span><span class="n">plist</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="p">[</span> <span class="o">-</span><span class="n">e</span> <span class="s">&quot;${Build_File_Path}/${Scheme_Name}.ipa&quot;</span> <span class="p">];</span> <span class="n">then</span>
+</span><span class='line'>    <span class="n">mv</span> <span class="s">&quot;${Build_File_Path}/${Scheme_Name}.ipa&quot;</span> <span class="s">&quot;${Build_File_Name}.ipa&quot;</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>    <span class="n">exit</span> <span class="mi">1</span>
+</span><span class='line'><span class="n">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">echo</span> <span class="s">&quot;================= 上传到蒲公英 =================&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">curl</span> <span class="o">-</span><span class="n">F</span> <span class="s">&quot;file=@${Build_File_Name}.ipa&quot;</span> <span class="o">-</span><span class="n">F</span> <span class="s">&quot;uKey=${PGY_User_Key}&quot;</span> <span class="o">-</span><span class="n">F</span> <span class="s">&quot;_api_key=${PGY_API_Key}&quot;</span> <span class="nl">https</span><span class="p">:</span><span class="c1">//www.pgyer.com/apiv1/app/upload</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp"># 结束时间</span>
+</span><span class='line'><span class="n">End_Time</span><span class="o">=</span><span class="err">`</span><span class="n">date</span> <span class="o">+%</span><span class="n">s</span><span class="err">`</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">echo</span> <span class="s">&quot;</span><span class="se">\n\n</span><span class="s">================= 耗时: $[ End_Time - Start_Time ] 秒 =================&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在导出 ipa 文件时，需要我们提供一个 plist 文件，用于配置打包过程中所需要的参数，文件名为 exportOptions.plist，并放在项目根目录下，内容用下面提供的就可以，如果不满足需要，可通过 xcodebuild &ndash;help 查看帮助。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+</span><span class='line'><span class="cp">&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;</span>
+</span><span class='line'><span class="nt">&lt;plist</span> <span class="na">version=</span><span class="s">&quot;1.0&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'><span class="nt">&lt;dict&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;key&gt;</span>teamID<span class="nt">&lt;/key&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;string&gt;</span>由苹果提供<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;key&gt;</span>method<span class="nt">&lt;/key&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;string&gt;</span>development<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'><span class="nt">&lt;/dict&gt;</span>
+</span><span class='line'><span class="nt">&lt;/plist&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">风行</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-12-05T18:49:45+08:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>6:49 pm</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/" title="Previous Post: iOS 应用的组件化设计">&laquo; iOS 应用的组件化设计</a>
+      
+      
+    </p>
+  </footer>
+</article>
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>最近更新</h1>
+  <ul id="最新">
+    
+      <li class="post">
+        <a href="/blog/2016/12/05/tong-guo-xcodebuildda-bao-ipabing-shang-chuan-pu-gong-ying/">使用 Xcodebuild 打包 IPA 并上传蒲公英</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS 应用的组件化设计</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/06/09/ioskai-fa-tips/">iOS 开发 Tips</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/03/liao-jie-block/">了解 Block</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub</h1>
+  <a href="https://github.com/lijingcheng">@lijingcheng</a> on GitHub
+</section>
+
+
+
+<section>
+  <h1>Weibo</h1>
+  <a href="https://weibo.com/lijingcheng1984">@lijingcheng1984</a> on Weibo
+</section>
+
+
+
+<section>
+  <h1>Weixin</h1>
+  <a href="http://7x00ed.com1.z0.glb.clouddn.com/qrcode.png">@bj_lijingcheng</a> on Weixin
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - 风行 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+</body>
+</html>

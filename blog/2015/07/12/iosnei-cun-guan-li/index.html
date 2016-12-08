@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>iOS内存管理 - 风行的博客</title>
+  <title>iOS 内存管理 - 风行的博客</title>
   <meta name="author" content="风行">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://lijingcheng.github.io/blog/2016/07/12/iosnei-cun-guan-li/">
+  <link rel="canonical" href="http://lijingcheng.github.io/blog/2015/07/12/iosnei-cun-guan-li/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="风行的博客" type="application/atom+xml">
@@ -68,7 +68,7 @@
   
   <header>
     
-      <h1 class="entry-title">iOS内存管理</h1>
+      <h1 class="entry-title">iOS 内存管理</h1>
     
     
       <p class="meta">
@@ -77,7 +77,7 @@
 
 
 
-<time class='entry-date' datetime='2016-07-12T15:07:54+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>3:07 pm</span></time>
+<time class='entry-date' datetime='2015-07-12T15:07:54+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:07 pm</span></time>
         
       </p>
     
@@ -176,11 +176,11 @@
 
 <p><br></p>
 
-<h3>ARC带来的变化</h3>
+<h3>ARC 带来的变化</h3>
 
 <ul>
 <li>不能够自己调用 retain/release/autorelease，由编译器自动插入</li>
-<li>dealloc 方法中不能调用 [super dealloc] ，由编译器自动插入，只需要释放一些资源，如通知、KVO等</li>
+<li>dealloc 方法中不能调用 [super dealloc] ，由系统去调用并释放实例变量和 assocate 对象，weak 对象也是在这时被设置为 nil，我们只需要释放一些资源，如通知、KVO 等</li>
 </ul>
 
 
@@ -191,11 +191,11 @@
 <p>内存管理规则中的对象所有权是通过引用计数来实现，除了常量以外，每个对象都有一个引用计数。</p>
 
 <ul>
-<li>创建对象时，计数为1</li>
-<li>给对象发送 retain 消息时，计数加1</li>
-<li>给对象发送 release 消息时，计数减1</li>
-<li>给对象发送 autorelease 消息时，计数在当前自动释放池代码块结束时减1</li>
-<li>当对象的计数为0时将被销毁</li>
+<li>创建对象时，计数为 1</li>
+<li>给对象发送 retain 消息时，计数加 1</li>
+<li>给对象发送 release 消息时，计数减 1</li>
+<li>给对象发送 autorelease 消息时，计数在当前自动释放池代码块结束时减 1</li>
+<li>当对象的计数为 0 时将被销毁</li>
 </ul>
 
 
@@ -205,10 +205,10 @@
 
 <h1>属性修饰符</h1>
 
-<h3>MRC中包括 assign/copy/retain</h3>
+<h3>MRC 中包括 assign/copy/retain</h3>
 
 <ul>
-<li>assign：表示在"setter"中仅是简单的赋值，不改变引用计数，一般用来修饰基本类型和delegate属性</li>
+<li>assign：表示在 setter 中仅是简单的赋值，不改变引用计数，一般用来修饰基本类型和 delegate 属性</li>
 </ul>
 
 
@@ -232,7 +232,7 @@
 
 
 <ul>
-<li>copy：表示在"setter"中将参数进行内存copy后再进行赋值，一般用于不可变字符串、字典、Block</li>
+<li>copy：表示在 setter 中将参数进行内存 copy 后再进行赋值，一般用于不可变字符串、字典、Block</li>
 </ul>
 
 
@@ -260,7 +260,7 @@
 
 
 <ul>
-<li>retain：表示在"setter"中将参数对象 retain 后再进行赋值，一般用于可变字符串、可变字典及其他对象</li>
+<li>retain：表示在 setter 中将参数对象 retain 后再进行赋值，一般用于可变字符串、可变字典及其他对象</li>
 </ul>
 
 
@@ -289,12 +289,12 @@
 
 <p><br></p>
 
-<h3>ARC中包括 assign/weak/unsafe_unretained/copy/strong</h3>
+<h3>ARC 中包括 assign/weak/unsafe_unretained/copy/strong</h3>
 
 <ul>
 <li>assign：同 MRC 中的 assign 一样，只是不再用来修饰 delegate 对象</li>
-<li>weak：用来修饰对象，但在"setter"中是简单赋值，不改变引用计数，和 assign 的区别在于属性被销毁后会被设置为 nil，所以能在继续使用该属性时避免程序崩溃，一般用来修饰 delegate 对象和 IBOutlet 对象</li>
-<li>unsafe_unretained：和 weak 相似，区别在于被销毁时不会置为 nil (unsafe)，它主要是为了兼容4.0系统而存在(iOS4 以及之前没有 weak)，由于 weak 会对性能有一点影响，因此对性能要求很高的地方可以考虑使用 unsafe_unretained 替换 weak</li>
+<li>weak：用来修饰对象，但在 setter 中是简单赋值，不改变引用计数，和 assign 的区别在于属性被销毁后会被设置为 nil，所以能在继续使用该属性时避免程序崩溃，一般用来修饰 delegate 对象和 IBOutlet 对象</li>
+<li>unsafe_unretained：和 weak 相似，区别在于被销毁时不会置为 nil (unsafe)，它主要是为了兼容 4.0 系统而存在(iOS4 以及之前没有 weak)，由于 weak 会对性能有一点影响，因此对性能要求很高的地方可以考虑使用 unsafe_unretained 替换 weak</li>
 <li>copy：同 MRC 中的 copy 一样</li>
 <li>strong：同 MRC 中的 retain 一样</li>
 </ul>
@@ -340,7 +340,7 @@
 <span class='line-number'>3</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">copy</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">newString</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="c1">// ARC下编译器不允许方法名以 alloc/init/new/copy/mutableCopy 开头，newString属性对应的 getter 也叫 newString，编译器会认为这是在创建对象</span>
+</span><span class='line'><span class="c1">// newString属性对应的 getter 也叫 newString，ARC下编译器不允许方法名以 alloc/init/new/copy/mutableCopy 开头，它会根据方法以什么开头来决定内存管理方式</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -348,10 +348,10 @@
 
 <h1>Autorelease Pool</h1>
 
-<p>当不再使用一个对象时应该将其释放，但是在某些情况下，我们很难理清一个对象什么时候不再使用，Objc 提供的自动释放池可以解决这个问题，只需要给这种对象发送 autorelease 消息，就会将该对象放到离它最近的池子里，当池子被清理时，会给池里所有的对象发送release消息。</p>
+<p>当不再使用一个对象时应该将其释放，但是在某些情况下，我们很难理清一个对象什么时候不再使用，Objc 提供的自动释放池可以解决这个问题，只需要给这种对象发送 autorelease 消息，就会将该对象放到离它最近的池子里，当池子被清理时，会给池里所有的对象发送 release 消息。</p>
 
 <ul>
-<li>自动释放池的创建：每个 runloop 对应一个线程，每个线程维护自己的一个或多个池子，池子以堆栈形式存储，池内的对象也是以堆栈形式存储，通常我们不需要自己创建自动释放池，使用线程自己维护的就好了</li>
+<li>自动释放池的创建和释放：当主线程的 RunLoop 检测到事件并启动后便会创建自动释放池，当事件处理完，RunLoop 会释放池子并继续休眠。如果是子线程，那么不仅它的 RunLoop 需要我们去启动，还需要我们为它创建一个自动释放池，否则会造成内存池露。 我们自己创建的池子，会在出了 @autoreleasepool 的大括号后进行清理。</li>
 </ul>
 
 
@@ -365,7 +365,7 @@
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// MRC</span>
-</span><span class='line'><span class="bp">NSAutoreleasePool</span> <span class="o">*</span><span class="n">pool</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSAutoreleasePool</span> <span class="n">alloc</span><span class="p">]</span><span class="n">init</span><span class="p">];</span>
+</span><span class='line'><span class="bp">NSAutoreleasePool</span> <span class="o">*</span><span class="n">pool</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSAutoreleasePool</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
 </span><span class='line'><span class="p">...</span>
 </span><span class='line'><span class="p">[</span><span class="n">pool</span> <span class="k">release</span><span class="p">];</span>
 </span><span class='line'>
@@ -377,13 +377,7 @@
 
 
 <ul>
-<li>什么时候需要自己去创建
-
-<ul>
-<li>当循环次数较大或者事件处理占用内存较大时，会导致内存占用不断增长</li>
-<li>创建新的线程后需要同时创建该线程的自动释放池，否则自动释放对象会累积，使内存占用率持续增加。</li>
-</ul>
-</li>
+<li>当循环次数较大或者事件处理占用内存较大时，会导致内存占用不断增长，这时需要我们自己创建自动释放池</li>
 </ul>
 
 
@@ -403,11 +397,6 @@
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<ul>
-<li>自动释放池的清理：可以由我们主动 drain，也可以交由 runloop 在每次事件结束时自动进行清理，如果是我们自己创建的池子，会在出了 @autoreleasepool 的大括号后进行 drain。</li>
-</ul>
-
 </div>
 
 
@@ -423,7 +412,7 @@
 
 
 
-<time class='entry-date' datetime='2016-07-12T15:07:54+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>3:07 pm</span></time>
+<time class='entry-date' datetime='2015-07-12T15:07:54+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:07 pm</span></time>
       
 
 
@@ -438,10 +427,10 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2016/06/03/iosduo-xian-cheng-kai-fa/" title="Previous Post: iOS多线程开发">&laquo; iOS多线程开发</a>
+        <a class="basic-alignment left" href="/blog/2015/06/03/iosduo-xian-cheng-kai-fa/" title="Previous Post: iOS 多线程开发">&laquo; iOS 多线程开发</a>
       
       
-        <a class="basic-alignment right" href="/blog/2016/08/03/liao-jie-block/" title="Next Post: 了解block">了解block &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2015/09/21/objective-c-runtimekai-fa/" title="Next Post: Objective-C Runtime 开发">Objective-C Runtime 开发 &raquo;</a>
       
     </p>
   </footer>
@@ -451,27 +440,27 @@
 <aside class="sidebar">
   
     <section>
-  <h1>Recent Posts</h1>
+  <h1>最近更新</h1>
   <ul id="最新">
     
       <li class="post">
-        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS APP的组件化设计</a>
+        <a href="/blog/2016/12/05/tong-guo-xcodebuildda-bao-ipabing-shang-chuan-pu-gong-ying/">使用 Xcodebuild 打包 IPA 并上传蒲公英</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/08/09/ioskai-fa-tips/">iOS开发tips</a>
+        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS 应用的组件化设计</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/08/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
+        <a href="/blog/2016/06/09/ioskai-fa-tips/">iOS 开发 Tips</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/08/03/liao-jie-block/">了解block</a>
+        <a href="/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/07/12/iosnei-cun-guan-li/">iOS内存管理</a>
+        <a href="/blog/2015/12/03/liao-jie-block/">了解 Block</a>
       </li>
     
   </ul>

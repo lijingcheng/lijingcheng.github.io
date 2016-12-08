@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>iOS开发tips - 风行的博客</title>
+  <title>iOS 开发 Tips - 风行的博客</title>
   <meta name="author" content="风行">
 
   
   <meta name="description" content="tips - 记录一些东西，希望也能帮助到有需要的人。 用模拟器调试动画功能时，让动画执行的慢一些 1
-模拟器菜单：Debug -&gt; Show Animations 取两位整数，不够补0 1
+模拟器菜单：Debug -&gt; Show Animations 取两位整数，不够补 0 1
 NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
   
 
@@ -20,7 +20,7 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://lijingcheng.github.io/blog/2016/08/09/ioskai-fa-tips/">
+  <link rel="canonical" href="http://lijingcheng.github.io/blog/2016/06/09/ioskai-fa-tips/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="风行的博客" type="application/atom+xml">
@@ -70,7 +70,7 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
   
   <header>
     
-      <h1 class="entry-title">iOS开发tips</h1>
+      <h1 class="entry-title">iOS 开发 Tips</h1>
     
     
       <p class="meta">
@@ -79,7 +79,7 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 
 
 
-<time class='entry-date' datetime='2016-08-09T10:58:59+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:58 am</span></time>
+<time class='entry-date' datetime='2016-06-09T10:58:59+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:58 am</span></time>
         
       </p>
     
@@ -107,7 +107,7 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 
 
 <ul>
-<li>取两位整数，不够补0</li>
+<li>取两位整数，不够补 0</li>
 </ul>
 
 
@@ -125,20 +125,7 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 
 
 <ul>
-<li>iOS8的API，用来检测系统版本</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>if ([NSProcessInfo.processInfo isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){9,3,0}]) {
-</span><span class='line'>  NSLog(@"&gt; iOS 9.3");
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Provisioning Profiles所在路径</li>
+<li>Provisioning Profiles 所在路径</li>
 </ul>
 
 
@@ -147,7 +134,7 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 
 
 <ul>
-<li>解码cms加密后的描述文件</li>
+<li>解码 cms 加密后的授权文件</li>
 </ul>
 
 
@@ -161,7 +148,7 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Xcode左侧导航处：Find -&gt; Regular Expression，然后输入@"[^"]*[\u4E00-\u9FA5]+[^"\n]*?"</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Xcode左侧导航处：Find -&gt; Regular Expression，然后输入 @"[^"]*[\u4E00-\u9FA5]+[^"\n]*?"</span></code></pre></td></tr></table></div></figure>
 
 
 <ul>
@@ -174,7 +161,7 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 
 
 <ul>
-<li>关闭UINavigationController滑动返回功能</li>
+<li>关闭 UINavigationController 滑动返回功能</li>
 </ul>
 
 
@@ -183,7 +170,7 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 
 
 <ul>
-<li>自定义leftBarButtonItem后，左滑返回手势失效</li>
+<li>自定义 leftBarButtonItem 后，左滑返回手势失效</li>
 </ul>
 
 
@@ -192,12 +179,12 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 
 
 <ul>
-<li>在xib中给UILabel或UITextView设置多行文字</li>
+<li>在 xib 中给 UILabel 或 UITextView 设置多行文字</li>
 </ul>
 
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>输入文字后，用"control + enter"来插入换行符，相当于在代码中添加"\n"</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>输入文字后，用 control + enter 来插入换行符，相当于在代码中添加 \n</span></code></pre></td></tr></table></div></figure>
 
 
 <ul>
@@ -210,7 +197,7 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 
 
 <ul>
-<li>禁用UIButton并且颜色不变灰</li>
+<li>禁用 UIButton 并且颜色不变灰</li>
 </ul>
 
 
@@ -219,7 +206,7 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 
 
 <ul>
-<li>UITableView的分割线左边顶头</li>
+<li>UITableView 的分割线左边顶头</li>
 </ul>
 
 
@@ -230,7 +217,7 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 
 
 <ul>
-<li>修改约束后，用动画展示</li>
+<li>修改约束后，用动画展示效果</li>
 </ul>
 
 
@@ -243,7 +230,7 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 
 
 <ul>
-<li>给UIView设置透明度后不影响subviews</li>
+<li>给 UIView 设置透明度后不影响 subviews</li>
 </ul>
 
 
@@ -252,7 +239,7 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 
 
 <ul>
-<li>隐藏Grouped TableView上边多余的间隔</li>
+<li>隐藏 Grouped TableView 上边多余的间隔</li>
 </ul>
 
 
@@ -261,7 +248,7 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 
 
 <ul>
-<li>去掉UITableView下面多余空行</li>
+<li>去掉 UITableView 下面多余空行</li>
 </ul>
 
 
@@ -270,25 +257,7 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 
 
 <ul>
-<li>隐藏UITextField的光标</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>self.textField.tintColor = [UIColor clearColor];</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>修改UITextField的placeholder的字体颜色</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[self.textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>修改UIPageControl的小圆点为自定义图片</li>
+<li>修改 UIPageControl 的小圆点为自定义图片</li>
 </ul>
 
 
@@ -299,12 +268,30 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 
 
 <ul>
-<li>编译出error后继续编译</li>
+<li>编译出 error 后继续编译</li>
 </ul>
 
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>Xcode -&gt; preference -&gt; general -&gt; 勾选 Continue building after errors</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>在 Xcode 中创建 group 的同时创建 folder</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Xcode -&gt; 左侧右键 -&gt; Add Files to ... -&gt; New Folder -&gt; Add</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>清理 Derived Data</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Xcode -&gt; Product -&gt; 按下 option -&gt; 选择 Clean Build Folder... </span></code></pre></td></tr></table></div></figure>
 
 
 <ul>
@@ -317,7 +304,7 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 <span class='line-number'>3</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>- (instancetype)init UNAVAILABLE_ATTRIBUTE;
 </span><span class='line'>或
-</span><span class='line'>- (instancetype)init __attribute__((unavailable("init方法不可用，请用initWithName:")));</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>- (instancetype)init __attribute__((unavailable("init 方法不可用，请用 initWithName:")));</span></code></pre></td></tr></table></div></figure>
 
 
 <ul>
@@ -402,7 +389,7 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 
 
 
-<time class='entry-date' datetime='2016-08-09T10:58:59+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:58 am</span></time>
+<time class='entry-date' datetime='2016-06-09T10:58:59+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:58 am</span></time>
       
 
 
@@ -417,10 +404,10 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2016/08/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/" title="Previous Post: 代码重构">&laquo; 代码重构</a>
+        <a class="basic-alignment left" href="/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/" title="Previous Post: 代码重构">&laquo; 代码重构</a>
       
       
-        <a class="basic-alignment right" href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/" title="Next Post: iOS APP的组件化设计">iOS APP的组件化设计 &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/" title="Next Post: iOS 应用的组件化设计">iOS 应用的组件化设计 &raquo;</a>
       
     </p>
   </footer>
@@ -430,27 +417,27 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 <aside class="sidebar">
   
     <section>
-  <h1>Recent Posts</h1>
+  <h1>最近更新</h1>
   <ul id="最新">
     
       <li class="post">
-        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS APP的组件化设计</a>
+        <a href="/blog/2016/12/05/tong-guo-xcodebuildda-bao-ipabing-shang-chuan-pu-gong-ying/">使用 Xcodebuild 打包 IPA 并上传蒲公英</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/08/09/ioskai-fa-tips/">iOS开发tips</a>
+        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS 应用的组件化设计</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/08/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
+        <a href="/blog/2016/06/09/ioskai-fa-tips/">iOS 开发 Tips</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/08/03/liao-jie-block/">了解block</a>
+        <a href="/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/07/12/iosnei-cun-guan-li/">iOS内存管理</a>
+        <a href="/blog/2015/12/03/liao-jie-block/">了解 Block</a>
       </li>
     
   </ul>

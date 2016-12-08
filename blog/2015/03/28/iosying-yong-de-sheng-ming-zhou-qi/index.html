@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>iOS应用的生命周期 - 风行的博客</title>
+  <title>iOS 应用的生命周期 - 风行的博客</title>
   <meta name="author" content="风行">
 
   
-  <meta name="description" content="生命周期 - 程序的生命周期是指应用程序从启动到结束整个阶段的全过程. 点击iOS应用图标打开程序，系统会首先通过main函数进行相关设置，然后通过runloop保持程序能够始终运行并监听处理分发事件，当没有事件发生时runloop便处于睡眠状态，节省资源。当发生事件后， &hellip;">
+  <meta name="description" content="生命周期 - 程序的生命周期是指应用程序从启动到结束整个阶段的全过程. 点击应用图标打开程序，系统会首先通过 main 函数进行相关设置，然后通过 RunLoop 保持程序能够始终运行并监听处理分发事件，当没有事件发生时 RunLoop 便处于睡眠状态，节省资源。当发生事件后，RunLoop &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,7 +68,7 @@
   
   <header>
     
-      <h1 class="entry-title">iOS应用的生命周期</h1>
+      <h1 class="entry-title">iOS 应用的生命周期</h1>
     
     
       <p class="meta">
@@ -87,14 +87,14 @@
 <div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/app-lifecycle.jpeg" width="160" height="160"  >
 <strong>生命周期 - <em>程序的生命周期是指应用程序从启动到结束整个阶段的全过程.</em></strong> <br/>
 <br>
-点击iOS应用图标打开程序，系统会首先通过main函数进行相关设置，然后通过runloop保持程序能够始终运行并监听处理分发事件，当没有事件发生时runloop便处于睡眠状态，节省资源。当发生事件后，runloop将事件对象分发给相应视图处理。当用户按下home键，应用会在进入后台后短暂运行，直到被系统挂起。</p>
+点击应用图标打开程序，系统会首先通过 main 函数进行相关设置，然后通过 RunLoop 保持程序能够始终运行并监听处理分发事件，当没有事件发生时 RunLoop 便处于睡眠状态，节省资源。当发生事件后，RunLoop 将事件对象分发给相应视图处理。当用户按下 Home 键，应用会在进入后台后短暂运行，直到被系统挂起。</p>
 
 <!-- more -->
 
 
-<h1>main函数</h1>
+<h1>main 函数</h1>
 
-<p>main函数是app的入口函数</p>
+<p>main 函数是 app 的入口函数</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -112,74 +112,75 @@
 <p></p>
 
 <ul>
-<li>@autoreleasepool 作为app主线程的自动释放池，用来管理所有主线程中标记为自动释放的对象。</li>
-<li>UIApplicationMain 根据传入参数以及info.plist文件来初始化app
+<li>在进入 main 函数之前，系统会由 dyld（the dynamic link editor）加载相关动态链接库，然后再初始化 runtime 环境，并由 runtime 触发 + load 方法，所以不要在 load 方法里执行耗时任务，否则会影响启动时间。</li>
+<li>@autoreleasepool 用来管理主线程中标记为自动释放的对象。</li>
+<li>UIApplicationMain 根据传入参数以及 info.plist 文件来初始化 app
 
 <ul>
-<li>argc和argv参数在iOS应用中用不到</li>
-<li>第三个参数为app的首要类名，用来监听并管理应用的生命周期，默认使用UIApplication</li>
-<li>最后一个参数为app首要类的代理类，它负责实际处理UIApplication监听到的应用程序生命周期事件，具体参考"UIApplicationDelegate"</li>
-<li>main函数会在初始化app后启动主线程及runloop</li>
+<li>argc 和 argv 参数在 iOS 应用中用不到</li>
+<li>第三个参数为 app 的首要类名，用来监听并管理应用的生命周期，默认使用 UIApplication</li>
+<li>最后一个参数为 app 首要类的代理类，它负责实际处理 UIApplication 监听到的应用程序生命周期事件，具体参考 UIApplicationDelegate</li>
+<li>main 函数会在初始化 app 后启动主线程及 RunLoop</li>
 </ul>
 </li>
 </ul>
 
 
-<h1>runloop</h1>
+<h1>RunLoop</h1>
 
-<p>runloop能够保持程序始终运行并监听处理分发事件，当没有事件发生时进入休眠状态，有事件发生时系统会将接收到的事件放在一个队列里，然后唤醒runloop依次处理事件，使用队列不仅可以解决线程同步问题也促使我们要把更新UI的代码放在主线程中运行，以免由于多个线程抢占资源产生奇怪的问题。runloop可以接收的事件来自两种不同的来源，分别是输入源和定时源，输入源传递异步事件，事件通常来自于其他线程或程序，如一些UI事件等。定时源则传递同步事件，发生在特定时间或者重复的时间间隔，如NSTimer。runloop每处理完一个事件后便清理自动释放池。</p>
+<p>RunLoop 能够保持程序始终运行并监听处理分发事件，当没有事件发生时进入休眠状态，有事件发生时系统会将接收到的事件放在一个队列里，然后唤醒 RunLoop 依次处理事件，使用队列不仅可以解决线程同步问题也促使我们要把更新 UI 的代码放在主线程中运行，以免由于多个线程抢占资源产生奇怪的问题。RunLoop 可以接收的事件来自两种不同的来源，分别是输入源和定时源，输入源传递异步事件，事件通常来自于其他线程或程序，如一些 UI 事件等。定时源则传递同步事件，发生在特定时间或者重复的时间间隔，如 NSTimer。RunLoop 会在接收到事件时创建新的自动释放池，并在处理完事件后释放它。</p>
 
-<p><br/>
-每个线程都有自己的runloop, 主线程是默认开启的，子线程需要手动开启，并且在开启后必须至少添加一个事件源，否则runloop在启动后会立即结束。那么什么情况下需要我们在子线程中开启并使用runloop呢？</p>
-
-<ul>
-<li>在线程中需要持续监测某个事件。例如使用NSURLConnection异步请求数据，如果没有开启runloop，会因为子线程的结束导致相关delegate方法不会被触发。(如果你使用AFNetworking，那么就不用考虑这个问题了，因为它已经帮你做了)</li>
-<li>线程间需要持续交互，例如当多个线程之间产生同步问题时，可以根据情况考虑将多个线程定义成多个事件源，然后让它们运行在同一线程的runloop下。</li>
-<li>使用NSTimer或performSelector系列方法。
+<p>每个线程都有自己的 RunLoop, 主线程是默认开启的，子线程需要手动开启，并且在开启后必须至少添加一个事件源，否则 RunLoop 在启动后会立即结束。那么什么情况下需要我们在子线程中开启并使用 RunLoop 呢？</p>
 
 <ul>
-<li>performSelecter:afterDelay: 会创建timer并添加到当前线程的runloop中，如果当前线程没有RunLoop，此方法失效。</li>
-<li>performSelector:onThread: 会创建timer并添加到指定线程的runloop中，如果指定线程没有RunLoop，此方法失效。</li>
+<li>在线程中需要持续监测某个事件。例如使用 NSURLConnection 异步请求数据，如果没有开启 RunLoop，会因为子线程的结束导致相关 delegate 方法不会被触发。</li>
+<li>线程间需要持续交互，例如当多个线程之间产生同步问题时，可以根据情况考虑将多个线程定义成多个事件源，然后让它们运行在同一线程的 RunLoop 下。</li>
+<li>使用 NSTimer 或 performSelector 系列方法。
+
+<ul>
+<li>performSelecter:afterDelay: 会创建 timer 并添加到当前线程的 RunLoop 中，如果当前线程没有 RunLoop，此方法失效。</li>
+<li>performSelector:onThread: 会创建 timer 并添加到指定线程的 RunLoop 中，如果指定线程没有 RunLoop，此方法失效。</li>
 </ul>
 </li>
 </ul>
 
 
 <p><br/>
-不同的事件源会运行在runloop的不同模式中，它们只有在相匹配的情况下才会被处理。</p>
+不同的事件源会运行在 RunLoop 的不同模式中，它们只有在相匹配的情况下才会被处理。这种工作方式利于 RunLoop 更好的管理和处理事件，使它们之间不相互影响。</p>
 
 <ul>
-<li>NSTimer运行在NSDefaultRunLoopMode模式下。</li>
-<li>列表滚动事件运行在UITrackingRunLoopMode模式下。</li>
-<li>NSRunLoopCommonModes包含NSDefaultRunLoopMode和UITrackingRunLoopMode。</li>
+<li>NSTimer 运行在 NSDefaultRunLoopMode 模式下。</li>
+<li>列表滚动事件运行在 UITrackingRunLoopMode 模式下。</li>
+<li>NSRunLoopCommonModes 包含 NSDefaultRunLoopMode 和 UITrackingRunLoopMode。</li>
 </ul>
 
 
-<p>我们在Cell上放置一个timer，然后在滚动表格时会发现timer没有正常执行，要解决这个问题，只要将timer运行在NSRunLoopCommonModes模式下，便可以在表格静止以及滚动时都能够正常运行。</p>
+<p>我们在 Cell 上放置一个 timer，然后在滚动表格时会发现 timer 没有正常执行，要解决这个问题，只要将 timer 运行在 NSRunLoopCommonModes 模式下，便可以在表格静止以及滚动时都能够正常运行。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[[</span><span class="bp">NSRunLoop</span> <span class="n">currentRunLoop</span><span class="p">]</span> <span class="nl">addTimer</span><span class="p">:</span><span class="n">timer</span> <span class="nl">forMode</span><span class="p">:</span><span class="n">NSRunLoopCommonModes</span><span class="p">];</span><span class="c1">//NSTimer并不是以子线程的方式运行，它只是在runloop里注册了一下，runloop会根据timer的设置情况去检测并触发，如果runloop比较忙卡住了也会影响到timer。</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[[</span><span class="bp">NSRunLoop</span> <span class="n">currentRunLoop</span><span class="p">]</span> <span class="nl">addTimer</span><span class="p">:</span><span class="n">timer</span> <span class="nl">forMode</span><span class="p">:</span><span class="n">NSRunLoopCommonModes</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><br/>
-因为RunLoop中需要处理各种事件，所以可能会导致NSTimer不精确，如果对精确度有要求的话，可以使用dispatch_time，GCD不受RunLoop影响。</p>
+<p>需要注意的是 NSTimer 并不是以子线程的方式运行，它只是在 RunLoop 里注册了一下，RunLoop 会根据 timer 的设置情况去检测并触发，所以任务在执行过程中一旦出现延迟，那么会丢失执行次数，如果对精确度有要求的话，可以使用 dispatch_time，GCD 不受 RunLoop 影响。</p>
+
+<blockquote><p>关于 RunLoop 的具体使用方法详见<a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Multithreading/RunLoopManagement/RunLoopManagement.html#//apple_ref/doc/uid/10000057i-CH16-SW1">官方文档</a></p></blockquote>
 
 <p><br/></p>
 
 <h1>事件传递&amp;事件响应</h1>
 
-<p>当发生触摸操作后，系统会将这一事件封装成UIEvent对象并放到由UIApplication管理的事件队列中，再由runloop接收事件并传递给触摸点所在的视图，该视图即为"hit-test视图"，而查找这一视图的过程就叫做"hit-testing"。hit-testing过程大致如下:</p>
+<p>当发生触摸操作后，系统会将这一事件封装成 UIEvent 对象并放到由 UIApplication 管理的事件队列中，再由 RunLoop 接收事件并传递给触摸点所在的视图，该视图即为 &ldquo;hit-test视图"，而查找这一视图的过程就叫做 "hit-testing"。hit-testing 过程大致如下:</p>
 
 <ul>
-<li>runloop将接收到的事件分发给UIWindow。</li>
-<li>UIWindow通过"hitTest:withEvent:&ldquo;方法在视图树中递归查找触摸点所在的视图。</li>
-<li>当前视图通过hitTest方法调用"pointInside:withEvent:&ldquo;来判定触摸点是否在当前视图，如果不在hitTest返回nil，在的话则从当前视图的subViews末尾向前遍历，依次向每个subView发送hitTest消息，以此规则一直到某个subView不再返回nil或遍历完成。</li>
-<li>最终由返回不是nil的视图作为"hit-test视图"。</li>
+<li>RunLoop 将接收到的事件分发给 UIWindow。</li>
+<li>UIWindow 通过 hitTest:withEvent: 方法在视图树中递归查找触摸点所在的视图。</li>
+<li>当前视图通过 hitTest 方法调用 pointInside:withEvent: 来判定触摸点是否在当前视图，如果不在 hitTest 返回 nil，在的话则从当前视图的 subViews 末尾向前遍历，依次向每个 subView 发送 hitTest 消息，以此规则一直到某个 subView 不再返回 nil 或遍历完成。</li>
+<li>最终由返回不是 nil 的视图作为 hit-test视图。</li>
 </ul>
 
 
-<p>在这过程中如果视图不具备响应事件的条件(userInteractionEnabled或enabled为NO，hidden=YES或alpha=0)，那么hitTest就不会调用pointInside方法，会直接返回nil，该视图的子视图也就不会被遍历到，如果我们想改变这一点，或者有别的需求需要改变事件传递的规则，那么需要自定义父视图并重写以下方法来控制子视图。</p>
+<p>在这过程中如果视图不具备响应事件的条件(userInteractionEnabled 或 enabled 为 NO，hidden=YES 或 alpha=0)，那么 hitTest 就不会调用 pointInside 方法，会直接返回 nil，该视图的子视图也就不会被遍历到，如果我们想改变这一点，或者有别的需求需要改变事件传递的规则，那么需要自定义父视图并重写以下方法来控制子视图。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -189,7 +190,7 @@
 
 
 <p><br/>
-如果想在某种情况下不响应事件，可以在适当时调用UIApplication的以下方法停止和恢复事件接收和分发。</p>
+如果想在某种情况下不响应事件，可以在适当时调用 UIApplication 的以下方法停止和恢复事件接收和分发。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -199,17 +200,43 @@
 
 
 <p><br/>
-如果hit-test视图不处理收到的事件（没有重写touches方法，或者只是在touches方法里调用[super touches..]），则通过响应者链机制寻找其它响应者来处理。</p>
+如果 hit-test 视图不处理收到的事件（没有重写 touches 方法，或者只是在 touches 方法里调用 [super touches..]），则通过响应者链机制寻找其它响应者来处理。</p>
 
-<p>响应链由一系列链接在一起的响应者组成。如果一个响应者不能处理事件，则会将事件沿着响应链传到下一响应者。下一响应者有可能是它的父视图也可能是它所在的ViewController，系统会以此类推一直传递到UIApplication。如果整个过程都没有响应者响应事件，该事件就会被丢弃。否则事件便会停止传递交由响应者处理。</p>
+<p>响应链由一系列链接在一起的响应者组成。如果一个响应者不能处理事件，则会将事件沿着响应链传到下一响应者。下一响应者有可能是它的父视图也可能是它所在的 ViewController，系统会以此类推一直传递到 UIApplication。如果整个过程都没有响应者响应事件，该事件就会被丢弃。否则事件便会停止传递交由响应者处理。</p>
+
+<p><br/>
+在开发过程中，有时我们不得不定义一个很小的按钮，为了避免发生用户点不到按钮的事情发生，可以利用上面的知识，扩大按钮的有效范围，只要触碰到按钮附近就使按钮响应事件。解决办法就是自定义继承 UIButton 的视图，并重写 pointInside:withEvent 方法。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">pointInside:</span><span class="p">(</span><span class="bp">CGPoint</span><span class="p">)</span><span class="nv">point</span> <span class="nf">withEvent:</span><span class="p">(</span><span class="bp">UIEvent</span> <span class="o">*</span><span class="p">)</span><span class="nv">event</span> <span class="p">{</span>
+</span><span class='line'>    <span class="bp">CGRect</span> <span class="n">bounds</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">widthDelta</span> <span class="o">=</span> <span class="n">MAX</span><span class="p">(</span><span class="mf">44.0</span> <span class="o">-</span> <span class="nb">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">heightDelta</span> <span class="o">=</span> <span class="n">MAX</span><span class="p">(</span><span class="mf">44.0</span> <span class="o">-</span> <span class="nb">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">bounds</span> <span class="o">=</span> <span class="n">CGRectInset</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">widthDelta</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">heightDelta</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">CGRectContainsPoint</span><span class="p">(</span><span class="n">bounds</span><span class="p">,</span> <span class="n">point</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><br/></p>
 
 <h1>前后台切换</h1>
 
-<p>在程序进入后台后仍然能够在短时间里执行一些代码，然后便进入挂起状态，程序在挂起后仍然会驻留在内存中，但是不能执行代码，直到iOS系统内存降低发出警告后才会把相对耗内存的挂起程序清除掉。</p>
+<p>在程序进入后台后仍然能够在短时间里执行一些代码，然后便进入挂起状态，程序在挂起后仍然会驻留在内存中，但是不能执行代码，直到 iOS 系统内存降低发出警告后才会把相对耗内存的挂起程序清除掉。</p>
 
-<p>当程序在前后台切换时，系统会调用"UIApplicationDelegate"的相关代理方法并发送通知，我们可以在不同情况下做出不同处理，例如在进入后台时暂停某些操作或存储某些数据，当恢复到前台时再恢复之前的暂停操作或读取之前存储的数据。</p>
+<p>当程序在前后台切换时，系统会调用 UIApplicationDelegate 的相关代理方法并发送通知，我们可以在不同情况下做出不同处理，例如在进入后台时暂停某些操作或存储某些数据，当恢复到前台时再恢复之前的暂停操作或读取之前存储的数据。</p>
 </div>
 
 
@@ -240,10 +267,10 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/02/11/yong-cocoapodswei-iosxiang-mu-zuo-yi-lai-guan-li/" title="Previous Post: 用CocoaPods为iOS项目做依赖管理">&laquo; 用CocoaPods为iOS项目做依赖管理</a>
+        <a class="basic-alignment left" href="/blog/2015/03/01/zai-githuan-jing-xia-wei-hu-duo-ge-ssh-keys/" title="Previous Post: 在 Git 环境下维护多个 SSH Keys">&laquo; 在 Git 环境下维护多个 SSH Keys</a>
       
       
-        <a class="basic-alignment right" href="/blog/2015/09/21/objective-c-runtimekai-fa/" title="Next Post: Objective-C Runtime开发">Objective-C Runtime开发 &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2015/06/03/iosduo-xian-cheng-kai-fa/" title="Next Post: iOS 多线程开发">iOS 多线程开发 &raquo;</a>
       
     </p>
   </footer>
@@ -253,27 +280,27 @@
 <aside class="sidebar">
   
     <section>
-  <h1>Recent Posts</h1>
+  <h1>最近更新</h1>
   <ul id="最新">
     
       <li class="post">
-        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS APP的组件化设计</a>
+        <a href="/blog/2016/12/05/tong-guo-xcodebuildda-bao-ipabing-shang-chuan-pu-gong-ying/">使用 Xcodebuild 打包 IPA 并上传蒲公英</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/08/09/ioskai-fa-tips/">iOS开发tips</a>
+        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS 应用的组件化设计</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/08/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
+        <a href="/blog/2016/06/09/ioskai-fa-tips/">iOS 开发 Tips</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/08/03/liao-jie-block/">了解block</a>
+        <a href="/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/07/12/iosnei-cun-guan-li/">iOS内存管理</a>
+        <a href="/blog/2015/12/03/liao-jie-block/">了解 Block</a>
       </li>
     
   </ul>

@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>iOS多线程开发 - 风行的博客</title>
+  <title>iOS 多线程开发 - 风行的博客</title>
   <meta name="author" content="风行">
 
   
-  <meta name="description" content="多线程 - 合理的线程分配能够提高程序的执行效率和资源利用率。 GCD基于C API，Operation Queue是在GCD基础上实现的OC API，效率上较GCD会差一点点，但代码可读性和易用性较高，简单的任务可用GCD去实现，复杂一些的还是推荐使用Operation Queue来处理。 &hellip;">
+  <meta name="description" content="多线程 - 合理的线程分配能够提高程序的执行效率和资源利用率。 GCD 基于 C API，Operation Queue 是在 GCD 基础上实现的，效率上较 GCD 会差一点点，但代码可读性和易用性较高，简单的任务可用 GCD 去实现，复杂一些的还是推荐使用 Operation Queue &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://lijingcheng.github.io/blog/2016/06/03/iosduo-xian-cheng-kai-fa/">
+  <link rel="canonical" href="http://lijingcheng.github.io/blog/2015/06/03/iosduo-xian-cheng-kai-fa/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="风行的博客" type="application/atom+xml">
@@ -68,7 +68,7 @@
   
   <header>
     
-      <h1 class="entry-title">iOS多线程开发</h1>
+      <h1 class="entry-title">iOS 多线程开发</h1>
     
     
       <p class="meta">
@@ -77,7 +77,7 @@
 
 
 
-<time class='entry-date' datetime='2016-06-03T15:07:00+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2016</span></span> <span class='time'>3:07 pm</span></time>
+<time class='entry-date' datetime='2015-06-03T15:07:00+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>3:07 pm</span></time>
         
       </p>
     
@@ -87,7 +87,7 @@
 <div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/thread.png" width="200" height="200"  >
 <strong>多线程 - <em>合理的线程分配能够提高程序的执行效率和资源利用率。</em></strong></p>
 
-<p>GCD基于C API，Operation Queue是在GCD基础上实现的OC API，效率上较GCD会差一点点，但代码可读性和易用性较高，简单的任务可用GCD去实现，复杂一些的还是推荐使用Operation Queue来处理。微小的性能提升远不如写出可维护性高的代码来的实在。</p>
+<p>GCD 基于 C API，Operation Queue 是在 GCD 基础上实现的，效率上较 GCD 会差一点点，但代码可读性和易用性较高，简单的任务可用 GCD 去实现，复杂一些的还是推荐使用 Operation Queue 来处理。微小的性能提升远不如写出可维护性高的代码来的实在。</p>
 
 <!-- more -->
 
@@ -138,13 +138,13 @@
 </ul>
 </li>
 <li>生产者和消费者模式：是通过一个容器来解决生产者和消费者的强耦合问题。生产者和消费者彼此之间不直接通讯，而通过阻塞队列来进行通讯，所以生产者生产完数据之后不用等待消费者处理，直接扔给阻塞队列，消费者不找生产者要数据，而是直接从阻塞队列里取，阻塞队列就相当于一个缓冲区，平衡了生产者和消费者的处理能力。我们还可以使用多个线程来生产数据，同样可以使用多个消费线程来消费数据。而更复杂的情况是，消费者消费的数据，有可能需要继续处理，于是消费者处理完数据之后，它又要作为生产者把数据放在新的队列里，交给其他消费者继续处理。</li>
-<li>线程同步是为了防止多个线程抢夺同一个资源造成的数据安全问题所采取的一种措施
+<li>为了防止多个线程抢夺同一个资源造成数据安全问题可采取以下措施
 
 <ul>
 <li>锁：在同一时刻，只允许一个线程访问某个特定资源
 
 <ul>
-<li>NSLock：最基本的锁，通过lock和unlock加锁解锁，@synchronize会自动加锁解锁，但性能稍差</li>
+<li>NSLock：最基本的锁，通过 lock 和 unlock 加锁解锁，@synchronize 会自动加锁解锁，但性能稍差</li>
 <li>NSRecursiveLock：递归锁，可以在一个线程中反复获取锁不会造成死锁，可用在循环或递归操作中</li>
 <li>NSConditionLock：条件锁，为加锁/解锁设置条件</li>
 </ul>
@@ -153,7 +153,7 @@
 <li>串行队列：一个一个执行就避免了同步问题</li>
 </ul>
 </li>
-<li>死锁：当多个线程在相互等待对方结束时，就会发生死锁，在下面的例子中，大多数时候swap方法都能正常运行，但是当两个线程使用相反的值来同时调用swap时，程序就会很可能由于死锁而被终止。线程1获得了 X 的一个锁，线程2获得了 Y 的一个锁。接着它们会同时等待另外一把锁，但是永远都不会获得。所以我们要尽量减少线程间资源共享，并确保共享的资源尽量简单。</li>
+<li>死锁：当多个线程在相互等待对方结束时，就会发生死锁，在下面的例子中，大多数时候 swap 方法都能正常运行，但是当两个线程使用相反的值来同时调用 swap 时，程序就会很可能由于死锁而被终止。线程1 获得了 X 的一个锁，线程2 获得了 Y 的一个锁。接着它们会同时等待另外一把锁，但是永远都不会获得。所以我们要尽量减少线程间资源共享，并确保共享的资源尽量简单。</li>
 </ul>
 
 
@@ -189,7 +189,7 @@
 
 <h1>NSThread</h1>
 
-<p>使用NSThread创建并操作线程在使用上相对简单一些，但是需要我们自己去管理线程的生命周期。所以总的来说易用性上不如GCD，功能上不如Operation Queues。</p>
+<p>使用 NSThread 创建并操作线程在使用上相对简单一些，但是需要我们自己去管理线程的生命周期。所以总的来说易用性上不如 GCD，功能上不如 Operation Queues。</p>
 
 <p><strong><em>创建并启动线程</em></strong></p>
 
@@ -213,7 +213,7 @@
 </span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">performSelector:onThread:withObject:waitUntilDone:modes:</span><span class="p">;</span>
 </span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">performSelector:onThread:withObject:waitUntilDone:</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="c1">// perform方法只对拥有runloop的线程有效，如果创建的线程没有添加runloop，perform的selector将无法执行</span>
+</span><span class='line'><span class="c1">// perform 方法只对拥有 RunLoop 的线程有效，如果创建的线程没有添加 RunLoop，perform 的 selector 将无法执行</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -221,7 +221,7 @@
 
 <h1>GCD（Grand Central Dispatch）</h1>
 
-<p>GCD是苹果为多核的并行计算提出的解决方案，它会自动地利用更多的CPU内核（比如双核、四核），最重要的是它会自动管理线程的生命周期（创建线程、调度任务、销毁线程）。同时它基于C语言，使用Block方式，使用起来更加方便灵活。</p>
+<p>GCD 是苹果为多核的并行计算提出的解决方案，它会自动地利用更多的 CPU 内核（比如双核、四核），最重要的是它会自动管理线程的生命周期（创建线程、调度任务、销毁线程）。同时它基于 C 语言，使用 Block 方式，使用起来更加方便灵活。</p>
 
 <p><strong><em>最常用的使用方式</em></strong></p>
 
@@ -234,15 +234,15 @@
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">dispatch_async</span><span class="p">(</span><span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_DEFAULT</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="o">^</span><span class="p">{</span>
 </span><span class='line'>     <span class="c1">// 异步耗时操作</span>
 </span><span class='line'>     <span class="n">dispatch_async</span><span class="p">(</span><span class="n">dispatch_get_main_queue</span><span class="p">(),</span> <span class="o">^</span><span class="p">{</span>
-</span><span class='line'>          <span class="c1">// 由于UIKit中大部分类都不是线程安全的，所以需要在主队列中处理UI</span>
+</span><span class='line'>          <span class="c1">// 由于 UIKit 中大部分类都不是线程安全的，所以需要在主队列中处理 UI</span>
 </span><span class='line'>     <span class="p">});</span>
 </span><span class='line'><span class="p">});</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
 <ul>
-<li><p>GCD有5个不同队列：主队列，3个不同优先级的全局队列，以及一个优先级更低的后台队列（用于I/O），我们还可以自己创建队列。通常不建议给队列设置优先级，因为多任务在访问共享资源时，可能会造成优先级反转问题。</p></li>
-<li><p>获取主队列：主队列是串行队列，所以比较适合处理共享资源、更新UI等事情</p></li>
+<li><p>GCD 有 5个不同队列：主队列，3个不同优先级的全局队列，以及一个优先级更低的后台队列（用于 I/O），我们还可以自己创建队列。通常不建议给队列设置优先级，因为多任务在访问共享资源时，可能会造成优先级反转问题。</p></li>
+<li><p>获取主队列：主队列是串行队列，所以比较适合处理共享资源、更新 UI 等事情</p></li>
 </ul>
 
 
@@ -266,7 +266,7 @@
 
 
 <ul>
-<li>如果经常需要在后台队列上执行开销庞大的操作，可通过"dispatch_queue_create"函数创建新队列，它接收两个参数，第一个是标识符，可以在Instruments或lldb调试程序时查看队列名字，第二个参数用来表示创建的队列是串行还是并行，"DISPATCH_QUEUE_SERIAL"或"NULL"表示串行，"DISPATCH_QUEUE_CONCURRENT"表示并行。</li>
+<li>如果经常需要在后台队列上执行开销庞大的操作，可通过 dispatch_queue_create 函数创建新队列，它接收两个参数，第一个是标识符，可以在 Instruments 或 lldb 调试程序时查看队列名字，第二个参数用来表示创建的队列是串行还是并行，DISPATCH_QUEUE_SERIAL 或 NULL 表示串行，DISPATCH_QUEUE_CONCURRENT 表示并行。</li>
 </ul>
 
 
@@ -326,8 +326,8 @@
 <span class='line-number'>12</span>
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// dispatch_sync会立即阻塞主线程，然后把Block中的任务放到主队列中，主队列会将任务取出放到主线程中执行，</span>
-</span><span class='line'><span class="c1">// 但主线程这个时候已经被阻塞了，所以Block中的任务就不能完成，而dispatch_sync也会一直阻塞主线程，</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// dispatch_sync 会立即阻塞主线程，然后把 Block 中的任务放到主队列中，主队列会将任务取出放到主线程中执行，</span>
+</span><span class='line'><span class="c1">// 但主线程这个时候已经被阻塞了，所以 Block 中的任务就不能完成，而 dispatch_sync 也会一直阻塞主线程，</span>
 </span><span class='line'><span class="c1">// 从而造成死锁现象，导致主线程一直卡死。</span>
 </span><span class='line'><span class="n">dispatch_sync</span><span class="p">(</span><span class="n">dispatch_get_main_queue</span><span class="p">(),</span> <span class="o">^</span><span class="p">{</span>
 </span><span class='line'>  <span class="p">...</span>
@@ -344,7 +344,7 @@
 
 
 <ul>
-<li>NSTimer在使用时会受runlop影响而导致延迟触发，当有更精准的计时需求时，可用GCD的计时器</li>
+<li>NSTimer 在使用时会受 RunLoop 影响而导致延迟触发，当有更精准的计时需求时，可用 GCD 的计时器</li>
 </ul>
 
 
@@ -376,7 +376,7 @@
 
 
 <ul>
-<li>dispatch_once可以控制block中的代码只被执行一次，通常用于创建单例，如果需要完整的单例，不被人alloc还需要进一步处理</li>
+<li>dispatch_once 可以控制 Block 中的代码只被执行一次，通常用于创建单例，如果需要完整的单例，不被人 alloc 还需要进一步处理</li>
 </ul>
 
 
@@ -404,7 +404,7 @@
 
 
 <ul>
-<li>延迟处理，类似于"performSelector:withObject:afterDelay:&ldquo;，可指定时间和处理队列</li>
+<li>延迟处理，类似于 performSelector:withObject:afterDelay:，可指定时间和处理队列</li>
 </ul>
 
 
@@ -418,7 +418,7 @@
 
 
 <ul>
-<li>当使用foreach遍历数组遇到效率问题时，可以考虑用dispatch_apply进行快速迭代，dispatch_apply是dispatch_sync和Dispatch Group的关联API，所以它会阻塞当前线程</li>
+<li>当使用 foreach 遍历数组遇到效率问题时，可以考虑用 dispatch_apply 进行快速迭代，dispatch_apply 是 dispatch_sync 和 Dispatch Group 的关联 API，所以它会阻塞当前线程</li>
 </ul>
 
 
@@ -428,7 +428,7 @@
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">dispatch_apply</span><span class="p">(</span><span class="n">array</span><span class="p">.</span><span class="n">count</span><span class="p">,</span> <span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="o">^</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">index</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%zu&quot;</span><span class="p">,</span> <span class="n">index</span><span class="p">);</span> <span class="c1">// 由于任务在并发队列中，所以index为乱序</span>
+</span><span class='line'>  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%zu&quot;</span><span class="p">,</span> <span class="n">index</span><span class="p">);</span> <span class="c1">// 由于任务在并发队列中，所以 index 为乱序</span>
 </span><span class='line'><span class="p">});</span>
 </span><span class='line'>
 </span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;done&quot;</span><span class="p">);</span> <span class="c1">// 由于当前线程被阻塞，所以迭代结束后，此句才会执行</span>
@@ -436,7 +436,7 @@
 
 
 <ul>
-<li>iOS8开始支持取消任务</li>
+<li>iOS8 开始支持取消任务</li>
 </ul>
 
 
@@ -472,7 +472,7 @@
 
 
 <ul>
-<li>多任务并发，都完成后触发另一个任务，可通过队列组实现，例如同时下载2张图片，都下载完成后再将他们拼接起来</li>
+<li>多任务并发，都完成后触发另一个任务，可通过队列组实现，例如同时下载 2张图片，都下载完成后再将他们拼接起来</li>
 </ul>
 
 
@@ -506,7 +506,7 @@
 </span><span class='line'>    <span class="c1">// 下载资源2</span>
 </span><span class='line'><span class="p">});</span>
 </span><span class='line'>
-</span><span class='line'><span class="c1">// 任务1和任务2都完成后会自动通知</span>
+</span><span class='line'><span class="c1">// 任务1 和任务2 都完成后会自动通知</span>
 </span><span class='line'><span class="n">dispatch_group_notify</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">dispatch_get_main_queue</span><span class="p">(),</span> <span class="o">^</span><span class="p">{</span>
 </span><span class='line'>    <span class="c1">// 处理资源1和资源2</span>
 </span><span class='line'><span class="p">});</span>
@@ -514,7 +514,7 @@
 
 
 <ul>
-<li>dispatch_barrier_async在执行任务时会确保队列在此过程不会执行其它任务，可以在适当时候用来解决同步问题，它只在自己创建的队列上有这种作用，在全局并发队列和串行队列上，效果和dispatch_sync一样</li>
+<li>dispatch_barrier_async 在执行任务时会确保队列在此过程不会执行其它任务，可以在适当时候用来解决同步问题，它只在自己创建的队列上有这种作用，在全局并发队列和串行队列上，效果和 dispatch_sync 一样</li>
 </ul>
 
 
@@ -547,7 +547,7 @@
 </span><span class='line'>    <span class="p">...</span>
 </span><span class='line'><span class="p">});</span>
 </span><span class='line'>
-</span><span class='line'><span class="c1">// 在&quot;dispatch_barrier_async&quot;前面的任务执行结束后才执行，后面的任务等它执行完成后才会执行</span>
+</span><span class='line'><span class="c1">// 在 dispatch_barrier_async 前面的任务执行结束后才执行，后面的任务等它执行完成后才会执行</span>
 </span><span class='line'><span class="n">dispatch_barrier_async</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
 </span><span class='line'>    <span class="p">...</span>
 </span><span class='line'><span class="p">});</span>
@@ -564,7 +564,7 @@
 <p></p>
 
 <ul>
-<li>利用"dispatch_semaphore_t"信号量限制任务并发数，"dispatch_semaphore_wait"函数会消耗一次这个可用数，如果可用数已满则开始等待，"dispatch_semaphore_signal"函数每次执行都会将该可用计数加1，以此来表明已经释放了资源，如果此刻有因为等待可用资源而被阻塞的任务，系统会从等待的队列中解锁一个任务来执行。</li>
+<li>利用 dispatch_semaphore_t 信号量限制任务并发数，dispatch_semaphore_wait 函数会消耗一次这个可用数，如果可用数已满则开始等待，dispatch_semaphore_signal 函数每次执行都会将该可用计数加 1，以此来表明已经释放了资源，如果此刻有因为等待可用资源而被阻塞的任务，系统会从等待的队列中解锁一个任务来执行。</li>
 </ul>
 
 
@@ -645,10 +645,10 @@
 
 <h1>Operation Queues</h1>
 
-<p>GCD提供了更加底层的控制，而操作队列则在GCD之上实现了一些方便的功能，这些功能对于我们来说通常是最好最安全的选择，使用时需要将任务封装到一个"NSOperation"对象中，再将它添加到"NSOperationQueue"，系统会将"NSOperationQueue"中的"NSOperation"取出并放到线程上执行。</p>
+<p>GCD 提供了更加底层的控制，而操作队列则在 GCD 之上实现了一些方便的功能，这些功能对于我们来说通常是最好最安全的选择，使用时需要将任务封装到一个 NSOperation 对象中，再将它添加到 NSOperationQueue，系统会将 NSOperationQueue 中的 NSOperation 取出并放到线程上执行。</p>
 
 <ul>
-<li>&ldquo;NSOperationQueue"默认是串行队列，可通过设置"maxConcurrentOperationCount"实现并发</li>
+<li>NSOperationQueue 默认是串行队列，可通过设置 maxConcurrentOperationCount 实现并发</li>
 </ul>
 
 
@@ -666,16 +666,16 @@
 
 
 <ul>
-<li>&ldquo;NSOperation"不能够直接使用，可通过它的两个子类来封装任务，或者自定义Operation
+<li>NSOperation 不能够直接使用，可通过它的两个子类来封装任务，或者自定义 Operation
 
 <ul>
-<li>NSInvocationOperation：通过SEL方式添加任务</li>
-<li>NSBlockOperation：通过Block方式添加任务</li>
-<li>自定义Operation：需要继承"NSOperation"类，并实现"main()&ldquo;方法
+<li>NSInvocationOperation：通过 SEL 方式添加任务</li>
+<li>NSBlockOperation：通过 Block 方式添加任务</li>
+<li>自定义 Operation：需要继承 NSOperation 类，并实现 main 方法
 <br></li>
 </ul>
 </li>
-<li>&ldquo;NSOperation"有一个非常实用的功能，可以添加和解除依赖。但要注意，不能相互依赖，否则会造成死锁，例如A依赖B，B依赖A。</li>
+<li>NSOperation 有一个非常实用的功能，可以添加和解除依赖。但要注意，不能相互依赖，否则会造成死锁，例如 A 依赖 B，B 依赖 A。</li>
 </ul>
 
 
@@ -707,8 +707,8 @@
 </span><span class='line'>    <span class="c1">// 处理资源1和资源2</span>
 </span><span class='line'><span class="p">}];</span>
 </span><span class='line'>
-</span><span class='line'><span class="p">[</span><span class="n">operation3</span> <span class="nl">addDependency</span><span class="p">:</span><span class="n">operation1</span><span class="p">];</span>      <span class="c1">//任务三依赖任务一</span>
-</span><span class='line'><span class="p">[</span><span class="n">operation3</span> <span class="nl">addDependency</span><span class="p">:</span><span class="n">operation2</span><span class="p">];</span>      <span class="c1">//任务三依赖任务二</span>
+</span><span class='line'><span class="p">[</span><span class="n">operation3</span> <span class="nl">addDependency</span><span class="p">:</span><span class="n">operation1</span><span class="p">];</span>      <span class="c1">// 任务三依赖任务一</span>
+</span><span class='line'><span class="p">[</span><span class="n">operation3</span> <span class="nl">addDependency</span><span class="p">:</span><span class="n">operation2</span><span class="p">];</span>      <span class="c1">// 任务三依赖任务二</span>
 </span><span class='line'>
 </span><span class='line'><span class="p">[[</span><span class="bp">NSOperationQueue</span> <span class="n">mainQueue</span><span class="p">]</span> <span class="nl">addOperations</span><span class="p">:</span><span class="l">@[</span><span class="n">operation3</span><span class="p">,</span> <span class="n">operation2</span><span class="p">,</span> <span class="n">operation1</span><span class="l">]</span> <span class="nl">waitUntilFinished</span><span class="p">:</span><span class="nb">NO</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -730,7 +730,7 @@
 
 
 
-<time class='entry-date' datetime='2016-06-03T15:07:00+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2016</span></span> <span class='time'>3:07 pm</span></time>
+<time class='entry-date' datetime='2015-06-03T15:07:00+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>3:07 pm</span></time>
       
 
 
@@ -745,10 +745,10 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/09/21/objective-c-runtimekai-fa/" title="Previous Post: Objective-C Runtime开发">&laquo; Objective-C Runtime开发</a>
+        <a class="basic-alignment left" href="/blog/2015/03/28/iosying-yong-de-sheng-ming-zhou-qi/" title="Previous Post: iOS 应用的生命周期">&laquo; iOS 应用的生命周期</a>
       
       
-        <a class="basic-alignment right" href="/blog/2016/07/12/iosnei-cun-guan-li/" title="Next Post: iOS内存管理">iOS内存管理 &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2015/07/12/iosnei-cun-guan-li/" title="Next Post: iOS 内存管理">iOS 内存管理 &raquo;</a>
       
     </p>
   </footer>
@@ -758,27 +758,27 @@
 <aside class="sidebar">
   
     <section>
-  <h1>Recent Posts</h1>
+  <h1>最近更新</h1>
   <ul id="最新">
     
       <li class="post">
-        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS APP的组件化设计</a>
+        <a href="/blog/2016/12/05/tong-guo-xcodebuildda-bao-ipabing-shang-chuan-pu-gong-ying/">使用 Xcodebuild 打包 IPA 并上传蒲公英</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/08/09/ioskai-fa-tips/">iOS开发tips</a>
+        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS 应用的组件化设计</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/08/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
+        <a href="/blog/2016/06/09/ioskai-fa-tips/">iOS 开发 Tips</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/08/03/liao-jie-block/">了解block</a>
+        <a href="/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/07/12/iosnei-cun-guan-li/">iOS内存管理</a>
+        <a href="/blog/2015/12/03/liao-jie-block/">了解 Block</a>
       </li>
     
   </ul>

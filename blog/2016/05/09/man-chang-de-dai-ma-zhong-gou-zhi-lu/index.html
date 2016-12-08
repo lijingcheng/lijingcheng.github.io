@@ -9,7 +9,7 @@
   <meta name="author" content="风行">
 
   
-  <meta name="description" content="代码重构 - 重构就是在不改变软件系统外部行为的前提下，改善它的内部结构。 Martin Flower在《重构》中有一句经典的话："任何一个傻瓜都能写出计算机可以理解的程序，只有写出人类容易理解的程序才是优秀的程序员。" 重构原则 随着时间推移，需求的频繁变化等原因都会导致代码质量逐步下降， &hellip;">
+  <meta name="description" content="代码重构 - 重构就是在不改变软件系统外部行为的前提下，改善它的内部结构。 Martin Flower 在《重构》中有一句经典的话："任何一个傻瓜都能写出计算机可以理解的程序，只有写出人类容易理解的程序才是优秀的程序员。" 重构原则 随着时间推移，需求的频繁变化等原因都会导致代码质量逐步下降， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://lijingcheng.github.io/blog/2016/08/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">
+  <link rel="canonical" href="http://lijingcheng.github.io/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="风行的博客" type="application/atom+xml">
@@ -77,7 +77,7 @@
 
 
 
-<time class='entry-date' datetime='2016-08-09T10:50:10+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:50 am</span></time>
+<time class='entry-date' datetime='2016-05-09T10:50:10+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:50 am</span></time>
         
       </p>
     
@@ -87,7 +87,7 @@
 <div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/refactor.jpg" width="200" height="200"  >
 <strong>代码重构 - <em>重构就是在不改变软件系统外部行为的前提下，改善它的内部结构。</em></strong></p>
 
-<p>Martin Flower在《重构》中有一句经典的话："任何一个傻瓜都能写出计算机可以理解的程序，只有写出人类容易理解的程序才是优秀的程序员。"</p>
+<p>Martin Flower 在《重构》中有一句经典的话："任何一个傻瓜都能写出计算机可以理解的程序，只有写出人类容易理解的程序才是优秀的程序员。"</p>
 
 <!-- more -->
 
@@ -117,15 +117,15 @@
 <li><p>方法有多个参数：可通过提取成类对象或字典解决，个别情况也可拆分方法</p></li>
 <li><p>魔鬼数字：尽量用常量去定义数字，或在使用处添加注释说明用意</p></li>
 <li><p>模糊的命名：要做到见名知意</p></li>
-<li><p>if/else嵌套过多：尽量不超过3层，如果不能简化逻辑，可通过拆分方法或添加注释方式解决</p></li>
+<li><p>if/else 嵌套过多：尽量不超过3层，如果不能简化逻辑，可通过拆分方法或添加注释方式解决</p></li>
 </ul>
 
 
 <p><br></p>
 
-<h1>Xcode提供的重构功能</h1>
+<h1>Xcode 提供的重构功能</h1>
 
-<p>跟别的开发工具相比Xcode提供的重构功能简直弱暴了，不过有总比没有好，Xcode提供了以下几个重构功能，从菜单栏中进入：Edit -> Refactor，或在代码上右键，然后选择Refactor</p>
+<p>跟别的开发工具相比 Xcode 提供的重构功能简直弱暴了，不过有总比没有好，Xcode 提供了以下几个重构功能，从菜单栏中进入：Edit -> Refactor，或在代码上右键，然后选择 Refactor</p>
 
 <ul>
 <li>Rename：重命名类、方法、变量</li>
@@ -133,29 +133,29 @@
 <li>Create Superclass：给当前选中的类创建父类</li>
 <li>Move Up：将选中方法或属性移到父类中</li>
 <li>Move Down：将父类中选中的属性移到子类中</li>
-<li>Encapsulate：封装，生成setter/getter，一般用不上</li>
+<li>Encapsulate：封装，生成 setter/getter，一般用不上</li>
 </ul>
 
 
-<p>相对来说，Rename更常用一些，有时也会用到Extract，最后吐槽一下</p>
+<p>相对来说，Rename 更常用一些，有时也会用到 Extract，最后吐槽一下</p>
 
 <ul>
-<li>Extract：使用时Xcode经常崩掉</li>
+<li>Extract：使用时 Xcode 经常崩掉</li>
 <li>Rename：并不能保证全部覆盖到，还需要自己再次检查</li>
 </ul>
 
 
 <p><br></p>
 
-<h1>代码Review</h1>
+<h1>代码 Review</h1>
 
-<p>重构的目的是保证代码质量，但是代码质量不能仅仅依靠重构，重构更多时候是一种补救措施，更多时候还是需要我们在写代码时讲究一些，适当的有一些代码洁癖，也需要通过持续的代码Review保证代码质量，在Review上需要注意：</p>
+<p>重构的目的是保证代码质量，但是代码质量不能仅仅依靠重构，重构更多时候是一种补救措施，更多时候还是需要我们在写代码时讲究一些，适当的有一些代码洁癖，也需要通过持续的代码 Review 保证代码质量，在 Review 上需要注意：</p>
 
 <ul>
-<li><p>要有一个CheckList，对一些代码问题进行定义，要求开发人员以此为准写代码</p></li>
-<li><p>review代码不应只是代码规范层级上的检查，这些应该是各开发人员必须做好的事情</p></li>
-<li><p>review别人代码时不要直接修改不规范的代码，可以用"#warning &hellip;&ldquo;标注有问题的代码，review的目的不仅是要保证代码质量，提高团队开发人员技术水平也是一个重要目的</p></li>
-<li><p>review时需要对代码逻辑及性能上的问题进行检查</p></li>
+<li><p>要有一个 CheckList，对一些代码问题进行定义，要求开发人员以此为准写代码</p></li>
+<li><p>review 代码不应只是代码规范层级上的检查，这些应该是各开发人员必须做好的事情</p></li>
+<li><p>review 别人代码时不要直接修改不规范的代码，可以用 #warning &hellip; 标注有问题的代码，review 的目的不仅是要保证代码质量，提高团队开发人员技术水平也是一个重要目的</p></li>
+<li><p>review 时需要对代码逻辑及性能上的问题进行检查</p></li>
 <li><p>对方改完代码后要进行验证</p></li>
 </ul>
 
@@ -174,7 +174,7 @@
 
 
 
-<time class='entry-date' datetime='2016-08-09T10:50:10+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:50 am</span></time>
+<time class='entry-date' datetime='2016-05-09T10:50:10+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:50 am</span></time>
       
 
 
@@ -189,10 +189,10 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2016/08/03/liao-jie-block/" title="Previous Post: 了解block">&laquo; 了解block</a>
+        <a class="basic-alignment left" href="/blog/2015/12/03/liao-jie-block/" title="Previous Post: 了解 Block">&laquo; 了解 Block</a>
       
       
-        <a class="basic-alignment right" href="/blog/2016/08/09/ioskai-fa-tips/" title="Next Post: iOS开发tips">iOS开发tips &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2016/06/09/ioskai-fa-tips/" title="Next Post: iOS 开发 tips">iOS 开发 tips &raquo;</a>
       
     </p>
   </footer>
@@ -202,27 +202,27 @@
 <aside class="sidebar">
   
     <section>
-  <h1>Recent Posts</h1>
+  <h1>最近更新</h1>
   <ul id="最新">
     
       <li class="post">
-        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS APP的组件化设计</a>
+        <a href="/blog/2016/12/05/tong-guo-xcodebuildda-bao-ipabing-shang-chuan-pu-gong-ying/">使用 Xcodebuild 打包 IPA 并上传蒲公英</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/08/09/ioskai-fa-tips/">iOS开发tips</a>
+        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS 应用的组件化设计</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/08/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
+        <a href="/blog/2016/06/09/ioskai-fa-tips/">iOS 开发 Tips</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/08/03/liao-jie-block/">了解block</a>
+        <a href="/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/07/12/iosnei-cun-guan-li/">iOS内存管理</a>
+        <a href="/blog/2015/12/03/liao-jie-block/">了解 Block</a>
       </li>
     
   </ul>
