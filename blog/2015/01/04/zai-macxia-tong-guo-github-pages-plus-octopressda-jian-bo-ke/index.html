@@ -199,13 +199,15 @@
 
 
 <ul>
-<li>将 Octopress 生成的 HTML 等文件提交到 master 分支</li>
+<li>部署并将 Octopress 生成的 HTML 等文件提交到 master 分支</li>
 </ul>
 
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake deploy push git</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake deploy</span></code></pre></td></tr></table></div></figure>
 
+
+<blockquote><p>如果提交失败，提示让先 pull 文件，但是本地文件已经是最新的，可按下面方式解决：进入 _deploy 目录，执行 git reset –hard origin/master 将本地状态回退到和远程一样，然后回到根目录下重新 generate 并 deploy。</p></blockquote>
 
 <ul>
 <li>将 Octopress 修改过的 markdown 等资源文件提交到 source 分支</li>
@@ -219,6 +221,10 @@
 </span><span class='line'>git commit -m ‘your commit message’
 </span><span class='line'>git push origin source</span></code></pre></td></tr></table></div></figure>
 
+
+<p>git clone -b source git@github.com:lijingcheng/lijingcheng.github.io.git
+进入目录
+git clone -b master git@github.com:lijingcheng/lijingcheng.github.io.git _deploy</p>
 </div>
 
 
