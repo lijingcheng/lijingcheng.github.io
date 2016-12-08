@@ -222,9 +222,45 @@
 </span><span class='line'>git push origin source</span></code></pre></td></tr></table></div></figure>
 
 
-<p>git clone -b source git@github.com:lijingcheng/lijingcheng.github.io.git
-进入目录
-git clone -b master git@github.com:lijingcheng/lijingcheng.github.io.git _deploy</p>
+<h1>换了电脑或希望多台电脑能够写博客</h1>
+
+<ul>
+<li>首先需要下载 source 分支到你的电脑上</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone -b source git@github.com:lijingcheng/lijingcheng.github.io.git</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>然后进入下载目录</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd lijingcheng.github.io</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>下载 master 分支到 _deploy 目录</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone -b master git@github.com:lijingcheng/lijingcheng.github.io.git _deploy</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>生成网站并部署</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake generate
+</span><span class='line'>rake deploy</span></code></pre></td></tr></table></div></figure>
+
 </div>
 
 
