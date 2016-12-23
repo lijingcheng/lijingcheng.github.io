@@ -257,17 +257,6 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 
 
 <ul>
-<li>修改 UIPageControl 的小圆点为自定义图片</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[pageControl setValue:[UIImage imageNamed:@"pageImage"] forKeyPath:@"_pageImage"];
-</span><span class='line'>[pageControl setValue:[UIImage imageNamed:@"currentPageImage"] forKeyPath:@"_currentPageImage"];</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
 <li>编译出 error 后继续编译</li>
 </ul>
 
@@ -374,6 +363,8 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 </span><span class='line'>NSLog(@"devices = %@", [devices valueForKeyPath:@"@distinctUnionOfObjects.self"]); // iPhone5, iPhone6, iPhone6 Plus
 </span></code></pre></td></tr></table></div></figure>
 
+
+
 </div>
 
 
@@ -421,6 +412,10 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
   <ul id="最新">
     
       <li class="post">
+        <a href="/blog/2016/12/23/shi-yong-carthage-zuo-yi-lai-guan-li/">使用 Carthage 做依赖管理</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/12/05/tong-guo-xcodebuildda-bao-ipabing-shang-chuan-pu-gong-ying/">使用 Xcodebuild 打包 IPA 并上传蒲公英</a>
       </li>
     
@@ -434,10 +429,6 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
     
       <li class="post">
         <a href="/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/12/03/liao-jie-block/">了解 Block</a>
       </li>
     
   </ul>
