@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>iOS 应用的组件化设计 - 风行的博客</title>
+  <title>iOS 应用的开发设计 - 风行的博客</title>
   <meta name="author" content="风行">
 
   
-  <meta name="description" content="组件化 - 简单来说就是将项目按层级、模块拆分成不同组件，实现即插即拔的效果。 随着 app 功能和体积的增长，也带来了一些问题，例如编译速度缓慢、commit 代码经常要 merge、业务代码混在一起、开发功能类似的新项目时需要从头搭建。组件化可以有效解决这些问题。 to be &hellip;">
+  <meta name="description" content="实现功能是软件开发的最低要求。 2010 年初刚开始做 iOS 开发的时候，对自己的要求就是能够实现功能，随着时间和经验的累积，逐渐从各方面提高要求，包括设计易扩展的代码架构、合理的管理内存、组件化管理项目、以及 app 的安全问题。 架构设计 架构设计可以以业务为驱动， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,7 +68,7 @@
   
   <header>
     
-      <h1 class="entry-title">iOS 应用的组件化设计</h1>
+      <h1 class="entry-title">iOS 应用的开发设计</h1>
     
     
       <p class="meta">
@@ -85,14 +85,355 @@
 
 
 <div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/component.jpg" width="200" height="200"  >
-<strong>组件化 - <em>简单来说就是将项目按层级、模块拆分成不同组件，实现即插即拔的效果。</em></strong></p>
+<strong><em>实现功能是软件开发的最低要求。</em></strong></p>
 
-<p>随着 app 功能和体积的增长，也带来了一些问题，例如编译速度缓慢、commit 代码经常要 merge、业务代码混在一起、开发功能类似的新项目时需要从头搭建。组件化可以有效解决这些问题。</p>
+<p><br><br><br></p>
 
 <!-- more -->
 
 
-<p>to be continue&hellip;</p>
+<p>2010 年初刚开始做 iOS 开发的时候，对自己的要求就是能够实现功能，随着时间和经验的累积，逐渐从各方面提高要求，包括设计易扩展的代码架构、合理的管理内存、组件化管理项目、以及 app 的安全问题。</p>
+
+<h2>架构设计</h2>
+
+<p>架构设计可以以业务为驱动，按照最适合自己的方式去设计，设计思路和方法尽量统一，同类型问题用同样方式去解决，下面几点是我认为比较重要的：</p>
+
+<ul>
+<li><p>关注分离<br/>
+将系统分解为多个模块并各司其职，纵向分层，横向拆分业务。</p></li>
+<li><p>高内聚<br/>
+一个模块只完成一个功能，并合理有度的进行封装。</p></li>
+<li><p>松耦合<br/>
+依赖关系越少越好，尽量不横向依赖，不跨层访问。继承是紧耦合的一种操作，它通常与多态一起存在，如果仅仅是为了代码重用而做的继承还不如用组合。</p></li>
+<li><p>适度设计<br/>
+对业务方该限制的地方要进行限制，该灵活的地方也要给业务方创造灵活实现的条件，架构的设计要保持一定量的超前性而做到易扩展，但不要设计过度，避免多做无用功而增加框架复杂度。好的架构是随着时间而更新的，而不是一开始就设计好了一切。</p></li>
+<li><p>技术选型<br/>
+不要仅是为了体验新技术而改变现有架构，等别人把坑踩平后再根据团队及业务情况考虑是否使用，技术本身没有什么好不好，只有适合不适合。例如在 MVC、MVVM、MVCS 等架构模式如何选择这个问题上，我觉得可以根据业务情况选择使用，并且它们可以在项目里同时存在。</p></li>
+</ul>
+
+
+<h2>组件化</h2>
+
+<p>随着 app 功能和体积的增长，也带来了一些问题，例如编译速度缓慢、commit 代码经常要 merge、业务代码混在一起、开发功能类似的新项目时需要从头搭建。组件化可以有效解决这些问题。</p>
+
+<h3>拆分组件</h3>
+
+<p>每个组件对应一个 project，身为组件的同时还能够独立运行，大项目可以按业务模块拆分，中小项目按框架拆分就可以了，我目前使用的拆分方式就是将 <code>底层框架代码</code> 和 <code>UI控件</code> 分别作为两个组件，再和项目工程组装在一起。</p>
+
+<h3>组件之间的依赖关系</h3>
+
+<p>业务模块依赖于框架、业务模块之间尽量避免横向依赖、禁止框架依赖业务模块。</p>
+
+<h3>组件化实施</h3>
+
+<p>如果开发人员需要维护所有组件，那么可以将它们都下载到本地，然后通过本地链接的方式去组合，如果组件数量非常多，并且开发人员不需要维护所有组件，或者对于不需要维护组件的测试人员，可以通过远程 Git 链接的方式去组合。不管哪种方式都可以通过 CocoaPods 来组装，组装的核心就是 Podfile 和 Podspec。</p>
+
+<ul>
+<li>Podfile：在项目工程中定义各组件间的依赖关系，定义方式大概如下：</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>source 'https://github.com/CocoaPods/Specs.git'
+</span><span class='line'>
+</span><span class='line'>platform :ios, '9.0'
+</span><span class='line'>
+</span><span class='line'>inhibit_all_warnings!
+</span><span class='line'>
+</span><span class='line'>target 'XXFoundation' do
+</span><span class='line'>    project 'XXFoundation/XXFoundation'
+</span><span class='line'>    
+</span><span class='line'>    pod "SDWebImage", "4.0.1"
+</span><span class='line'>end
+</span><span class='line'>
+</span><span class='line'>target 'TargetName' do
+</span><span class='line'>    # 非开发人员，或不需要调试框架的开发人员可以直接从远端下载框架并依赖到项目中，缺点是不便于调试
+</span><span class='line'>    def podRemote
+</span><span class='line'>        pod 'XXFoundation', :git =&gt; 'http://gitlab.xxx.com/ios/xxfoundation.git', :branch =&gt; 'developer'
+</span><span class='line'>        pod 'XXUIKit', :git =&gt; 'http://gitlab.xxxx.com/ios/xxuikit.git', :branch =&gt; 'develop'
+</span><span class='line'>    end
+</span><span class='line'>
+</span><span class='line'>    # 开发人员可以将框架下载到项目根目录下，这种方式调试开发会方便一些
+</span><span class='line'>    def podLocal
+</span><span class='line'>        pod 'XXFoundation', :path =&gt; 'XXFoundation'
+</span><span class='line'>        pod 'XXUIKit', :path =&gt; 'XXUIKit'
+</span><span class='line'>    end
+</span><span class='line'>
+</span><span class='line'>    # 可以用 dev=1 pod install 来使用 podLocal 定义的方式组建工程
+</span><span class='line'>    if ENV['dev']
+</span><span class='line'>        podLocal
+</span><span class='line'>    else
+</span><span class='line'>        podRemote
+</span><span class='line'>    end
+</span><span class='line'>      
+</span><span class='line'>    pod 'SSZipArchive', '1.8.1'
+</span><span class='line'>    
+</span><span class='line'>    pod 'JPush', '3.0.6'
+</span><span class='line'>    
+</span><span class='line'>    # 没有在 github 上维护的第三方库，可放在本地 Vendors 目录中，并通过 Podspec 定义需要打包的资源
+</span><span class='line'>    pod 'WeixinSDK', :path =&gt; 'WandaFilm/Vendors/WeixinSDK/WeixinSDK.podspec'
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Podspec：各个组件在这里定义需要打包的代码及资源，资源包括 xib、国际化文件、assets 等文件。</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Pod::Spec.new do |s|
+</span><span class='line'>  s.name         = "XXFoundation"
+</span><span class='line'>  s.version      = "0.0.1"
+</span><span class='line'>  s.license      = "MIT"
+</span><span class='line'>  s.summary      = 'XXFoundation for cocoapods.'
+</span><span class='line'>  s.author       = { "lijingcheng" =&gt; "jingcheng.li@xx.com" }
+</span><span class='line'>  s.homepage     = "http://xx.com"
+</span><span class='line'>  s.platform     = :ios, "9.0"
+</span><span class='line'>  s.prefix_header_file = "XXFoundationPrefixHeader.pch"
+</span><span class='line'>  
+</span><span class='line'>  # 如果要打包的是本地资源就用：{ :path =&gt; "." }
+</span><span class='line'>  s.source       = { :git =&gt; "git@gitlab.xxx.com:ios/xxfoundation.git", :tag =&gt; '0.0.1' }
+</span><span class='line'>  
+</span><span class='line'>  # 需要打包的代码，** 表示会递归查找目录下的所有相关文件
+</span><span class='line'>  s.source_files = ["Classes/XXFoundation.h", "Classes/**/*.{h,m}"]
+</span><span class='line'>  
+</span><span class='line'>  # 需要打包的资源，需要注意的是 xcassets 实际上是文件夹
+</span><span class='line'>  s.resource = ["Classes/**/*.{xib,storyboard}", "*.xcassets/**/*.png", "zh-Hans.lproj", "en.lproj"]
+</span><span class='line'>  
+</span><span class='line'>  # 依赖了第三方库
+</span><span class='line'>  s.dependency     'SDWebImage', '4.0.1'
+</span><span class='line'>
+</span><span class='line'>  # 依赖了系统 framework
+</span><span class='line'>  s.frameworks   = "SystemConfiguration", "CoreTelephony"
+</span><span class='line'>  
+</span><span class='line'>  # 依赖了本地第三方 framework
+</span><span class='line'>  s.vendored_frameworks = "XXFoundation/Vendors/WebP_0.6.0/WebP.framework"
+</span><span class='line'>
+</span><span class='line'>  # 依赖了系统 lib
+</span><span class='line'>  s.libraries    = "z", "stdc++", "sqlite3"
+</span><span class='line'>
+</span><span class='line'>  # 依赖了本地第三方 lib
+</span><span class='line'>  s.vendored_libraries = "libWeChatSDK.a"
+</span><span class='line'>  
+</span><span class='line'>  # 需要修改 Build Settings
+</span><span class='line'>  s.xcconfig = {
+</span><span class='line'>    'GCC_PREPROCESSOR_DEFINITIONS' =&gt; '$(inherited) SD_WEBP=1',
+</span><span class='line'>  }
+</span><span class='line'>
+</span><span class='line'>  # 默认 ARC，由于用到的 ASIHTTPRequest 为 MRC，所以这里需要指明
+</span><span class='line'>  s.subspec "ASIHTTPRequest" do |sp|
+</span><span class='line'>    sp.requires_arc = false
+</span><span class='line'>    sp.source_files = "Vendors/ASIHTTPRequest/*.{h,m}"
+</span><span class='line'>  end
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果用本地链接的方式组建项目，由于各工程间的代码和资源是通过类似“快捷方式”的形式互相引用，所以需要注意下面两个问题</p>
+
+<ul>
+<li><p>当某个组件中新增或删除了类文件或资源文件，在另一个工程中想要响应此变化则需要重新执行 <code>pod update --no-repo-update</code> 来更新工程间的引用状态，如果仅是修改操作则不需要此步骤。</p></li>
+<li><p>Assets.xcassets 在这时只是个文件夹，所以这里维护的图片名字和实际文件的名字必须保持一致，否则会出现找不到资源的问题。</p></li>
+</ul>
+
+
+<h3>编译速度优化</h3>
+
+<p>app 组件化后，独立运行各个组件时，编译速度还是很理想的，但是运行主项目，还是会有编译速度过慢的问题，这时可以考虑将部分组件进行二进制化，也就是将依赖库中的代码打包成静态库或动态库，然后再链接到主项目中，通常可用下面几种方式实现</p>
+
+<ul>
+<li><p>Framework：在各组件工程中新建 Framework Target 并自己维护打包角本以及需要打进包的资源，当组件有变更时需要重新打包。</p></li>
+<li><p><a href="https://github.com/Carthage/Carthage">Carthage</a> 同样需要在组件工程中新建 Framework Target，仅支持 GitHub 上的资源。</p></li>
+<li><p><a href="https://github.com/CocoaPods/cocoapods-packager">CocoaPods Packager</a> 也是通过 podspec 来定义需要打进包的资源，并且要将 podspec 上传到 CocoaPods 的 podspec 仓库中。</p></li>
+</ul>
+
+
+<p>其实 Carthage 和 CocoaPods Package 也是将组件打出 Framework，然后再将他们添加到项目工程中，只是不用我们自己去维护打包角本。目前我在项目里没有做组件的二进制化，因为组件中的资源还不是很多，所以花时间和精力去维护这些操作不太值得。</p>
+
+<h2>安全机制</h2>
+
+<p>我们从 AppStore 下载的 app 其实都已经由苹果进行了加壳，要砸壳后才能有办法看到汇编形式的源代码，如果我们要自己再加一层壳，可以对关键代码的方法名做一些混淆，以增加别人分析代码的复杂度，不过这对于大多数 app 来说不太值得去做，我们可以把精力放在其他更易做并且更有效率的地方。</p>
+
+<h3>本地数据</h3>
+
+<ul>
+<li>存储在沙盒里的文件是能够被拿到的，所以对于 sqlite、plist 等文件不要存储重要信息，如果一定要存，可以将信息用对称加密(AES)的方式处理后再存储，用于加密的 key 不要以名文的方式写在代码里，可以在 app 启动时，管后台要一个非对称加密过的 key，并且这个 key 后台应该定期变更。</li>
+</ul>
+
+
+<h3>网络数据</h3>
+
+<ul>
+<li><p>使用 Https 来保证数据传输的安全，它还可以用来确认网站的真实性，防止用户误入钓鱼网站。</p>
+
+<ul>
+<li>对称加密：文件加密和解密使用相同的密钥，AES 相对其他对称加密方式来说更安全些。</li>
+<li>非对称加密：需要公钥和私钥，用公钥对数据进行加密，只有对应的私钥才能解密；如果用私钥对数据进行加密，那么只有对应的公钥才能解密。可以用 RSA 来做非对称加密，相对对称加密来说，速度较慢，但非常安全，据说还没被破解过。</li>
+<li>单向认证：只要求站点部署了 SSL 证书就行，并且客户端要信任服务端证书，我们可以在代码里设置为不支持无效证书，并且对域名做验证，一般应用都是用单向认证。</li>
+<li>双向认证：需要服务端与客户端都提供证书，并且他们之间相互信任，安全性相对要高一些，适合对安全性要求比较高的应用。<br/>
+<br></li>
+</ul>
+</li>
+<li><p>即使用了 Https 也要对一些关键数据再次加密，因为数据还是有可能被人拦截拿到。（当用户使用不安全的 WIFI 并且请求被代理拦截后，代理伪装用户去请求服务，并对拿到的证书进行解密骗取公钥，然后再用自己做的假证书伪装成服务器证书传递给用户骗取信任。）</p></li>
+<li><p>可以对重要接口的 URL 的参数进行加密</p></li>
+<li><p>通过代码签名确保 AP I的调用者来自你允许的 app</p></li>
+</ul>
+
+
+<h2>优化 app</h2>
+
+<h3>数据处理</h3>
+
+<ul>
+<li>将接口数据缓存到本地，频繁使用的接口数据还可以放到内存里，可以用 NSCache 存储缓存数据，好处是它可以自动清理内存占用，并且是线程安全的。</li>
+<li>缓存的接口数据要设置一个过期时间，用来及时更新数据，并且每隔一段时间还要清理下数据，例如每隔 N 天清理 N 天前缓存的数据。</li>
+<li>考虑用 ProtoBuf 替代 JSON，也可以仅是个别数据量大的接口改为 ProtoBuf 格式数据</li>
+<li>请求的图片格式可以由 jpg 改为 webp</li>
+<li>使用 gzip 对接口数据进行压缩</li>
+<li>按 UIImageView 大小取合适大小的图片，不要直接取原图</li>
+<li>非关键的业务数据，可以通过合并接口的方式，减少和服务器的交互次数。</li>
+<li>请求接口前客户端通过对 request params 做检查来减少不必要的网络请求</li>
+<li>可以在离开页面等场景下 cancel 网络请求</li>
+<li>可以用 ETag 这种服务端加本地验证的方式处理返回数据，当数据没有更新时不返回数据，而是返回 304</li>
+<li>数据量大时要提示用户是否在非 wifi 环境下下载</li>
+</ul>
+
+
+<h3>启动时间</h3>
+
+<p>可以通过 Instruments 的 Time Profiler 工具来查看代码耗费时间</p>
+
+<ul>
+<li>+load 方法如果做了过多耗时操作，或者过多的引用第三方 framework 都会增加 pre-main 阶段的耗费时间</li>
+<li>检查 didFinishLaunchingWithOptions 方法，将部分操作改为异步执行或延迟处理</li>
+</ul>
+
+
+<h3>app 瘦身</h3>
+
+<ul>
+<li>将部分资源文件从工程中移除，改为从接口获取，并且可以通过给数据加版本号，避免每次重复下载。</li>
+<li>清理无用的代码和资源，不要 @1x 图片，如果用到了 ProtoBuf，可以将 .proto 文件从 Compile Sources 中移除。</li>
+<li>压缩图片</li>
+<li>小图标可以使用 iconfont 替代，大图可以用 pdf 替代或者只留 @3x 图</li>
+<li>启动图界面用 LaunchScreen.storyboard，不要用多张 Default 图。</li>
+<li>用 .xcassets 来管理图片，Xcode 能够把里边的所有 png 图片压缩成一个Assets.car 文件。并且 iOS9 之后，如果是用 .xcassets 管理图片，AppStore 会根据不同设备准备不同的安装包，每个包内只有对应尺寸的图片，例如 iPhone6 下载 app 时，包里就只有 @2x 图。</li>
+</ul>
+
+
+<h3>其他</h3>
+
+<ul>
+<li>延迟处理不需要马上展现的视图或操作</li>
+<li>不要阻塞主线程，能异步去做的就不要同步。</li>
+<li>由于 UIKit 中大部分对象都不是线程安全的，所以 UI 操作都需要放在主线程做串行处理，否则可能会导致未知行为（动画异常、页面错乱、Crash）。</li>
+<li>优化表格滑动
+
+<ul>
+<li>提前算 Cell 高度并缓存，如果要加载的数据也是要经过处理才展示的也提前处理好</li>
+<li>异步绘制，滑动过程中不加载图片</li>
+<li>当 Cell 中有很多子视图并且他们要在不同条件下展示时，考虑拆成多个 Cell</li>
+<li>不要在 Cell 中频繁生成 NSDateFormatter 对象</li>
+</ul>
+</li>
+<li>通过设置模拟器的 Debug 菜单下的几项设置来查看图层视图是否需要优化
+
+<ul>
+<li>Color Blended layers<br/>
+大多情况是因为视图的 backgroundColor 与父视图颜色不一致或者是透明的，它会用红色表示有问题的视图，而绿色的表示没问题</li>
+<li>Color copied images<br/>
+当图片的色彩格式不能被 GPU 处理时，会交由 CPU 处理，应该尽可能避免这种问题</li>
+<li>Color misaligned images<br/>
+图片大小与控件不一致，会用黄色表示图片被缩放了，用紫色表示像素没对齐</li>
+<li>Color offscreen-rendered<br/>
+用黄色标示哪些 layer 需要做离屏渲染，多数时候离屏渲染会影响性能，应避免重写 drawRect 方法，避免使用 masksToBounds(设置圆角/模糊效果)、shouldRasterize(光栅化)、shadow(阴影)</li>
+</ul>
+</li>
+</ul>
+
+
+<p>PS：过早的优化是万恶之源！</p>
 </div>
 
 
@@ -140,6 +481,14 @@
   <ul id="最新">
     
       <li class="post">
+        <a href="/blog/2017/10/19/new-driver/">给新司机的一点建议</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/03/17/swift-base/">从 Objective-C 过渡到 Swift</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/12/23/shi-yong-carthage-zuo-yi-lai-guan-li/">使用 Carthage 做依赖管理</a>
       </li>
     
@@ -148,15 +497,7 @@
       </li>
     
       <li class="post">
-        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS 应用的组件化设计</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/06/09/ioskai-fa-tips/">iOS 开发 Tips</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
+        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS 应用的开发设计</a>
       </li>
     
   </ul>
@@ -192,7 +533,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2016 - 风行 -
+  Copyright &copy; 2017 - 风行 -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

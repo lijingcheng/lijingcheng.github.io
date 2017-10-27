@@ -152,12 +152,12 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 
 
 <ul>
-<li>获取全局唯一标示符</li>
+<li>忽略第三方 SDK 文档中的警告</li>
 </ul>
 
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[[NSProcessInfo processInfo] globallyUniqueString];</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>build settings -&gt;  Other Warning Flags -&gt; -Wno-documentation</span></code></pre></td></tr></table></div></figure>
 
 
 <ul>
@@ -185,15 +185,6 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>输入文字后，用 control + enter 来插入换行符，相当于在代码中添加 \n</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>获取当前视图控制器</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[[UIApplication sharedApplication].windows firstObject].rootViewController</span></code></pre></td></tr></table></div></figure>
 
 
 <ul>
@@ -235,7 +226,7 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[view.backgroundColor colorWithAlphaComponent:0.5];</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>superView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];</span></code></pre></td></tr></table></div></figure>
 
 
 <ul>
@@ -248,30 +239,12 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 
 
 <ul>
-<li>去掉 UITableView 下面多余空行</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>self.tableView.tableFooterView = [[UIView alloc] init];</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
 <li>编译出 error 后继续编译</li>
 </ul>
 
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>Xcode -&gt; preference -&gt; general -&gt; 勾选 Continue building after errors</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>在 Xcode 中创建 group 的同时创建 folder</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Xcode -&gt; 左侧右键 -&gt; Add Files to ... -&gt; New Folder -&gt; Add</span></code></pre></td></tr></table></div></figure>
 
 
 <ul>
@@ -309,28 +282,6 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
 </span><span class='line'>#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 </span><span class='line'>
 </span><span class='line'>#pragma clang diagnostic pop
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>中文转拼音</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>NSMutableString *str = [[NSMutableString alloc] initWithString:@"风行"];
-</span><span class='line'>
-</span><span class='line'>if (CFStringTransform((__bridge CFMutableStringRef)str, NULL, kCFStringTransformMandarinLatin, NO)) {
-</span><span class='line'>    CFStringTransform((__bridge CFMutableStringRef)str, NULL, kCFStringTransformStripDiacritics, NO);
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>NSLog(@"%@", str);
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -398,7 +349,7 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
         <a class="basic-alignment left" href="/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/" title="Previous Post: 代码重构">&laquo; 代码重构</a>
       
       
-        <a class="basic-alignment right" href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/" title="Next Post: iOS 应用的组件化设计">iOS 应用的组件化设计 &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/" title="Next Post: iOS 应用的开发设计">iOS 应用的开发设计 &raquo;</a>
       
     </p>
   </footer>
@@ -412,6 +363,14 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
   <ul id="最新">
     
       <li class="post">
+        <a href="/blog/2017/10/19/new-driver/">给新司机的一点建议</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/03/17/swift-base/">从 Objective-C 过渡到 Swift</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/12/23/shi-yong-carthage-zuo-yi-lai-guan-li/">使用 Carthage 做依赖管理</a>
       </li>
     
@@ -420,15 +379,7 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
       </li>
     
       <li class="post">
-        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS 应用的组件化设计</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/06/09/ioskai-fa-tips/">iOS 开发 Tips</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
+        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS 应用的开发设计</a>
       </li>
     
   </ul>
@@ -464,7 +415,7 @@ NSLog(@"%@", [NSString stringWithFormat:@"%02d月 &hellip;">
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2016 - 风行 -
+  Copyright &copy; 2017 - 风行 -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

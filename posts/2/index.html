@@ -9,7 +9,7 @@
   <meta name="author" content="风行">
 
   
-  <meta name="description" content=" SSH Key - 通过 SSH 密钥登录服务器，可以避免密码在网络中传输，也就保证了登录过程的安全，也不会因此受到中间人攻击，如果在 SSH 密钥登录基础上再加上密码短语 （passphrase）的使用，安全性便会再次提高。 ">
+  <meta name="description" content="多线程 - 合理的线程分配能够提高程序的执行效率和资源利用率。 GCD 基于 C API，Operation Queue 是在 GCD 基础上实现的，效率上较 GCD 会差一点点，但代码可读性和易用性较高，简单的任务可用 GCD 去实现，复杂一些的还是推荐使用 Operation Queue &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +65,80 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/06/03/iosduo-xian-cheng-kai-fa/">iOS 多线程开发</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-06-03T15:07:00+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>3:07 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/thread.png" width="200" height="200"  >
+<strong>多线程 - <em>合理的线程分配能够提高程序的执行效率和资源利用率。</em></strong></p>
+
+<p>GCD 基于 C API，Operation Queue 是在 GCD 基础上实现的，效率上较 GCD 会差一点点，但代码可读性和易用性较高，简单的任务可用 GCD 去实现，复杂一些的还是推荐使用 Operation Queue 来处理。微小的性能提升远不如写出可维护性高的代码来的实在。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/06/03/iosduo-xian-cheng-kai-fa/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/03/28/iosying-yong-de-sheng-ming-zhou-qi/">iOS 应用的生命周期</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-03-28T11:23:29+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>28</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:23 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/app-lifecycle.jpeg" width="160" height="160"  >
+<strong>生命周期 - <em>程序的生命周期是指应用程序从启动到结束整个阶段的全过程.</em></strong> <br/>
+<br>
+点击应用图标打开程序，系统会首先通过 main 函数进行相关设置，然后通过 RunLoop 保持程序能够始终运行并监听处理分发事件，当没有事件发生时 RunLoop 便处于睡眠状态，节省资源。当发生事件后，RunLoop 将事件对象分发给相应视图处理。当用户按下 Home 键，应用会在进入后台后短暂运行，直到被系统挂起。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/03/28/iosying-yong-de-sheng-ming-zhou-qi/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -194,6 +268,14 @@
   <ul id="最新">
     
       <li class="post">
+        <a href="/blog/2017/10/19/new-driver/">给新司机的一点建议</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/03/17/swift-base/">从 Objective-C 过渡到 Swift</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/12/23/shi-yong-carthage-zuo-yi-lai-guan-li/">使用 Carthage 做依赖管理</a>
       </li>
     
@@ -202,15 +284,7 @@
       </li>
     
       <li class="post">
-        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS 应用的组件化设计</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/06/09/ioskai-fa-tips/">iOS 开发 Tips</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
+        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS 应用的开发设计</a>
       </li>
     
   </ul>
@@ -245,7 +319,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2016 - 风行 -
+  Copyright &copy; 2017 - 风行 -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

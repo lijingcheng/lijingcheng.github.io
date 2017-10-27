@@ -1,0 +1,2049 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>从 Objective-C 过渡到 Swift - 风行的博客</title>
+  <meta name="author" content="风行">
+
+  
+  <meta name="description" content="Swift - 不仅支持面向对象和面向协议开发，同时还支持函数式开发，在使用封装继承多态的同时，也可以用协议去组合代码，还可以利用高阶函数去简化代码、组织程序。 Swift 还是一个强类型语言，类型在运行时和编译期间是一致的，这样编译器可以得到足够的信息在生成中间码和机器码时进行优化， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://lijingcheng.github.io/blog/2017/03/17/swift-base/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="风行的博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">风行的博客</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss email">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+    <li><a href="mailto:bj_lijingcheng@163.com" rel="subscribe-email" title="subscribe via email">邮箱</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="lijingcheng.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/archives">归档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">从 Objective-C 过渡到 Swift</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-03-17T19:10:37+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>7:10 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/swift.jpg" width="250" height="250"  >
+<strong>Swift - <em>不仅支持面向对象和面向协议开发，同时还支持函数式开发，在使用封装继承多态的同时，也可以用协议去组合代码，还可以利用高阶函数去简化代码、组织程序。</em></strong></p>
+
+<p><br><br></p>
+
+<!-- more -->
+
+
+<p>Swift 还是一个强类型语言，类型在运行时和编译期间是一致的，这样编译器可以得到足够的信息在生成中间码和机器码时进行优化，并在编译期间完成方法的绑定，可以直接获取方法地址并进行调用。</p>
+
+<p>下面所写的所有内容都只是 Swift 的一些基础知识，仅适用于初学者或培训使用。本文初写目的就是为了培训，曾在三个小时内催眠了所有听众。</p>
+
+<h2>Hello World</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="n">print</span><span class="p">(</span><span class="s">&quot;Hello world!&quot;</span><span class="p">)</span> <span class="c1">// 打印并换行</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>数据类型</h2>
+
+<h3>整数</h3>
+
+<p>通常使用 Int 来声明整数就可以了，当为了优化内存占用或要处理接口返回的长度明确的数据等情况时可使用显式指定长度的类型，这样可以及时发现值溢出并增强代码可读性。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">let</span> <span class="nl">age</span><span class="p">:</span> <span class="n">Int</span> <span class="o">=</span> <span class="mi">4</span> <span class="c1">// 常量 age 在 32-bit 平台下为 Int32,在 64-bit 下为 Int64</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">var</span> <span class="n">twoThousand</span> <span class="o">=</span> <span class="mi">2</span><span class="n">_000</span> <span class="c1">// 变量 twoThousand 会被编译器自动推断为 Int 类型，并且用 _ 增强可读性</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>浮点数</h3>
+
+<p>32/64 位浮点数分别用 Float 和 Double 表示，精度分别为 6/15+ 位数字。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">let</span> <span class="n">pi</span> <span class="o">=</span> <span class="mf">3.14159</span> <span class="c1">// 浮点数值总是会被推断为 Double</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="n">a</span> <span class="o">=</span> <span class="n">Int</span><span class="p">(</span><span class="n">pi</span><span class="p">)</span> <span class="c1">// 自动截断，值为 3</span>
+</span><span class='line'><span class="k">let</span> <span class="n">b</span> <span class="o">=</span> <span class="n">Int</span><span class="p">(</span><span class="nl">exactly</span><span class="p">:</span> <span class="n">pi</span><span class="p">)</span> <span class="c1">// 要求更为精确的转换，当精度有损失，认为转换失败，值为 nil</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>布尔值</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">let</span> <span class="nl">isChild</span><span class="p">:</span> <span class="n">Bool</span> <span class="o">=</span> <span class="nb">true</span> <span class="c1">// or false</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>字符</h3>
+
+<p>Character 类型通常由编码无关的 Unicode 字符组成</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">var</span> <span class="nl">c</span><span class="p">:</span> <span class="n">Character</span> <span class="o">=</span> <span class="s">&quot;e&quot;</span> <span class="c1">// 如果不指定类型，双引号会被推断为字符串类型</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Character 可以由一个或多个 Unicode 标量（Scalar）组成</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">var</span> <span class="nl">c1</span><span class="p">:</span> <span class="n">Character</span> <span class="o">=</span> <span class="s">&quot;\u{00E9}&quot;</span> <span class="c1">// é</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">var</span> <span class="nl">c2</span><span class="p">:</span> <span class="n">Character</span> <span class="o">=</span> <span class="s">&quot;\u{0065}\u{0301}&quot;</span> <span class="c1">// e +  ́ = é</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>字符串</h3>
+
+<p>Swift 中的 String 是值类型，所以在进行传递时都会进行值拷贝，不用担心会被意外修改。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">let</span> <span class="nl">str</span><span class="p">:</span> <span class="n">String</span> <span class="o">=</span> <span class="s">&quot;Hello&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="s">&quot;str: \(str)&quot;</span><span class="p">)</span> <span class="c1">// Swift 会用 str 的值替换占位符 \(str)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>给字符串追加字符不一定会更改字符串的字符数量</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">var</span> <span class="n">word</span> <span class="o">=</span> <span class="s">&quot;cafe&quot;</span> <span class="o">+</span> <span class="s">&quot;\u{301}&quot;</span> <span class="c1">// café</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="n">word</span><span class="p">.</span><span class="n">characters</span><span class="p">.</span><span class="n">count</span><span class="p">)</span> <span class="c1">// 有 4 个 char</span>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="n">word</span><span class="p">.</span><span class="n">unicodeScalars</span><span class="p">.</span><span class="n">count</span><span class="p">)</span> <span class="c1">// 有 5 个 Unicode Scalar</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在 Swift 中不同的字符以及相同字符的不同表示方式可能需要不同数量的内存空间来存储，所以要知道字符的确定位置就必须从 String 开头遍历每一个 Unicode 标量直到结尾。因此 Swift 的字符串不能用整数做索引，而是使用一个关联的索引类型 String.Index，它对应着字符串中每一个字符的位置。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">let</span> <span class="n">greeting</span> <span class="o">=</span> <span class="s">&quot;Guten Tag!&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="n">greeting</span><span class="p">[</span><span class="n">greeting</span><span class="p">.</span><span class="n">startIndex</span><span class="p">])</span><span class="c1">// 值为 G，如果用 greeting[0] 会报错</span>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="n">greeting</span><span class="p">[</span><span class="n">greeting</span><span class="p">.</span><span class="n">index</span><span class="p">(</span><span class="n">greeting</span><span class="p">.</span><span class="n">startIndex</span><span class="p">,</span> <span class="nl">offsetBy</span><span class="p">:</span> <span class="mi">7</span><span class="p">)])</span> <span class="c1">// a</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>数组</h3>
+
+<p>Array 使用有序列表存储同一类型的多个值，可以存储重复值。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">var</span> <span class="n">array1</span> <span class="o">=</span> <span class="n">Array</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="p">()</span> <span class="c1">// 字符串数组</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">var</span> <span class="n">array2</span> <span class="o">=</span> <span class="p">[</span><span class="n">String</span><span class="p">]()</span> <span class="c1">// 字符串数组（推荐写法）</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">var</span> <span class="n">array3</span> <span class="o">=</span> <span class="n">Array</span><span class="p">(</span><span class="nl">repeating</span><span class="p">:</span> <span class="s">&quot;_&quot;</span><span class="p">,</span> <span class="nl">count</span><span class="p">:</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">// 字符串数组，包含3个元素，默认值为 _</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">var</span> <span class="n">array4</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;apple&quot;</span><span class="p">,</span> <span class="s">&quot;pen&quot;</span><span class="p">,</span> <span class="s">&quot;apple-pen&quot;</span><span class="p">]</span> <span class="c1">// 自动推断出数组类型为 String</span>
+</span><span class='line'><span class="n">array4</span> <span class="o">+=</span> <span class="p">[</span><span class="s">&quot;Pineapple&quot;</span><span class="p">]</span> <span class="c1">// 相同类型数组可以用 + 进行组合</span>
+</span><span class='line'><span class="n">array4</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;Pen&quot;</span><span class="p">)</span> <span class="c1">// 添加元素</span>
+</span><span class='line'><span class="n">array4</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;Apple&quot;</span> <span class="c1">// 可以用下标访问和修改数组元素</span>
+</span><span class='line'><span class="n">array4</span><span class="p">[</span><span class="mf">1.</span><span class="p">.</span><span class="mf">.2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Pen&quot;</span><span class="p">,</span> <span class="s">&quot;Apple-Pen&quot;</span><span class="p">]</span> <span class="c1">// 还可以利用下标来一次改变一系列数据值，尽量保证下标区间与值的个数相匹配</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>使用 for-in 循环来遍历数组中的数据项</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">for</span> <span class="n">item</span> <span class="k">in</span> <span class="n">array4</span> <span class="p">{}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果我们同时需要每个数据项的值和索引值，可以使用 enumerated() 来进行数组遍历。enumerated() 返回一个由每一个数据项索引值和数据值组成的元组。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">for</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">in</span> <span class="n">array4</span><span class="p">.</span><span class="n">enumerated</span><span class="p">()</span> <span class="p">{}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>可以嵌套多对方括号来创建多维数组</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">var</span> <span class="nl">array3D</span><span class="p">:</span> <span class="p">[[[</span><span class="n">Int</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]],</span> <span class="p">[[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]]]</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="n">array3D</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="n">array3D</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="n">array3D</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>集合</h3>
+
+<p>Set 用来存储相同类型并且没有确定顺序的值，不可以存储重复值。一个类型为了存储在集合中必须是可哈希化的，需要确认 Hashable 协议并提供方法来计算它的哈希值，因为 Hashable 符合 Equatable 协议，所以还需要提供 <code>==</code> 的实现。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">var</span> <span class="n">set1</span> <span class="o">=</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="p">()</span> <span class="c1">// 与数组不同的是集合的声明没有简化形式</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">var</span> <span class="nl">set2</span><span class="p">:</span> <span class="n">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;apple&quot;</span><span class="p">,</span> <span class="s">&quot;pen&quot;</span><span class="p">,</span> <span class="s">&quot;apple-pen&quot;</span><span class="p">]</span> <span class="c1">// 如果不指定类型就会被认为是数组</span>
+</span><span class='line'><span class="n">set2</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="s">&quot;pineapple&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>按照特定顺序来遍历一个 Set 中的值可以使用 sorted() 方法，它将返回一个有序数组。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">for</span> <span class="n">item</span> <span class="k">in</span> <span class="n">set2</span><span class="p">.</span><span class="n">sorted</span><span class="p">()</span> <span class="p">{}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>字典</h3>
+
+<p>Dictionary 用来存储多个相同类型的值，每个值都关联唯一的 key，key 的类型必须遵循 Hashable 协议，字典中的数据项没有具体顺序。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">var</span> <span class="n">dict1</span> <span class="o">=</span> <span class="n">Dictionary</span><span class="o">&lt;</span><span class="n">Int</span><span class="p">,</span> <span class="n">String</span><span class="o">&gt;</span><span class="p">()</span> <span class="c1">// 键是Int型，值是String型</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">var</span> <span class="n">dict2</span> <span class="o">=</span> <span class="p">[</span><span class="nl">Int</span><span class="p">:</span> <span class="n">String</span><span class="p">]()</span> <span class="c1">//推荐写法</span>
+</span><span class='line'><span class="n">dict2</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;lijingcheng&quot;</span> <span class="c1">// key: 3, value: lijingcheng 字典包含 key 时此操作为修改，否则为添加</span>
+</span><span class='line'><span class="n">dict2</span> <span class="o">=</span> <span class="p">[</span><span class="o">:</span><span class="p">]</span> <span class="c1">// 赋值为空字典</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>遍历字典时每一个数据项都以 (key, value) 元组形式返回</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">in</span> <span class="n">dict2</span> <span class="p">{}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>元组</h3>
+
+<p>tuples 可以把多个不同类型的值组合成一个复合值，并且值是有序的，元组不支持 add 和 remove 操作，但是支持修改。元组并不适合创建复杂的数据结构，更适合用于组合少量的多元数据，例如可以在函数中一次返回多个值。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">let</span> <span class="n">http404Error</span> <span class="o">=</span> <span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="s">&quot;Not Found&quot;</span><span class="p">)</span> <span class="c1">// http404Error 的类型是 (Int, String)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="s">&quot;\(http404Error.0), \(http404Error.1).&quot;</span><span class="p">)</span> <span class="c1">// 用下标访问元组</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>定义元组时给单个元素命名，然后通过名字来获取元素的值</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">let</span> <span class="n">http200Status</span> <span class="o">=</span> <span class="p">(</span><span class="nl">statusCode</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span> <span class="nl">description</span><span class="p">:</span> <span class="s">&quot;OK&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="s">&quot;\(http200Status.statusCode), \(http200Status.description).&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>将元组的内容分解为常量</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">let</span> <span class="p">(</span><span class="n">statusCode</span><span class="p">,</span> <span class="n">statusMessage</span><span class="p">)</span> <span class="o">=</span> <span class="n">http404Error</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="s">&quot;\(statusCode), \(statusMessage).&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>元组支持嵌套</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">let</span> <span class="n">userInfo</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;lijingcheng&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s">&quot;male&quot;</span><span class="p">,</span> <span class="s">&quot;Mtime&quot;</span><span class="p">),</span> <span class="p">[</span><span class="s">&quot;obj1&quot;</span><span class="p">,</span> <span class="s">&quot;obj2&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s">&quot;key&quot;</span><span class="o">:</span> <span class="s">&quot;value&quot;</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Optional</h3>
+
+<p>在声明变量时可以用可选类型来处理值可能为 nil 的情况，可选类型也可用于函数参数和函数返回值。（Swift 中 nil 不是指针，它是一个确定的值，可用来表示任何类型变量的值缺失）</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">let</span> <span class="nl">possibleNumber</span><span class="p">:</span> <span class="n">String</span><span class="o">?</span> <span class="o">=</span> <span class="s">&quot;123&quot;</span> <span class="c1">// String? 也可以写成 Optional&lt;String&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 使用可选绑定来判断可选类型是否为空</span>
+</span><span class='line'><span class="k">if</span> <span class="k">let</span> <span class="n">num</span> <span class="o">=</span> <span class="n">possibleNumber</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">print</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">print</span><span class="p">(</span><span class="n">possibleNumber</span><span class="o">!</span><span class="p">)</span> <span class="c1">// 强制解析可选类型 possibleNumber，如果值为 nil 则会报错</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>当确定可选类型变量有值的情况下，可以用隐式解析可选类型来定义这个变量来避免每次使用前的 if 判断，以提高效率。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">let</span> <span class="nl">assumedString</span><span class="p">:</span> <span class="n">String</span><span class="o">!</span> <span class="o">=</span> <span class="s">&quot;An implicitly unwrapped optional string.&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="n">assumedString</span><span class="p">)</span> <span class="c1">// 不需要强制解析</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Any</h3>
+
+<p>Any 相当于 Objective-C 中的 id，它可以表示任何类型，包括函数类型，AnyObject 可以表示任何类类型的实例。可以用类型检查操作符 is 来检查一个实例是否属于特定类型，就像 Objective-C 中的 isKindOf 方法。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">var</span> <span class="nl">things</span><span class="p">:</span> <span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">42</span><span class="p">,</span> <span class="s">&quot;hello&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="p">(</span><span class="nl">name</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">String</span> <span class="k">in</span> <span class="s">&quot;Hello, \(name)&quot;</span> <span class="p">}]</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">for</span> <span class="n">item</span> <span class="k">in</span> <span class="n">things</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 用 as? 进行类型转换，如果用 as! 来强制转换，当转换失败时会在运行时报错</span>
+</span><span class='line'>    <span class="k">if</span> <span class="k">let</span> <span class="n">intValue</span> <span class="o">=</span> <span class="n">item</span> <span class="kt">as</span><span class="o">?</span> <span class="n">Int</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">print</span><span class="p">(</span><span class="s">&quot;intValue: \(intValue)&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 因为可选值有可能为 nil，所在再往数组里放时会有警告，避免出现警告可用下面两种方式</span>
+</span><span class='line'><span class="k">let</span> <span class="nl">optionalNumber</span><span class="p">:</span> <span class="n">Int</span><span class="o">?</span> <span class="o">=</span> <span class="mi">3</span>
+</span><span class='line'><span class="n">things</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">optionalNumber</span> <span class="o">??</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'><span class="n">things</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">optionalNumber</span> <span class="kt">as</span> <span class="n">Any</span><span class="p">)</span> <span class="c1">// Int to Any</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>运算符</h2>
+
+<p>Swift 支持大部分标准 C 语言的运算符，并改进许多特性来减少常规编码错误。</p>
+
+<h3>赋值运算符</h3>
+
+<p>Swift 的赋值操作不返回任何值，所以无法把 == 错写成 =，下面代码会在编译时报错</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">if</span> <span class="n">x</span> <span class="o">=</span> <span class="n">y</span> <span class="p">{}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>算术运算符</h3>
+
+<p>没有自增和自减运算符，加法运算符可用于字符串拼接</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">var</span> <span class="n">str</span> <span class="o">=</span> <span class="s">&quot;hello, &quot;</span> <span class="o">+</span> <span class="s">&quot;world&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>比较运算符</h3>
+
+<p>字符、字符串、元组等值类型值可以用 <code>&lt;</code> <code>&gt;</code> <code>==</code> 和 <code>!=</code> 来进行比较</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">if</span> <span class="s">&quot;apple&quot;</span> <span class="o">==</span> <span class="s">&quot;pen&quot;</span> <span class="p">{}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>三目运算符</h3>
+
+<p>不支持下面这种写法</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">var</span> <span class="n">i</span> <span class="o">=</span> <span class="n">num</span> <span class="o">!=</span> <span class="nb">nil</span> <span class="o">?</span> <span class="o">:</span> <span class="mi">3</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>空合运算符</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">var</span> <span class="nl">colorName</span><span class="p">:</span> <span class="n">String</span><span class="o">?</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="n">colorName</span> <span class="o">??</span> <span class="s">&quot;red&quot;</span><span class="p">)</span> <span class="c1">// red</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>区间运算符</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">for</span> <span class="n">index</span> <span class="k">in</span> <span class="mf">1.</span><span class="p">.</span><span class="mf">.5</span> <span class="p">{}</span> <span class="c1">// 闭区间运算符</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">let</span> <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Anna&quot;</span><span class="p">,</span> <span class="s">&quot;Alex&quot;</span><span class="p">,</span> <span class="s">&quot;Brian&quot;</span><span class="p">,</span> <span class="s">&quot;Jack&quot;</span><span class="p">]</span>
+</span><span class='line'><span class="k">let</span> <span class="n">count</span> <span class="o">=</span> <span class="n">names</span><span class="p">.</span><span class="n">count</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mf">0.</span><span class="p">.</span><span class="o">&lt;</span><span class="n">count</span> <span class="p">{}</span> <span class="c1">// 半开区间运算符</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>恒等运算符</h3>
+
+<p>Swift 提供了恒等 <code>===</code> 和不恒等 <code>!==</code> 两个比较符来判断类的两个对象是否引用同一个实例，而 <code>==</code> 则是用来比较两个实例的值是否相同。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">if</span> <span class="n">tenEighty</span> <span class="o">===</span> <span class="n">alsoTenEighty</span> <span class="p">{}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>溢出运算符</h3>
+
+<p>Swift 会在数值溢出时报错，也可以通过溢出运算符在数值溢出的时候采取截断处理。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">var</span> <span class="n">upOverflow</span> <span class="o">=</span> <span class="kt">UInt8</span><span class="p">.</span><span class="n">max</span> <span class="o">&amp;+</span> <span class="mi">1</span> <span class="c1">// 上溢运算 0</span>
+</span><span class='line'><span class="k">var</span> <span class="n">downOverflow</span> <span class="o">=</span> <span class="kt">UInt8</span><span class="p">.</span><span class="n">min</span> <span class="o">&amp;-</span> <span class="mi">1</span> <span class="c1">// 下溢运算 255</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>控制流</h2>
+
+<h3>if-else</h3>
+
+<p>条件语句中的小括号可以省略，并加强了类型安全检查，不能够再用整型参与 Bool 判断</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">if</span> <span class="mi">1</span> <span class="p">{}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>guard</h3>
+
+<p>当 guard 语句为真时执行 guard 语句下面的代码，使用 guard 做基本的安全检查能有效减少函数中的嵌套数量，并提高代码可读性。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">func</span> <span class="nf">hello</span><span class="p">(</span><span class="nl">name</span><span class="p">:</span> <span class="n">String</span><span class="o">?</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">guard</span> <span class="n">name</span> <span class="o">!=</span> <span class="nb">nil</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">print</span><span class="p">(</span><span class="s">&quot;Hello \(name!)&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>switch</h3>
+
+<p>Swift 中的 switch 语句在进行数值匹配时除了支持整型和字符，还支持浮点数、字符串、元组、枚举等类型，并且 case 语句不能有遗漏，如果不愿写太多 case 可用 default 分支满足需求。当匹配的 case 分支中的代码执行完毕后，程序会终止 switch 语句，避免了因忘记写 break 而产生的错误，break 语句可以用于逻辑性的跳出 switch。如果希望能够在执行完 case 中的代码后向下掉落则需要使用 fallthrough。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">let</span> <span class="n">str</span> <span class="o">=</span> <span class="s">&quot;e&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">switch</span> <span class="n">str</span> <span class="p">{</span>
+</span><span class='line'><span class="k">case</span> <span class="s">&quot;a&quot;</span><span class="o">:</span>
+</span><span class='line'>    <span class="k">break</span>
+</span><span class='line'><span class="k">case</span> <span class="s">&quot;b&quot;</span><span class="p">,</span> <span class="s">&quot;B&quot;</span><span class="o">:</span>
+</span><span class='line'>    <span class="n">print</span><span class="p">(</span><span class="s">&quot;b or B&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">case</span> <span class="s">&quot;c&quot;</span><span class="p">...</span><span class="s">&quot;e&quot;</span><span class="o">:</span>
+</span><span class='line'>    <span class="n">print</span><span class="p">(</span><span class="s">&quot;c - e&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">fallthrough</span>
+</span><span class='line'><span class="k">default</span><span class="o">:</span>
+</span><span class='line'>    <span class="n">print</span><span class="p">(</span><span class="s">&quot;default...&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>用 switch 语句匹配元组的值</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">let</span> <span class="n">somePoint</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">switch</span> <span class="n">somePoint</span> <span class="p">{</span>
+</span><span class='line'><span class="k">case</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">:</span>
+</span><span class='line'>    <span class="n">print</span><span class="p">(</span><span class="s">&quot;(0, 0)&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">case</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">:</span> <span class="c1">// 只匹配 y，x 可以是任何值</span>
+</span><span class='line'>    <span class="n">print</span><span class="p">(</span><span class="s">&quot;(\(somePoint.0), 0)&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">case</span> <span class="p">(</span><span class="o">-</span><span class="mf">2.</span><span class="p">.</span><span class="mf">.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.</span><span class="p">.</span><span class="mf">.2</span><span class="p">)</span><span class="o">:</span>
+</span><span class='line'>    <span class="n">print</span><span class="p">(</span><span class="s">&quot;(\(somePoint.0), \(somePoint.1))&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">case</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="k">let</span> <span class="n">y</span><span class="p">)</span><span class="o">:</span> <span class="c1">// 只匹配 x，并且将 y 的值赋给常量 y</span>
+</span><span class='line'>    <span class="n">print</span><span class="p">(</span><span class="s">&quot;0, \(y)&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">case</span> <span class="k">let</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">where</span> <span class="n">x</span> <span class="o">==</span> <span class="nl">y</span><span class="p">:</span> <span class="c1">// 通过 where 来进行匹配</span>
+</span><span class='line'>    <span class="n">print</span><span class="p">(</span><span class="s">&quot;\(x) == \(y)&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">case</span> <span class="k">let</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">:</span>
+</span><span class='line'>    <span class="n">print</span><span class="p">(</span><span class="s">&quot;(\(x), \(y))&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>for-in</h3>
+
+<p>如果不需要区间序列内每一项的值，可以使用下划线 _ 替代变量名来忽略这个值</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">var</span> <span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;apple&quot;</span><span class="p">,</span> <span class="s">&quot;pen&quot;</span><span class="p">,</span> <span class="s">&quot;apple-pen&quot;</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">for</span> <span class="n">_</span> <span class="k">in</span> <span class="n">array</span> <span class="p">{}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>while</h3>
+
+<p>while 条件语句中的小括号可以省略，do-while 变成 repeat-while</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="n">repeat</span> <span class="p">{}</span> <span class="k">while</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>函数与闭包</h2>
+
+<h3>函数</h3>
+
+<p>Swift 是类型安全的，所以支持参数个数相同但类型不同的函数重载</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">func</span> <span class="n">hello</span><span class="p">(</span><span class="nl">name</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">String</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s">&quot;Hello, &quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">&quot;!&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">func</span> <span class="n">hello</span><span class="p">(</span><span class="nl">name</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">String</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s">&quot;Hello, &quot;</span> <span class="o">+</span> <span class="n">String</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;!&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">hello</span><span class="p">(</span><span class="nl">name</span><span class="p">:</span> <span class="s">&quot;Lee&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">hello</span><span class="p">(</span><span class="nl">name</span><span class="p">:</span> <span class="mi">3</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>没有返回值的函数其实是返回了一个特殊的 Void 值，它是一个空的元组，可用()表示</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">func</span> <span class="nf">greet</span><span class="p">()</span> <span class="p">{}</span>
+</span><span class='line'><span class="k">func</span> <span class="nf">greet</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">()</span> <span class="p">{}</span>
+</span><span class='line'><span class="k">func</span> <span class="n">greet</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Void</span> <span class="p">{}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>参数名称默认作为参数标签来使用，我们可以自定义参数标签，也可以用 _ 来忽略参数标签，Swift 支持为参数指定默认值，为了代码可读性考虑，一般将带默认值的参数放在参数列表的最后面</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">func</span> <span class="n">say</span><span class="p">(</span><span class="n">_</span> <span class="nl">prefixStr</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span> <span class="n">parameterLabel</span> <span class="nl">parameterName</span><span class="p">:</span> <span class="n">String</span> <span class="o">=</span> <span class="s">&quot;lijingcheng&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">String</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">prefixStr</span> <span class="o">+</span> <span class="n">parameterName</span> <span class="o">+</span> <span class="s">&quot;!&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">say</span><span class="p">(</span><span class="s">&quot;hello, &quot;</span><span class="p">,</span> <span class="nl">parameterLabel</span><span class="p">:</span> <span class="s">&quot;lijingcheng&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">say</span><span class="p">(</span><span class="s">&quot;hello, &quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>一个函数最多只能拥有一个可变参数，可变参数可以接受零个或多个值</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">func</span> <span class="n">total</span><span class="p">(</span><span class="n">_</span> <span class="nl">numbers</span><span class="p">:</span> <span class="n">Double</span><span class="p">...)</span> <span class="o">-&gt;</span> <span class="n">Double</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">var</span> <span class="nl">total</span><span class="p">:</span> <span class="n">Double</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">number</span> <span class="k">in</span> <span class="n">numbers</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">total</span> <span class="o">+=</span> <span class="n">number</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">total</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">total</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>函数参数默认是常量，如果要修改参数的值，可以将参数定义为输入输出参数。输入输出参数不能有默认值，而且可变参数不能用 inout 标记。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">func</span> <span class="nf">swapTwoInts</span><span class="p">(</span><span class="n">_</span> <span class="nl">a</span><span class="p">:</span> <span class="k">inout</span> <span class="n">Int</span><span class="p">,</span> <span class="n">_</span> <span class="nl">b</span><span class="p">:</span> <span class="k">inout</span> <span class="n">Int</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">let</span> <span class="n">temporaryA</span> <span class="o">=</span> <span class="n">a</span>
+</span><span class='line'>    <span class="n">a</span> <span class="o">=</span> <span class="n">b</span>
+</span><span class='line'>    <span class="n">b</span> <span class="o">=</span> <span class="n">temporaryA</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">var</span> <span class="n">someInt</span> <span class="o">=</span> <span class="mi">3</span>
+</span><span class='line'><span class="k">var</span> <span class="n">anotherInt</span> <span class="o">=</span> <span class="mi">107</span>
+</span><span class='line'><span class="n">swapTwoInts</span><span class="p">(</span><span class="o">&amp;</span><span class="n">someInt</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">anotherInt</span><span class="p">)</span>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="s">&quot;someInt is now \(someInt), and anotherInt is now \(anotherInt)&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>Swift 支持我们用函数式思维来写代码，函数也作为语言的一等公民，函数其实也是一种值，Swift 支持函数类型的变量或常量，可以将函数以参数的形式传给其它函数，并且可以将一个函数作为返回值使用，还支持嵌套函数，通常称这种函数为高阶函数。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">func</span> <span class="nf">addTwoInts</span><span class="p">(</span><span class="nl">a</span><span class="p">:</span> <span class="n">Int</span><span class="p">,</span> <span class="nl">b</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">var</span> <span class="n">addMathFunction</span> <span class="o">=</span> <span class="n">addTwoInts</span> <span class="c1">// 类型为：(Int, Int) -&gt; Int</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="n">addMathFunction</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span> <span class="c1">// print: 5</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">func</span> <span class="n">printMathResult</span><span class="p">(</span><span class="n">_</span> <span class="nl">mathFunction</span><span class="p">:</span> <span class="p">(</span><span class="n">Int</span><span class="p">,</span> <span class="n">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int</span><span class="p">,</span> <span class="n">_</span> <span class="nl">a</span><span class="p">:</span> <span class="n">Int</span><span class="p">,</span> <span class="n">_</span> <span class="nl">b</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">print</span><span class="p">(</span><span class="n">mathFunction</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">printMathResult</span><span class="p">(</span><span class="n">addMathFunction</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="c1">// print: 8</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>把函数定义在别的函数体中称作嵌套函数，下面例子中 incrementBySeven 和 incrementByTen 都是常量，但是他们指向的函数仍然可以增加其捕获的变量的值。这是因为函数和闭包都是引用类型。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">func</span> <span class="n">makeIncrementer</span><span class="p">(</span><span class="n">forIncrement</span> <span class="nl">amount</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Int</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">runningTotal</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'>    <span class="k">func</span> <span class="n">incrementer</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Int</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">runningTotal</span> <span class="o">+=</span> <span class="n">amount</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">runningTotal</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">incrementer</span> <span class="c1">// 返回内部函数</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="n">incrementByTen</span> <span class="o">=</span> <span class="n">makeIncrementer</span><span class="p">(</span><span class="nl">forIncrement</span><span class="p">:</span> <span class="mi">10</span><span class="p">)</span> <span class="c1">// incrementByTen 为函数类型变量，并且无参，返回 Int</span>
+</span><span class='line'><span class="n">incrementByTen</span><span class="p">()</span> <span class="c1">// return 10</span>
+</span><span class='line'><span class="n">incrementByTen</span><span class="p">()</span> <span class="c1">// return 20</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//如果你创建了另一个 incrementer，它会有属于自己的引用，指向一个全新、独立的 runningTotal 变量：incrementBySeven 和 incrementByTen 没有任何联系</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="n">incrementBySeven</span> <span class="o">=</span> <span class="n">makeIncrementer</span><span class="p">(</span><span class="nl">forIncrement</span><span class="p">:</span> <span class="mi">7</span><span class="p">)</span>
+</span><span class='line'><span class="n">incrementBySeven</span><span class="p">()</span> <span class="c1">// return 7</span>
+</span><span class='line'><span class="n">incrementBySeven</span><span class="p">()</span> <span class="c1">// return 14</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">incrementByTen</span><span class="p">()</span> <span class="c1">// return 30</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h3>闭包</h3>
+
+<p>闭包是自包含的函数代码块，可以在代码中被传递和使用，闭包可以捕获和存储其所在上下文中任意常量和变量的引用，即使定义这些常量和变量的原作用域已经不存在，闭包仍然可以在闭包函数体内引用和修改这些值。</p>
+
+<p>全局函数和嵌套函数实际上也是特殊的闭包，全局函数是一个有名字但不会捕获任何值的闭包，嵌套函数是一个有名字并可以捕获其封闭函数域内值的闭包。闭包表达式是一个利用轻量级语法所写的可以捕获其上下文中变量或常量值的匿名闭包</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">let</span> <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Chris&quot;</span><span class="p">,</span> <span class="s">&quot;Alex&quot;</span><span class="p">,</span> <span class="s">&quot;Ewa&quot;</span><span class="p">,</span> <span class="s">&quot;Barry&quot;</span><span class="p">,</span> <span class="s">&quot;Daniella&quot;</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">names</span><span class="p">.</span><span class="n">sorted</span><span class="p">(</span><span class="nl">by</span><span class="p">:</span> <span class="p">{</span> <span class="p">(</span><span class="nl">s1</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span> <span class="nl">s2</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Bool</span> <span class="k">in</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">s1</span> <span class="o">&lt;</span> <span class="n">s2</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Swift 可以根据闭包接收的参数和返回值推断出参数和返回值的类型，所以可以简写为下面形式，很短的函数体可以写成一行，单行表达式闭包可以省略 return，不过完整形式的闭包具有更好的代码可读性。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="n">names</span><span class="p">.</span><span class="n">sorted</span><span class="p">(</span><span class="nl">by</span><span class="p">:</span> <span class="p">{</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span> <span class="k">in</span> <span class="n">s1</span> <span class="o">&lt;</span> <span class="n">s2</span> <span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>闭包的参数列表也可以省略，可以用 $0，$1，$2 来顺序调用闭包的参数</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="n">names</span><span class="p">.</span><span class="n">sorted</span><span class="p">(</span><span class="nl">by</span><span class="p">:</span> <span class="p">{</span><span class="err">$</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="err">$</span><span class="mi">1</span><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>Swift 的 String 重载了 > 用于比较两个字符串并返回大小，所以 sorted 函数还可以直接将 &lt; 当作闭包处理</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="n">names</span><span class="p">.</span><span class="n">sorted</span><span class="p">(</span><span class="nl">by</span><span class="p">:</span> <span class="o">&lt;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果闭包表达式是函数的唯一参数，则可以作为尾随闭包来使用，以增强函数的可读性。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="n">names</span><span class="p">.</span><span class="n">sorted</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Bool</span> <span class="k">in</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">s1</span> <span class="o">&lt;</span> <span class="n">s2</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>当定义接受闭包作为参数的函数时，可以用 @escaping 来标注参数名称，用来指明这个闭包是允许“逃逸”出这个函数的，这样我们就可以用一个变量或常量来接收闭包，并在适当的时候调用它，如果将一个闭包标记为 @escaping 意味着你必须在闭包中显式地引用 self。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">var</span> <span class="n">closures</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">func</span> <span class="n">someFunctionWithEscapingClosure</span><span class="p">(</span><span class="nl">completionHandler</span><span class="p">:</span> <span class="p">@</span><span class="n">escaping</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Void</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">closures</span> <span class="o">=</span> <span class="n">completionHandler</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">var</span> <span class="n">customersInLine</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Chris&quot;</span><span class="p">,</span> <span class="s">&quot;Alex&quot;</span><span class="p">,</span> <span class="s">&quot;Ewa&quot;</span><span class="p">,</span> <span class="s">&quot;Barry&quot;</span><span class="p">,</span> <span class="s">&quot;Daniella&quot;</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">someFunctionWithEscapingClosure</span> <span class="p">{</span> <span class="n">customersInLine</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="nl">at</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="n">customersInLine</span><span class="p">.</span><span class="n">count</span><span class="p">)</span> <span class="c1">// print: 5</span>
+</span><span class='line'><span class="n">closures</span><span class="p">()</span> <span class="c1">// 执行闭包</span>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="n">customersInLine</span><span class="p">.</span><span class="n">count</span><span class="p">)</span> <span class="c1">// print: 4</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h2>枚举</h2>
+
+<p>Swift 的枚举成员在被创建时不会被赋予一个默认的整型值，枚举成员本身就是完备的值，多个成员值可以用逗号分隔并定义在一行上</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">enum</span> <span class="n">CompassPoint</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">north</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">east</span><span class="p">,</span> <span class="n">west</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">var</span> <span class="n">directionToHead</span> <span class="o">=</span> <span class="n">CompassPoint</span><span class="p">.</span><span class="n">west</span>
+</span><span class='line'><span class="n">directionToHead</span> <span class="o">=</span> <span class="p">.</span><span class="n">east</span> <span class="c1">// 当 directionToHead 的类型已知时，再次为其赋值可以省略枚举类型名</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>枚举成员虽然没有默认值，但是可以给它指定原始值，类型可以是字符串、字符、整型、浮点数，这些原始值一旦设置了就不能再改变，并且值在枚举声明中必须是唯一的而且类型必须相同，使用枚举成员的 rawValue 属性可以访问该成员的原始值。在使用原始值为整数或者字符串类型的枚举时，通常不需要显式地为每一个枚举成员设置原始值，Swift 会自动赋值。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">enum</span> <span class="nl">CompassPoint2</span><span class="p">:</span> <span class="n">String</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">north</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">east</span><span class="p">,</span> <span class="n">west</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="n">sunsetDirection2</span> <span class="o">=</span> <span class="n">CompassPoint2</span><span class="p">.</span><span class="n">west</span><span class="p">.</span><span class="n">rawValue</span> <span class="c1">// “west”</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>当使用整数作为原始值时，隐式赋值的值依次递增1。如果第一个枚举成员没有设置原始值，其原始值将为0。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">enum</span> <span class="nl">CompassPoint3</span><span class="p">:</span> <span class="n">Int</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">north</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">east</span><span class="p">,</span> <span class="n">west</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="n">earthsOrder</span> <span class="o">=</span> <span class="n">CompassPoint3</span><span class="p">.</span><span class="n">east</span><span class="p">.</span><span class="n">rawValue</span> <span class="c1">// 3</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 如果在定义枚举类型的时候使用了原始值，那么将会自动获得一个初始化方法，这个方法接收一个叫做 rawValue 的参数，参数类型即为原始值类型，返回值则是枚举成员或 nil。</span>
+</span><span class='line'><span class="k">let</span> <span class="n">possiblePlanet</span> <span class="o">=</span> <span class="n">CompassPoint3</span><span class="p">(</span><span class="nl">rawValue</span><span class="p">:</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">// south</span>
+</span><span class='line'><span class="k">let</span> <span class="n">possiblePlanet2</span> <span class="o">=</span> <span class="n">CompassPoint3</span><span class="p">(</span><span class="nl">rawValue</span><span class="p">:</span> <span class="mi">6</span><span class="p">)</span> <span class="c1">// nil</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>如果不为枚举成员指定原始值，那么就可以指定任意类型的关联值存储到枚举成员中，每个枚举成员都可以有不同类型的关联值，并且关联值可以修改。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">enum</span> <span class="n">Barcode</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">upc</span><span class="p">(</span><span class="n">Int</span><span class="p">,</span> <span class="n">Int</span><span class="p">,</span> <span class="n">Int</span><span class="p">,</span> <span class="n">Int</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">qrCode</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">var</span> <span class="n">productBarcode</span> <span class="o">=</span> <span class="n">Barcode</span><span class="p">.</span><span class="n">upc</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">85909</span><span class="p">,</span> <span class="mi">51226</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">// .upc关联的元组值为(8, 85909, 51226, 3)。</span>
+</span><span class='line'><span class="n">productBarcode</span> <span class="o">=</span> <span class="p">.</span><span class="n">qrCode</span><span class="p">(</span><span class="s">&quot;ABCDEFGHIJKLMNOP&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//关联值可以被提取出来作为 switch 语句的一部分。你可以在switch的 case 分支代码中提取每个关联值作为一个常量（用let前缀）或者作为一个变量（用var前缀）来使用：</span>
+</span><span class='line'><span class="k">switch</span> <span class="n">productBarcode</span> <span class="p">{</span>
+</span><span class='line'><span class="k">case</span> <span class="p">.</span><span class="n">upc</span><span class="p">(</span><span class="k">let</span> <span class="n">numberSystem</span><span class="p">,</span> <span class="k">let</span> <span class="n">manufacturer</span><span class="p">,</span> <span class="k">let</span> <span class="n">product</span><span class="p">,</span> <span class="k">let</span> <span class="n">check</span><span class="p">)</span><span class="o">:</span>
+</span><span class='line'>    <span class="n">print</span><span class="p">(</span><span class="s">&quot;UPC: \(numberSystem), \(manufacturer), \(product), \(check).&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">case</span> <span class="p">.</span><span class="n">qrCode</span><span class="p">(</span><span class="k">let</span> <span class="n">productCode</span><span class="p">)</span><span class="o">:</span>
+</span><span class='line'>    <span class="n">print</span><span class="p">(</span><span class="s">&quot;QR code: \(productCode).&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//如果一个枚举成员的所有关联值都被提取为常量，或者都被提取为变量，为了简洁，你可以只在成员名称前标注一个let或者var：</span>
+</span><span class='line'><span class="k">switch</span> <span class="n">productBarcode</span> <span class="p">{</span>
+</span><span class='line'><span class="k">case</span> <span class="k">let</span> <span class="p">.</span><span class="n">upc</span><span class="p">(</span><span class="n">numberSystem</span><span class="p">,</span> <span class="n">manufacturer</span><span class="p">,</span> <span class="n">product</span><span class="p">,</span> <span class="n">check</span><span class="p">)</span><span class="o">:</span>
+</span><span class='line'>    <span class="n">print</span><span class="p">(</span><span class="s">&quot;UPC: \(numberSystem), \(manufacturer), \(product), \(check).&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">case</span> <span class="k">let</span> <span class="p">.</span><span class="n">qrCode</span><span class="p">(</span><span class="n">productCode</span><span class="p">)</span><span class="o">:</span>
+</span><span class='line'>    <span class="n">print</span><span class="p">(</span><span class="s">&quot;QR code: \(productCode).&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h2>类和结构体</h2>
+
+<p>Swift 中的所有的基本类型和枚举都是值类型，它们在底层都是以结构体的形式所实现，所以结构体也是值类型，类是引用类型。值类型数据在进行函数传递时会被拷贝，引用类型不会。当定义数据结构的目的是用来封装简单的数据值，并且希望该数据结构在被赋值或传递时，封装的数据及其内部存储的属性也能够通过值传递，那么适合用结构体来定义它。</p>
+
+<p>Swift 中类和结构体都支持属性、方法、下标、构造器、扩展和协议，与结构体相比，类还支持继承、多态、用析构器释放所分配资源以及用引用计数对一个类进行多次引用。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">struct</span> <span class="n">Range</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// Objective-C 和 Swift 中的属性定义其实都是 setter/getter 方法的声明，其背后还对应一个实例变量，但是在 Swift 中不能直接访问。在 Swift 中属性默认为 nonatomic 和 strong，可改用 weak var ...</span>
+</span><span class='line'>    <span class="k">var</span> <span class="nl">location</span><span class="p">:</span> <span class="n">Int</span>
+</span><span class='line'>    <span class="k">var</span> <span class="nl">length</span><span class="p">:</span> <span class="n">Int</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 函数与某个类型相关联后通常称为方法，结构体和枚举是值类型。默认情况下，值类型的属性不能在它的实例方法中被修改。但是可以为这个方法选择可变(mutating)行为，然后就可以从其方法内部改变它的属性，甚至修改 self</span>
+</span><span class='line'>    <span class="kr">mutating</span> <span class="k">func</span> <span class="n">moveBy</span><span class="p">(</span><span class="n">_</span> <span class="nl">step</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">location</span> <span class="o">+=</span> <span class="n">step</span> <span class="c1">// 通常只有当属性和参数名称一样时才用 self. 方式进行赋值</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">var</span> <span class="n">range</span> <span class="o">=</span> <span class="n">Range</span><span class="p">(</span><span class="nl">location</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nl">length</span><span class="p">:</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">// 所有结构体都有一个自动生成的成员逐一构造器，用于初始化新结构体实例中成员的属性，类实例没有。因为结构体属于值类型。当值类型的实例被声明为常量的时候，它的所有属性也就成了常量，并且 mutating 方法也不可以被调用。</span>
+</span><span class='line'><span class="n">range</span><span class="p">.</span><span class="n">location</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1">// Swift 允许直接设置结构体属性的子属性，Objective-C 不可以（例:self.frame.size.width = 10）</span>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="n">range</span><span class="p">.</span><span class="n">location</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">range</span><span class="p">.</span><span class="n">moveBy</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="n">range</span><span class="p">.</span><span class="n">location</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>存储属性可存储常量或变量作为实例的一部分，只能用于类和结构体。计算属性提供一个 getter 和一个可选的 setter，来间接获取和设置其他属性或变量的值，计算属性可以用于类、结构体和枚举。</p>
+
+<p>可以通过重写属性的方式为继承的属性添加属性观察器，但不包括常量存储型属性和只读计算型属性。父类的属性在子类的构造器中被赋值时，父类会先响应。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">struct</span> <span class="n">Point</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">x</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="p">{</span> <span class="c1">// 直接赋值或通过构造器赋值时不会触发 KVO，弱引用对象变成 nil 时也不会触发 KVO，并且不能对延迟存储做 KVO</span>
+</span><span class='line'>        <span class="kr">willSet</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">print</span><span class="p">(</span><span class="n">newValue</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="kr">didSet</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">print</span><span class="p">(</span><span class="n">oldValue</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">y</span> <span class="o">=</span> <span class="mf">0.0</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">struct</span> <span class="n">Size</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">width</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="mf">0.0</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">struct</span> <span class="n">Rect</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">origin</span> <span class="o">=</span> <span class="n">Point</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">size</span> <span class="o">=</span> <span class="n">Size</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">var</span> <span class="nl">center</span><span class="p">:</span> <span class="n">Point</span> <span class="p">{</span> <span class="c1">// 必须用 var 定义，因为值不是固定的</span>
+</span><span class='line'>        <span class="kr">get</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">let</span> <span class="n">centerX</span> <span class="o">=</span> <span class="n">origin</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'>            <span class="k">let</span> <span class="n">centerY</span> <span class="o">=</span> <span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="p">(</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="nl">x</span><span class="p">:</span> <span class="n">centerX</span><span class="p">,</span> <span class="nl">y</span><span class="p">:</span> <span class="n">centerY</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="kr">set</span><span class="p">(</span><span class="n">newCenter</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 如果计算属性的 setter 没有定义表示新值的参数名，则可以使用默认名称 newValue</span>
+</span><span class='line'>            <span class="n">origin</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">newCenter</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="p">(</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">newCenter</span><span class="p">.</span><span class="n">y</span> <span class="o">-</span> <span class="p">(</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="c1">// 只读计算属性，只有 get，并且可以去掉 get 关键字</span>
+</span><span class='line'>    <span class="k">var</span> <span class="nl">width</span><span class="p">:</span> <span class="n">Double</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">size</span><span class="p">.</span><span class="n">width</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">var</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="nl">origin</span><span class="p">:</span> <span class="n">Point</span><span class="p">(</span><span class="nl">x</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nl">y</span><span class="p">:</span> <span class="mi">2</span><span class="p">),</span> <span class="nl">size</span><span class="p">:</span> <span class="n">Size</span><span class="p">(</span><span class="nl">width</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="nl">height</span><span class="p">:</span> <span class="mi">10</span><span class="p">))</span>
+</span><span class='line'><span class="n">frame</span><span class="p">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="nl">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nl">y</span><span class="p">:</span> <span class="mi">3</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在 Objective-C 中，与类关联的静态常量或静态变量是全局的，但在 Swift 中，它的作用范围就在类型支持的范围内。</p>
+
+<p>下标可以定义在类、结构体和枚举中，是访问集合，列表或序列中元素的快捷方式。一个类型可以定义多个下标，并通过不同索引类型进行重载。下标不限于一维，可以定义具有多个入参的下标满足自定义类型的需求。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">struct</span> <span class="n">Tyre</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">let</span> <span class="nl">row</span><span class="p">:</span> <span class="n">Int</span><span class="p">,</span> <span class="nl">column</span><span class="p">:</span> <span class="n">Int</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="n">Car</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">tyre</span> <span class="o">=</span> <span class="p">[</span><span class="n">Tyre</span><span class="p">(</span><span class="nl">row</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nl">column</span><span class="p">:</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Tyre</span><span class="p">(</span><span class="nl">row</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nl">column</span><span class="p">:</span> <span class="mi">1</span><span class="p">),</span> <span class="n">Tyre</span><span class="p">(</span><span class="nl">row</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nl">column</span><span class="p">:</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Tyre</span><span class="p">(</span><span class="nl">row</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nl">column</span><span class="p">:</span> <span class="mi">1</span><span class="p">)]</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">lazy</span> <span class="k">var</span> <span class="n">allComponentNames</span> <span class="o">=</span> <span class="n">Car</span><span class="p">.</span><span class="n">getAllComponentName</span><span class="p">()</span> <span class="c1">// 必须将延迟存储属性声明成变量，因为属性的初始值可能在实例构造完成之后才会得到，全局的常量或变量都是延迟计算的。</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">static</span> <span class="k">var</span> <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;Car&quot;</span> <span class="c1">// 类属性无法被子类重写，class 修饰的属性可以被子类重写，但是只能用来修饰计算属性。</span>
+</span><span class='line'>    <span class="k">static</span> <span class="k">func</span> <span class="n">getAllComponentName</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">String</span><span class="p">]</span> <span class="p">{</span> <span class="k">return</span> <span class="p">[]</span> <span class="p">}</span> <span class="c1">// static 换成 class 则子类可以重写该方法</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">subscript</span><span class="p">(</span><span class="nl">row</span><span class="p">:</span> <span class="n">Int</span><span class="p">,</span> <span class="nl">column</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tyre</span> <span class="p">{</span> <span class="c1">// car[0, 1]</span>
+</span><span class='line'>        <span class="kr">get</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">tyre</span><span class="p">[(</span><span class="n">row</span> <span class="o">*</span> <span class="n">column</span><span class="p">)</span> <span class="o">+</span> <span class="n">column</span><span class="p">]</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="kr">set</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">tyre</span><span class="p">[(</span><span class="n">row</span> <span class="o">*</span> <span class="n">column</span><span class="p">)</span> <span class="o">+</span> <span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">newValue</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="n">car</span> <span class="o">=</span> <span class="n">Car</span><span class="p">()</span>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="n">car</span><span class="p">.</span><span class="n">tyre</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">car</span><span class="p">.</span><span class="n">tyre</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Tyre</span><span class="p">(</span><span class="nl">row</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="nl">column</span><span class="p">:</span> <span class="mi">100</span><span class="p">)</span>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="n">car</span><span class="p">.</span><span class="n">tyre</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>类和结构体在创建实例时，必须为所有存储型属性设置合适的初始值。如果结构体或类的所有属性都有默认值，同时没有自定义的构造器，那么 Swift 会提供一个默认构造器。与 Objective-C 中的构造器不同，Swift 的构造器无需返回值。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">class</span> <span class="n">User</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">var</span> <span class="nl">name</span><span class="p">:</span> <span class="n">String</span><span class="o">?</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">age</span> <span class="o">=</span> <span class="mi">10</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">var</span> <span class="n">item</span> <span class="o">=</span> <span class="n">User</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>可以将继承来的只读属性通过提供 getter/setter 重写为一个读写属性，但是不可以将继承来的读写属性重写为一个只读属性。</p>
+
+<p>如果为值类型定义了构造器，将无法访问到他的默认构造器。这种限制可以防止你为值类型增加了一个额外的且十分复杂的构造器之后，仍然有人错误的使用自动生成的构造器，如果希望他们能同时使用，可以将自定义的构造器写到扩展中。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="c1">// Swift 中的类没有通用基类</span>
+</span><span class='line'><span class="k">class</span> <span class="n">Person</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">var</span> <span class="nl">name</span><span class="p">:</span> <span class="n">String</span>
+</span><span class='line'>    <span class="k">var</span> <span class="nl">age</span><span class="p">:</span> <span class="n">Int</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">gender</span> <span class="o">=</span> <span class="s">&quot;male&quot;</span> <span class="c1">// 尽量为属性设置默认值，不仅代码可读性好，还可以在属性很多时减少构造器参数的个数</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">init</span><span class="p">(</span><span class="nl">name</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span> <span class="nb">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">func</span> <span class="n">sayHello</span><span class="p">()</span> <span class="p">{</span> <span class="n">print</span><span class="p">(</span><span class="s">&quot;person: hello!&quot;</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">deinit</span> <span class="p">{</span> <span class="c1">// 析构器只适用于类类型，用法与 ARC 下的 dealloc() 一样 }</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 用 final 修饰的类不能被继承，用 final 修饰方法、属性、下标，则它们不能被重写。</span>
+</span><span class='line'><span class="n">final</span> <span class="k">class</span> <span class="nl">Employee</span><span class="p">:</span> <span class="n">Person</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">var</span> <span class="nl">company</span><span class="p">:</span> <span class="n">String</span>
+</span><span class='line'>    <span class="k">var</span> <span class="nl">position</span><span class="p">:</span> <span class="n">String</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 重写父类的指定构造器</span>
+</span><span class='line'>    <span class="kr">override</span> <span class="k">init</span><span class="p">(</span><span class="nl">name</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nb">self</span><span class="p">.</span><span class="n">company</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+</span><span class='line'>        <span class="nb">self</span><span class="p">.</span><span class="n">position</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nb">super</span><span class="p">.</span><span class="k">init</span><span class="p">(</span><span class="nl">name</span><span class="p">:</span> <span class="n">name</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 指定构造器将初始化类中提供的所有属性，并必须调用其直接父类的的指定构造器来实现父类的初始化。每一个类都必须拥有至少一个指定构造器。</span>
+</span><span class='line'>    <span class="k">init</span><span class="p">(</span><span class="nl">company</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span> <span class="nl">position</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nb">self</span><span class="p">.</span><span class="n">company</span> <span class="o">=</span> <span class="n">company</span>
+</span><span class='line'>        <span class="nb">self</span><span class="p">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">position</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nb">super</span><span class="p">.</span><span class="k">init</span><span class="p">(</span><span class="nl">name</span><span class="p">:</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 当参数很多时可用便利构造器辅助指定构造器初始化对象，它必须调用同类中的其它构造器，并必须最终导致一个指定构造器被调用</span>
+</span><span class='line'>    <span class="n">convenience</span> <span class="k">init</span><span class="p">(</span><span class="nl">company</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nb">self</span><span class="p">.</span><span class="k">init</span><span class="p">(</span><span class="nl">company</span><span class="p">:</span> <span class="n">company</span><span class="p">,</span> <span class="nl">position</span><span class="p">:</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 缺少 override 的重写会在编译时报错，这样可以避免意外重写。</span>
+</span><span class='line'>    <span class="kr">override</span> <span class="k">func</span> <span class="n">sayHello</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nb">super</span><span class="p">.</span><span class="n">sayHello</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">print</span><span class="p">(</span><span class="s">&quot;employee: hello!&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">var</span> <span class="n">item2</span> <span class="o">=</span> <span class="n">Employee</span><span class="p">(</span><span class="nl">name</span><span class="p">:</span> <span class="s">&quot;xx&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>可以用非可失败构造器重写可失败构造器，但反过来不行。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">struct</span> <span class="n">Animal</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">let</span> <span class="nl">species</span><span class="p">:</span> <span class="n">String</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// init? 表示可能会构造失败返回 nil</span>
+</span><span class='line'>    <span class="k">init</span><span class="o">?</span><span class="p">(</span><span class="nl">species</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">species</span><span class="p">.</span><span class="n">isEmpty</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="nb">nil</span> <span class="c1">// 通常构造函数不用 return，唯一用到的情景就是表示构造失败</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="nb">self</span><span class="p">.</span><span class="n">species</span> <span class="o">=</span> <span class="n">species</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="n">someCreature</span> <span class="o">=</span> <span class="n">Animal</span><span class="p">(</span><span class="nl">species</span><span class="p">:</span> <span class="s">&quot;Giraffe&quot;</span><span class="p">)</span> <span class="c1">// someCreature 的类型是 Animal? 而不是 Animal</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="k">let</span> <span class="n">giraffe</span> <span class="o">=</span> <span class="n">someCreature</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">print</span><span class="p">(</span><span class="s">&quot;An animal was initialized with a species of \(giraffe.species)&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>在类的构造器前添加 required 修饰符表明所有该类的子类都必须实现该构造器</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">class</span> <span class="n">SomeClass5</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">required</span> <span class="k">init</span><span class="p">()</span> <span class="p">{}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nl">SomeSubclass</span><span class="p">:</span> <span class="n">SomeClass5</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">required</span> <span class="k">init</span><span class="p">()</span> <span class="p">{}</span> <span class="c1">// 必须也用 required 应用于继承链后面的子类</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h3>访问控制</h3>
+
+<p>Swift 中的访问控制模型基于模块和源文件这两个概念，并为代码中的实体提供了五种不同的访问级别。</p>
+
+<ul>
+<li>open：可以被任何模块访问、继承和重写。</li>
+<li>public：可以被任何模块访问，但只能被所定义模块中的类继承和重写。</li>
+<li>internal(默认)：只能被所定义的模块内部访问。</li>
+<li>fileprivate：只能被所定义的文件内部访问。</li>
+<li>private：只能在所定义的作用域内使用。</li>
+</ul>
+
+
+<p>类的访问级别会影响到类成员的默认访问级别，不可以在某个实体中定义访问级别更低的东西。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="n">public</span> <span class="k">var</span> <span class="nl">xx</span><span class="p">:</span> <span class="n">SomePrivateClass</span><span class="o">?</span> <span class="c1">// xx 虽然可以被外界访问，但类是私有的，所以没意义</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果想要在测试 target 中访问模块中所有内部级别的实体，可以在导入模块前使用 @testable，然后修改模块的编译设置项 Build Options -> Enable Testability。</p>
+
+<h3>元类型</h3>
+
+<p>元类型是指类型的类型，类、结构体或枚举类型的元类型是相应的类型名后紧跟 <code>.Type</code>，协议的元类型是该协议名字紧跟 <code>.Protocol</code>。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">class</span> <span class="n">AnotherSubClass</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">let</span> <span class="nl">str</span><span class="p">:</span> <span class="n">String</span>
+</span><span class='line'>    <span class="n">required</span> <span class="k">init</span><span class="p">(</span><span class="nl">str</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nb">self</span><span class="p">.</span><span class="n">str</span> <span class="o">=</span> <span class="n">str</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="nl">metatype</span><span class="p">:</span> <span class="n">AnotherSubClass</span><span class="p">.</span><span class="kt">Type</span> <span class="o">=</span> <span class="n">AnotherSubClass</span><span class="p">.</span><span class="nb">self</span>
+</span><span class='line'><span class="k">let</span> <span class="n">anotherInstance</span> <span class="o">=</span> <span class="n">metatype</span><span class="p">.</span><span class="k">init</span><span class="p">(</span><span class="nl">str</span><span class="p">:</span> <span class="s">&quot;some string&quot;</span><span class="p">)</span> <span class="c1">// 用元类型来 init 实例，init 必须是 required 或类是 final 的。</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="n">type</span><span class="p">(</span><span class="nl">of</span><span class="p">:</span> <span class="n">anotherInstance</span><span class="p">))</span> <span class="c1">// type(of:) 表达式来获取该实例在运行阶段的类型</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>嵌套类型</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">struct</span> <span class="n">BlackjackCard</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">enum</span> <span class="n">Suit</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">case</span> <span class="n">Spades</span> <span class="o">=</span> <span class="s">&quot;♠&quot;</span><span class="p">,</span> <span class="n">Hearts</span> <span class="o">=</span> <span class="s">&quot;♡&quot;</span><span class="p">,</span> <span class="n">Diamonds</span> <span class="o">=</span> <span class="s">&quot;♢&quot;</span><span class="p">,</span> <span class="n">Clubs</span> <span class="o">=</span> <span class="s">&quot;♣&quot;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="n">BlackjackCard</span><span class="p">.</span><span class="n">Suit</span><span class="p">.</span><span class="n">Hearts</span><span class="p">.</span><span class="n">rawValue</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>运算符重载</h3>
+
+<p>类和结构体可以为现有的运算符提供自定义的实现，这通常被称为运算符重载。只有组合赋值运算符可以被重载，不能对默认的赋值运算符 <code>=</code> 和三目条件运算符 <code>? :</code> 进行重载。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">struct</span> <span class="n">Vector2D</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">x</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mf">0.0</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 中缀运算符</span>
+</span><span class='line'>    <span class="k">static</span> <span class="k">func</span> <span class="o">+</span> <span class="p">(</span><span class="nl">left</span><span class="p">:</span> <span class="n">Vector2D</span><span class="p">,</span> <span class="nl">right</span><span class="p">:</span> <span class="n">Vector2D</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vector2D</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">Vector2D</span><span class="p">(</span><span class="nl">x</span><span class="p">:</span> <span class="kr">left</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="kr">right</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="nl">y</span><span class="p">:</span> <span class="kr">left</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="kr">right</span><span class="p">.</span><span class="n">y</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 重载前缀或后缀运算符时需要在 func 前指定 prefix 或 postfix 修饰符</span>
+</span><span class='line'>    <span class="k">static</span> <span class="kr">prefix</span> <span class="k">func</span> <span class="o">-</span> <span class="p">(</span><span class="nl">vector</span><span class="p">:</span> <span class="n">Vector2D</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vector2D</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">Vector2D</span><span class="p">(</span><span class="nl">x</span><span class="p">:</span> <span class="o">-</span><span class="n">vector</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="nl">y</span><span class="p">:</span> <span class="o">-</span><span class="n">vector</span><span class="p">.</span><span class="n">y</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="n">combinedVector</span> <span class="o">=</span> <span class="n">Vector2D</span><span class="p">(</span><span class="nl">x</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="nl">y</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">+</span> <span class="n">Vector2D</span><span class="p">(</span><span class="nl">x</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span> <span class="nl">y</span><span class="p">:</span> <span class="mf">4.0</span><span class="p">)</span>
+</span><span class='line'><span class="k">let</span> <span class="n">negativeVector</span> <span class="o">=</span> <span class="o">-</span><span class="n">Vector2D</span><span class="p">(</span><span class="nl">x</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span> <span class="nl">y</span><span class="p">:</span> <span class="mf">4.0</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>内存管理</h2>
+
+<p>Swift 使用 ARC 机制来跟踪和管理内存，并且只针对拥有引用计数的类实例，在 ARC 中有 strong、weak、unnowned 三个关键字，默认为 strong。Swift 可以通过弱引用和无主引用来解决循环引用问题，它们都允许循环引用中的一个实例强引用而另外一个实例不保持强引用。</p>
+
+<p>当可能造成循环引用的两个实例中的其中一个为可选类型，那么就将这个可能为 nil 的属性声明为弱引用</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">weak</span> <span class="k">var</span> <span class="nl">delegate</span><span class="p">:</span> <span class="n">XXX</span><span class="o">?</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>当可能造成循环引用的两个实例有着几乎相同的生命周期，并且都不希望值为 nil 时，将有着强制依赖性的那个实例对另一个实例持有无主引用。ARC 无法在实例被销毁后将无主引用设为 nil，所以要小心无主引用实例释放后再次使用它时出现的运行时错误。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="kr">unowned</span> <span class="k">let</span> <span class="nl">timer</span><span class="p">:</span> <span class="n">Timer</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Swift 提供了闭包捕获列表来解决闭包引起的循环引用。捕获列表定义了闭包体内捕获一个或者多个引用类型的规则，跟解决两个类实例间的循环引用一样。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">__weak</span> <span class="k">typeof</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="n">weakSelf</span> <span class="o">=</span> <span class="nb">self</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">block</span> <span class="o">=</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'>    <span class="k">__strong</span> <span class="k">typeof</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="n">strongSelf</span> <span class="o">=</span> <span class="n">weakSelf</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">strongSelf</span> <span class="n">doSomething</span><span class="p">];</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">closure</span> <span class="o">=</span> <span class="p">{</span> <span class="p">[</span><span class="kr">unowned</span> <span class="nb">self</span><span class="p">]</span> <span class="k">in</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">doSomething</span><span class="p">()</span> <span class="c1">// 必须用 self 引用属性或方法</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>扩展</h2>
+
+<p>Swift 的扩展没有名字，可以为已有的类、结构体、枚举和协议添加方法、下标、嵌套类型、计算型属性以及确认某个协议，还可以为类添加新的便利构造器，但是不能为类添加新的指定构造器或析构器，也不可以为已有属性添加属性观察器和重写已有功能。如果要添加存储型属性也要像 Objective-C 中的方式去添加。（<a href="http://stackoverflow.com/questions/25426780/how-to-have-stored-properties-in-swift-the-same-way-i-had-on-objective-c%EF%BC%89">http://stackoverflow.com/questions/25426780/how-to-have-stored-properties-in-swift-the-same-way-i-had-on-objective-c%EF%BC%89</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">extension</span> <span class="n">Int</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kr">mutating</span> <span class="k">func</span> <span class="n">square</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nb">self</span> <span class="o">=</span> <span class="nb">self</span> <span class="o">*</span> <span class="nb">self</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>协议</h2>
+
+<p>类、结构体或枚举都可以遵循协议，协议里的东西都是 requied 的，但是可以通过协议扩展来提供默认实现，默认实现可以被遵循协议的类型提供的实现所替代。在扩展协议的时候，还可以指定一些限制条件，只有遵循协议的类型满足这些限制条件时，才能获得协议扩展提供的默认实现。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">protocol</span> <span class="n">Named</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">var</span> <span class="nl">name</span><span class="p">:</span> <span class="n">String</span> <span class="p">{</span> <span class="kr">get</span> <span class="kr">set</span> <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">protocol</span> <span class="n">Aged</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">var</span> <span class="nl">age</span><span class="p">:</span> <span class="n">Int</span> <span class="p">{</span> <span class="kr">get</span> <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="n">TestClass</span> <span class="p">{}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">extension</span> <span class="n">Aged</span> <span class="k">where</span> <span class="nl">Self</span><span class="p">:</span> <span class="n">TestClass</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">var</span> <span class="nl">age</span><span class="p">:</span> <span class="n">Int</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">1</span> <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 父类名放在协议名之前</span>
+</span><span class='line'><span class="k">class</span> <span class="nl">Person</span><span class="p">:</span> <span class="n">TestClass</span><span class="p">,</span> <span class="n">Named</span><span class="p">,</span> <span class="n">Aged</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">var</span> <span class="nl">name</span><span class="p">:</span> <span class="n">String</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">init</span><span class="p">(</span><span class="nl">name</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nb">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// celebrator 的类型为 Named &amp; Aged，这意味着它不关心参数的具体类型，只要参数符合这两个协议即可，这称为协议合成。</span>
+</span><span class='line'><span class="k">func</span> <span class="n">wishHappyBirthday</span><span class="p">(</span><span class="n">to</span> <span class="nl">celebrator</span><span class="p">:</span> <span class="n">Named</span> <span class="o">&amp;</span> <span class="n">Aged</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">print</span><span class="p">(</span><span class="s">&quot;Happy birthday, \(celebrator.name), you&#39;re \(celebrator.age)!&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="n">birthdayPerson</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="nl">name</span><span class="p">:</span> <span class="s">&quot;xx&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">wishHappyBirthday</span><span class="p">(</span><span class="nl">to</span><span class="p">:</span> <span class="n">birthdayPerson</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>添加 class 关键字来限制协议只能被类类型遵循</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">protocol</span> <span class="nl">SomeProtocol</span><span class="p">:</span> <span class="k">class</span> <span class="p">{}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>使用 @objc 修饰后的类型，可以供 Objective-C 调用,标记 @objc 特性的协议只能被继承自 Objective-C 类的类或者 @objc 类遵循，以下代码是错的：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="p">@</span><span class="n">objc</span> <span class="k">class</span> <span class="n">test</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 使用@objc修饰的类，必须继承自NSObject</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="p">@</span><span class="n">objc</span> <span class="k">protocol</span> <span class="n">AnotherProtocol</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">@</span><span class="n">objc</span> <span class="n">optional</span> <span class="k">func</span> <span class="n">incrementForCount</span><span class="p">(</span><span class="nl">count</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int</span>
+</span><span class='line'>    <span class="p">@</span><span class="n">objc</span> <span class="n">optional</span> <span class="k">var</span> <span class="nl">fixedIncrement</span><span class="p">:</span> <span class="n">Int</span> <span class="p">{</span> <span class="kr">get</span> <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h2>泛型</h2>
+
+<p>泛型能够减少重复代码，用一种清晰和抽象的方式来表达代码的意图。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="c1">// 没用到泛型，它只能交换 Int 值</span>
+</span><span class='line'><span class="k">func</span> <span class="nf">swapTwoInts</span><span class="p">(</span><span class="n">_</span> <span class="nl">a</span><span class="p">:</span> <span class="k">inout</span> <span class="n">Int</span><span class="p">,</span> <span class="n">_</span> <span class="nl">b</span><span class="p">:</span> <span class="k">inout</span> <span class="n">Int</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">let</span> <span class="n">temporaryA</span> <span class="o">=</span> <span class="n">a</span>
+</span><span class='line'>    <span class="n">a</span> <span class="o">=</span> <span class="n">b</span>
+</span><span class='line'>    <span class="n">b</span> <span class="o">=</span> <span class="n">temporaryA</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 用了泛型可以交换任意类型的值，T 的具体类型可以由传入的值的类型推断出来。</span>
+</span><span class='line'><span class="k">func</span> <span class="n">swapTwoValues</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nl">a</span><span class="p">:</span> <span class="k">inout</span> <span class="n">T</span><span class="p">,</span> <span class="n">_</span> <span class="nl">b</span><span class="p">:</span> <span class="k">inout</span> <span class="n">T</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">let</span> <span class="n">temporaryA</span> <span class="o">=</span> <span class="n">a</span>
+</span><span class='line'>    <span class="n">a</span> <span class="o">=</span> <span class="n">b</span>
+</span><span class='line'>    <span class="n">b</span> <span class="o">=</span> <span class="n">temporaryA</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>泛型还可以添加类型约束，用来指定一个类型参数必须继承自指定类，或者符合一个特定的协议或协议组合。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">func</span> <span class="n">findIndex</span><span class="o">&lt;</span><span class="nl">T</span><span class="p">:</span> <span class="n">Equatable</span><span class="o">&gt;</span><span class="p">(</span><span class="n">of</span> <span class="nl">valueToFind</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="k">in</span> <span class="nl">array</span><span class="p">:[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Int</span><span class="o">?</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">in</span> <span class="n">array</span><span class="p">.</span><span class="n">enumerated</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="n">valueToFind</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">index</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">nil</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="n">doubleIndex</span> <span class="o">=</span> <span class="n">findIndex</span><span class="p">(</span><span class="nl">of</span><span class="p">:</span> <span class="mf">9.3</span><span class="p">,</span> <span class="k">in</span><span class="o">:</span> <span class="p">[</span><span class="mf">3.14159</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">])</span>
+</span><span class='line'><span class="k">let</span> <span class="n">stringIndex</span> <span class="o">=</span> <span class="n">findIndex</span><span class="p">(</span><span class="nl">of</span><span class="p">:</span> <span class="s">&quot;Andrea&quot;</span><span class="p">,</span> <span class="k">in</span><span class="o">:</span> <span class="p">[</span><span class="s">&quot;Mike&quot;</span><span class="p">,</span> <span class="s">&quot;Malcolm&quot;</span><span class="p">,</span> <span class="s">&quot;Andrea&quot;</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Swift 还允许定义泛型类型。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">struct</span> <span class="n">Stack</span><span class="o">&lt;</span><span class="n">Element</span><span class="o">&gt;</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="n">Element</span><span class="p">]()</span>
+</span><span class='line'>    <span class="kr">mutating</span> <span class="k">func</span> <span class="n">push</span><span class="p">(</span><span class="n">_</span> <span class="nl">item</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">items</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="kr">mutating</span> <span class="k">func</span> <span class="n">pop</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Element</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">items</span><span class="p">.</span><span class="n">removeLast</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">var</span> <span class="n">stackOfStrings</span> <span class="o">=</span> <span class="n">Stack</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="p">()</span>
+</span><span class='line'><span class="n">stackOfStrings</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="s">&quot;apple&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>错误处理</h2>
+
+<p>和其他语言中的异常处理不同的是，Swift 中的错误处理并不涉及展开调用栈，所以对性能影响不大。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">enum</span> <span class="nl">StringError</span><span class="p">:</span> <span class="n">Error</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">StringisEmpty</span><span class="p">,</span> <span class="n">OtherError</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">func</span> <span class="n">canThrowAnError</span><span class="p">(</span><span class="nl">name</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="n">throws</span> <span class="o">-&gt;</span> <span class="n">String</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">guard</span> <span class="o">!</span><span class="n">name</span><span class="p">.</span><span class="n">isEmpty</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">throw</span> <span class="n">StringError</span><span class="p">.</span><span class="n">StringisEmpty</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="s">&quot;no error&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">do</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">str</span> <span class="o">=</span> <span class="n">try</span> <span class="n">canThrowAnError</span><span class="p">(</span><span class="nl">name</span><span class="p">:</span> <span class="s">&quot;&quot;</span><span class="p">)</span> <span class="c1">// 如果写成 try?，那么方法在抛出错误时，会将 nil 赋给 str，如果认为方法不可能抛出错误，可以用 try!</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">print</span><span class="p">(</span><span class="s">&quot;没有错误&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span> <span class="n">catch</span> <span class="n">StringError</span><span class="p">.</span><span class="n">StringisEmpty</span> <span class="k">where</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">print</span><span class="p">(</span><span class="s">&quot;字符串不能为空&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span> <span class="n">catch</span> <span class="k">let</span> <span class="n">error</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">print</span><span class="p">(</span><span class="s">&quot;其它错误: \(error)&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>其它</h2>
+
+<h3>给类型起别名</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">typealias</span> <span class="n">MyInt</span> <span class="o">=</span> <span class="n">Int</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>注释</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="cm">/* </span>
+</span><span class='line'><span class="cm">    ...</span>
+</span><span class='line'><span class="cm">    /* 支持多行注释嵌套 */</span>
+</span><span class='line'>    <span class="p">...</span>
+</span><span class='line'><span class="err">*/</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>断言</h3>
+
+<p>一般用于在函数中对参数进行有效性验证，以避免非法的参数值导致函数不能正常执行，Xcode 在用 Release 配置项编译项目时，断言会被禁用。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">let</span> <span class="n">age</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">assert</span><span class="p">(</span><span class="n">age</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;A person&#39;s age cannot be less than zero&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>编译配置语句</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="cp">#if arch(i386) || arch(x86_64)</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="cp">#if swift( &gt;=3.0.0 )</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">if</span> <span class="err">#</span><span class="n">available</span><span class="p">(</span><span class="n">iOS</span> <span class="mf">9.1.0</span><span class="p">,</span> <span class="o">*</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 使用 iOS 9.1.0+ 的 API</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="n">print</span><span class="p">(</span><span class="err">#</span><span class="n">file</span><span class="p">,</span> <span class="err">#</span><span class="n">function</span><span class="p">,</span> <span class="err">#</span><span class="n">line</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>标注命令</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="c1">// MARK: - Section mark with a separator line</span>
+</span><span class='line'><span class="c1">// TODO: Do something soon</span>
+</span><span class='line'><span class="c1">// FIXME: Fix this code</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>@discardableResult</h3>
+
+<p>如果没有使用方法返回的对象，编译器会有一个警告，有两种方法可以解决。</p>
+
+<ul>
+<li>如果是自己写的方法，在 func 前加 @discardableResult 修饰符，代表可以不使用返回值</li>
+<li>对于第三方库中的方法：_ = navigationController?.popViewController(animated: true)</li>
+</ul>
+
+
+<h3>defer 语句</h3>
+
+<p>defer语句在即将离开当前代码块时（throw、return 等）执行一系列语句，可用于执行一些必要的清理工作。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">func</span> <span class="nf">test</span><span class="p">(</span><span class="n">_</span> <span class="nl">param</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">guard</span> <span class="n">param</span><span class="p">.</span><span class="n">isEmpty</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">defer</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">print</span><span class="p">(</span><span class="s">&quot;我一定会被执行&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">test</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h2><a href="https://github.com/github/swift-style-guide">代码规范</a></h2>
+
+<ul>
+<li>声明变量或常量时不用指定类型，利用类型推断方式指定类型。</li>
+<li>Swift 编译器可以优化常量，所以尽可能的多用常量来增强代码的不可变性，可以让代码更加安全并提高可读性。</li>
+<li>常量或变量的名字可以使用中文和 Unicode 字符，甚至可以用 Swift 关键字，但不要这样用。</li>
+<li>在同一行写多条独立的语句时必须在语句后写分号，不建议这样写代码，并且只有一行代码时不要写分号</li>
+<li>当确定可选类型变量有值的情况下，可以用隐式解析可选类型来定义这个变量来避免每次使用前的 if 判断，以提高效率。</li>
+<li>在定义数据结构时，如果该类型不希望出现值被意外修改的情况，优先考虑用 struct 而不是 class，值类型也是线程安全的，而且是以栈的形式分配的，所以速度上会比 class 快很多，还会自动生成默认构造器。</li>
+<li>尽量避免混合使用 Swift 类型和 NSObject 子类，这样会造成大量的类型转换，对性能有影响。</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">风行</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2017-03-17T19:10:37+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>7:10 pm</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/12/23/shi-yong-carthage-zuo-yi-lai-guan-li/" title="Previous Post: 使用 Carthage 做依赖管理">&laquo; 使用 Carthage 做依赖管理</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2017/10/19/new-driver/" title="Next Post: 给新司机的一点建议">给新司机的一点建议 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>最近更新</h1>
+  <ul id="最新">
+    
+      <li class="post">
+        <a href="/blog/2017/10/19/new-driver/">给新司机的一点建议</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/03/17/swift-base/">从 Objective-C 过渡到 Swift</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/12/23/shi-yong-carthage-zuo-yi-lai-guan-li/">使用 Carthage 做依赖管理</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/12/05/tong-guo-xcodebuildda-bao-ipabing-shang-chuan-pu-gong-ying/">使用 Xcodebuild 打包 IPA 并上传蒲公英</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS 应用的开发设计</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub</h1>
+  <a href="https://github.com/lijingcheng">@lijingcheng</a> on GitHub
+</section>
+
+
+
+<section>
+  <h1>Weibo</h1>
+  <a href="https://weibo.com/lijingcheng1984">@lijingcheng1984</a> on Weibo
+</section>
+
+
+
+<section>
+  <h1>Weixin</h1>
+  <a href="http://7x00ed.com1.z0.glb.clouddn.com/qrcode.png">@bj_lijingcheng</a> on Weixin
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2017 - 风行 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+</body>
+</html>

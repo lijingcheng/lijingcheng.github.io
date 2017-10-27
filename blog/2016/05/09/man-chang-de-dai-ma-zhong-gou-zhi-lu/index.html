@@ -99,7 +99,7 @@
 <ul>
 <li><p>要充分理解旧代码后再进行修改，模块之间过度耦合导致牵一发而动全身，不易控制影响范围，有时代码摆放顺序的修改都会造成问题</p></li>
 <li><p>优先重构经常修改的部分，如果代码一两年都没有修改过，那么说明改动的收益很小</p></li>
-<li><p>重构可能需要很长时间，主要取决于团队对于风险的容忍程度</p></li>
+<li><p>重构可能需要很长时间，并且不是非要一次做完，主要取决于团队对于风险的容忍程度</p></li>
 <li><p>删除无用代码是提高代码可维护性最有效的方式</p></li>
 <li><p>小范围重构，当重构后会导致大量测试工作时，需要谨慎决定是否有必要重构</p></li>
 <li><p>要构建可扩展系统，我们需要认同错误的不可避免性，有时候避免这些错误会带来高昂的成本，因此我们不妨将注意力集中在对问题的快速检测以及出现后的应对措施上</p></li>
@@ -153,7 +153,7 @@
 
 <ul>
 <li><p>要有一个 CheckList，对一些代码问题进行定义，要求开发人员以此为准写代码</p></li>
-<li><p>review 代码不应只是代码规范层级上的检查，这些应该是各开发人员必须做好的事情</p></li>
+<li><p>review 代码不应只是代码规范层级上的检查，这些应该是各开发人员必须做好的事情，可以用 OCLint 来做这些事情</p></li>
 <li><p>review 别人代码时不要直接修改不规范的代码，可以用 #warning &hellip; 标注有问题的代码，review 的目的不仅是要保证代码质量，提高团队开发人员技术水平也是一个重要目的</p></li>
 <li><p>review 时需要对代码逻辑及性能上的问题进行检查</p></li>
 <li><p>对方改完代码后要进行验证</p></li>
@@ -206,6 +206,14 @@
   <ul id="最新">
     
       <li class="post">
+        <a href="/blog/2017/10/19/new-driver/">给新司机的一点建议</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/03/17/swift-base/">从 Objective-C 过渡到 Swift</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/12/23/shi-yong-carthage-zuo-yi-lai-guan-li/">使用 Carthage 做依赖管理</a>
       </li>
     
@@ -214,15 +222,7 @@
       </li>
     
       <li class="post">
-        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS 应用的组件化设计</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/06/09/ioskai-fa-tips/">iOS 开发 Tips</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/">代码重构</a>
+        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS 应用的开发设计</a>
       </li>
     
   </ul>
@@ -258,7 +258,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2016 - 风行 -
+  Copyright &copy; 2017 - 风行 -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
