@@ -4,7 +4,7 @@
   <title><![CDATA[风行的博客]]></title>
   <link href="http://lijingcheng.github.io/atom.xml" rel="self"/>
   <link href="http://lijingcheng.github.io/"/>
-  <updated>2017-10-27T20:48:49+08:00</updated>
+  <updated>2017-11-08T20:30:08+08:00</updated>
   <id>http://lijingcheng.github.io/</id>
   <author>
     <name><![CDATA[风行]]></name>
@@ -2295,10 +2295,20 @@
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
 </pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
 </span><span class='line'><span class="cp">&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;</span>
 </span><span class='line'><span class="nt">&lt;plist</span> <span class="na">version=</span><span class="s">&quot;1.0&quot;</span><span class="nt">&gt;</span>
 </span><span class='line'><span class="nt">&lt;dict&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;key&gt;</span>provisioningProfiles<span class="nt">&lt;/key&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;dict&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;key&gt;</span>com.xx.xx(bundleid)<span class="nt">&lt;/key&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;string&gt;</span>profile文件名<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dict&gt;</span>
 </span><span class='line'>  <span class="nt">&lt;key&gt;</span>teamID<span class="nt">&lt;/key&gt;</span>
 </span><span class='line'>  <span class="nt">&lt;string&gt;</span>由苹果提供<span class="nt">&lt;/string&gt;</span>
 </span><span class='line'>  <span class="nt">&lt;key&gt;</span>method<span class="nt">&lt;/key&gt;</span>
@@ -2306,6 +2316,8 @@
 </span><span class='line'><span class="nt">&lt;/dict&gt;</span>
 </span><span class='line'><span class="nt">&lt;/plist&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
+
+
 
 ]]></content>
   </entry>
@@ -4080,11 +4092,7 @@
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// dispatch_sync 会立即阻塞主线程，然后把 Block 中的任务放到主队列中，主队列会将任务取出放到主线程中执行，</span>
-</span><span class='line'><span class="c1">// 但主线程这个时候已经被阻塞了，所以 Block 中的任务就不能完成，而 dispatch_sync 也会一直阻塞主线程，</span>
-</span><span class='line'><span class="c1">// 从而造成死锁现象，导致主线程一直卡死。</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// dispatch_sync 将任务加入到主队列后会阻塞主线程，该任务要等主线程中的其它任务执行完成后才能执行，但由于主线程已经被阻塞了，它还在等新任务执行完后才去执行其它任务，这时双方互相等待造成死锁。</span>
 </span><span class='line'><span class="n">dispatch_sync</span><span class="p">(</span><span class="n">dispatch_get_main_queue</span><span class="p">(),</span> <span class="o">^</span><span class="p">{</span>
 </span><span class='line'>  <span class="p">...</span>
 </span><span class='line'><span class="p">});</span>
@@ -4096,6 +4104,93 @@
 </span><span class='line'>      <span class="p">...</span>
 </span><span class='line'>    <span class="p">});</span>
 </span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>下面例子会打印什么呢？</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">dispatch_async</span><span class="p">(</span><span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;任务1&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">dispatch_sync</span><span class="p">(</span><span class="n">dispatch_get_main_queue</span><span class="p">(),</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;任务2&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;任务3&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;任务4&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">while</span> <span class="p">(</span><span class="nb">YES</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// ...</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>会先打印主线程中的 <code>任务4</code>，然后在主线程中执行 <code>while</code> 死循环，再打印新创建线程中的 <code>任务1</code>，<code>任务2</code> 是在主线程中执行，并且由于是同步操作，所以它会一直等待 <code>while</code> 结束才会执行，这时程序就卡死了。如果将 <code>任务2</code> 改成异步执行，那么 <code>任务3</code> 会先打印出来，但因为 <code>任务2</code> 是在主线程中，所以它还是会等待 <code>while</code> 结束，程序依旧会卡死。</p>
+
+<ul>
+<li>队列和线程的关系：队列可按照同步或异步的方式来组织并执行任务，同步异步的区别在于是否会阻塞当前线程，以及是否会开启新线程。</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;任务1%@&quot;</span><span class="p">,</span> <span class="p">[</span><span class="bp">NSThread</span> <span class="n">currentThread</span><span class="p">]);</span> <span class="c1">// 在主线程中执行</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">dispatch_queue_t</span> <span class="n">serialQueue</span> <span class="o">=</span> <span class="n">dispatch_queue_create</span><span class="p">(</span><span class="s">&quot;test.serialQueue&quot;</span><span class="p">,</span> <span class="n">DISPATCH_QUEUE_SERIAL</span><span class="p">);</span>
+</span><span class='line'><span class="kt">dispatch_queue_t</span> <span class="n">concurrentQueue</span> <span class="o">=</span> <span class="n">dispatch_queue_create</span><span class="p">(</span><span class="s">&quot;test.concurrentQueue&quot;</span><span class="p">,</span><span class="n">DISPATCH_QUEUE_CONCURRENT</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 同步执行的任务不管是位于串行队列还是并行队列，都是串行效果，它们都会在当前线程中执行（全局队列换成 serialQueue 或 concurrentQueue 结果是一样的）</span>
+</span><span class='line'>    <span class="n">dispatch_sync</span><span class="p">(</span><span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;任务2%@&quot;</span><span class="p">,</span> <span class="p">[</span><span class="bp">NSThread</span> <span class="n">currentThread</span><span class="p">]);</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 异步执行任务如果不是放在主队列中的话都会开启新的线程，如果任务位于串行队列，该队列中就算放入多个任务，也只会创建一个线程</span>
+</span><span class='line'>    <span class="n">dispatch_async</span><span class="p">(</span><span class="n">serialQueue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;任务3%@&quot;</span><span class="p">,</span> <span class="p">[</span><span class="bp">NSThread</span> <span class="n">currentThread</span><span class="p">]);</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 异步执行的多个任务如果位于并行队列，会由操作系统决定要开启多少线程，有可能多个任务会共用一个线程。(全局队列换成 concurrentQueue 结果是一样的)</span>
+</span><span class='line'>    <span class="n">dispatch_async</span><span class="p">(</span><span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;任务4%@&quot;</span><span class="p">,</span> <span class="p">[</span><span class="bp">NSThread</span> <span class="n">currentThread</span><span class="p">]);</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -4470,7 +4565,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-
+<p>在做多线程开发时，要合理的进行线程分配并且控制线程数量，为了追踪线程操作，每个线程还要起好名字。主线程主要用来做 UI 操作和数据处理，而日志记录，网络请求都可以安排在各自的线程中，为了检查 UI 操作是否在主线程中执行，可以 hook 掉 UIView 和 CALayer 的 <code>setNeedsDisplay</code> <code>setNeedsDisplayInRect:</code> <code>setNeedsLayout</code> 这三个方法。</p>
 ]]></content>
   </entry>
   
