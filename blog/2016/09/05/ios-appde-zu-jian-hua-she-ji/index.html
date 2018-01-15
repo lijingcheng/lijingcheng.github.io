@@ -369,6 +369,7 @@
 <li>将接口数据缓存到本地，频繁使用的接口数据还可以放到内存里，可以用 NSCache 存储缓存数据，好处是它可以自动清理内存占用，并且是线程安全的。</li>
 <li>缓存的接口数据要设置一个过期时间，用来及时更新数据，并且每隔一段时间还要清理下数据，例如每隔 N 天清理 N 天前缓存的数据。</li>
 <li>考虑用 ProtoBuf 替代 JSON，也可以仅是个别数据量大的接口改为 ProtoBuf 格式数据</li>
+<li>需要长时间轮询的接口可以考虑用 WebSocket 替代</li>
 <li>请求的图片格式可以由 jpg 改为 webp</li>
 <li>使用 gzip 对接口数据进行压缩</li>
 <li>按 UIImageView 大小取合适大小的图片，不要直接取原图</li>
@@ -533,7 +534,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2017 - 风行 -
+  Copyright &copy; 2018 - 风行 -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

@@ -213,7 +213,7 @@
 </span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">performSelector:onThread:withObject:waitUntilDone:modes:</span><span class="p">;</span>
 </span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">performSelector:onThread:withObject:waitUntilDone:</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="c1">// perform 方法只对拥有 RunLoop 的线程有效，如果创建的线程没有添加 RunLoop，perform 的 selector 将无法执行</span>
+</span><span class='line'><span class="c1">// perform 方法只对拥有 RunLoop 的线程有效，如果创建的线程没有添加 RunLoop，perform 的 selector 将无法执行，如果该线程不存在了，程序会 Crash。</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -231,10 +231,12 @@
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
+<span class='line-number'>7</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">dispatch_async</span><span class="p">(</span><span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_DEFAULT</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="o">^</span><span class="p">{</span>
 </span><span class='line'>     <span class="c1">// 异步耗时操作</span>
 </span><span class='line'>     <span class="n">dispatch_async</span><span class="p">(</span><span class="n">dispatch_get_main_queue</span><span class="p">(),</span> <span class="o">^</span><span class="p">{</span>
 </span><span class='line'>          <span class="c1">// 由于 UIKit 中大部分类都不是线程安全的，所以需要在主队列中处理 UI</span>
+</span><span class='line'>          <span class="c1">// dispatch 到主队列时 libDispatch 会唤醒主线程的 Runloop，并把 block 中的内容交给 Runloop 来处理，如果 dispatch 到其他线程则由 libDispatch 自己处理</span>
 </span><span class='line'>     <span class="p">});</span>
 </span><span class='line'><span class="p">});</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -324,7 +326,7 @@
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// dispatch_sync 将任务加入到主队列后会阻塞主线程，该任务要等主线程中的其它任务执行完成后才能执行，但由于主线程已经被阻塞了，它还在等新任务执行完后才去执行其它任务，这时双方互相等待造成死锁。</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// dispatch_sync 将 block 中的任务加入到主队列队尾，按照队列的先进先出规则，该任务要等主线程中的其它任务执行完成后才能执行，但是因为 block 中的任务是要求同步执行的，所以主线程中的其它任务会等 block 中的任务执行完后才去执行，这时双方互相等待造成死锁。</span>
 </span><span class='line'><span class="n">dispatch_sync</span><span class="p">(</span><span class="n">dispatch_get_main_queue</span><span class="p">(),</span> <span class="o">^</span><span class="p">{</span>
 </span><span class='line'>  <span class="p">...</span>
 </span><span class='line'><span class="p">});</span>
@@ -897,7 +899,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2017 - 风行 -
+  Copyright &copy; 2018 - 风行 -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

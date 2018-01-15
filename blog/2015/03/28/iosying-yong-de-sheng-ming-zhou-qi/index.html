@@ -128,13 +128,23 @@
 
 <h1>RunLoop</h1>
 
-<p>RunLoop 能够保持程序始终运行并监听处理分发事件，当没有事件发生时进入休眠状态，有事件发生时系统会将接收到的事件放在一个队列里，然后唤醒 RunLoop 依次处理事件，使用队列不仅可以解决线程同步问题也促使我们要把更新 UI 的代码放在主线程中运行，以免由于多个线程抢占资源产生奇怪的问题。RunLoop 可以接收的事件来自两种不同的来源，分别是输入源和定时源，输入源传递异步事件，事件通常来自于其他线程或程序，如一些 UI 事件等。定时源则传递同步事件，发生在特定时间或者重复的时间间隔，如 NSTimer。RunLoop 会在接收到事件时创建新的自动释放池，并在处理完事件后释放它。</p>
+<p>RunLoop 能够保持程序始终运行并监听处理分发事件，当没有事件发生时进入休眠状态，有事件发生时系统会将接收到的事件放在一个队列里，然后唤醒 RunLoop 依次处理事件，使用队列不仅可以解决线程同步问题也促使我们要把更新 UI 的代码放在主线程中运行，以免由于多个线程抢占资源产生奇怪的问题。RunLoop 可以接收的事件来自两种不同的来源，分别是输入源和定时源，输入源传递异步事件，事件通常来自于其他线程或程序，如一些 UI 事件等。定时源则传递同步事件，发生在特定时间或者重复的时间间隔，如 NSTimer。</p>
 
-<p>每个线程都有自己的 RunLoop, 主线程是默认开启的，子线程需要手动开启，并且在开启后必须至少添加一个事件源，否则 RunLoop 在启动后会立即结束。那么什么情况下需要我们在子线程中开启并使用 RunLoop 呢？</p>
+<p>RunLoop 的开启和退出</p>
 
 <ul>
-<li>在线程中需要持续监测某个事件。例如使用 NSURLConnection 异步请求数据，如果没有开启 RunLoop，会因为子线程的结束导致相关 delegate 方法不会被触发。</li>
-<li>线程间需要持续交互，例如当多个线程之间产生同步问题时，可以根据情况考虑将多个线程定义成多个事件源，然后让它们运行在同一线程的 RunLoop 下。</li>
+<li>苹果提供了 NSRunLoop 和 CFRunLoopRef 来操作 Runloop，CFRunLoopRef 是线程安全的，NSRunLoop 基于 CFRunLoopRef 并提供了面向对象的 API，API 不是线程安全的</li>
+<li>苹果不允许我们直接创建 Runloop，只能在线程内部通过 <code>[NSRunLoop currentRunLoop]</code> 来获取，第一次调用此方法时便会创建 Runloop</li>
+<li>主线程的 Runloop 是默认开启的，子线程需要我们自己开启，并且在开启后通过添加 port 来监听事件，否则 RunLoop 在启动后便会结束（除了 NSTimer）</li>
+<li>可以通过给 RunLoop 设置过期时间来使 Runloop 能够退出，或者通过 CFRunLoopStop 直接退出（会在执行完正在运行的事件后退出，并且如果给 Runloop 添加了 port，那么需要 remove port）</li>
+</ul>
+
+
+<p>那么什么情况下需要我们在子线程中开启并使用 RunLoop 呢？</p>
+
+<ul>
+<li>创建常驻线程，可以像 AFN 那样给新线程开启 Runloop 的同时添加端口来监听事件，这样它就能一直处于等待事件的状态中，线程就不会结束了。</li>
+<li>线程间需要持续交互，需要在开启 Runloop 时同时指定一个用于唤醒它的 NSPort 端口对象，然后使用端口对象来进行多线程间的通信。</li>
 <li>使用 NSTimer 或 performSelector 系列方法。
 
 <ul>
@@ -155,7 +165,26 @@
 </ul>
 
 
-<p>我们在 Cell 上放置一个 timer，然后在滚动表格时会发现 timer 没有正常执行，要解决这个问题，只要将 timer 运行在 NSRunLoopCommonModes 模式下，便可以在表格静止以及滚动时都能够正常运行。</p>
+<p>我们可以通过改变一些事件操作的 RunloopMode 来提高用户体验</p>
+
+<ul>
+<li>在列表中加载图片时，让加载图片的操作处于 NSDefaultRunLoopMode 中，这样在列表滚动时便不会加载图片，列表的滚动速度便会有所提升</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">imageView</span> <span class="nl">performSelector</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">setImage</span><span class="p">:)</span>
+</span><span class='line'>                           <span class="nl">withObject</span><span class="p">:</span><span class="n">image</span> <span class="nl">afterDelay</span><span class="p">:</span><span class="mi">0</span>
+</span><span class='line'>                              <span class="nl">inModes</span><span class="p">:</span><span class="l">@[</span><span class="n">NSDefaultRunLoopMode</span><span class="l">]</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>在列表中使用 NSTimer 时，默认情况下在滚动时 timer 会停止，这时可以将 timer 运行在 NSRunLoopCommonModes 下，便可以在表格静止以及滚动时都能够正常运行。</li>
+</ul>
+
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[[</span><span class="bp">NSRunLoop</span> <span class="n">currentRunLoop</span><span class="p">]</span> <span class="nl">addTimer</span><span class="p">:</span><span class="n">timer</span> <span class="nl">forMode</span><span class="p">:</span><span class="n">NSRunLoopCommonModes</span><span class="p">];</span>
@@ -164,7 +193,7 @@
 
 <p>需要注意的是 NSTimer 并不是以子线程的方式运行，它只是在 RunLoop 里注册了一下，RunLoop 会根据 timer 的设置情况去检测并触发，所以任务在执行过程中一旦出现延迟，那么会丢失执行次数，如果对精确度有要求的话，可以使用 dispatch_time，GCD 不受 RunLoop 影响。</p>
 
-<blockquote><p>关于 RunLoop 的具体使用方法详见<a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Multithreading/RunLoopManagement/RunLoopManagement.html#//apple_ref/doc/uid/10000057i-CH16-SW1">官方文档</a></p></blockquote>
+<blockquote><p>关于 RunLoop 的具体介绍详见<a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Multithreading/RunLoopManagement/RunLoopManagement.html#//apple_ref/doc/uid/10000057i-CH16-SW1">官方文档</a></p></blockquote>
 
 <p><br/></p>
 
@@ -370,7 +399,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2017 - 风行 -
+  Copyright &copy; 2018 - 风行 -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

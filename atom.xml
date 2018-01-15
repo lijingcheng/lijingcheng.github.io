@@ -4,7 +4,7 @@
   <title><![CDATA[风行的博客]]></title>
   <link href="http://lijingcheng.github.io/atom.xml" rel="self"/>
   <link href="http://lijingcheng.github.io/"/>
-  <updated>2017-11-08T20:30:08+08:00</updated>
+  <updated>2018-01-15T11:07:11+08:00</updated>
   <id>http://lijingcheng.github.io/</id>
   <author>
     <name><![CDATA[风行]]></name>
@@ -98,6 +98,8 @@
 <p>出了事故再来补。。。</p></li>
 </ul>
 
+
+<p>PS: 上面这句话写完不到一个月出了两次事故，一次怼别人，一次被别人怼，好在都不严重，这栏里不想再写什么东西了。。。</p>
 ]]></content>
   </entry>
   
@@ -2612,6 +2614,7 @@
 <li>将接口数据缓存到本地，频繁使用的接口数据还可以放到内存里，可以用 NSCache 存储缓存数据，好处是它可以自动清理内存占用，并且是线程安全的。</li>
 <li>缓存的接口数据要设置一个过期时间，用来及时更新数据，并且每隔一段时间还要清理下数据，例如每隔 N 天清理 N 天前缓存的数据。</li>
 <li>考虑用 ProtoBuf 替代 JSON，也可以仅是个别数据量大的接口改为 ProtoBuf 格式数据</li>
+<li>需要长时间轮询的接口可以考虑用 WebSocket 替代</li>
 <li>请求的图片格式可以由 jpg 改为 webp</li>
 <li>使用 gzip 对接口数据进行压缩</li>
 <li>按 UIImageView 大小取合适大小的图片，不要直接取原图</li>
@@ -3694,7 +3697,7 @@
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">copy</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">str</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">copy</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">userName</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1">// 对应 setter 方法</span>
 </span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setUserName:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">userName</span> <span class="p">{</span>
@@ -3718,7 +3721,7 @@
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">retain</span><span class="p">)</span> <span class="bp">NSMutableString</span> <span class="o">*</span><span class="n">str</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">retain</span><span class="p">)</span> <span class="bp">NSMutableString</span> <span class="o">*</span><span class="n">userName</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1">// 对应 setter 方法</span>
 </span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setUserName:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">userName</span> <span class="p">{</span>
@@ -3744,7 +3747,7 @@
 
 <h3>runtime 是如何将 weak 对象设置为 nil?</h3>
 
-<p>weak 对象会被放入到一个 hash 表中，并用它指向的对象内存地址作为 key，当此对象的 dealloc 方法被调用时，会用这个 key 将指向它的 weak 对象数组找出来，并将里面的对象都设置为 nil，最后再从 weak hash 表中删除这条数据。</p>
+<p>weak 对象会被放入到一个 hash 表中，并用它指向的对象内存地址作为 key，所有指向它的 weak 指针以数组的形式作为 value，当此对象的 dealloc 方法被调用时，会用这个 key 将指向它的 weak 指针数组找出来，并将它们置为 nil，最后再从 weak hash 表中删除这条数据。</p>
 
 <h3>列出几种有问题的写法</h3>
 
@@ -3797,7 +3800,7 @@
 <p>当不再使用一个对象时应该将其释放，但是在某些情况下，我们很难理清一个对象什么时候不再使用，Objc 提供的自动释放池可以解决这个问题，只需要给这种对象发送 autorelease 消息，就会将该对象放到池子里，当池子被清理时，会给池里所有的对象发送 release 消息。</p>
 
 <ul>
-<li>每个 RunLoop 在迭代时都会创建自动释放池，并在迭代后释放池子。如果是我们自己创建的池子，会在出了 @autoreleasepool 的大括号后进行清理。通常我们不用自己去创建池子，但是遇到循环次数较大时会导致内存占用不断增长，这时需要我们自己创建自动释放池</li>
+<li>每个 Runloop 在迭代时都会创建自动释放池，并在迭代后释放池子。如果是我们自己创建的池子，会在出了 @autoreleasepool 的大括号后进行清理。通常我们不用自己去创建池子，但是遇到循环次数较大时会导致内存占用不断增长，这时需要我们自己创建自动释放池。</li>
 </ul>
 
 
@@ -3818,9 +3821,11 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
+<p>PS: NSArray 的 enumerateObjectUsingBlock&hellip;. 中也有一个 AutoreleasePool</p>
+
 <ul>
-<li><p>AutoreleasePool 由若干个 AutoreleasePoolPage 类的对象以双向链表的形式组合而成，每个 Page 对象都记录着自己所在线程、链表的 parent/child 结点，还有被添加进来的 autorelease 对象和 next 指针。Page 对象用栈的结构形式存储 autorelease 对象，next 指针会被初始化在栈底，当有对象入栈时，便会指向下一地址，直到 Page 空间被占满便指向栈顶，这时如果再添加 autorelease 对象，便会交给新建的 Page 对象存储，并连接链表。</p></li>
-<li><p>每添加一个 @autoreleasepool {} 都会被编译器改成</p></li>
+<li><p>每个线程在维护自己的自动释放池时都会有一个或多个 AutoreleasePoolPage 对象，每个 Page 对象会开辟4096字节内存（虚拟内存一页的大小），它们之间以双向链表的形式组合而成，Page 对象通过 next 指针实现用栈的结构形式存储 autorelease 对象，next 指针会被初始化在栈底，当有 autorelease 对象入栈时，next 便会指向下一地址，当 Page 空间被占满便指向栈顶，这时如果再添加 autorelease 对象，便会交给新建的 Page 对象存储，并连接链表。</p></li>
+<li><p>每添加一个 @autoreleasepool { &hellip; } 相当于实现下面代码</p></li>
 </ul>
 
 
@@ -3831,13 +3836,38 @@
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 会在现有 AutoreleasePoolPage 对象中添加一个哨兵对象用来标记位置</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 会在现有 AutoreleasePoolPage 对象中添加一个哨兵对象(nil)用来标记位置，主要用于在释放池子时标记哪些 autorelease 对象需要释放</span>
 </span><span class='line'><span class="kt">void</span> <span class="o">*</span><span class="n">context</span> <span class="o">=</span> <span class="n">objc_autoreleasePoolPush</span><span class="p">();</span>
 </span><span class='line'>
 </span><span class='line'><span class="p">...</span>
 </span><span class='line'>
-</span><span class='line'><span class="c1">// 给晚于哨兵对象后加入的所有 autorelease 对象发送 release 消息，并修改 next 指针（可以跨 Page）</span>
+</span><span class='line'><span class="c1">// 给晚于哨兵对象后加入的所有 autorelease 对象发送 release 消息，并修改 next 指针，可以跨 Page（所以得用双向链表组合 Page 对象）</span>
 </span><span class='line'><span class="n">objc_autoreleasePoolPop</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>PS:在添加 autorelease 对象时，如果发现线程没有 AutoreleasePoolPage 则会创建新的，所以不用担心子线程中没开启 Runloop 导致的内存泄露问题。</p>
+
+<p>AutoreleasePoolPage 结构如下</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">class</span> <span class="n">AutoreleasePoolPage</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kt">magic_t</span> <span class="k">const</span> <span class="n">magic</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">id</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span> <span class="c1">// 指向栈顶最新进来的 autorelease 对象的下一个位置</span>
+</span><span class='line'>    <span class="kt">pthread_t</span> <span class="k">const</span> <span class="kr">thread</span><span class="p">;</span> <span class="c1">// 当前线程</span>
+</span><span class='line'>    <span class="n">AutoreleasePoolPage</span> <span class="o">*</span> <span class="k">const</span> <span class="n">parent</span><span class="p">;</span> <span class="c1">// 上一个 Page</span>
+</span><span class='line'>    <span class="n">AutoreleasePoolPage</span> <span class="o">*</span><span class="n">child</span><span class="p">;</span> <span class="c1">// 下一个 Page</span>
+</span><span class='line'>    <span class="kt">uint32_t</span> <span class="k">const</span> <span class="n">depth</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">uint32_t</span> <span class="n">hiwat</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -3981,7 +4011,7 @@
 </span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">performSelector:onThread:withObject:waitUntilDone:modes:</span><span class="p">;</span>
 </span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">performSelector:onThread:withObject:waitUntilDone:</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="c1">// perform 方法只对拥有 RunLoop 的线程有效，如果创建的线程没有添加 RunLoop，perform 的 selector 将无法执行</span>
+</span><span class='line'><span class="c1">// perform 方法只对拥有 RunLoop 的线程有效，如果创建的线程没有添加 RunLoop，perform 的 selector 将无法执行，如果该线程不存在了，程序会 Crash。</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -3999,10 +4029,12 @@
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
+<span class='line-number'>7</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">dispatch_async</span><span class="p">(</span><span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_DEFAULT</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="o">^</span><span class="p">{</span>
 </span><span class='line'>     <span class="c1">// 异步耗时操作</span>
 </span><span class='line'>     <span class="n">dispatch_async</span><span class="p">(</span><span class="n">dispatch_get_main_queue</span><span class="p">(),</span> <span class="o">^</span><span class="p">{</span>
 </span><span class='line'>          <span class="c1">// 由于 UIKit 中大部分类都不是线程安全的，所以需要在主队列中处理 UI</span>
+</span><span class='line'>          <span class="c1">// dispatch 到主队列时 libDispatch 会唤醒主线程的 Runloop，并把 block 中的内容交给 Runloop 来处理，如果 dispatch 到其他线程则由 libDispatch 自己处理</span>
 </span><span class='line'>     <span class="p">});</span>
 </span><span class='line'><span class="p">});</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -4092,7 +4124,7 @@
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// dispatch_sync 将任务加入到主队列后会阻塞主线程，该任务要等主线程中的其它任务执行完成后才能执行，但由于主线程已经被阻塞了，它还在等新任务执行完后才去执行其它任务，这时双方互相等待造成死锁。</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// dispatch_sync 将 block 中的任务加入到主队列队尾，按照队列的先进先出规则，该任务要等主线程中的其它任务执行完成后才能执行，但是因为 block 中的任务是要求同步执行的，所以主线程中的其它任务会等 block 中的任务执行完后才去执行，这时双方互相等待造成死锁。</span>
 </span><span class='line'><span class="n">dispatch_sync</span><span class="p">(</span><span class="n">dispatch_get_main_queue</span><span class="p">(),</span> <span class="o">^</span><span class="p">{</span>
 </span><span class='line'>  <span class="p">...</span>
 </span><span class='line'><span class="p">});</span>
@@ -4618,13 +4650,23 @@
 
 <h1>RunLoop</h1>
 
-<p>RunLoop 能够保持程序始终运行并监听处理分发事件，当没有事件发生时进入休眠状态，有事件发生时系统会将接收到的事件放在一个队列里，然后唤醒 RunLoop 依次处理事件，使用队列不仅可以解决线程同步问题也促使我们要把更新 UI 的代码放在主线程中运行，以免由于多个线程抢占资源产生奇怪的问题。RunLoop 可以接收的事件来自两种不同的来源，分别是输入源和定时源，输入源传递异步事件，事件通常来自于其他线程或程序，如一些 UI 事件等。定时源则传递同步事件，发生在特定时间或者重复的时间间隔，如 NSTimer。RunLoop 会在接收到事件时创建新的自动释放池，并在处理完事件后释放它。</p>
+<p>RunLoop 能够保持程序始终运行并监听处理分发事件，当没有事件发生时进入休眠状态，有事件发生时系统会将接收到的事件放在一个队列里，然后唤醒 RunLoop 依次处理事件，使用队列不仅可以解决线程同步问题也促使我们要把更新 UI 的代码放在主线程中运行，以免由于多个线程抢占资源产生奇怪的问题。RunLoop 可以接收的事件来自两种不同的来源，分别是输入源和定时源，输入源传递异步事件，事件通常来自于其他线程或程序，如一些 UI 事件等。定时源则传递同步事件，发生在特定时间或者重复的时间间隔，如 NSTimer。</p>
 
-<p>每个线程都有自己的 RunLoop, 主线程是默认开启的，子线程需要手动开启，并且在开启后必须至少添加一个事件源，否则 RunLoop 在启动后会立即结束。那么什么情况下需要我们在子线程中开启并使用 RunLoop 呢？</p>
+<p>RunLoop 的开启和退出</p>
 
 <ul>
-<li>在线程中需要持续监测某个事件。例如使用 NSURLConnection 异步请求数据，如果没有开启 RunLoop，会因为子线程的结束导致相关 delegate 方法不会被触发。</li>
-<li>线程间需要持续交互，例如当多个线程之间产生同步问题时，可以根据情况考虑将多个线程定义成多个事件源，然后让它们运行在同一线程的 RunLoop 下。</li>
+<li>苹果提供了 NSRunLoop 和 CFRunLoopRef 来操作 Runloop，CFRunLoopRef 是线程安全的，NSRunLoop 基于 CFRunLoopRef 并提供了面向对象的 API，API 不是线程安全的</li>
+<li>苹果不允许我们直接创建 Runloop，只能在线程内部通过 <code>[NSRunLoop currentRunLoop]</code> 来获取，第一次调用此方法时便会创建 Runloop</li>
+<li>主线程的 Runloop 是默认开启的，子线程需要我们自己开启，并且在开启后通过添加 port 来监听事件，否则 RunLoop 在启动后便会结束（除了 NSTimer）</li>
+<li>可以通过给 RunLoop 设置过期时间来使 Runloop 能够退出，或者通过 CFRunLoopStop 直接退出（会在执行完正在运行的事件后退出，并且如果给 Runloop 添加了 port，那么需要 remove port）</li>
+</ul>
+
+
+<p>那么什么情况下需要我们在子线程中开启并使用 RunLoop 呢？</p>
+
+<ul>
+<li>创建常驻线程，可以像 AFN 那样给新线程开启 Runloop 的同时添加端口来监听事件，这样它就能一直处于等待事件的状态中，线程就不会结束了。</li>
+<li>线程间需要持续交互，需要在开启 Runloop 时同时指定一个用于唤醒它的 NSPort 端口对象，然后使用端口对象来进行多线程间的通信。</li>
 <li>使用 NSTimer 或 performSelector 系列方法。
 
 <ul>
@@ -4645,7 +4687,26 @@
 </ul>
 
 
-<p>我们在 Cell 上放置一个 timer，然后在滚动表格时会发现 timer 没有正常执行，要解决这个问题，只要将 timer 运行在 NSRunLoopCommonModes 模式下，便可以在表格静止以及滚动时都能够正常运行。</p>
+<p>我们可以通过改变一些事件操作的 RunloopMode 来提高用户体验</p>
+
+<ul>
+<li>在列表中加载图片时，让加载图片的操作处于 NSDefaultRunLoopMode 中，这样在列表滚动时便不会加载图片，列表的滚动速度便会有所提升</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">imageView</span> <span class="nl">performSelector</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">setImage</span><span class="p">:)</span>
+</span><span class='line'>                           <span class="nl">withObject</span><span class="p">:</span><span class="n">image</span> <span class="nl">afterDelay</span><span class="p">:</span><span class="mi">0</span>
+</span><span class='line'>                              <span class="nl">inModes</span><span class="p">:</span><span class="l">@[</span><span class="n">NSDefaultRunLoopMode</span><span class="l">]</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>在列表中使用 NSTimer 时，默认情况下在滚动时 timer 会停止，这时可以将 timer 运行在 NSRunLoopCommonModes 下，便可以在表格静止以及滚动时都能够正常运行。</li>
+</ul>
+
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[[</span><span class="bp">NSRunLoop</span> <span class="n">currentRunLoop</span><span class="p">]</span> <span class="nl">addTimer</span><span class="p">:</span><span class="n">timer</span> <span class="nl">forMode</span><span class="p">:</span><span class="n">NSRunLoopCommonModes</span><span class="p">];</span>
@@ -4654,7 +4715,7 @@
 
 <p>需要注意的是 NSTimer 并不是以子线程的方式运行，它只是在 RunLoop 里注册了一下，RunLoop 会根据 timer 的设置情况去检测并触发，所以任务在执行过程中一旦出现延迟，那么会丢失执行次数，如果对精确度有要求的话，可以使用 dispatch_time，GCD 不受 RunLoop 影响。</p>
 
-<blockquote><p>关于 RunLoop 的具体使用方法详见<a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Multithreading/RunLoopManagement/RunLoopManagement.html#//apple_ref/doc/uid/10000057i-CH16-SW1">官方文档</a></p></blockquote>
+<blockquote><p>关于 RunLoop 的具体介绍详见<a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Multithreading/RunLoopManagement/RunLoopManagement.html#//apple_ref/doc/uid/10000057i-CH16-SW1">官方文档</a></p></blockquote>
 
 <p><br/></p>
 
