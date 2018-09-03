@@ -9,7 +9,7 @@
   <meta name="author" content="风行">
 
   
-  <meta name="description" content="Swift - 不仅支持面向对象和面向协议开发，同时还支持函数式开发，在使用封装继承多态的同时，也可以用协议去组合代码，还可以利用高阶函数去简化代码、组织程序。 Swift 还是一个强类型语言，类型在运行时和编译期间是一致的，这样编译器可以得到足够的信息在生成中间码和机器码时进行优化， &hellip;">
+  <meta name="description" content="Swift - Swift 不仅支持面向对象和面向协议开发，同时还支持函数式开发，在使用封装继承多态的同时，也可以用协议去组合代码，还可以利用高阶函数去简化代码、组织程序。** 面向协议开发不仅可以间接实现多继承，还可以使代码编写过程更加灵活，也能够解决面向对象开发带来的冗杂父类问题，在 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -85,16 +85,16 @@
 
 
 <div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/swift.jpg" width="250" height="250"  >
-<strong>Swift - <em>不仅支持面向对象和面向协议开发，同时还支持函数式开发，在使用封装继承多态的同时，也可以用协议去组合代码，还可以利用高阶函数去简化代码、组织程序。</em></strong></p>
+<strong>Swift - Swift 不仅支持面向对象和面向协议开发，同时还支持函数式开发，在使用封装继承多态的同时，也可以用协议去组合代码，还可以利用高阶函数去简化代码、组织程序。</strong>**</p>
 
 <p><br><br></p>
 
 <!-- more -->
 
 
-<p>Swift 还是一个强类型语言，类型在运行时和编译期间是一致的，这样编译器可以得到足够的信息在生成中间码和机器码时进行优化，并在编译期间完成方法的绑定，可以直接获取方法地址并进行调用。</p>
+<p>面向协议开发不仅可以间接实现多继承，还可以使代码编写过程更加灵活，也能够解决面向对象开发带来的冗杂父类问题，在 Swift 中只有引用类型可以使用面向对象开发的继承功能，而引用类型的实例变量会在程序执行过程中因无意修改导致数据异常，此时可用协议替代继承，并且将引用类型改为值类型，便可以大大提高数据的安全性。</p>
 
-<p>下面所写的所有内容都只是 Swift 的一些基础知识，仅适用于初学者或培训使用。本文初写目的就是为了培训，曾在三个小时内催眠了所有听众。</p>
+<p>Swift 还是一个强类型语言，类型在运行时和编译期间是一致的，这样编译器可以得到足够的信息在生成中间码和机器码时进行优化，并在编译期间完成方法的绑定，可以直接获取方法地址并进行调用。</p>
 
 <h2>Hello World</h2>
 
@@ -1022,9 +1022,9 @@
 
 <h2>类和结构体</h2>
 
-<p>Swift 中的所有的基本类型和枚举都是值类型，它们在底层都是以结构体的形式所实现，所以结构体也是值类型，类是引用类型。值类型数据在进行函数传递时会被拷贝，引用类型不会。当定义数据结构的目的是用来封装简单的数据值，并且希望该数据结构在被赋值或传递时，封装的数据及其内部存储的属性也能够通过值传递，那么适合用结构体来定义它。</p>
+<p>Swift 中的所有的基本类型和枚举都是值类型，它们在底层都是以结构体的形式所实现，所以结构体是值类型，类是引用类型。值类型数据在进行函数传递时会被拷贝，引用类型不会。当定义数据结构的目的是用来封装简单的数据值，并且希望该数据结构在被赋值或传递时，封装的数据及其内部存储的属性也能够通过值传递，那么适合用结构体来定义它。</p>
 
-<p>Swift 中类和结构体都支持属性、方法、下标、构造器、扩展和协议，与结构体相比，类还支持继承、多态、用析构器释放所分配资源以及用引用计数对一个类进行多次引用。</p>
+<p>Swift 中类和结构体都支持属性、方法、下标、构造器、扩展和协议，与结构体相比，类还支持继承、多态、用析构器释放所分配资源以及用引用计数对一个类进行多次引用。另外引用类型对象存储在堆上，值类型在栈上，栈的操作仅仅是指针的上下移动，而堆的操作会因内存的分配和回收产生合并、移位、重新链接等行为，所以使用结构体效率会高一些。另外值类型在复制时，复制的对象和原对象实际上在内存中指向同一个对象。只有当复制后的对象被修改时才会在内存中重新创建一个新的对象，通过 copy-on-write 这种的方式提高效率。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -1048,7 +1048,7 @@
 </span><span class='line'>    <span class="k">var</span> <span class="nl">location</span><span class="p">:</span> <span class="n">Int</span>
 </span><span class='line'>    <span class="k">var</span> <span class="nl">length</span><span class="p">:</span> <span class="n">Int</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="c1">// 函数与某个类型相关联后通常称为方法，结构体和枚举是值类型。默认情况下，值类型的属性不能在它的实例方法中被修改。但是可以为这个方法选择可变(mutating)行为，然后就可以从其方法内部改变它的属性，甚至修改 self</span>
+</span><span class='line'>    <span class="c1">// 函数与某个类型相关联后通常称为方法，结构体和枚举是值类型。默认情况下，值类型的属性不能在它的实例方法中被修改。但是可以为这个方法选择可变(mutating)行为，然后就可以从其方法内部改变它的属性，甚至修改 self （引用类型可以直接修改）</span>
 </span><span class='line'>    <span class="kr">mutating</span> <span class="k">func</span> <span class="n">moveBy</span><span class="p">(</span><span class="n">_</span> <span class="nl">step</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>        <span class="n">location</span> <span class="o">+=</span> <span class="n">step</span> <span class="c1">// 通常只有当属性和参数名称一样时才用 self. 方式进行赋值</span>
 </span><span class='line'>    <span class="p">}</span>
@@ -1534,8 +1534,10 @@
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">closure</span> <span class="o">=</span> <span class="p">{</span> <span class="p">[</span><span class="kr">unowned</span> <span class="nb">self</span><span class="p">]</span> <span class="k">in</span>
-</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">doSomething</span><span class="p">()</span> <span class="c1">// 必须用 self 引用属性或方法</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">closure</span> <span class="o">=</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="nb">self</span><span class="p">]</span> <span class="k">in</span> <span class="c1">// 用 weak 而不是 unowned 会更安全些</span>
+</span><span class='line'>    <span class="n">guard</span> <span class="k">let</span> <span class="n">strongSelf</span> <span class="o">=</span> <span class="nb">self</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="p">}</span> <span class="c1">// 像 OC 一样</span>
+</span><span class='line'>    <span class="n">strongSelf</span><span class="p">.</span><span class="n">doSomething</span><span class="p">()</span> <span class="c1">// 必须用 self 引用属性或方法</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -1635,7 +1637,7 @@
 
 <p></p>
 
-<p>使用 @objc 修饰后的类型，可以供 Objective-C 调用,标记 @objc 特性的协议只能被继承自 Objective-C 类的类或者 @objc 类遵循，以下代码是错的：</p>
+<p>使用 @objc 修饰后的类型，可以供 Objective-C 调用,标记 @objc 特性的协议只能被继承自 Objective-C 类的类或者 @objc 类遵循，struct 不能用，以下代码是错的：</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -1646,7 +1648,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-
+<p>Swift 协议中的所有方法默认情况下都要被确认者实现，可通过扩展来实现某个方法使其成为可选方法，也可用下面方式来实现</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -1927,19 +1929,6 @@
 
 
 <p></p>
-
-<h2><a href="https://github.com/github/swift-style-guide">代码规范</a></h2>
-
-<ul>
-<li>声明变量或常量时不用指定类型，利用类型推断方式指定类型。</li>
-<li>Swift 编译器可以优化常量，所以尽可能的多用常量来增强代码的不可变性，可以让代码更加安全并提高可读性。</li>
-<li>常量或变量的名字可以使用中文和 Unicode 字符，甚至可以用 Swift 关键字，但不要这样用。</li>
-<li>在同一行写多条独立的语句时必须在语句后写分号，不建议这样写代码，并且只有一行代码时不要写分号</li>
-<li>当确定可选类型变量有值的情况下，可以用隐式解析可选类型来定义这个变量来避免每次使用前的 if 判断，以提高效率。</li>
-<li>在定义数据结构时，如果该类型不希望出现值被意外修改的情况，优先考虑用 struct 而不是 class，值类型也是线程安全的，而且是以栈的形式分配的，所以速度上会比 class 快很多，还会自动生成默认构造器。</li>
-<li>尽量避免混合使用 Swift 类型和 NSObject 子类，这样会造成大量的类型转换，对性能有影响。</li>
-</ul>
-
 </div>
 
 

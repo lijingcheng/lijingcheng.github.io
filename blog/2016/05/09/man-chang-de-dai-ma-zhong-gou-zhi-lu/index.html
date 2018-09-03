@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>代码重构 - 风行的博客</title>
+  <title>代码重构及代码Review - 风行的博客</title>
   <meta name="author" content="风行">
 
   
@@ -68,7 +68,7 @@
   
   <header>
     
-      <h1 class="entry-title">代码重构</h1>
+      <h1 class="entry-title">代码重构及代码Review</h1>
     
     
       <p class="meta">
@@ -149,14 +149,44 @@
 
 <h1>代码 Review</h1>
 
-<p>重构的目的是保证代码质量，但是代码质量不能仅仅依靠重构，重构更多时候是一种补救措施，更多时候还是需要我们在写代码时讲究一些，适当的有一些代码洁癖，也需要通过持续的代码 Review 保证代码质量，在 Review 上需要注意：</p>
+<p>对于代码质量更多时候还是需要通过持续的代码 Review 来保证，需要做到以下几点：</p>
 
 <ul>
-<li><p>要有一个 CheckList，对一些代码问题进行定义，要求开发人员以此为准写代码</p></li>
-<li><p>review 代码不应只是代码规范层级上的检查，这些应该是各开发人员必须做好的事情，可以用 OCLint 来做这些事情</p></li>
-<li><p>review 别人代码时不要直接修改不规范的代码，可以用 #warning &hellip; 标注有问题的代码，review 的目的不仅是要保证代码质量，提高团队开发人员技术水平也是一个重要目的</p></li>
-<li><p>review 时需要对代码逻辑及性能上的问题进行检查</p></li>
-<li><p>对方改完代码后要进行验证</p></li>
+<li><p>要有一个 CheckList，对一些代码问题进行定义，要求开发人员以此为准</p></li>
+<li><p>对于代码规范上的问题应该通过自动 Review 工具去做，如 OCLint/SwiftLint</p></li>
+<li><p>对于代码逻辑及性能上的问题可通过 pull/merge request 方式去做</p></li>
+</ul>
+
+
+<p>Review 的目的不仅是要保证代码质量，提高团队开发人员技术水平也是一个重要目的。</p>
+
+<h1>CheckList</h1>
+
+<ul>
+<li>代码简洁不重复</li>
+<li>方法短小并专注一个功能</li>
+<li>删除无用的代码及资源</li>
+<li>适时地使用 private 实现封装并使代码更清晰</li>
+<li>避免无意义的 log，保持好的编码习惯</li>
+<li>不要用魔术数字</li>
+<li>框架代码及复杂代码要写注释</li>
+<li>遍历数组或字典时不允许添加或删除元素</li>
+<li>代码尽量不要有警告</li>
+<li>相似意义的常量超过 2 个时就要考虑用枚举代替</li>
+<li>命名要做到“见名知意”，UI 控件的命名要能看出来是什么控件</li>
+<li>使用 xib 或 storyboard 画界面来降低代码量，UI 控件可通过纯代码实现</li>
+<li>尽量避免循环引用问题</li>
+<li>避免对可选类型强解包，可用 <code>if let foo = foo { ... }</code> 或可选链 <code>foo?.doSomething()</code></li>
+<li>尽早的退出方法，可提升代码的可读性，例：<code>guard xx else { return }</code>或<code>if xxx { return}</code></li>
+<li>定义 model 用 struct，值类型是线程安全的，并以栈的形式分配，速度上比 class 快</li>
+<li>用于对接接口返回数据的 model 中的属性必须是 optional 的，当接口返回字段较少时，可用字典</li>
+<li>不要在 ViewModel 里用到跟 UIKit 相关的东西，Controller 当 View 用，尽量不写逻辑性代码</li>
+<li>UI 切的图需要<a href="https://tinypng.com">压缩</a>后再使用，图片命名方式：
+<code>core_hud_loading@2x.png</code></li>
+<li>项目的主色和辅色有对应常量，如果在 xib 中使用，需要先将做好的 .clr 文件复制到指定目录</li>
+<li>用<code>// MARK:</code>来做代码分段，用<code>// TODO:</code>来做待办，但需要写出计划完成时间或条件</li>
+<li>尽量多用常量来增强代码的不可变性，可以让代码更加安全并提高可读性</li>
+<li>尽量避免混合使用 Swift 类型和 NSObject 子类，这样会造成大量的类型转换，对性能有影响</li>
 </ul>
 
 </div>

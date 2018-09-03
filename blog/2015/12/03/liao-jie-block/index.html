@@ -94,7 +94,7 @@
 
 <h1>Block</h1>
 
-<p>block 实际上就是对象，它会被编译成 struct 并分配好空间，主要包括 isa 指针、block 对应实现函数的地址以及 block 复制过来的变量，在学习 block 的很多特性时，如果能以 &ldquo;block是对象，块中代码是函数&rdquo; 的思维去思考，很多问题就都会变得简单了。</p>
+<p>从 iOS4 开始 block 便在很多场景下替代了 delegate，相对来说 block 的最大优点就是可以使代码集中在一起，提高可读性，但也提高了代码调试的复杂度，另外 block 会使 app 运行成本增高，因为 delegate 只是保存了一个对象指针，而 block 实际上就是对象，它会被编译成 struct 并为其内容分配空间，主要包括 isa 指针、block 对应实现函数的地址以及 block 复制过来的变量，这些内容也会随需求从栈内存复制到堆内存</p>
 
 <ul>
 <li>isa：指向 block 对应的 Class
@@ -158,7 +158,7 @@
 </span><span class='line'><span class="k">__weak</span> <span class="n">__typeof</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="n">weakSelf</span> <span class="o">=</span> <span class="nb">self</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'><span class="n">AFNetworkReachabilityStatusBlock</span> <span class="n">callback</span> <span class="o">=</span> <span class="o">^</span><span class="p">(</span><span class="n">AFNetworkReachabilityStatus</span> <span class="n">status</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="c1">// 如果有多处引用 weakSelf，则需要转成 strongSelf，避免 weakSelf 被释放后出现问题</span>
+</span><span class='line'>    <span class="c1">// 如果有多处引用 weakSelf，则需要转成 strongSelf，避免 weakSelf 因多线程导致其被释放后出现问题</span>
 </span><span class='line'>    <span class="k">__strong</span> <span class="n">__typeof</span><span class="p">(</span><span class="n">weakSelf</span><span class="p">)</span><span class="n">strongSelf</span> <span class="o">=</span> <span class="n">weakSelf</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="n">strongSelf</span><span class="p">.</span><span class="n">networkReachabilityStatus</span> <span class="o">=</span> <span class="n">status</span><span class="p">;</span>
@@ -270,7 +270,7 @@
         <a class="basic-alignment left" href="/blog/2015/09/21/objective-c-runtimekai-fa/" title="Previous Post: Objective-C Runtime 开发">&laquo; Objective-C Runtime 开发</a>
       
       
-        <a class="basic-alignment right" href="/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/" title="Next Post: 代码重构">代码重构 &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/" title="Next Post: 代码重构及代码Review">代码重构及代码Review &raquo;</a>
       
     </p>
   </footer>
