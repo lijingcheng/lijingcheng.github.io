@@ -4,7 +4,7 @@
   <title><![CDATA[风行的博客]]></title>
   <link href="http://lijingcheng.github.io/atom.xml" rel="self"/>
   <link href="http://lijingcheng.github.io/"/>
-  <updated>2018-09-03T18:15:03+08:00</updated>
+  <updated>2018-09-27T15:36:34+08:00</updated>
   <id>http://lijingcheng.github.io/</id>
   <author>
     <name><![CDATA[风行]]></name>
@@ -14,19 +14,28 @@
 
   
   <entry>
-    <title type="html"><![CDATA[给新司机的一点建议]]></title>
-    <link href="http://lijingcheng.github.io/blog/2017/10/19/new-driver/"/>
-    <updated>2017-10-19T20:04:50+08:00</updated>
-    <id>http://lijingcheng.github.io/blog/2017/10/19/new-driver</id>
-    <content type="html"><![CDATA[<p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/get_in_the_car.jpeg" width="200" height="200"  >
-<strong><em>来不及解释了，快上车！</em></strong></p>
-
-<p><br><br><br></p>
+    <title type="html"><![CDATA[安全行车之摩托车篇]]></title>
+    <link href="http://lijingcheng.github.io/blog/2018/09/27/an-quan-xing-che-zhi-mo-tuo-che-pian/"/>
+    <updated>2018-09-27T15:02:12+08:00</updated>
+    <id>http://lijingcheng.github.io/blog/2018/09/27/an-quan-xing-che-zhi-mo-tuo-che-pian</id>
+    <content type="html"><![CDATA[<p>To be continue&hellip;</p>
 
 <!-- more -->
 
 
-<p>作为一个仅开了半年车的新司机，总结了一些开车时需要注意的事情，希望能和刚拿到驾照不久的新司机们一起分享，虽然很多老司机都说开车就像走路一样简单，但对于刚学会站立的孩子来说走路也并不简单&hellip;</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[安全行车之汽车篇]]></title>
+    <link href="http://lijingcheng.github.io/blog/2017/10/19/new-driver/"/>
+    <updated>2017-10-19T20:04:50+08:00</updated>
+    <id>http://lijingcheng.github.io/blog/2017/10/19/new-driver</id>
+    <content type="html"><![CDATA[<p>总结了一些开车时需要注意的事情，希望能帮助到刚拿到驾照的新司机。</p>
+
+<!-- more -->
+
 
 <h2>起步</h2>
 
@@ -91,15 +100,9 @@
 <li>车里面不要摆挂一些东西，防止急刹车砸到人身上</li>
 <li>遇到有陌生人询问，车窗开条缝就好</li>
 <li>行至偏僻、陌生路段遇拦车的不要停车，下车</li>
-<li>车内财物不要直接放在座位上，防止别人砸窗
-
-<h2>事故处理</h2>
-
-<p>出了事故再来补。。。</p></li>
+<li>车内财物不要直接放在座位上，防止别人砸窗</li>
 </ul>
 
-
-<p>PS: 上面这句话写完不到一个月出了两次事故，一次怼别人，一次被别人怼，好在都不严重，这栏里不想再写什么东西了。。。</p>
 ]]></content>
   </entry>
   
@@ -108,10 +111,7 @@
     <link href="http://lijingcheng.github.io/blog/2017/03/17/swift-base/"/>
     <updated>2017-03-17T19:10:37+08:00</updated>
     <id>http://lijingcheng.github.io/blog/2017/03/17/swift-base</id>
-    <content type="html"><![CDATA[<p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/swift.jpg" width="250" height="250"  >
-<strong>Swift - Swift 不仅支持面向对象和面向协议开发，同时还支持函数式开发，在使用封装继承多态的同时，也可以用协议去组合代码，还可以利用高阶函数去简化代码、组织程序。</strong>**</p>
-
-<p><br><br></p>
+    <content type="html"><![CDATA[<p><strong>Swift - 不仅支持面向对象和面向协议开发，同时还支持函数式开发，在使用封装继承多态的同时，也可以用协议去组合代码，还可以利用高阶函数去简化代码、组织程序。</strong></p>
 
 <!-- more -->
 
@@ -1961,15 +1961,12 @@
     <link href="http://lijingcheng.github.io/blog/2016/12/23/shi-yong-carthage-zuo-yi-lai-guan-li/"/>
     <updated>2016-12-23T19:18:47+08:00</updated>
     <id>http://lijingcheng.github.io/blog/2016/12/23/shi-yong-carthage-zuo-yi-lai-guan-li</id>
-    <content type="html"><![CDATA[<p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/Carthage.png" width="190" height="190"  >
-<strong><a href="https://github.com/Carthage/Carthage">Carthage</a> - <em>A simple, decentralized dependency manager for Cocoa.</em></strong></p>
+    <content type="html"><![CDATA[<p><strong><a href="https://github.com/Carthage/Carthage">Carthage</a> - <em>A simple, decentralized dependency manager for Cocoa.</em></strong></p>
 
 <p>Carthage 会用最简单的方式来管理第三方库，它会在下载完第三方库代码后，通过 xcodebuild 将其编译成动态库，但它不会像 CocoaPods 那样去修改你的项目文件和编译设置，这些都需要你自己去完成。</p>
 
 <!-- more -->
 
-
-<p><br></p>
 
 <h2>Carthage VS CocoaPods</h2>
 
@@ -2042,31 +2039,9 @@
 
 
 <ul>
-<li>针对由 universal binaries 引起的 App Store submission bug，还需要添加角本，如图：</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Target -&gt; Build Phases -&gt; Add -&gt; New Run Script Phase</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/carthage_script.png" width="1000" height="1000"  ></p>
-
-<ul>
-<li>根踪第三方库的 Crash 信息</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Target -&gt; Build Phases -&gt; Add -&gt; New Copy Files Phase</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/carthage_copyFiles.png" width="1000" height="1000"  ></p>
-
-<p>进行上面操作后，在生成 .xcarchive 时也会将 .dSYM 文件复制到包里</p>
-
-<ul>
-<li>导入第三方库</li>
+<li><p>针对由 universal binaries 引起的 App Store submission bug，还需要添加角本 <code>copy-frameworks</code></p></li>
+<li><p>为了根踪第三方库的 Crash 信息，还需要将 .dSYM 文件添加到 <code>Copy Files Phase</code></p></li>
+<li><p>导入第三方库</p></li>
 </ul>
 
 
@@ -2113,15 +2088,12 @@
     <link href="http://lijingcheng.github.io/blog/2016/12/05/tong-guo-xcodebuildda-bao-ipabing-shang-chuan-pu-gong-ying/"/>
     <updated>2016-12-05T18:49:45+08:00</updated>
     <id>http://lijingcheng.github.io/blog/2016/12/05/tong-guo-xcodebuildda-bao-ipabing-shang-chuan-pu-gong-ying</id>
-    <content type="html"><![CDATA[<p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/xcodebuild.jpg" width="200" height="200"  >
- xcodebuild - 是苹果提供的项目自动构建工具，包含在 Command Line Tools 中，可以完成 iOS 项目的编译、打包和签名等工作。<br/>
- <br/>
- shell script - 是一种命令语言，有点像 Windows 下的批处理，但更强大，它可以跑在 Linux/Unix 系统的 shell 程序中。</p>
+    <content type="html"><![CDATA[<p> xcodebuild - 是苹果提供的项目自动构建工具，包含在 Command Line Tools 中，可以完成 iOS 项目的编译、打包和签名等工作。</p>
+
+<p>shell script - 是一种命令语言，有点像 Windows 下的批处理，但更强大，它可以跑在 Linux/Unix 系统的 shell 程序中。</p>
 
 <!-- more -->
 
-
-<p><br/></p>
 
 <h2>为什么要用 xcodebuild</h2>
 
@@ -2318,15 +2290,10 @@
     <link href="http://lijingcheng.github.io/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/"/>
     <updated>2016-09-05T18:40:19+08:00</updated>
     <id>http://lijingcheng.github.io/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji</id>
-    <content type="html"><![CDATA[<p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/component.jpg" width="200" height="200"  >
-<strong><em>实现功能是软件开发的最低要求。</em></strong></p>
-
-<p><br><br><br></p>
+    <content type="html"><![CDATA[<p>一个 app 从设计到发布应用商店会经历需求设计、UI设计、架构设计、开发、优化、测试等流程，每个环节做的好与坏都会影响到整个 app 的质量，作为开发人员，不仅要对需求以及 UI 的合理性进行评审，还要保证提供给测试的代码是经过自测并且覆盖了相关测试用例，更重要的是要做好架构设计、开发以及优化这三个环节。</p>
 
 <!-- more -->
 
-
-<p>一个 app 从设计到发布应用商店会经历需求设计、UI设计、架构设计、开发、优化、测试等流程，每个环节做的好与坏都会影响到整个 app 的质量，作为开发人员，不仅要对需求以及 UI 的合理性进行评审，还要保证提供给测试的代码是经过自测并且覆盖了相关测试用例，更重要的是要做好架构设计、开发以及优化这三个环节。</p>
 
 <h1>架构设计</h1>
 
@@ -2568,16 +2535,8 @@
     <link href="http://lijingcheng.github.io/blog/2016/06/09/ioskai-fa-tips/"/>
     <updated>2016-06-09T10:58:59+08:00</updated>
     <id>http://lijingcheng.github.io/blog/2016/06/09/ioskai-fa-tips</id>
-    <content type="html"><![CDATA[<p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/tips.jpg" width="200" height="200"  >
-<strong>tips - <em>记录一些东西，希望也能帮助到有需要的人。</em></strong></p>
+    <content type="html"><![CDATA[<!-- more -->
 
-<p><br>
-<br></p>
-
-<!-- more -->
-
-
-<p><br></p>
 
 <ul>
 <li>用模拟器调试动画功能时，让动画执行的慢一些</li>
@@ -2806,8 +2765,7 @@
     <link href="http://lijingcheng.github.io/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/"/>
     <updated>2016-05-09T10:50:10+08:00</updated>
     <id>http://lijingcheng.github.io/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu</id>
-    <content type="html"><![CDATA[<p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/refactor.jpg" width="200" height="200"  >
-<strong>代码重构 - <em>重构就是在不改变软件系统外部行为的前提下，改善它的内部结构。</em></strong></p>
+    <content type="html"><![CDATA[<p><strong>代码重构 - <em>重构就是在不改变软件系统外部行为的前提下，改善它的内部结构。</em></strong></p>
 
 <p>Martin Flower 在《重构》中有一句经典的话："任何一个傻瓜都能写出计算机可以理解的程序，只有写出人类容易理解的程序才是优秀的程序员。"</p>
 
@@ -2919,15 +2877,10 @@
     <link href="http://lijingcheng.github.io/blog/2015/12/03/liao-jie-block/"/>
     <updated>2015-12-03T15:09:29+08:00</updated>
     <id>http://lijingcheng.github.io/blog/2015/12/03/liao-jie-block</id>
-    <content type="html"><![CDATA[<p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/block.png" width="220" height="220"  >
-<strong>block - <em>其实就是 Objective-C 对于闭包的对象实现。</em></strong></p>
-
-<p>Block 是 Apple 为 C、C++ 以及 Objective-C 添加的特性，使得这些语言可以用类 lambda 表达式的语法来创建闭包。在适当的时候使用 block 替代 delegation 可以使代码看起来更紧凑，但也需要注意 block 带来的循环引用问题。</p>
+    <content type="html"><![CDATA[<p>Block 是 Apple 为 C、C++ 以及 Objective-C 添加的特性，使得这些语言可以用类 lambda 表达式的语法来创建闭包。在适当的时候使用 block 替代 delegation 可以使代码看起来更紧凑，但也需要注意 block 带来的循环引用问题。</p>
 
 <!-- more -->
 
-
-<h1>Block</h1>
 
 <p>从 iOS4 开始 block 便在很多场景下替代了 delegate，相对来说 block 的最大优点就是可以使代码集中在一起，提高可读性，但也提高了代码调试的复杂度，另外 block 会使 app 运行成本增高，因为 delegate 只是保存了一个对象指针，而 block 实际上就是对象，它会被编译成 struct 并为其内容分配空间，主要包括 isa 指针、block 对应实现函数的地址以及 block 复制过来的变量，这些内容也会随需求从栈内存复制到堆内存</p>
 
@@ -3080,10 +3033,9 @@
     <link href="http://lijingcheng.github.io/blog/2015/09/21/objective-c-runtimekai-fa/"/>
     <updated>2015-09-21T14:30:27+08:00</updated>
     <id>http://lijingcheng.github.io/blog/2015/09/21/objective-c-runtimekai-fa</id>
-    <content type="html"><![CDATA[<p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/runtime.jpg" width="150" height="150"  >
-<strong>Runtime - <em>使用 C 和汇编实现的运行时代码库，Objective-C 中有很多语言特性都是通过它来实现。</em></strong> <br/>
-<br>
-了解 Runtime 开发可以帮助我们更灵活的使用 Objective-C 这门语言，我们可以将程序功能推迟到运行时再去决定怎么做，还可以利用 Runtime 来解决项目开发中的一些设计和技术问题，使开发过程更加具有灵活性。</p>
+    <content type="html"><![CDATA[<p><strong>Runtime - 使用 C 和汇编实现的运行时代码库，Objective-C 中有很多语言特性都是通过它来实现。</strong></p>
+
+<p>了解 Runtime 开发可以帮助我们更灵活的使用 Objective-C 这门语言，我们可以将程序功能推迟到运行时再去决定怎么做，还可以利用 Runtime 来解决项目开发中的一些设计和技术问题，使开发过程更加具有灵活性。</p>
 
 <!-- more -->
 
@@ -3101,11 +3053,7 @@
 </ul>
 
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/ios_runtime_class.png" width="400" height="400"  ></span></code></pre></td></tr></table></div></figure>
-
-
-<p><br/></p>
+<p><img src="http://lijingcheng.github.io/images/runtime_class.jpeg" height="500" width="500" alt="" /></p>
 
 <h1>消息传递 (Messaging)</h1>
 
@@ -3447,15 +3395,12 @@
     <link href="http://lijingcheng.github.io/blog/2015/07/12/iosnei-cun-guan-li/"/>
     <updated>2015-07-12T15:07:54+08:00</updated>
     <id>http://lijingcheng.github.io/blog/2015/07/12/iosnei-cun-guan-li</id>
-    <content type="html"><![CDATA[<p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/memory.jpg" width="200" height="200"  >
-<strong>内存管理 - <em>指程序在运行时申请内存，并在使用完后释放内存的过程</em></strong></p>
+    <content type="html"><![CDATA[<p><strong>内存管理 - 指程序在运行时申请内存，并在使用完后释放内存的过程</strong></p>
 
 <p>内存管理不当造成的主要问题便是内存泄漏和过度释放，虽然 ARC 使我们可以不去关注内存管理上的一些细节问题，但掌握一些相关知识还是很有必要的。</p>
 
 <!-- more -->
 
-
-<p><br></p>
 
 <h1>一些概念</h1>
 
@@ -3562,9 +3507,7 @@
 </ul>
 
 
-<blockquote><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/retaincount.png" width="700" height="700"  ></p></blockquote>
-
-<p><br></p>
+<p><img src="http://lijingcheng.github.io/images/retaincount.jpeg" height="600" width="600" alt="" /></p>
 
 <h1>属性修饰符</h1>
 
@@ -3872,9 +3815,7 @@
 
 <p>通过下面这张图可以更好的理解这些细节</p>
 
-<p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/autorelease_pool.jpg" width="800" height="600"  ></p>
-
-<p><br></p>
+<p><img src="http://lijingcheng.github.io/images/autorelease_pool.jpeg" height="600" width="600" alt="" /></p>
 
 <h2>Swift 中的内存管理</h2>
 
@@ -3992,8 +3933,7 @@
     <link href="http://lijingcheng.github.io/blog/2015/06/03/iosduo-xian-cheng-kai-fa/"/>
     <updated>2015-06-03T15:07:00+08:00</updated>
     <id>http://lijingcheng.github.io/blog/2015/06/03/iosduo-xian-cheng-kai-fa</id>
-    <content type="html"><![CDATA[<p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/thread.png" width="200" height="200"  >
-<strong>多线程 - <em>合理的线程分配能够提高程序的执行效率和资源利用率。</em></strong></p>
+    <content type="html"><![CDATA[<p><strong>多线程 - <em>合理的线程分配能够提高程序的执行效率和资源利用率。</em></strong></p>
 
 <p>GCD 基于 C API，Operation Queue 是在 GCD 基础上实现的，效率上较 GCD 会差一点点，但代码可读性和易用性较高，简单的任务可用 GCD 去实现，复杂一些的还是推荐使用 Operation Queue 来处理。微小的性能提升远不如写出可维护性高的代码来的实在。</p>
 
@@ -4716,10 +4656,9 @@
     <link href="http://lijingcheng.github.io/blog/2015/03/28/iosying-yong-de-sheng-ming-zhou-qi/"/>
     <updated>2015-03-28T11:23:29+08:00</updated>
     <id>http://lijingcheng.github.io/blog/2015/03/28/iosying-yong-de-sheng-ming-zhou-qi</id>
-    <content type="html"><![CDATA[<p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/app-lifecycle.jpeg" width="160" height="160"  >
-<strong>生命周期 - <em>程序的生命周期是指应用程序从启动到结束整个阶段的全过程.</em></strong> <br/>
-<br>
-点击应用图标打开程序，系统会首先通过 main 函数进行相关设置，然后通过 RunLoop 保持程序能够始终运行并监听处理分发事件，当没有事件发生时 RunLoop 便处于睡眠状态，节省资源。当发生事件后，RunLoop 将事件对象分发给相应视图处理。当用户按下 Home 键，应用会在进入后台后短暂运行，直到被系统挂起。</p>
+    <content type="html"><![CDATA[<p><strong>生命周期 - 程序的生命周期是指应用程序从启动到结束整个阶段的全过程.</strong></p>
+
+<p>点击应用图标打开程序，系统会首先通过 main 函数进行相关设置，然后通过 RunLoop 保持程序能够始终运行并监听处理分发事件，当没有事件发生时 RunLoop 便处于睡眠状态，节省资源。当发生事件后，RunLoop 将事件对象分发给相应视图处理。当用户按下 Home 键，应用会在进入后台后短暂运行，直到被系统挂起。</p>
 
 <!-- more -->
 
@@ -4940,10 +4879,7 @@
     <link href="http://lijingcheng.github.io/blog/2015/03/01/zai-githuan-jing-xia-wei-hu-duo-ge-ssh-keys/"/>
     <updated>2015-03-01T18:11:42+08:00</updated>
     <id>http://lijingcheng.github.io/blog/2015/03/01/zai-githuan-jing-xia-wei-hu-duo-ge-ssh-keys</id>
-    <content type="html"><![CDATA[<p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/ssh_key.jpg" width="220" height="220"  >
- SSH Key - 通过 SSH 密钥登录服务器，可以避免密码在网络中传输，也就保证了登录过程的安全，也不会因此受到中间人攻击，如果在 SSH 密钥登录基础上再加上密码短语 （passphrase）的使用，安全性便会再次提高。</p>
-
-<p><br/></p>
+    <content type="html"><![CDATA[<p>SSH Key - 通过 SSH 密钥登录服务器，可以避免密码在网络中传输，也就保证了登录过程的安全，也不会因此受到中间人攻击，如果在 SSH 密钥登录基础上再加上密码短语 （passphrase）的使用，安全性便会再次提高。</p>
 
 <!-- more -->
 
@@ -5007,15 +4943,12 @@
     <link href="http://lijingcheng.github.io/blog/2015/02/11/yong-cocoapodswei-iosxiang-mu-zuo-yi-lai-guan-li/"/>
     <updated>2015-02-11T15:10:58+08:00</updated>
     <id>http://lijingcheng.github.io/blog/2015/02/11/yong-cocoapodswei-iosxiang-mu-zuo-yi-lai-guan-li</id>
-    <content type="html"><![CDATA[<p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/cocoapods.png" width="190" height="190"  >
-<strong><a href="http://www.cocoapods.org">CocoaPods</a> - <em>Get on with building your app, not duplicating code.</em></strong> <br/>
-<br>
-可以为 Cocoa 和 Swift 项目使用的第三方类库和我们自己的私有类库提供依赖管理，我们只需要告诉它要使用的类库名称和版本，然后再执行一条命令，它就会自动将这个类库的源码从 GitHub 上下载到本地，并且为工程设置好相应的系统依赖和编译项。使用 CocoaPods 可以大大节省我们在设置和更新类库时所花的时间。</p>
+    <content type="html"><![CDATA[<p><strong><a href="http://www.cocoapods.org">CocoaPods</a> - <em>Get on with building your app, not duplicating code.</em></strong></p>
+
+<p>可以为 Cocoa 和 Swift 项目使用的第三方类库和我们自己的私有类库提供依赖管理，我们只需要告诉它要使用的类库名称和版本，然后再执行一条命令，它就会自动将这个类库的源码从 GitHub 上下载到本地，并且为工程设置好相应的系统依赖和编译项。使用 CocoaPods 可以大大节省我们在设置和更新类库时所花的时间。</p>
 
 <!-- more -->
 
-
-<p><br/></p>
 
 <h1>准备工作</h1>
 
@@ -5290,17 +5223,14 @@
     <link href="http://lijingcheng.github.io/blog/2015/01/04/zai-macxia-tong-guo-github-pages-plus-octopressda-jian-bo-ke/"/>
     <updated>2015-01-04T14:51:02+08:00</updated>
     <id>http://lijingcheng.github.io/blog/2015/01/04/zai-macxia-tong-guo-github-pages-plus-octopressda-jian-bo-ke</id>
-    <content type="html"><![CDATA[<p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/github-octopress.png" width="200" height="200"  >
-<strong><a href="https://pages.github.com">Github Pages</a> - <em>Websites for you and your projects.</em></strong> <br/>
-可用来搭建静态网站，提供免费的域名、空间、无限流量，并且在世界各地都有较好的访问速度。不过网站也会轻易被人 clone，如果在意的话可以付费给 GitHub，然后将版本库建成私有的。
+    <content type="html"><![CDATA[<p><strong><a href="https://pages.github.com">Github Pages</a> - <em>Websites for you and your projects.</em></strong> <br/>
+可用来搭建静态网站，提供免费域名、空间、无限流量，并且在世界各地都有较好的访问速度。不过网站也会轻易被人 clone，如果在意的话可以付费给 GitHub 从而使用私有库。
 <br/><br/>
 <strong><a href="http://octopress.org">Octopress</a> - <em>A blogging framework for hackers.</em></strong><br/>
 开源的静态博客系统，可用来为我们的静态网站提供所需的 HTML。</p>
 
 <!-- more -->
 
-
-<p><br/></p>
 
 <h1>准备工作</h1>
 
@@ -5468,6 +5398,8 @@
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>rake generate
 </span><span class='line'>rake deploy</span></code></pre></td></tr></table></div></figure>
+
+
 
 ]]></content>
   </entry>

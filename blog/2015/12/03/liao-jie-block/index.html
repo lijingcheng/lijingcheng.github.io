@@ -9,7 +9,7 @@
   <meta name="author" content="风行">
 
   
-  <meta name="description" content="block - 其实就是 Objective-C 对于闭包的对象实现。 Block 是 Apple 为 C、C++ 以及 Objective-C 添加的特性，使得这些语言可以用类 lambda 表达式的语法来创建闭包。在适当的时候使用 block 替代 delegation &hellip;">
+  <meta name="description" content="Block 是 Apple 为 C、C++ 以及 Objective-C 添加的特性，使得这些语言可以用类 lambda 表达式的语法来创建闭包。在适当的时候使用 block 替代 delegation 可以使代码看起来更紧凑，但也需要注意 block 带来的循环引用问题。 从 iOS4 开始 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -84,15 +84,10 @@
   </header>
 
 
-<div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/block.png" width="220" height="220"  >
-<strong>block - <em>其实就是 Objective-C 对于闭包的对象实现。</em></strong></p>
-
-<p>Block 是 Apple 为 C、C++ 以及 Objective-C 添加的特性，使得这些语言可以用类 lambda 表达式的语法来创建闭包。在适当的时候使用 block 替代 delegation 可以使代码看起来更紧凑，但也需要注意 block 带来的循环引用问题。</p>
+<div class="entry-content"><p>Block 是 Apple 为 C、C++ 以及 Objective-C 添加的特性，使得这些语言可以用类 lambda 表达式的语法来创建闭包。在适当的时候使用 block 替代 delegation 可以使代码看起来更紧凑，但也需要注意 block 带来的循环引用问题。</p>
 
 <!-- more -->
 
-
-<h1>Block</h1>
 
 <p>从 iOS4 开始 block 便在很多场景下替代了 delegate，相对来说 block 的最大优点就是可以使代码集中在一起，提高可读性，但也提高了代码调试的复杂度，另外 block 会使 app 运行成本增高，因为 delegate 只是保存了一个对象指针，而 block 实际上就是对象，它会被编译成 struct 并为其内容分配空间，主要包括 isa 指针、block 对应实现函数的地址以及 block 复制过来的变量，这些内容也会随需求从栈内存复制到堆内存</p>
 
@@ -284,7 +279,11 @@
   <ul id="最新">
     
       <li class="post">
-        <a href="/blog/2017/10/19/new-driver/">给新司机的一点建议</a>
+        <a href="/blog/2018/09/27/an-quan-xing-che-zhi-mo-tuo-che-pian/">安全行车之摩托车篇</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/10/19/new-driver/">安全行车之汽车篇</a>
       </li>
     
       <li class="post">
@@ -299,30 +298,12 @@
         <a href="/blog/2016/12/05/tong-guo-xcodebuildda-bao-ipabing-shang-chuan-pu-gong-ying/">使用 Xcodebuild 打包 IPA 并上传蒲公英</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS 应用的开发设计</a>
-      </li>
-    
   </ul>
 </section>
 
 <section>
   <h1>GitHub</h1>
   <a href="https://github.com/lijingcheng">@lijingcheng</a> on GitHub
-</section>
-
-
-
-<section>
-  <h1>Weibo</h1>
-  <a href="https://weibo.com/lijingcheng1984">@lijingcheng1984</a> on Weibo
-</section>
-
-
-
-<section>
-  <h1>Weixin</h1>
-  <a href="http://7x00ed.com1.z0.glb.clouddn.com/qrcode.png">@bj_lijingcheng</a> on Weixin
 </section>
 
 

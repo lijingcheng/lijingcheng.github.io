@@ -9,7 +9,7 @@
   <meta name="author" content="风行">
 
   
-  <meta name="description" content="多线程 - 合理的线程分配能够提高程序的执行效率和资源利用率。 GCD 基于 C API，Operation Queue 是在 GCD 基础上实现的，效率上较 GCD 会差一点点，但代码可读性和易用性较高，简单的任务可用 GCD 去实现，复杂一些的还是推荐使用 Operation Queue &hellip;">
+  <meta name="description" content="内存管理 - 指程序在运行时申请内存，并在使用完后释放内存的过程 内存管理不当造成的主要问题便是内存泄漏和过度释放，虽然 ARC 使我们可以不去关注内存管理上的一些细节问题，但掌握一些相关知识还是很有必要的。 ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -71,6 +71,42 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2015/07/12/iosnei-cun-guan-li/">iOS 内存管理</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-07-12T15:07:54+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:07 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>内存管理 - 指程序在运行时申请内存，并在使用完后释放内存的过程</strong></p>
+
+<p>内存管理不当造成的主要问题便是内存泄漏和过度释放，虽然 ARC 使我们可以不去关注内存管理上的一些细节问题，但掌握一些相关知识还是很有必要的。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/07/12/iosnei-cun-guan-li/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2015/06/03/iosduo-xian-cheng-kai-fa/">iOS 多线程开发</a></h1>
     
     
@@ -87,8 +123,7 @@
   </header>
 
 
-  <div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/thread.png" width="200" height="200"  >
-<strong>多线程 - <em>合理的线程分配能够提高程序的执行效率和资源利用率。</em></strong></p>
+  <div class="entry-content"><p><strong>多线程 - <em>合理的线程分配能够提高程序的执行效率和资源利用率。</em></strong></p>
 
 <p>GCD 基于 C API，Operation Queue 是在 GCD 基础上实现的，效率上较 GCD 会差一点点，但代码可读性和易用性较高，简单的任务可用 GCD 去实现，复杂一些的还是推荐使用 Operation Queue 来处理。微小的性能提升远不如写出可维护性高的代码来的实在。</p>
 
@@ -124,10 +159,9 @@
   </header>
 
 
-  <div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/app-lifecycle.jpeg" width="160" height="160"  >
-<strong>生命周期 - <em>程序的生命周期是指应用程序从启动到结束整个阶段的全过程.</em></strong> <br/>
-<br>
-点击应用图标打开程序，系统会首先通过 main 函数进行相关设置，然后通过 RunLoop 保持程序能够始终运行并监听处理分发事件，当没有事件发生时 RunLoop 便处于睡眠状态，节省资源。当发生事件后，RunLoop 将事件对象分发给相应视图处理。当用户按下 Home 键，应用会在进入后台后短暂运行，直到被系统挂起。</p>
+  <div class="entry-content"><p><strong>生命周期 - 程序的生命周期是指应用程序从启动到结束整个阶段的全过程.</strong></p>
+
+<p>点击应用图标打开程序，系统会首先通过 main 函数进行相关设置，然后通过 RunLoop 保持程序能够始终运行并监听处理分发事件，当没有事件发生时 RunLoop 便处于睡眠状态，节省资源。当发生事件后，RunLoop 将事件对象分发给相应视图处理。当用户按下 Home 键，应用会在进入后台后短暂运行，直到被系统挂起。</p>
 
 </div>
   
@@ -161,10 +195,7 @@
   </header>
 
 
-  <div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/ssh_key.jpg" width="220" height="220"  >
- SSH Key - 通过 SSH 密钥登录服务器，可以避免密码在网络中传输，也就保证了登录过程的安全，也不会因此受到中间人攻击，如果在 SSH 密钥登录基础上再加上密码短语 （passphrase）的使用，安全性便会再次提高。</p>
-
-<p><br/></p>
+  <div class="entry-content"><p>SSH Key - 通过 SSH 密钥登录服务器，可以避免密码在网络中传输，也就保证了登录过程的安全，也不会因此受到中间人攻击，如果在 SSH 密钥登录基础上再加上密码短语 （passphrase）的使用，安全性便会再次提高。</p>
 
 </div>
   
@@ -198,10 +229,9 @@
   </header>
 
 
-  <div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/cocoapods.png" width="190" height="190"  >
-<strong><a href="http://www.cocoapods.org">CocoaPods</a> - <em>Get on with building your app, not duplicating code.</em></strong> <br/>
-<br>
-可以为 Cocoa 和 Swift 项目使用的第三方类库和我们自己的私有类库提供依赖管理，我们只需要告诉它要使用的类库名称和版本，然后再执行一条命令，它就会自动将这个类库的源码从 GitHub 上下载到本地，并且为工程设置好相应的系统依赖和编译项。使用 CocoaPods 可以大大节省我们在设置和更新类库时所花的时间。</p>
+  <div class="entry-content"><p><strong><a href="http://www.cocoapods.org">CocoaPods</a> - <em>Get on with building your app, not duplicating code.</em></strong></p>
+
+<p>可以为 Cocoa 和 Swift 项目使用的第三方类库和我们自己的私有类库提供依赖管理，我们只需要告诉它要使用的类库名称和版本，然后再执行一条命令，它就会自动将这个类库的源码从 GitHub 上下载到本地，并且为工程设置好相应的系统依赖和编译项。使用 CocoaPods 可以大大节省我们在设置和更新类库时所花的时间。</p>
 
 </div>
   
@@ -235,9 +265,8 @@
   </header>
 
 
-  <div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/github-octopress.png" width="200" height="200"  >
-<strong><a href="https://pages.github.com">Github Pages</a> - <em>Websites for you and your projects.</em></strong> <br/>
-可用来搭建静态网站，提供免费的域名、空间、无限流量，并且在世界各地都有较好的访问速度。不过网站也会轻易被人 clone，如果在意的话可以付费给 GitHub，然后将版本库建成私有的。
+  <div class="entry-content"><p><strong><a href="https://pages.github.com">Github Pages</a> - <em>Websites for you and your projects.</em></strong> <br/>
+可用来搭建静态网站，提供免费域名、空间、无限流量，并且在世界各地都有较好的访问速度。不过网站也会轻易被人 clone，如果在意的话可以付费给 GitHub 从而使用私有库。
 <br/><br/>
 <strong><a href="http://octopress.org">Octopress</a> - <em>A blogging framework for hackers.</em></strong><br/>
 开源的静态博客系统，可用来为我们的静态网站提供所需的 HTML。</p>
@@ -268,7 +297,11 @@
   <ul id="最新">
     
       <li class="post">
-        <a href="/blog/2017/10/19/new-driver/">给新司机的一点建议</a>
+        <a href="/blog/2018/09/27/an-quan-xing-che-zhi-mo-tuo-che-pian/">安全行车之摩托车篇</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/10/19/new-driver/">安全行车之汽车篇</a>
       </li>
     
       <li class="post">
@@ -283,30 +316,12 @@
         <a href="/blog/2016/12/05/tong-guo-xcodebuildda-bao-ipabing-shang-chuan-pu-gong-ying/">使用 Xcodebuild 打包 IPA 并上传蒲公英</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS 应用的开发设计</a>
-      </li>
-    
   </ul>
 </section>
 
 <section>
   <h1>GitHub</h1>
   <a href="https://github.com/lijingcheng">@lijingcheng</a> on GitHub
-</section>
-
-
-
-<section>
-  <h1>Weibo</h1>
-  <a href="https://weibo.com/lijingcheng1984">@lijingcheng1984</a> on Weibo
-</section>
-
-
-
-<section>
-  <h1>Weixin</h1>
-  <a href="http://7x00ed.com1.z0.glb.clouddn.com/qrcode.png">@bj_lijingcheng</a> on Weixin
 </section>
 
 

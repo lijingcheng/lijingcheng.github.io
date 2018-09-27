@@ -84,15 +84,12 @@
   </header>
 
 
-<div class="entry-content"><p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/Carthage.png" width="190" height="190"  >
-<strong><a href="https://github.com/Carthage/Carthage">Carthage</a> - <em>A simple, decentralized dependency manager for Cocoa.</em></strong></p>
+<div class="entry-content"><p><strong><a href="https://github.com/Carthage/Carthage">Carthage</a> - <em>A simple, decentralized dependency manager for Cocoa.</em></strong></p>
 
 <p>Carthage 会用最简单的方式来管理第三方库，它会在下载完第三方库代码后，通过 xcodebuild 将其编译成动态库，但它不会像 CocoaPods 那样去修改你的项目文件和编译设置，这些都需要你自己去完成。</p>
 
 <!-- more -->
 
-
-<p><br></p>
 
 <h2>Carthage VS CocoaPods</h2>
 
@@ -165,31 +162,9 @@
 
 
 <ul>
-<li>针对由 universal binaries 引起的 App Store submission bug，还需要添加角本，如图：</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Target -&gt; Build Phases -&gt; Add -&gt; New Run Script Phase</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/carthage_script.png" width="1000" height="1000"  ></p>
-
-<ul>
-<li>根踪第三方库的 Crash 信息</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Target -&gt; Build Phases -&gt; Add -&gt; New Copy Files Phase</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img class="left" src="http://7x00ed.com1.z0.glb.clouddn.com/carthage_copyFiles.png" width="1000" height="1000"  ></p>
-
-<p>进行上面操作后，在生成 .xcarchive 时也会将 .dSYM 文件复制到包里</p>
-
-<ul>
-<li>导入第三方库</li>
+<li><p>针对由 universal binaries 引起的 App Store submission bug，还需要添加角本 <code>copy-frameworks</code></p></li>
+<li><p>为了根踪第三方库的 Crash 信息，还需要将 .dSYM 文件添加到 <code>Copy Files Phase</code></p></li>
+<li><p>导入第三方库</p></li>
 </ul>
 
 
@@ -275,7 +250,11 @@
   <ul id="最新">
     
       <li class="post">
-        <a href="/blog/2017/10/19/new-driver/">给新司机的一点建议</a>
+        <a href="/blog/2018/09/27/an-quan-xing-che-zhi-mo-tuo-che-pian/">安全行车之摩托车篇</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/10/19/new-driver/">安全行车之汽车篇</a>
       </li>
     
       <li class="post">
@@ -290,30 +269,12 @@
         <a href="/blog/2016/12/05/tong-guo-xcodebuildda-bao-ipabing-shang-chuan-pu-gong-ying/">使用 Xcodebuild 打包 IPA 并上传蒲公英</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/">iOS 应用的开发设计</a>
-      </li>
-    
   </ul>
 </section>
 
 <section>
   <h1>GitHub</h1>
   <a href="https://github.com/lijingcheng">@lijingcheng</a> on GitHub
-</section>
-
-
-
-<section>
-  <h1>Weibo</h1>
-  <a href="https://weibo.com/lijingcheng1984">@lijingcheng1984</a> on Weibo
-</section>
-
-
-
-<section>
-  <h1>Weixin</h1>
-  <a href="http://7x00ed.com1.z0.glb.clouddn.com/qrcode.png">@bj_lijingcheng</a> on Weixin
 </section>
 
 
