@@ -4,7 +4,7 @@
   <title><![CDATA[风行的博客]]></title>
   <link href="http://lijingcheng.github.io/atom.xml" rel="self"/>
   <link href="http://lijingcheng.github.io/"/>
-  <updated>2018-09-27T15:36:34+08:00</updated>
+  <updated>2018-12-11T17:53:49+08:00</updated>
   <id>http://lijingcheng.github.io/</id>
   <author>
     <name><![CDATA[风行]]></name>
@@ -2317,7 +2317,7 @@
 
 <h1>响应式编程</h1>
 
-<p>响应式编程是一种面向数据及其变化响应的编程方式，相比传统编程方式来说，它可以使逻辑相关的代码能够紧凑的聚在一起，它通过信号机制来实现，用信号来记录值的变化，并通过订阅的方式来响应变化，下面这个例子很好的描述了响应式编程的作用</p>
+<p>响应式编程是一种面向数据及其变化响应的编程方式，它能够将数据、UI事件和异步操作更方便的进行序列化处理，相比传统编程方式来说，它可以使逻辑相关的代码能够紧凑的聚在一起，它通过信号机制来实现，用信号来记录值的变化，并通过信号绑定的方式来响应变化，下面这个例子很好的描述了响应式编程的作用</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -2329,7 +2329,24 @@
 </span><span class='line'>b = 3 // c = 5</span></code></pre></td></tr></table></div></figure>
 
 
-<p>目前我们在 Swift 项目中选择使用 RxSwift + MVVM 的方式进行开发。</p>
+<p>目前我们在 Swift 项目中选择使用 RxSwift + MVVM 的方式进行开发，使用 RxSwift 需要掌握以下几个概念：</p>
+
+<ul>
+<li><p>Observable（被观察者）：相当于一个事件序列，它会主动向订阅者发送新产生的事件内容，包括 onNext、onError、onCompleted()</p></li>
+<li><p>Subscribe（订阅者）：订阅后便可以根据事件产生的数据进行操作</p></li>
+<li><p>Scheduler（调度器）：可分别通过 subscribeOn 和 observeOn 指定 Observable 或 Subscribe 在哪个线程上执行，默认是当前线程。</p></li>
+<li><p>Operator（<a href="https://beeth0ven.github.io/RxSwift-Chinese-Documentation/content/decision_tree.html">操作符</a>）：RxSwift 提供了很多操作符，合理运用便会极大提高开发效率</p></li>
+<li><p>Subject：既可以作为 Observable 发送事件也可以作为 Subscribe 监听事件，它包括以下几种：</p>
+
+<ul>
+<li>PublishSubject：订阅者只会接收到订阅操作之后的事件，也就是所说的热信号。</li>
+<li>ReplaySubject：订阅者会接受到订阅之前的事件（可根据 bufferSize 指定数量）以及订阅之后的事件，类似于冷信号。</li>
+<li>BehaviorSubject：订阅之后首先会接收到最近一次发送的事件，如果最近没有发送，那么发送一个初始事件。</li>
+<li>AsyncSubject：订阅者只有在 Observable 发送 onCompleted() 时才能够收到它之前发送的最后一个事件，即使是在这之后的新订阅者也能够收到。</li>
+</ul>
+</li>
+</ul>
+
 
 <h1>组件化开发</h1>
 
@@ -2399,10 +2416,12 @@
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
 <span class='line-number'>13</span>
+<span class='line-number'>14</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>extension Bundle {
 </span><span class='line'>    public static var core: Bundle {
 </span><span class='line'>        let bundleName = "ProjectCore"
 </span><span class='line'>        
+</span><span class='line'>        // BaseViewModel 需要定义成 public
 </span><span class='line'>        if let path = Bundle(for: BaseViewModel.self).path(forResource: bundleName, ofType: "bundle") {
 </span><span class='line'>            let bundle = Bundle(path: path)!
 </span><span class='line'>            bundle.name = bundleName // name 是自已扩展的属性，相关代码不再列出
@@ -2420,7 +2439,7 @@
 
 <ul>
 <li><p>打开页面时指定是否需要登录，然后将原本想要跳转的页面信息及参数传递给登录页，当登录成功后直接跳转到该页面，并将登录页本身从导航堆栈中移除</p></li>
-<li><p>返回页面时除原来的三种方式外，增加锚点方式返回，例如在购买商品页面填加锚点，然后当页面流转到购买成功时，可将导航堆栈反转过来，pop 到最近的一个锚点页面</p></li>
+<li><p>返回页面时除原来的三种方式外，增加锚点方式返回，例如在购买商品页面填加锚点，然后当页面流转到购买成功时，可将导航堆栈反转过来，pop 到最近的一个锚点页面或指定锚点页面</p></li>
 </ul>
 
 
@@ -2437,23 +2456,33 @@
 
 <h1>优化</h1>
 
-<h2>安全</h2>
+<h2>数据安全</h2>
 
-<p>我们从 AppStore 下载的 app 其实都已经由苹果加壳，要砸壳后才能有办法看到汇编形式的源代码，如果我们要自己再加一层壳，可以对关键代码的方法名做一些混淆，以增加别人分析代码的复杂度，不过这对于大多数 app 来说不太值得去做，我们可以把精力放在其他更易做并且更有效率的地方。</p>
+<p>我们从 AppStore 下载的 app 其实都已经由苹果加壳，要砸壳后才能有办法看到汇编形式的源代码，如果我们要自己再加一层壳，可以对关键代码的方法名做一些混淆，以增加别人分析代码的复杂度，不过这对于大多数 app 来说不太值得去做，我们可以把精力放在其他更易做并且更有效率的地方，例如：</p>
 
-<h4>本地数据</h4>
+<ul>
+<li>不将敏感数据直接存储在沙盒里</li>
+<li>使用 Https 保证数据传输安全</li>
+<li>调用接口时对敏感数据进行加密</li>
+</ul>
 
-<p>存储在沙盒里的文件是能够被拿到的，所以对于 sqlite、plist 等文件不要存储重要信息，如果一定要存，可以将信息用对称加密(AES)的方式处理后再存储，用于加密的 key 不要以明文的方式写在代码里，可以在 app 启动时通过 Https 方式管后台要一个非对称加密过的 key，并且这个 key 后台应该定期变更。</p>
 
-<h4>网络数据</h4>
-
-<p>Https 可以用来确认网站的真实性，防止用户误入钓鱼网站，还可以保证数据传输的安全，不过即使用了 Https 也要对一些关键数据或 URL 参数再次加密，因为数据还是有可能被人拦截拿到。（当用户使用不安全的 WIFI 并且请求被代理拦截后，代理伪装用户去请求服务，并对拿到的证书进行解密骗取公钥，然后再用自己做的假证书伪装成服务器证书传递给用户骗取信任。）</p>
+<p>加密数据通常有两种方式</p>
 
 <ul>
 <li>对称加密：文件加密和解密使用相同的密钥，AES 相对其他对称加密方式来说更安全些。</li>
-<li>非对称加密：需要公钥和私钥，用公钥对数据进行加密，只有对应的私钥才能解密；如果用私钥对数据进行加密，那么只有对应的公钥才能解密。可以用 RSA 来做非对称加密，相对对称加密来说，速度较慢，但非常安全，据说还没被破解过。</li>
-<li>单向认证：只要求站点部署了 SSL 证书就行，并且客户端要信任服务端证书，我们可以在代码里设置为不支持无效证书，并且对域名做验证，一般应用都是用单向认证。</li>
-<li>双向认证：需要服务端与客户端都提供证书，并且他们之间相互信任，安全性相对要高一些，适合对安全性要求比较高的应用。</li>
+<li>非对称加密：需要公钥和私钥，用公钥对数据进行加密，只有对应的私钥才能解密；如果用私钥对数据进行加密，那么只有对应的公钥才能解密。可以用 RSA 来做非对称加密，相对对称加密来说非对称加密速度较慢，但非常安全，据说还没被破解过。</li>
+</ul>
+
+
+<p>对敏感数据进行加密通常选择对称加密，这时如何使用密钥则是一件非常重要的事，不管是 app 在代码中写死密钥还是简单的通过接口获取密钥都不安全，下面介绍一种相对更安全的方式：</p>
+
+<ul>
+<li>首先由客户端向服务端发起获取钥匙的请求</li>
+<li>服务端生成公钥<code>pk1</code>和私钥<code>pk2</code>，然后将公钥<code>pk1</code>发送给客户端（假设此时黑客已经获取到了公钥<code>pk1</code>）</li>
+<li>客户端这时首先生成公钥<code>pk3</code>和私钥<code>pk4</code>，然后将公钥<code>pk3</code>通过服务端返回的公钥<code>pk1</code>加密并发送给服务端（假设此时黑客截获加密后的<code>pk3</code>，虽然知道这是由<code>pk1</code>加密的，但是他不知道与其对应的私钥<code>pk2</code>，所以无法对客户端发送的公钥进行解密）</li>
+<li>服务端收到加密后的<code>pk3</code>后可以通过私钥<code>pk2</code>解密，并使用<code>pk3</code>对生成的对称加密密钥<code>xxx</code>进行加密并发送给客户端（黑客这时因为不知道公钥<code>pk3</code>是什么，所以得不到对称加密的密钥）</li>
+<li>客户端收到数据后，可以用自己的私钥<code>pk4</code>解密并得到对称加密用的密钥<code>xxx</code>，客户端将密钥<code>xxx</code>存储在内存中，接下来两端就可以使用<code>xxx</code>作为 key 来加密数据并进行安全的数据传输了。</li>
 </ul>
 
 
@@ -2476,7 +2505,7 @@
 <li>小图标可以使用 iconfont 替代，大图可以用 pdf 替代</li>
 <li>启动图界面用 LaunchScreen.storyboard，不要用多张 Default 图。</li>
 <li>用 .xcassets 来管理图片，Xcode 能够把里边的所有 png 图片压缩成 .car 文件。并且 iOS9 之后，如果是用 .xcassets 管理图片，AppStore 会根据不同设备准备不同的安装包，每个包内只有对应尺寸的图片，例如 iPhone6 下载 app 时，包里就只有 @2x 图。</li>
-<li>考虑放弃 iPhone5s 之前发布的 32 位手机</li>
+<li>放弃 iPhone5s 之前发布的 32 位手机</li>
 </ul>
 
 
@@ -2671,12 +2700,44 @@
 
 
 <ul>
+<li>隐藏导航条下面的线</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>navigationBar.setValue(hide, forKey: "hidesShadow")</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
 <li>隐藏 Grouped TableView 上边多余的间隔</li>
 </ul>
 
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>根据模糊程度生成 UIVisualEffectView</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>extension UIVisualEffectView {
+</span><span class='line'>    public convenience init(blurRadius: CGFloat) {
+</span><span class='line'>        let blurEffect = (NSClassFromString("_UICustomBlurEffect") as! UIBlurEffect.Type).init()
+</span><span class='line'>        blurEffect.setValue(blurRadius, forKeyPath: "blurRadius")
+</span><span class='line'>
+</span><span class='line'>        self.init(effect: blurEffect)
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
 
 <ul>
