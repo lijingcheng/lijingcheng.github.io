@@ -223,7 +223,7 @@
 </pre></td><td class='code'><pre><code class=''><span class='line'>pod install (添加或删除依赖库后也是通过此命令更新)</span></code></pre></td></tr></table></div></figure>
 
 
-<blockquote><p><strong>CocoaPods 会先更新相关 podspec 文件，然后自动为项目工程设置好相应的系统依赖和编译参数，当依赖库安装完成后，打开项目根目录，会发现多了以下文件及文件夹</strong></p>
+<blockquote><p><strong>CocoaPods 会自动为项目工程设置好相应的系统依赖和编译参数，当依赖库安装完成后，打开项目根目录，会发现多了以下文件及文件夹</strong></p>
 
 <ol>
 <li>&ldquo;.xcworkspace"，以后必须通过此 workspace 打开项目。</li>
@@ -242,7 +242,7 @@
 
 
 <ul>
-<li>下载新版本（1.0版本前默认会更新本地 podspec 仓库）</li>
+<li>更新本地 podspec 仓库并更新依赖库</li>
 </ul>
 
 
@@ -251,7 +251,7 @@
 
 
 <ul>
-<li>下载新版本，且不更新本地 podspec 仓库（速度会快很多）</li>
+<li>更新依赖库且不更新本地 podspec 仓库（速度会快很多）</li>
 </ul>
 
 
@@ -403,11 +403,15 @@
   <ul id="最新">
     
       <li class="post">
-        <a href="/blog/2018/09/27/an-quan-xing-che-zhi-mo-tuo-che-pian/">安全行车之摩托车篇</a>
+        <a href="/blog/2019/04/12/app-kai-fa-xu-yao-liao-jie-de-hou-duan-zhi-shi/">了解一点互联网架构</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2017/10/19/new-driver/">安全行车之汽车篇</a>
+        <a href="/blog/2019/03/28/an-quan-xing-che-zhi-mo-tuo-che-pian/">学习骑摩托〜</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/10/19/new-driver/">安全行车注意事项</a>
       </li>
     
       <li class="post">
@@ -416,10 +420,6 @@
     
       <li class="post">
         <a href="/blog/2016/12/23/shi-yong-carthage-zuo-yi-lai-guan-li/">使用 Carthage 做依赖管理</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/12/05/tong-guo-xcodebuildda-bao-ipabing-shang-chuan-pu-gong-ying/">使用 Xcodebuild 打包 IPA 并上传蒲公英</a>
       </li>
     
   </ul>
@@ -441,7 +441,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2018 - 风行 -
+  Copyright &copy; 2019 - 风行 -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
