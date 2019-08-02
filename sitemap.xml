@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://lijingcheng.github.io/blog/2019/08/02/ios-app-start/</loc>
+<lastmod>2019-08-02T19:18:55+08:00</lastmod>
+</url>
+<url>
+<loc>http://lijingcheng.github.io/blog/2019/06/12/tech-manage/</loc>
+<lastmod>2019-06-12T19:18:55+08:00</lastmod>
+</url>
+<url>
 <loc>http://lijingcheng.github.io/blog/2019/04/12/app-kai-fa-xu-yao-liao-jie-de-hou-duan-zhi-shi/</loc>
 <lastmod>2019-04-12T17:28:16+08:00</lastmod>
 </url>
 <url>
 <loc>http://lijingcheng.github.io/blog/2019/03/28/an-quan-xing-che-zhi-mo-tuo-che-pian/</loc>
 <lastmod>2019-03-28T15:02:12+08:00</lastmod>
+</url>
+<url>
+<loc>http://lijingcheng.github.io/blog/2018/09/05/ios-appde-zu-jian-hua-she-ji/</loc>
+<lastmod>2018-09-05T18:40:19+08:00</lastmod>
 </url>
 <url>
 <loc>http://lijingcheng.github.io/blog/2017/10/19/new-driver/</loc>
@@ -23,10 +35,6 @@
 <url>
 <loc>http://lijingcheng.github.io/blog/2016/12/05/tong-guo-xcodebuildda-bao-ipabing-shang-chuan-pu-gong-ying/</loc>
 <lastmod>2016-12-05T18:49:45+08:00</lastmod>
-</url>
-<url>
-<loc>http://lijingcheng.github.io/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/</loc>
-<lastmod>2016-09-05T18:40:19+08:00</lastmod>
 </url>
 <url>
 <loc>http://lijingcheng.github.io/blog/2016/06/09/ioskai-fa-tips/</loc>

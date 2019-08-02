@@ -4,7 +4,7 @@
   <title><![CDATA[风行的博客]]></title>
   <link href="http://lijingcheng.github.io/atom.xml" rel="self"/>
   <link href="http://lijingcheng.github.io/"/>
-  <updated>2019-04-25T20:15:05+08:00</updated>
+  <updated>2019-08-02T19:28:48+08:00</updated>
   <id>http://lijingcheng.github.io/</id>
   <author>
     <name><![CDATA[风行]]></name>
@@ -12,6 +12,76 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[iOS 应用的启动任务设计]]></title>
+    <link href="http://lijingcheng.github.io/blog/2019/08/02/ios-app-start/"/>
+    <updated>2019-08-02T19:18:55+08:00</updated>
+    <id>http://lijingcheng.github.io/blog/2019/08/02/ios-app-start</id>
+    <content type="html"><![CDATA[<p>To be continue&hellip;</p>
+
+<!-- more -->
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[如何做好技术管理]]></title>
+    <link href="http://lijingcheng.github.io/blog/2019/06/12/tech-manage/"/>
+    <updated>2019-06-12T19:18:55+08:00</updated>
+    <id>http://lijingcheng.github.io/blog/2019/06/12/tech-manage</id>
+    <content type="html"><![CDATA[<p>好的技术管理者应该是一名情商高、会沟通并且懂业务的技术人员，如果再懂一点管理，就能够胜任大部分工作。</p>
+
+<!-- more -->
+
+
+<h2>情商高</h2>
+
+<p>要能够控制情绪，遇事不抱怨，懂得在适当的时候和场景下如何夸奖和批评别人，争论事情时要注意对事不对人，更重要的是要能够做到换位思考。</p>
+
+<h2>会沟通</h2>
+
+<p>沟通能力是每一个技术人员都需要具备的基本能力，技术管理者在这方面应该做的更好。在沟通环节中有两个问题很重要，聆听和表达，其中懂得聆听尤为重要，先让别人把话说完！除此之外还需要注意的是如果在 QQ 或其它工具上沟通不清楚的问题一定要当面沟通，这样效率高而且不容易造成双方误解。</p>
+
+<h2>懂业务</h2>
+
+<p>只有对业务具有较深入的了解才能综合技术和业务角度去思考问题并做出适合的架构设计。</p>
+
+<h2>有技术</h2>
+
+<p>在技术方面要具有一定的判断力和技术视野，不需要对各种技术都很精通，但必须有所了解，要能够对技术在该领域的发展趋势和应用场景有所了解，做产品技术架构的设计要有足够的弹性，既能够保证当前开发效率，又能够对未来产品技术架构的演进留出扩展的余地。除此之外还需要具要有较强的解决问题能力，当团队遇到技术困难时能够站出来解决它，否则很难在团队中建立威信。</p>
+
+<h2>会管理</h2>
+
+<h3>对事管理</h3>
+
+<p>做事前要先明确工作目标和优先级，重要并且着急的事情要先做，重要但是不着急的其次，然后是着急不重要的，最后是不重要也不着急的，当项目时间非常紧时，要懂得适当降级。</p>
+
+<p>任务分配前要先了解每个任务以及团队每个成员的情况，包括能力、性格、当前工作状态等，然后才能够将任务分配给合适的人，分配工作时要讲清楚目标和标准，否则完成效果出了问题后要先反思是不是自己的问题，leader 要勇于替下属承担责任，但是如果自己做的都没有问题，并且下属多次出现同样过错，就要看下是否是其态度出了问题</p>
+
+<p>PS：过程重要但结果更重要，失败了就要把该背的锅背起来</p>
+
+<h3>对人管理</h3>
+
+<p>对上要完成给予的任务，对下要帮助解决问题并协调资源，还要帮助下属成长和提升，对于管理者来说对下管理是否能做好更重要一些。</p>
+
+<h4>对上要注意反馈</h4>
+
+<p>对上要注意信息对等，及时反应问题，不要让领导啥也不知道，出了问题后让别人告诉领导后就晚了，多沟通、多了解整体方向，好及时调整和应对，并且该争取的资源要争取，该背的锅要自己背上，少解释，多想想怎么解决，同样的错误不要犯两次。对于还没有解决的问题，要反馈出解决问题大概需要的时间及目前状态，对于已经解决的问题，要反馈出现问题的原因以及怎么避免再次发生，并且预计该问题造成的影响范围，不要一味的甩锅。</p>
+
+<p>PS：尽量不去做越级沟通的事</p>
+
+<h4>对下要注意授权和培养</h4>
+
+<p>要注重对成员的培养，培养他们的学习能力，思考能力和解决问题的能力，同时要授权组员去做事情，而不是怕他们做不好就自己做了，但授权不是放任不管，而是要针对不同员工类型做不同管理动作，对于新人要有人带，对于有初级经验的人可以讲完再让他做，经验丰富的人他做的时候可以关注下，并给出建议和要求，同时关注工作成果并帮他完善，能力强积极性高的，可分配更重要的工作，并让他参与设计决策中来。</p>
+
+<p>组员做的时候还要给予技术以及资源等方面的支持，并定期评估结果给予反馈，当任一环节出现 delay 时要想办法及时补救，避免积少成多造成项目进度失控。进度把控上需要时刻监督执行的效果，但不是靠天天问进度来了解，也不要完全不管不问，对不熟悉的团队要把重点放在人身上，对熟悉并靠谱的团队要把重点放在事上，当事情结束后对做的好的经予鼓励，做的不好的要指出错误，并且错误的指出要明确和及时，要对事不对人，有些事情可能还需要小范围或单独去沟通。</p>
+
+<p>PS：要保护成员不被部门间其他乱七八糟的事情干扰，团队气氛还是很重要的</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[了解一点互联网架构]]></title>
@@ -181,7 +251,7 @@
 
 <ul>
 <li>加档操作：收油 - 捏离合 - 加档 - 松离合 - 加油 （收油是指用手将油门转回去，而不是让油门自己弹回去）</li>
-<li>减档操作与加档几乎一样，需要注意的是高速行驶时减档会引起车辆顿挫，避免出现这种情况的方法就是减档补油，即指减档后松离合前就快速给一点点油（减档补油可避免因减档操作造成发动机转速与后轮转速有差异而产生后轮打滑问题）</li>
+<li>减档操作与加档几乎一样，需要注意的是高速行驶时减档会引起车辆顿挫，避免出现这种情况的方法就是减档补油，即指减档后松离合前就快速给一点点油（减档补油可避免因减档操作造成发动机转速与后轮转速有差异而产生后轮打滑问题，有滑动离合的车可省去此操作）</li>
 <li>一档二档间的更换建议稍微用些力，避免挂入空档，万一挂了空档，那就捏住离合再挂一下</li>
 <li>一档二档间的更换离合都建议慢放，这样顿挫感会小些，高档之间的升降可快放离合</li>
 <li>把握好加减档时机，低档位高转速时车辆引擎会发热并产生震动，声音也会变得高亢，这时便需要加档，而高档位低转速车会有加油没力要熄火的感觉，这时便需要减档并补油，如果是连降两档，要补的油也要稍微多一点（高档位低转速通常发生在刹车减速拐弯忘了降档）</li>
@@ -242,17 +312,409 @@
 <h2>安全</h2>
 
 <ul>
-<li>头盔、手套、护膝是必备的，其它装备根据自己经济情况去选择，总之装备要在自己能力范围内买最好的</li>
+<li>头盔、手套、护膝是必备的，其它装备根据自己经济情况去选择</li>
 <li>怕丢车的话可以选择上防盗险，要不然就要多注意停车位置以及车锁的选择</li>
 <li>要小心路边的车突然开门，以及送外卖的</li>
 <li>过任何路口，都要松油门，待刹车，过了再加速别怕麻烦</li>
 <li>后座人上下车，司机一定要放下车柱，避免倒车</li>
 <li>要注意能够导致轮胎打滑的东西，例如雨水、落叶、砂石、坑洼、斑马线</li>
-<li>如果预感到避免不了与前车相撞了，可提前主动侧滑出去总比撞到车飞出去要好得多</li>
 </ul>
 
 
 <blockquote><p><strong>控制右手</strong></p></blockquote>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iOS 应用的开发设计]]></title>
+    <link href="http://lijingcheng.github.io/blog/2018/09/05/ios-appde-zu-jian-hua-she-ji/"/>
+    <updated>2018-09-05T18:40:19+08:00</updated>
+    <id>http://lijingcheng.github.io/blog/2018/09/05/ios-appde-zu-jian-hua-she-ji</id>
+    <content type="html"><![CDATA[<p>一个 app 从设计到发布应用商店会经历需求设计、UI设计、架构设计、开发、优化、测试等流程，每个环节做的好与坏都会影响到整个 app 的质量，作为开发人员，不仅要对需求以及 UI 的合理性进行评审，还要保证提供给测试的代码是经过自测并且覆盖了相关测试用例，更重要的是要做好架构设计、开发以及优化这三个环节。</p>
+
+<!-- more -->
+
+
+<h1>架构设计</h1>
+
+<p>架构设计可以以业务为驱动，按照最适合自己的方式去设计，设计思路和方法尽量统一，同类型问题用同样方式去解决，下面几点是我认为比较重要的：</p>
+
+<ul>
+<li><p>关注分离<br/>
+将系统分解为多个模块并各司其职，纵向分层，横向拆分业务。</p></li>
+<li><p>高内聚<br/>
+一个模块只完成一个功能，并合理有度的进行封装。</p></li>
+<li><p>松耦合<br/>
+依赖关系越少越好，尽量不横向依赖，不跨层访问。继承是紧耦合的一种操作，它通常与多态一起存在，如果仅仅是为了代码重用而做的继承还不如用组合。</p></li>
+<li><p>适度设计<br/>
+对业务方该限制的地方要进行限制，该灵活的地方也要给业务方创造灵活实现的条件，架构的设计要保持一定量的超前性而做到易扩展，但不要设计过度，避免多做无用功而增加框架复杂度。好的架构是随着时间而更新的，而不是一开始就设计好了一切。</p></li>
+<li><p>技术选型<br/>
+不要仅是为了体验新技术而改变现有架构，等别人把坑踩平后再根据团队及业务情况考虑是否使用，技术本身没有什么好不好，只有适合不适合。</p></li>
+</ul>
+
+
+<blockquote><p>框架是服务开发人员的，需要满足通用性和易用性两个要求，其中易用性更重要</p></blockquote>
+
+<p><br></p>
+
+<h1>开发</h1>
+
+<h2>MVVM</h2>
+
+<p>MVVM 相对 MVC 来说最大的优点是，ViewModel 是独立的，可复用到别的模块，并且更易于做单元测试，而 View 和 ViewController 仅用来做 UI 展示，它与 ViewModel 之间是相互影响的，ViewModel 处理过的数据要能够及时响应到 View，而用户在 View 中做了修改数据的操作后，ViewModel 中对应的数据也应该及时更新，响应式编程方式能够更容易的处理这个过程</p>
+
+<h2>响应式编程</h2>
+
+<p>响应式编程是一种面向数据及其变化响应的编程方式，它能够将数据、UI事件和异步操作更方便的进行序列化处理，相比传统编程方式来说，它可以使逻辑相关的代码能够紧凑的聚在一起，它通过信号机制来实现，用信号来记录值的变化，并通过信号绑定的方式来响应变化，下面这个例子很好的描述了响应式编程的作用</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>a = 2 // signal
+</span><span class='line'>b = 2 // signal
+</span><span class='line'>c = a + b // signal binding c = 4 
+</span><span class='line'>b = 3 // c = 5</span></code></pre></td></tr></table></div></figure>
+
+
+<p>目前我们在 Swift 项目中选择使用 RxSwift + MVVM 的方式进行开发，使用 RxSwift 需要掌握以下几个概念：</p>
+
+<ul>
+<li><p>Observable（被观察者）：相当于一个事件序列，它会主动向订阅者发送新产生的事件内容，包括 onNext、onError、onCompleted()</p></li>
+<li><p>Subscribe（订阅者）：订阅后便可以根据事件产生的数据进行操作</p></li>
+<li><p>Scheduler（调度器）：可分别通过 subscribeOn 和 observeOn 指定 Observable 或 Subscribe 在哪个线程上执行，默认是当前线程。</p></li>
+<li><p>Operator（<a href="https://beeth0ven.github.io/RxSwift-Chinese-Documentation/content/decision_tree.html">操作符</a>）：RxSwift 提供了很多操作符，合理运用便会极大提高开发效率</p></li>
+<li><p>Subject：既可以作为 Observable 发送事件也可以作为 Subscribe 监听事件，它包括以下几种：</p>
+
+<ul>
+<li>PublishSubject：订阅者只会接收到订阅操作之后的事件，也就是所说的热信号。</li>
+<li>ReplaySubject：订阅者会接受到订阅之前的事件（可根据 bufferSize 指定数量）以及订阅之后的事件，类似于冷信号。</li>
+<li>BehaviorSubject：订阅之后首先会接收到最近一次发送的事件，如果最近没有发送，那么发送一个初始事件。</li>
+<li>AsyncSubject：订阅者只有在 Observable 发送 onCompleted() 时才能够收到它之前发送的最后一个事件，即使是在这之后的新订阅者也能够收到。</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>跨平台开发</h2>
+
+<p>跨平台开发的方式很多，做技术选型时要根据业务及团队情况去选择</p>
+
+<h3>Hybrid（H5 + Native）</h3>
+
+<p>使用 WebView 承载 H5 页面并通过 JSBridge 实现交互，性能略差，可通过预下载资源等方式进行优化。</p>
+
+<h3>Reatct Native</h3>
+
+<p>RN 中虚拟 DOM 会通过 JavaScriptCore 映射为原生控件，性能比 H5 高一些，但由于渲染时需要 JS 和Native 通信，在有些场景（拖动）可能会因为通信频繁导致卡顿，可以通过延迟渲染方式解决，但更重要的问题是维护成本大。</p>
+
+<h3>Flutter</h3>
+
+<p>Flutter 使用 Skia 2D 渲染引擎来绘制 UI，采用 Dart 语言开发，Dart 是类型安全的语言，比 JS 运行速度快也更安全一些，它支持 AOT(Ahead of time 提前编译) 和 JIT(Just-in-time 即时编译) 两种运行方式，在开发阶段采用 JIT 来实现热重载，在发布时采用 AOT 来生成高效的 ARM 代码以保证应用性能，所以 Flutter 应用发布后不能像 Hybrid 和 RN 那些使用 JS 作为开发语言的框架去动态下发代码。</p>
+
+<h3>SwiftUI</h3>
+
+<p>SwiftUI 使用 DSL 声明式 UI、跨自家平台、Xcode 通过单独编译我们当前操作的视图文件，利用 Swift dynamic repacement 特性将更新内容注入到正在运行的程序中来实现热重载。</p>
+
+<h2>组件化开发</h2>
+
+<p>随着 app 功能和体积的增长，也带来了一些问题</p>
+
+<ul>
+<li>编译速度缓慢</li>
+<li>commit 代码经常要 merge</li>
+<li>业务代码混在一起、开发功能类似的新项目时需要从头搭建</li>
+</ul>
+
+
+<h3>拆分组件</h3>
+
+<p>组件即功能组件，模块即业务模块，拆分时要把握好粒度，要考虑到维护成本</p>
+
+<ul>
+<li>每个组件对应一个 project，身为组件的同时还能够独立运行和打测试包</li>
+<li>大点的项目除了按框架分层拆分还可以按业务模块拆分，需要把握好拆分粒度</li>
+<li>小项目按框架分层拆分就可以了</li>
+</ul>
+
+
+<h3>组件之间的依赖关系</h3>
+
+<ul>
+<li>业务模块依赖于框架</li>
+<li>业务模块之间避免横向依赖（可适当的有些重复代码或存放重复资源）</li>
+<li>禁止框架依赖业务模块</li>
+</ul>
+
+
+<h3>组件化实施</h3>
+
+<p>通过 CocoaPods 来实现组件化</p>
+
+<ul>
+<li>Podfile：定义私有库地址和需要依赖的组件及版本</li>
+<li>Podspec：定义组件的依赖库、编译设置、以及需要打包的资源及代码，资源包括 xib、国际化文件、assets 等</li>
+</ul>
+
+
+<h3>组件中的资源访问</h3>
+
+<p>访问 image、xib、storyboard 时需要指定 bundle，如果项目中使用了 R.swift，可以在各组件中通过以下角本来修改 R.generated.swift 中设置的 bundle，修改后在组件中使用 R.image.xxx()，此代码在组件中是指 main bundle，在主工程中会将其认定为 core bundle。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$PODS_ROOT/R.swift/rswift" generate "$SRCROOT" --accessLevel public
+</span><span class='line'>sed -i '' -e "s/Bundle(for: R.Class.self)/Bundle.core/g" “$SRCROOT/</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>还需要在各组件中正确使用 open、public、private</p></blockquote>
+
+<h3>组件之间的路由跳转</h3>
+
+<p>网上有很多关于这方面的文章，我们使用的是一种较简单比较适合我们的方式：Router.open 跳转方法需要传入几个比较重要的参数：name、storyboard、bundle，如果要打开的 ViewController 是通过代码或 xib 实现的，需要在这里指定 name，然后会通过 viewControllerWithClassName 方法得到 VC 对象，如果 ViewController 是定义在 storyboard 里的，那么在跳转时需要指定 storyboard，如果要打开的是别的组件中的 ViewController，还需要指定对应 bundle。</p>
+
+<p>通过上面方式实现组件间的路由跳转需要对 ViewController 和 params 有以下要求</p>
+
+<ul>
+<li>ViewController 的类名要与 xib 名或 storyboard 中的 id 相同，如果要支持被其他组件使用并且是通过 xib 画的 UI，还需要重写 init() 并调用 super.init(nibName: nil, bundle: Bundle.xxx) 设置 nibName 和 bundle</li>
+<li>跳转页面传参通过 KVC 方式实现，所以要求 ViewController 的相关参数要加上 @objc，还需要加上注释说明属性用途</li>
+<li>ViewControllerName 和 propertyName 尽量不去变更，如有变更需要让别人知道</li>
+</ul>
+
+
+<p>下面代码描述了 open 方法的定义和如果根据 ViewController 名字得到其对象</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>public static func open(_ name: String, storyboard: String = "", bundle: Bundle = Bundle.main, params: [String: Any] = [:], needLogin: Bool = false, animated: Bool = true, present: Bool = false, completion: (() -&gt; Void)? = nil) {
+</span><span class='line'>    let viewController = RouterService.viewControllerWithClassName(name, storyboard: storyboard, bundle: bundle)
+</span><span class='line'>    
+</span><span class='line'>    RouterService.open(viewController, params: params, needLogin: needLogin, animated: animated, present: present, completion: completion)
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>public static func viewControllerWithClassName(_ name: String, storyboard: String = "", bundle: Bundle) -&gt; UIViewController? {
+</span><span class='line'>    var viewController: UIViewController?
+</span><span class='line'>    
+</span><span class='line'>    if storyboard.isEmpty {
+</span><span class='line'>        var bundleName: String?
+</span><span class='line'>        
+</span><span class='line'>        if bundle == Bundle.main {
+</span><span class='line'>            bundleName = (Bundle.main.infoDictionary!["CFBundleExecutable"] as! String).replacingOccurrences(of: "-", with: "_")
+</span><span class='line'>        } else {
+</span><span class='line'>            bundleName = bundle.infoDictionary!["CFBundleName"] as? String
+</span><span class='line'>        }
+</span><span class='line'>        
+</span><span class='line'>        if let vc = NSClassFromString((bundleName! + "." + name)) as? UIViewController.Type {
+</span><span class='line'>            viewController = vc.init()
+</span><span class='line'>        }
+</span><span class='line'>    } else {
+</span><span class='line'>        try? ObjC.catchException {
+</span><span class='line'>            viewController = UIStoryboard(name: storyboard, bundle: bundle).instantiateViewController(withIdentifier: name)
+</span><span class='line'>        }
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    return viewController
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>再介绍几个小功能和需要注意的地方</p>
+
+<ul>
+<li><p>打开页面时指定是否需要登录，然后将原本想要跳转的页面信息及参数传递给登录页，当登录成功后直接跳转到该页面，并将登录页本身从导航堆栈中移除</p></li>
+<li><p>pop 页面时除 navigation 的三种方式外，增加锚点方式返回，例如在购买商品页面填加锚点，然后当页面流转到购买成功时，可将导航堆栈反转过来，pop 到最近的一个锚点页面或指定锚点页面</p></li>
+<li><p>页面跳转如果设置了使用动画，在动画结束前不会响应其它跳转任务</p></li>
+<li><p>pop 时要考虑到导航堆栈里不存在指定页面的场景，还要确定当前 VC 是否是 navigationController</p></li>
+<li><p>传参使用字典还是 Model 也是需要注意的问题，虽然用字典代替 Model 存储数据对于组件化架构来说是解决组件之间数据传递参数的好办法，并且可以做到组件间的松耦合，但使用起来较麻烦，容易出错，所以建议简单的数据模型可以不定义成 Model，复杂模型还是有必要使用 Model，代码清楚，复用性好，有维护多组件能力的团队可以将多个业务组件共用的 Model 单独以组件形式维护，或者像我们一样允许组件中存在重复 Model</p></li>
+</ul>
+
+
+<h3>组件的多环境打包</h3>
+
+<p>App 运行环境通常有测试环境、预上线环境、正常环境三种，这里分别用 QA、STG、PRD 表示，有些公司还会有企业开发者账号，用来自己分发项目更方便的去做测试工作，下面针对这种情况做多环境打包设置</p>
+
+<ul>
+<li>通过 xcconfig 方式在原先的 debug、release 上扩展出 staging、enterprisePRD、production，切换环境时只要在 Scheme 中的 Build Configration 中设置一下就可以了（对于 xcconfig 这里不做详细介绍）</li>
+<li>上面列出的 debug 和 release 对应 QA，enterprisePRD 和 production 对应 PRD，其中 production 作为正式打包上线的设置项</li>
+<li>xcconfig 文件中可针对不同环境设置不同的 app 名字，还可以对 enterprisePRD 设置不同的微信Id 或其它内容</li>
+</ul>
+
+
+<p>组件在不同环境中 podspec 的内容也会不同，主要体现在 version 和 source 字段</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># 开发环境
+</span><span class='line'>s.version      = '6.5.5'
+</span><span class='line'>s.source       = { :git =&gt;'http://gitlab.mx.com/ios/wandafilm-card.git', :branch =&gt; "feature/#{s.version}"}</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># 上线环境，需要打 git tag
+</span><span class='line'>s.version      = '6.5.5.master'
+</span><span class='line'>s.source       = { :git =&gt;'http://gitlab.mx.com/ios/wandafilm-core.git', :branch =&gt; 'master', :tag =&gt; s.version}</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>优化</h1>
+
+<h2>线上 Bug 率</h2>
+
+<p>处理线上 Bug 降低 Bug 率需要根据项目团队情况按优先级处理，优先级由高到低为：</p>
+
+<ul>
+<li>次数较多的 Bug 不管是否好处理都需要优先处理，并根据情况决定是否需要发版，还需要将原因及如何避免等问题分享给团队成员，避免其他人再次出现类似问题</li>
+<li>次数较少但是容易处理的 Bug 修改后需要关注新版本上线后是否还会出现</li>
+<li>无法复现但是有一定影响的 Bug 可根据情况添加保护性代码避免 app 崩溃，但要求能够预知是否会造成其他问题（数据异常，页面异常等）</li>
+<li>次数少处理难度大的 Bug 放最后，有时间时再去调查原因</li>
+</ul>
+
+
+<blockquote><p>修改 Bug 或者重构优化功能后要告知测试人员影响范围，避免因没覆盖测试而上线出现问题</p></blockquote>
+
+<h2>数据安全</h2>
+
+<p>我们从 AppStore 下载的 app 其实都已经由苹果加壳，要砸壳后才能有办法看到汇编形式的源代码，如果我们要自己再加一层壳，可以对关键代码的方法名做一些混淆，以增加别人分析代码的复杂度，不过这对于大多数 app 来说不太值得去做，我们可以把精力放在其他更易做并且更有效率的地方，例如：</p>
+
+<ul>
+<li>不将敏感数据直接存储在沙盒里</li>
+<li>使用 Https 保证数据传输安全</li>
+<li>调用接口时对敏感数据进行加密</li>
+</ul>
+
+
+<p>加密数据通常有两种方式</p>
+
+<ul>
+<li>对称加密：文件加密和解密使用相同的密钥，AES 相对其他对称加密方式来说更安全些。</li>
+<li>非对称加密：需要公钥和私钥，用公钥对数据进行加密，只有对应的私钥才能解密；如果用私钥对数据进行加密，那么只有对应的公钥才能解密。可以用 RSA 来做非对称加密，相对对称加密来说非对称加密速度较慢，但非常安全，据说还没被破解过。
+
+<ul>
+<li>苹果官方生成一对公私钥，在 iOS 系统里内置公钥，私钥由苹果后台保存，我们上传 app 到 AppStore 时，苹果后台用私钥对 app 数据进行签名，iOS 系统下载这个 app 后，用公钥验证这个签名，若签名正确，这个 app 肯定是由苹果后台认证的，并且没有被修改过。</li>
+</ul>
+</li>
+</ul>
+
+
+<p>对敏感数据进行加密通常选择对称加密，这时如何使用密钥则是一件非常重要的事，不管是 app 在代码中写死密钥还是简单的通过接口获取密钥都不安全，下面介绍一种相对更安全的方式：</p>
+
+<ul>
+<li>首先由客户端向服务端发起获取钥匙的请求</li>
+<li>服务端生成公钥<code>pk1</code>和私钥<code>pk2</code>，然后将公钥<code>pk1</code>发送给客户端（假设此时黑客已经获取到了公钥<code>pk1</code>）</li>
+<li>客户端这时首先生成公钥<code>pk3</code>和私钥<code>pk4</code>，然后将公钥<code>pk3</code>通过服务端返回的公钥<code>pk1</code>加密并发送给服务端（假设此时黑客截获加密后的<code>pk3</code>，虽然知道这是由<code>pk1</code>加密的，但是他不知道与其对应的私钥<code>pk2</code>，所以无法对客户端发送的公钥进行解密）</li>
+<li>服务端收到加密后的<code>pk3</code>后可以通过私钥<code>pk2</code>解密，并使用<code>pk3</code>对生成的对称加密密钥<code>xxx</code>进行加密并发送给客户端（黑客这时因为不知道公钥<code>pk3</code>是什么，所以得不到对称加密的密钥）</li>
+<li>客户端收到数据后，可以用自己的私钥<code>pk4</code>解密并得到对称加密用的密钥<code>xxx</code>，客户端将密钥<code>xxx</code>存储在内存中，接下来两端就可以使用<code>xxx</code>作为 key 来加密数据并进行安全的数据传输了。</li>
+</ul>
+
+
+<h2>启动时间</h2>
+
+<p>可以通过 Instruments 的 Time Profiler 工具来查看耗费时间，也可以通过在 Xcode 中修改项目的 scheme，在 Run -> Auguments 增加环境变量 DYLD_PRINT_STATISTICS 并设置为 1，然后观察控制台打出的 log 来查看</p>
+
+<ul>
+<li>pre-main 阶段系统会由 dyld（the dynamic link editor）加载相关动态链接库，然后再初始化 runtime 环境，并由 runtime 触发 + load 方法，所以不要在 load 方法里执行耗时任务，否则会影响启动时间，并且用不到的代码文件要及时删除。</li>
+<li>检查 didFinishLaunchingWithOptions 及启动相关的方法，将部分操作改为异步执行或延迟处理</li>
+<li>首页相关 ViewController 尽量使用代码实现</li>
+</ul>
+
+
+<h2>App 瘦身</h2>
+
+<ul>
+<li>将部分资源文件从工程中移除，改为从接口获取，并且可以通过给数据加版本号，避免每次重复下载。</li>
+<li>清理无用的代码文件和资源，不要 @1x 图片，如果用到了 ProtoBuf，可以将 .proto 文件从 Compile Sources 中移除。</li>
+<li>压缩图片，目前发现 <a href="tinypng.com">tinypng.com</a> 的压缩效果最好，而且是无损的。</li>
+<li>小图标可以使用 iconfont 替代，大图可以用 pdf 替代</li>
+<li>启动图界面用 LaunchScreen.storyboard，不要用多张 Default 图。</li>
+<li>用 .xcassets 来管理图片，Xcode 能够把里边的所有 png 图片压缩成 .car 文件。并且 iOS9 之后，如果是用 .xcassets 管理图片，AppStore 会根据不同设备准备不同的安装包，每个包内只有对应尺寸的图片，例如 iPhone6 下载 app 时，包里就只有 @2x 图。</li>
+<li>放弃 iPhone5s 之前发布的 32 位手机，仅支持 arm64</li>
+</ul>
+
+
+<h2>流量</h2>
+
+<ul>
+<li>合理使用本地缓存数据并及时更新缓存</li>
+<li>考虑用 ProtoBuf 替代 JSON，也可以仅是个别数据量大的接口改为 ProtoBuf 格式数据</li>
+<li>轮询接口方式可以用 WebSocket 替代</li>
+<li>请求的图片格式考虑由 jpg 改为 webp，减少图片下载时间，再想办法提高图片转码时间</li>
+<li>按 UIImageView 大小取合适大小的图片，不要直接取原图，同一图片用在不同界面时，尽量要求 UI 统一视图比例，然后 app 统一获取同样大小图片，这样做的话不管对 app 还是 CDN 都能够提高缓存利用率</li>
+<li>非关键的业务数据，可以通过合并接口的方式，减少和服务器的交互次数。</li>
+<li>请求接口前客户端通过对 request params 做检查来减少不必要的网络请求</li>
+<li>可以用 ETag 这种服务端加本地验证的方式处理返回数据，当数据没有更新时不返回数据，而是返回 304</li>
+<li>数据量大时要提示用户是否在非 wifi 环境下下载</li>
+<li>网络框架增加取消请求功能，避免返回用户已经不需要的数据</li>
+</ul>
+
+
+<h2>UI 交互</h2>
+
+<ul>
+<li>延迟处理不需要马上展现的视图或操作</li>
+<li>不要阻塞主线程，能异步去做的就不要同步。</li>
+<li>由于 UIKit 中大部分对象都不是线程安全的，所以 UI 操作都需要放在主线程做串行处理，否则可能会导致未知行为（动画异常、页面错乱、Crash）。</li>
+<li>优化表格滑动
+
+<ul>
+<li>提前算 Cell 高度并缓存，如果要加载的数据也是要经过处理才展示的也提前处理好</li>
+<li>异步绘制，滑动过程中不加载图片</li>
+<li>当 Cell 中有很多子视图并且他们要在不同条件下展示时，考虑拆成多个 Cell</li>
+<li>不要在 Cell 中频繁生成 NSDateFormatter 对象</li>
+</ul>
+</li>
+<li>通过设置模拟器的 Debug 菜单下的几项设置来查看图层视图是否需要优化
+
+<ul>
+<li>Color Blended layers<br/>
+大多情况是因为视图的 backgroundColor 与父视图颜色不一致或者是透明的，它会用红色表示有问题的视图，而绿色的表示没问题</li>
+<li>Color copied images<br/>
+当图片的色彩格式不能被 GPU 处理时，会交由 CPU 处理，应该尽可能避免这种问题</li>
+<li>Color misaligned images<br/>
+图片大小与控件不一致，会用黄色表示图片被缩放了，用紫色表示像素没对齐</li>
+<li>Color offscreen-rendered<br/>
+用黄色标示哪些 layer 做了离屏渲染（当 GPU 无法将渲染结果直接写入 frame buffer，而是将结果暂存在其他内存后再写入 frame buffer），多数时候离屏渲染会影响性能，应该尽量避免，无法避免时可通过 shouldRasterize 来缓存渲染结果，降低影响，在开发过程中需要重点关注列表中对 View 做圆角设置和添加阴影操作。
+
+<ul>
+<li>cornerRadius + clipsToBounds 设置圆角会触发离屏渲染，仅使用 cornerRadius 不会触发，但效果不好，可以用带圆角效果的 layer 盖住视图实现圆角效果，以避免离屏渲染</li>
+<li>使用 shadowPath 添加阴影可以避免离屏渲染</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<p>PS：过早的优化是万恶之源！</p>
 ]]></content>
   </entry>
   
@@ -595,6 +1057,17 @@
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">let</span> <span class="n">userInfo</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;lijingcheng&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s">&quot;male&quot;</span><span class="p">,</span> <span class="s">&quot;Mtime&quot;</span><span class="p">),</span> <span class="p">[</span><span class="s">&quot;obj1&quot;</span><span class="p">,</span> <span class="s">&quot;obj2&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s">&quot;key&quot;</span><span class="o">:</span> <span class="s">&quot;value&quot;</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>不使用额外空间就能交换两个值</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">func</span> <span class="nf">swap</span><span class="p">(</span><span class="nl">a</span><span class="p">:</span> <span class="k">inout</span> <span class="n">T</span><span class="p">,</span> <span class="nl">b</span><span class="p">:</span> <span class="k">inout</span> <span class="n">T</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -980,7 +1453,7 @@
 </span><span class='line'>
 </span><span class='line'><span class="k">var</span> <span class="n">someInt</span> <span class="o">=</span> <span class="mi">3</span>
 </span><span class='line'><span class="k">var</span> <span class="n">anotherInt</span> <span class="o">=</span> <span class="mi">107</span>
-</span><span class='line'><span class="n">swapTwoInts</span><span class="p">(</span><span class="o">&amp;</span><span class="n">someInt</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">anotherInt</span><span class="p">)</span>
+</span><span class='line'><span class="n">swapTwoInts</span><span class="p">(</span><span class="o">&amp;</span><span class="n">someInt</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">anotherInt</span><span class="p">)</span> <span class="c1">// &amp; 对于值类型来说 inout 相当于在函数内部创建了一个新值，然后在函数返回时将这个值赋给 &amp; 修饰的变量，这与引用类型是不一样的。</span>
 </span><span class='line'><span class="n">print</span><span class="p">(</span><span class="s">&quot;someInt is now \(someInt), and anotherInt is now \(anotherInt)&quot;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -1017,6 +1490,27 @@
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="n">printMathResult</span><span class="p">(</span><span class="n">addMathFunction</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="c1">// print: 8</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>函数的柯里化(Currying)是指把接受多个参数的方法变换成接受第一个参数的方法，并且返回接受余下的参数并且返回结果的新方法。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">func</span> <span class="n">addTo</span><span class="p">(</span><span class="n">_</span> <span class="nl">adder</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="p">{</span> <span class="n">num</span> <span class="k">in</span>
+</span><span class='line'>      <span class="k">return</span> <span class="n">num</span> <span class="o">+</span> <span class="n">adder</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="n">addTwo</span> <span class="o">=</span> <span class="n">addTo</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1">// 变量接收的函数会将 2 作为递增数</span>
+</span><span class='line'><span class="k">let</span> <span class="n">result</span> <span class="o">=</span> <span class="n">addTwo</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="c1">// 调用函数，将 6 与预先设置的 2 相加</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -1658,6 +2152,13 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="n">private</span><span class="p">(</span><span class="kr">set</span><span class="p">)</span> <span class="k">var</span> <span class="nl">name</span><span class="p">:</span> <span class="n">String</span><span class="o">?</span> <span class="c1">// name 只能被内部修改，但可以被外部访问</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
 <p>如果想要在测试 target 中访问模块中所有内部级别的实体，可以在导入模块前使用 @testable，然后修改模块的编译设置项 Build Options -> Enable Testability。</p>
 
 <h3>元类型</h3>
@@ -1910,6 +2411,35 @@
 </pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="p">@</span><span class="n">objc</span> <span class="k">protocol</span> <span class="n">AnotherProtocol</span> <span class="p">{</span>
 </span><span class='line'>    <span class="p">@</span><span class="n">objc</span> <span class="n">optional</span> <span class="k">func</span> <span class="n">incrementForCount</span><span class="p">(</span><span class="nl">count</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int</span>
 </span><span class='line'>    <span class="p">@</span><span class="n">objc</span> <span class="n">optional</span> <span class="k">var</span> <span class="nl">fixedIncrement</span><span class="p">:</span> <span class="n">Int</span> <span class="p">{</span> <span class="kr">get</span> <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>在 struct 或 enum 中用 mutating 来修饰方法是为了能够在该方法内修改自己的变量，如果协议中定义的方法没有写 mutating，那么确认该协议的 struct 或 enum 就不能在该方法中修改自己的变量，class 的话没关系，因为 class 可以随意修改自己的变量。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">protocol</span> <span class="n">SomeProtocol</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">var</span> <span class="nl">name</span><span class="p">:</span> <span class="n">String</span> <span class="p">{</span> <span class="kr">get</span> <span class="kr">set</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kr">mutating</span> <span class="k">func</span> <span class="n">changeName</span><span class="p">(</span><span class="n">_</span> <span class="nl">name</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">struct</span> <span class="nl">SomeClass</span><span class="p">:</span> <span class="n">SomeProtocol</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kr">mutating</span> <span class="k">func</span> <span class="n">changeName</span><span class="p">(</span><span class="n">_</span> <span class="nl">name</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nb">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="c1">// changeName 方法如果没加 mutating 编译会报错</span>
+</span><span class='line'>    <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -2511,281 +3041,6 @@
 
 
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[iOS 应用的开发设计]]></title>
-    <link href="http://lijingcheng.github.io/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji/"/>
-    <updated>2016-09-05T18:40:19+08:00</updated>
-    <id>http://lijingcheng.github.io/blog/2016/09/05/ios-appde-zu-jian-hua-she-ji</id>
-    <content type="html"><![CDATA[<p>一个 app 从设计到发布应用商店会经历需求设计、UI设计、架构设计、开发、优化、测试等流程，每个环节做的好与坏都会影响到整个 app 的质量，作为开发人员，不仅要对需求以及 UI 的合理性进行评审，还要保证提供给测试的代码是经过自测并且覆盖了相关测试用例，更重要的是要做好架构设计、开发以及优化这三个环节。</p>
-
-<!-- more -->
-
-
-<h1>架构设计</h1>
-
-<p>架构设计可以以业务为驱动，按照最适合自己的方式去设计，设计思路和方法尽量统一，同类型问题用同样方式去解决，下面几点是我认为比较重要的：</p>
-
-<ul>
-<li><p>关注分离<br/>
-将系统分解为多个模块并各司其职，纵向分层，横向拆分业务。</p></li>
-<li><p>高内聚<br/>
-一个模块只完成一个功能，并合理有度的进行封装。</p></li>
-<li><p>松耦合<br/>
-依赖关系越少越好，尽量不横向依赖，不跨层访问。继承是紧耦合的一种操作，它通常与多态一起存在，如果仅仅是为了代码重用而做的继承还不如用组合。</p></li>
-<li><p>适度设计<br/>
-对业务方该限制的地方要进行限制，该灵活的地方也要给业务方创造灵活实现的条件，架构的设计要保持一定量的超前性而做到易扩展，但不要设计过度，避免多做无用功而增加框架复杂度。好的架构是随着时间而更新的，而不是一开始就设计好了一切。</p></li>
-<li><p>技术选型<br/>
-不要仅是为了体验新技术而改变现有架构，等别人把坑踩平后再根据团队及业务情况考虑是否使用，技术本身没有什么好不好，只有适合不适合。</p></li>
-</ul>
-
-
-<p><br></p>
-
-<h1>响应式编程</h1>
-
-<p>响应式编程是一种面向数据及其变化响应的编程方式，它能够将数据、UI事件和异步操作更方便的进行序列化处理，相比传统编程方式来说，它可以使逻辑相关的代码能够紧凑的聚在一起，它通过信号机制来实现，用信号来记录值的变化，并通过信号绑定的方式来响应变化，下面这个例子很好的描述了响应式编程的作用</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>a = 2 // signal
-</span><span class='line'>b = 2 // signal
-</span><span class='line'>c = a + b // signal binding c = 4 
-</span><span class='line'>b = 3 // c = 5</span></code></pre></td></tr></table></div></figure>
-
-
-<p>目前我们在 Swift 项目中选择使用 RxSwift + MVVM 的方式进行开发，使用 RxSwift 需要掌握以下几个概念：</p>
-
-<ul>
-<li><p>Observable（被观察者）：相当于一个事件序列，它会主动向订阅者发送新产生的事件内容，包括 onNext、onError、onCompleted()</p></li>
-<li><p>Subscribe（订阅者）：订阅后便可以根据事件产生的数据进行操作</p></li>
-<li><p>Scheduler（调度器）：可分别通过 subscribeOn 和 observeOn 指定 Observable 或 Subscribe 在哪个线程上执行，默认是当前线程。</p></li>
-<li><p>Operator（<a href="https://beeth0ven.github.io/RxSwift-Chinese-Documentation/content/decision_tree.html">操作符</a>）：RxSwift 提供了很多操作符，合理运用便会极大提高开发效率</p></li>
-<li><p>Subject：既可以作为 Observable 发送事件也可以作为 Subscribe 监听事件，它包括以下几种：</p>
-
-<ul>
-<li>PublishSubject：订阅者只会接收到订阅操作之后的事件，也就是所说的热信号。</li>
-<li>ReplaySubject：订阅者会接受到订阅之前的事件（可根据 bufferSize 指定数量）以及订阅之后的事件，类似于冷信号。</li>
-<li>BehaviorSubject：订阅之后首先会接收到最近一次发送的事件，如果最近没有发送，那么发送一个初始事件。</li>
-<li>AsyncSubject：订阅者只有在 Observable 发送 onCompleted() 时才能够收到它之前发送的最后一个事件，即使是在这之后的新订阅者也能够收到。</li>
-</ul>
-</li>
-</ul>
-
-
-<h1>组件化开发</h1>
-
-<p>随着 app 功能和体积的增长，也带来了一些问题</p>
-
-<ul>
-<li>编译速度缓慢</li>
-<li>commit 代码经常要 merge</li>
-<li>业务代码混在一起、开发功能类似的新项目时需要从头搭建</li>
-</ul>
-
-
-<h2>拆分组件</h2>
-
-<ul>
-<li>每个组件对应一个 project，身为组件的同时还能够独立运行和打测试包</li>
-<li>大点的项目除了按框架分层拆分还可以按业务模块拆分，需要把握好拆分粒度</li>
-<li>小项目按框架分层拆分就可以了</li>
-</ul>
-
-
-<h2>组件之间的依赖关系</h2>
-
-<ul>
-<li>业务模块依赖于框架</li>
-<li>业务模块之间避免横向依赖（可适当的有些重复代码或存放重复资源）</li>
-<li>禁止框架依赖业务模块</li>
-</ul>
-
-
-<h2>组件化实施</h2>
-
-<p>通过 CocoaPods 来实现组件化</p>
-
-<ul>
-<li>Podfile：定义组件以及第三方库的依赖关系</li>
-<li>Podspec：定义组件的依赖库、编译设置、以及需要打包的资源及代码，资源包括 xib、国际化文件、assets 等</li>
-</ul>
-
-
-<h2>组件维护</h2>
-
-<p>需要调试其它组件代码时可通过本地 link 方式去组装项目，也可以直接去 Pods 目录下修改，但要及时将修改好的代码迁移出来，否则代码会有丢失的危险，当组件变更后需要修改 podspec 中的版本号，然后通过 <code>pod repo push</code> 命令更新仓库，最后依赖方要按指定版本号更新，并且在使用 <code>pod update</code> 时不要加 <code>—-no-repo-update</code></p>
-
-<h2>组件中的资源访问</h2>
-
-<p>首先要在代码中正确使用 open、public、private，另外访问资源需要指定 bundle，例：<code>UIImage(named, bundle)</code>，有种简单的办法就是使用 R.Swift 提供的功能来访问资源，在使用时首先要添加下面角本到 Run Script，其中第二行角本的主要目的是替换 R.generate.swift 中关于 bundle 的设置，主要目的是让组件内写的 R.image 这种代码能够在别的组件中也正常使用，R.Swift 不支持跨组件访问资源，自行修改的话成本太大</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$PODS_ROOT/R.swift/rswift" generate "$SRCROOT" --accessLevel public
-</span><span class='line'>sed -i '' -e "s/Bundle(for: R.Class.self)/Bundle.core/g" “$SRCROOT/</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Bundle.core 内容如下，每个组件都要去扩展 Bundle 类，添加自己的 bundle 名称</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>extension Bundle {
-</span><span class='line'>    public static var core: Bundle {
-</span><span class='line'>        let bundleName = "ProjectCore"
-</span><span class='line'>        
-</span><span class='line'>        // BaseViewModel 需要定义成 public
-</span><span class='line'>        if let path = Bundle(for: BaseViewModel.self).path(forResource: bundleName, ofType: "bundle") {
-</span><span class='line'>            let bundle = Bundle(path: path)!
-</span><span class='line'>            bundle.name = bundleName // name 是自已扩展的属性，相关代码不再列出
-</span><span class='line'>            return bundle
-</span><span class='line'>        }
-</span><span class='line'>        
-</span><span class='line'>        return Bundle.main
-</span><span class='line'>    }
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>组件之间的路由跳转</h2>
-
-<p>网上有很多关于这方面的文章，这里不再多说，只介绍两个小功能</p>
-
-<ul>
-<li><p>打开页面时指定是否需要登录，然后将原本想要跳转的页面信息及参数传递给登录页，当登录成功后直接跳转到该页面，并将登录页本身从导航堆栈中移除</p></li>
-<li><p>返回页面时除原来的三种方式外，增加锚点方式返回，例如在购买商品页面填加锚点，然后当页面流转到购买成功时，可将导航堆栈反转过来，pop 到最近的一个锚点页面或指定锚点页面</p></li>
-</ul>
-
-
-<h2>组件的多环境打包</h2>
-
-<p>App 运行环境通常有测试环境、预上线环境、正常环境三种，这里分别用 QA、STG、PRD 表示，有些公司还会有企业开发者账号，用来自己分发项目更方便的去做测试工作，下面针对这种情况做多环境打包设置</p>
-
-<ul>
-<li>通过 xcconfig 方式在原先的 debug、release 上扩展出 staging、enterprisePRD、production，切换环境时只要在 Scheme 中的 Build Configration 中设置一下就可以了（对于 xcconfig 这里不做详细介绍）</li>
-<li>上面列出的 debug 和 release 对应 QA，enterprisePRD 和 production 对应 PRD，其中 production 作为正式打包上线的设置项</li>
-<li>xcconfig 文件中可针对不同环境设置不同的 app 名字，还可以对 enterprisePRD 设置不同的微信Id 或其它内容</li>
-</ul>
-
-
-<h1>优化</h1>
-
-<h2>数据安全</h2>
-
-<p>我们从 AppStore 下载的 app 其实都已经由苹果加壳，要砸壳后才能有办法看到汇编形式的源代码，如果我们要自己再加一层壳，可以对关键代码的方法名做一些混淆，以增加别人分析代码的复杂度，不过这对于大多数 app 来说不太值得去做，我们可以把精力放在其他更易做并且更有效率的地方，例如：</p>
-
-<ul>
-<li>不将敏感数据直接存储在沙盒里</li>
-<li>使用 Https 保证数据传输安全</li>
-<li>调用接口时对敏感数据进行加密</li>
-</ul>
-
-
-<p>加密数据通常有两种方式</p>
-
-<ul>
-<li>对称加密：文件加密和解密使用相同的密钥，AES 相对其他对称加密方式来说更安全些。</li>
-<li>非对称加密：需要公钥和私钥，用公钥对数据进行加密，只有对应的私钥才能解密；如果用私钥对数据进行加密，那么只有对应的公钥才能解密。可以用 RSA 来做非对称加密，相对对称加密来说非对称加密速度较慢，但非常安全，据说还没被破解过。</li>
-</ul>
-
-
-<p>对敏感数据进行加密通常选择对称加密，这时如何使用密钥则是一件非常重要的事，不管是 app 在代码中写死密钥还是简单的通过接口获取密钥都不安全，下面介绍一种相对更安全的方式：</p>
-
-<ul>
-<li>首先由客户端向服务端发起获取钥匙的请求</li>
-<li>服务端生成公钥<code>pk1</code>和私钥<code>pk2</code>，然后将公钥<code>pk1</code>发送给客户端（假设此时黑客已经获取到了公钥<code>pk1</code>）</li>
-<li>客户端这时首先生成公钥<code>pk3</code>和私钥<code>pk4</code>，然后将公钥<code>pk3</code>通过服务端返回的公钥<code>pk1</code>加密并发送给服务端（假设此时黑客截获加密后的<code>pk3</code>，虽然知道这是由<code>pk1</code>加密的，但是他不知道与其对应的私钥<code>pk2</code>，所以无法对客户端发送的公钥进行解密）</li>
-<li>服务端收到加密后的<code>pk3</code>后可以通过私钥<code>pk2</code>解密，并使用<code>pk3</code>对生成的对称加密密钥<code>xxx</code>进行加密并发送给客户端（黑客这时因为不知道公钥<code>pk3</code>是什么，所以得不到对称加密的密钥）</li>
-<li>客户端收到数据后，可以用自己的私钥<code>pk4</code>解密并得到对称加密用的密钥<code>xxx</code>，客户端将密钥<code>xxx</code>存储在内存中，接下来两端就可以使用<code>xxx</code>作为 key 来加密数据并进行安全的数据传输了。</li>
-</ul>
-
-
-<h2>启动时间</h2>
-
-<p>可以通过 Instruments 的 Time Profiler 工具来查看耗费时间，也可以通过在 Xcode 中修改项目的 scheme，在 Run -> Auguments 增加环境变量 DYLD_PRINT_STATISTICS 并设置为 1，然后观察控制台打出的 log 来查看</p>
-
-<ul>
-<li>pre-main 阶段系统会由 dyld（the dynamic link editor）加载相关动态链接库，然后再初始化 runtime 环境，并由 runtime 触发 + load 方法，所以不要在 load 方法里执行耗时任务，否则会影响启动时间，并且用不到的代码文件要及时删除。</li>
-<li>检查 didFinishLaunchingWithOptions 方法，将部分操作改为异步执行或延迟处理</li>
-</ul>
-
-
-<h2>App 瘦身</h2>
-
-<ul>
-<li>将部分资源文件从工程中移除，改为从接口获取，并且可以通过给数据加版本号，避免每次重复下载。</li>
-<li>清理无用的代码文件和资源，不要 @1x 图片，如果用到了 ProtoBuf，可以将 .proto 文件从 Compile Sources 中移除。</li>
-<li>压缩图片，目前发现 <a href="tinypng.com">tinypng.com</a> 的压缩效果最好，而且是无损的。</li>
-<li>小图标可以使用 iconfont 替代，大图可以用 pdf 替代</li>
-<li>启动图界面用 LaunchScreen.storyboard，不要用多张 Default 图。</li>
-<li>用 .xcassets 来管理图片，Xcode 能够把里边的所有 png 图片压缩成 .car 文件。并且 iOS9 之后，如果是用 .xcassets 管理图片，AppStore 会根据不同设备准备不同的安装包，每个包内只有对应尺寸的图片，例如 iPhone6 下载 app 时，包里就只有 @2x 图。</li>
-<li>放弃 iPhone5s 之前发布的 32 位手机</li>
-<li>如果是 Swift 项目，优先考虑使用静态库</li>
-</ul>
-
-
-<h2>流量</h2>
-
-<ul>
-<li>合理使用本地缓存数据并及时更新缓存</li>
-<li>考虑用 ProtoBuf 替代 JSON，也可以仅是个别数据量大的接口改为 ProtoBuf 格式数据</li>
-<li>需要轮询的接口可用 WebSocket 替代</li>
-<li>请求的图片格式由 jpg 改为 webp</li>
-<li>按 UIImageView 大小取合适大小的图片，不要直接取原图</li>
-<li>非关键的业务数据，可以通过合并接口的方式，减少和服务器的交互次数。</li>
-<li>请求接口前客户端通过对 request params 做检查来减少不必要的网络请求</li>
-<li>可以用 ETag 这种服务端加本地验证的方式处理返回数据，当数据没有更新时不返回数据，而是返回 304</li>
-<li>数据量大时要提示用户是否在非 wifi 环境下下载</li>
-</ul>
-
-
-<h2>UI 交互</h2>
-
-<ul>
-<li>延迟处理不需要马上展现的视图或操作</li>
-<li>不要阻塞主线程，能异步去做的就不要同步。</li>
-<li>由于 UIKit 中大部分对象都不是线程安全的，所以 UI 操作都需要放在主线程做串行处理，否则可能会导致未知行为（动画异常、页面错乱、Crash）。</li>
-<li>优化表格滑动
-
-<ul>
-<li>提前算 Cell 高度并缓存，如果要加载的数据也是要经过处理才展示的也提前处理好</li>
-<li>异步绘制，滑动过程中不加载图片</li>
-<li>当 Cell 中有很多子视图并且他们要在不同条件下展示时，考虑拆成多个 Cell</li>
-<li>不要在 Cell 中频繁生成 NSDateFormatter 对象</li>
-</ul>
-</li>
-<li>通过设置模拟器的 Debug 菜单下的几项设置来查看图层视图是否需要优化
-
-<ul>
-<li>Color Blended layers<br/>
-大多情况是因为视图的 backgroundColor 与父视图颜色不一致或者是透明的，它会用红色表示有问题的视图，而绿色的表示没问题</li>
-<li>Color copied images<br/>
-当图片的色彩格式不能被 GPU 处理时，会交由 CPU 处理，应该尽可能避免这种问题</li>
-<li>Color misaligned images<br/>
-图片大小与控件不一致，会用黄色表示图片被缩放了，用紫色表示像素没对齐</li>
-<li>Color offscreen-rendered<br/>
-用黄色标示哪些 layer 需要做离屏渲染，多数时候离屏渲染会影响性能，应避免重写 drawRect 方法，避免使用 masksToBounds(设置圆角/模糊效果)、shouldRasterize(光栅化)、shadow(阴影)</li>
-</ul>
-</li>
-</ul>
-
-
-<p>PS：过早的优化是万恶之源！</p>
 ]]></content>
   </entry>
   
@@ -4135,8 +4390,27 @@
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">closure</span> <span class="o">=</span> <span class="p">{</span> <span class="p">[</span><span class="kr">unowned</span> <span class="nb">self</span><span class="p">]</span> <span class="k">in</span>
-</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">doSomething</span><span class="p">()</span> <span class="c1">// 必须用 self 引用属性或方法</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">__weak</span> <span class="k">typeof</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="n">weakSelf</span> <span class="o">=</span> <span class="nb">self</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">block</span> <span class="o">=</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'>    <span class="k">__strong</span> <span class="k">typeof</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="n">strongSelf</span> <span class="o">=</span> <span class="n">weakSelf</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">strongSelf</span> <span class="n">doSomething</span><span class="p">];</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">closure</span> <span class="o">=</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="nb">self</span><span class="p">]</span> <span class="k">in</span> <span class="c1">// 用 weak 而不是 unowned 会更安全些</span>
+</span><span class='line'>    <span class="n">guard</span> <span class="k">let</span> <span class="n">strongSelf</span> <span class="o">=</span> <span class="nb">self</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="p">}</span> <span class="c1">// 像 OC 一样</span>
+</span><span class='line'>    <span class="n">strongSelf</span><span class="p">.</span><span class="n">doSomething</span><span class="p">()</span> <span class="c1">// 必须用 self 引用属性或方法</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -5256,7 +5530,7 @@
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>gem sources -a https://gems.ruby-china.org/  (添加)
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem sources -a https://gems.ruby-china.com/  (添加)
 </span><span class='line'>gem sources -r https://rubygems.org/  (删除)
 </span><span class='line'>gem sources -l  (检查一下)</span></code></pre></td></tr></table></div></figure>
 
@@ -5536,7 +5810,7 @@
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>gem sources -a https://gems.ruby-china.org/  (添加)
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem sources -a https://gems.ruby-china.com/  (添加)
 </span><span class='line'>gem sources -r https://rubygems.org/  (删除)
 </span><span class='line'>gem sources -l  (检查一下)</span></code></pre></td></tr></table></div></figure>
 

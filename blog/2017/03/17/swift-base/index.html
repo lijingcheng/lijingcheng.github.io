@@ -342,6 +342,17 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
+<p>不使用额外空间就能交换两个值</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">func</span> <span class="nf">swap</span><span class="p">(</span><span class="nl">a</span><span class="p">:</span> <span class="k">inout</span> <span class="n">T</span><span class="p">,</span> <span class="nl">b</span><span class="p">:</span> <span class="k">inout</span> <span class="n">T</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
 <h3>Optional</h3>
 
 <p>在声明变量时可以用可选类型来处理值可能为 nil 的情况，可选类型也可用于函数参数和函数返回值。（Swift 中 nil 不是指针，它是一个确定的值，可用来表示任何类型变量的值缺失）</p>
@@ -724,7 +735,7 @@
 </span><span class='line'>
 </span><span class='line'><span class="k">var</span> <span class="n">someInt</span> <span class="o">=</span> <span class="mi">3</span>
 </span><span class='line'><span class="k">var</span> <span class="n">anotherInt</span> <span class="o">=</span> <span class="mi">107</span>
-</span><span class='line'><span class="n">swapTwoInts</span><span class="p">(</span><span class="o">&amp;</span><span class="n">someInt</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">anotherInt</span><span class="p">)</span>
+</span><span class='line'><span class="n">swapTwoInts</span><span class="p">(</span><span class="o">&amp;</span><span class="n">someInt</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">anotherInt</span><span class="p">)</span> <span class="c1">// &amp; 对于值类型来说 inout 相当于在函数内部创建了一个新值，然后在函数返回时将这个值赋给 &amp; 修饰的变量，这与引用类型是不一样的。</span>
 </span><span class='line'><span class="n">print</span><span class="p">(</span><span class="s">&quot;someInt is now \(someInt), and anotherInt is now \(anotherInt)&quot;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -761,6 +772,27 @@
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="n">printMathResult</span><span class="p">(</span><span class="n">addMathFunction</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="c1">// print: 8</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>函数的柯里化(Currying)是指把接受多个参数的方法变换成接受第一个参数的方法，并且返回接受余下的参数并且返回结果的新方法。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">func</span> <span class="n">addTo</span><span class="p">(</span><span class="n">_</span> <span class="nl">adder</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="p">{</span> <span class="n">num</span> <span class="k">in</span>
+</span><span class='line'>      <span class="k">return</span> <span class="n">num</span> <span class="o">+</span> <span class="n">adder</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="n">addTwo</span> <span class="o">=</span> <span class="n">addTo</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1">// 变量接收的函数会将 2 作为递增数</span>
+</span><span class='line'><span class="k">let</span> <span class="n">result</span> <span class="o">=</span> <span class="n">addTwo</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="c1">// 调用函数，将 6 与预先设置的 2 相加</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -1402,6 +1434,13 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="n">private</span><span class="p">(</span><span class="kr">set</span><span class="p">)</span> <span class="k">var</span> <span class="nl">name</span><span class="p">:</span> <span class="n">String</span><span class="o">?</span> <span class="c1">// name 只能被内部修改，但可以被外部访问</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
 <p>如果想要在测试 target 中访问模块中所有内部级别的实体，可以在导入模块前使用 @testable，然后修改模块的编译设置项 Build Options -> Enable Testability。</p>
 
 <h3>元类型</h3>
@@ -1654,6 +1693,35 @@
 </pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="p">@</span><span class="n">objc</span> <span class="k">protocol</span> <span class="n">AnotherProtocol</span> <span class="p">{</span>
 </span><span class='line'>    <span class="p">@</span><span class="n">objc</span> <span class="n">optional</span> <span class="k">func</span> <span class="n">incrementForCount</span><span class="p">(</span><span class="nl">count</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int</span>
 </span><span class='line'>    <span class="p">@</span><span class="n">objc</span> <span class="n">optional</span> <span class="k">var</span> <span class="nl">fixedIncrement</span><span class="p">:</span> <span class="n">Int</span> <span class="p">{</span> <span class="kr">get</span> <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>在 struct 或 enum 中用 mutating 来修饰方法是为了能够在该方法内修改自己的变量，如果协议中定义的方法没有写 mutating，那么确认该协议的 struct 或 enum 就不能在该方法中修改自己的变量，class 的话没关系，因为 class 可以随意修改自己的变量。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">protocol</span> <span class="n">SomeProtocol</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">var</span> <span class="nl">name</span><span class="p">:</span> <span class="n">String</span> <span class="p">{</span> <span class="kr">get</span> <span class="kr">set</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kr">mutating</span> <span class="k">func</span> <span class="n">changeName</span><span class="p">(</span><span class="n">_</span> <span class="nl">name</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">struct</span> <span class="nl">SomeClass</span><span class="p">:</span> <span class="n">SomeProtocol</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kr">mutating</span> <span class="k">func</span> <span class="n">changeName</span><span class="p">(</span><span class="n">_</span> <span class="nl">name</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nb">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="c1">// changeName 方法如果没加 mutating 编译会报错</span>
+</span><span class='line'>    <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -1973,6 +2041,14 @@
   <ul id="最新">
     
       <li class="post">
+        <a href="/blog/2019/08/02/ios-app-start/">iOS 应用的启动任务设计</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2019/06/12/tech-manage/">如何做好技术管理</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2019/04/12/app-kai-fa-xu-yao-liao-jie-de-hou-duan-zhi-shi/">了解一点互联网架构</a>
       </li>
     
@@ -1981,15 +2057,7 @@
       </li>
     
       <li class="post">
-        <a href="/blog/2017/10/19/new-driver/">安全行车注意事项</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2017/03/17/swift-base/">从 Objective-C 过渡到 Swift</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/12/23/shi-yong-carthage-zuo-yi-lai-guan-li/">使用 Carthage 做依赖管理</a>
+        <a href="/blog/2018/09/05/ios-appde-zu-jian-hua-she-ji/">iOS 应用的开发设计</a>
       </li>
     
   </ul>
