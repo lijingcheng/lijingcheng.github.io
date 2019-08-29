@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[风行的博客]]></title>
-  <link href="http://lijingcheng.github.io/atom.xml" rel="self"/>
-  <link href="http://lijingcheng.github.io/"/>
-  <updated>2019-08-02T19:28:48+08:00</updated>
-  <id>http://lijingcheng.github.io/</id>
+  <link href="https://lijingcheng.github.io/atom.xml" rel="self"/>
+  <link href="https://lijingcheng.github.io/"/>
+  <updated>2019-08-29T17:56:57+08:00</updated>
+  <id>https://lijingcheng.github.io/</id>
   <author>
     <name><![CDATA[风行]]></name>
     
@@ -15,23 +15,247 @@
   
   <entry>
     <title type="html"><![CDATA[iOS 应用的启动任务设计]]></title>
-    <link href="http://lijingcheng.github.io/blog/2019/08/02/ios-app-start/"/>
-    <updated>2019-08-02T19:18:55+08:00</updated>
-    <id>http://lijingcheng.github.io/blog/2019/08/02/ios-app-start</id>
-    <content type="html"><![CDATA[<p>To be continue&hellip;</p>
+    <link href="https://lijingcheng.github.io/blog/2019/08/29/ios-app-start/"/>
+    <updated>2019-08-29T15:18:55+08:00</updated>
+    <id>https://lijingcheng.github.io/blog/2019/08/29/ios-app-start</id>
+    <content type="html"><![CDATA[<p>从点击 app 图标到看到首页内容就算是一次启动过程，在这个短则一两秒的过程中 app 要做的事情却有很多，本文主要介绍如何管理这些任务的执行方式和优先级问题。</p>
 
 <!-- more -->
 
 
+<p>下面列出 app 启动过程中会去执行的一些主要任务：</p>
 
+<ul>
+<li>设置 app UI 样式</li>
+<li>开启定位、埋点、网络状态、通知监听等服务</li>
+<li>初始化一些第三方服务</li>
+<li>如果是通过点击推送通知进入的 app 还会去存储相关数据用于在进入首页后跳转页面或弹框</li>
+<li>访问一些接口并处理返回结果</li>
+</ul>
+
+
+<p>上面列出的大部分任务都不需要我们主动去管理，只要在处理过程中注意不要影响启动速度就可以了，需要我们去管理的任务主要是对于一些接口返回数据的处理，像 <code>升级检查</code>、<code>换肤</code>、<code>弹窗广告</code> 这类接口在拿到返回数据后不能够马上处理，而是需要先保存数据然后等待首页展示出来后再做 UI 效果处理，并且这些任务通常还需要考虑优先级问题，例如当需要展示升级提示时就不应该再展示弹窗广告。</p>
+
+<p>我目前的处理方案是基于 RxSwift 响应式编程框架实现，每项任务都是可以被订阅的，订阅者可以监听任务状态并作出响应，每项任务的最初状态是<code>unknown</code>未知的，也就是接口还未返回数据时的状态，当接口返回数据后，再根据情况将状态改为<code>need</code>或<code>noneed</code>，也就是需要处理或不需要处理，我们可以让接口调用处只将关注点放在改变任务状态上，不同状态时该如何处理是由该任务的管理类决定，具体什么时候以及是否需要处理则是由该任务的订阅者去决定。</p>
+
+<p>下面以<code>检查升级</code>任务为主线看下具体代码实现，首先在 app 启动后发起异步接口调用，并根据返回数据修改任务状态，此时不用考虑 app 是否已经进入首页，以及如果弹框提示用户等功能</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="n">NetworkService</span><span class="p">.</span><span class="kr">get</span><span class="p">(</span><span class="s">&quot;xxx.api&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="nb">self</span><span class="p">]</span> <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="k">in</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">...</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">Task</span><span class="p">.</span><span class="n">shared</span><span class="p">.</span><span class="n">upgrade</span><span class="p">.</span><span class="n">accept</span><span class="p">(.</span><span class="n">need</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">Task</span><span class="p">.</span><span class="n">shared</span><span class="p">.</span><span class="n">upgrade</span><span class="p">.</span><span class="n">accept</span><span class="p">(.</span><span class="n">noneed</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当 app 进入首页后，会在 viewDidAppear 方法中发出 Notification 用来触发任务订阅管理功能</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="n">NotificationCenter</span><span class="p">.</span><span class="k">default</span><span class="p">.</span><span class="n">rx</span><span class="p">.</span><span class="n">notification</span><span class="p">(</span><span class="n">Notification</span><span class="p">.</span><span class="n">Name</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">appDidAppear</span><span class="p">).</span><span class="n">subscribe</span><span class="p">(</span><span class="nl">onNext</span><span class="p">:</span> <span class="p">{</span> <span class="n">notification</span> <span class="k">in</span>
+</span><span class='line'>    <span class="n">Task</span><span class="p">.</span><span class="n">shared</span><span class="p">.</span><span class="n">subscribe</span><span class="p">()</span>
+</span><span class='line'><span class="p">}).</span><span class="n">disposed</span><span class="p">(</span><span class="nl">by</span><span class="p">:</span> <span class="n">disposeBag</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后我们再来看下 Task 的具体实现，在下面例子中列出了七个需要处理的任务，其中<code>换肤</code>、<code>小红点</code>、<code>过期提醒</code>这三个任务是进入首页后就可以直接执行，不用考虑优先级问题，而<code>升级提示</code>、<code>切换城市</code>、<code>弹窗广告</code>、<code>推送跳转</code>这四个任务之间有优先级关系，需要特殊处理一下</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">struct</span> <span class="n">Task</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">static</span> <span class="k">let</span> <span class="n">shared</span> <span class="o">=</span> <span class="n">Task</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">private</span> <span class="k">init</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">enum</span> <span class="nl">Status</span><span class="p">:</span> <span class="n">Int</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">case</span> <span class="n">unknown</span><span class="p">,</span> <span class="n">need</span><span class="p">,</span> <span class="n">noneed</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// BehaviorRelay 类型的任务在被订阅后，订阅者会先收到最近一次的事件或初始事件</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">upgrade</span> <span class="o">=</span> <span class="n">BehaviorRelay</span><span class="p">(</span><span class="nl">value</span><span class="p">:</span> <span class="n">Status</span><span class="p">.</span><span class="n">unknown</span><span class="p">)</span> <span class="c1">// 升级弹框</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">switchCity</span> <span class="o">=</span> <span class="n">BehaviorRelay</span><span class="p">(</span><span class="nl">value</span><span class="p">:</span> <span class="n">Status</span><span class="p">.</span><span class="n">unknown</span><span class="p">)</span> <span class="c1">// 切换城市弹框</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">popAdvertise</span> <span class="o">=</span> <span class="n">BehaviorRelay</span><span class="p">(</span><span class="nl">value</span><span class="p">:</span> <span class="n">Status</span><span class="p">.</span><span class="n">unknown</span><span class="p">)</span> <span class="c1">// 弹窗广告</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">apns</span> <span class="o">=</span> <span class="n">BehaviorRelay</span><span class="p">(</span><span class="nl">value</span><span class="p">:</span> <span class="n">Status</span><span class="p">.</span><span class="n">unknown</span><span class="p">)</span> <span class="c1">// 推送跳转</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">skin</span> <span class="o">=</span> <span class="n">BehaviorRelay</span><span class="p">(</span><span class="nl">value</span><span class="p">:</span> <span class="n">Status</span><span class="p">.</span><span class="n">unknown</span><span class="p">)</span> <span class="c1">// 换肤</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">trackPoint</span> <span class="o">=</span> <span class="n">BehaviorRelay</span><span class="p">(</span><span class="nl">value</span><span class="p">:</span> <span class="n">Status</span><span class="p">.</span><span class="n">unknown</span><span class="p">)</span> <span class="c1">// 用于 tabBarItem 等地方的小红点提醒</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">remind</span> <span class="o">=</span> <span class="n">BehaviorRelay</span><span class="p">(</span><span class="nl">value</span><span class="p">:</span> <span class="n">Status</span><span class="p">.</span><span class="n">unknown</span><span class="p">)</span> <span class="c1">// 以气泡视图形式展示的过期提醒</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">private</span> <span class="k">let</span> <span class="n">disposeBag</span> <span class="o">=</span> <span class="n">DisposeBag</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">func</span> <span class="n">subscribe</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// 升级弹框的优先级最高，不管当前在干什么都会直接弹框</span>
+</span><span class='line'>        <span class="n">upgrade</span><span class="p">.</span><span class="n">subscribe</span><span class="p">(</span><span class="nl">onNext</span><span class="p">:</span> <span class="p">{</span> <span class="n">status</span> <span class="k">in</span>
+</span><span class='line'>            <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="p">.</span><span class="n">need</span> <span class="p">{</span>
+</span><span class='line'>                <span class="n">NotificationCenter</span><span class="p">.</span><span class="k">default</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="nl">name</span><span class="p">:</span> <span class="bp">NSNotification</span><span class="p">.</span><span class="n">Name</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">hidePopAdvertise</span><span class="p">,</span> <span class="nl">object</span><span class="p">:</span> <span class="nb">nil</span><span class="p">)</span>
+</span><span class='line'>                <span class="c1">// 取消切换城市等弹框，显示升级提示弹框</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}).</span><span class="n">disposed</span><span class="p">(</span><span class="nl">by</span><span class="p">:</span> <span class="n">disposeBag</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// 切换城市弹框优先级仅次于升级提示</span>
+</span><span class='line'>        <span class="n">switchCity</span><span class="p">.</span><span class="n">subscribe</span><span class="p">(</span><span class="nl">onNext</span><span class="p">:</span> <span class="p">{</span> <span class="n">status</span> <span class="k">in</span>
+</span><span class='line'>            <span class="n">guard</span> <span class="nb">self</span><span class="p">.</span><span class="n">upgrade</span><span class="p">.</span><span class="n">value</span> <span class="o">!=</span> <span class="p">.</span><span class="n">need</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>                <span class="k">return</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="p">.</span><span class="n">need</span> <span class="p">{</span>
+</span><span class='line'>                <span class="n">NotificationCenter</span><span class="p">.</span><span class="k">default</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="nl">name</span><span class="p">:</span> <span class="bp">NSNotification</span><span class="p">.</span><span class="n">Name</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">hidePopAdvertise</span><span class="p">,</span> <span class="nl">object</span><span class="p">:</span> <span class="nb">nil</span><span class="p">)</span>
+</span><span class='line'>                <span class="c1">// 显示切换城市弹框</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}).</span><span class="n">disposed</span><span class="p">(</span><span class="nl">by</span><span class="p">:</span> <span class="n">disposeBag</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// 弹窗广告优先级次于升级提示和切换城市</span>
+</span><span class='line'>        <span class="n">popAdvertise</span><span class="p">.</span><span class="n">subscribe</span><span class="p">(</span><span class="nl">onNext</span><span class="p">:</span> <span class="p">{</span> <span class="n">status</span> <span class="k">in</span>
+</span><span class='line'>            <span class="n">guard</span> <span class="nb">self</span><span class="p">.</span><span class="n">upgrade</span><span class="p">.</span><span class="n">value</span> <span class="o">!=</span> <span class="p">.</span><span class="n">need</span><span class="p">,</span> <span class="nb">self</span><span class="p">.</span><span class="n">switchCity</span><span class="p">.</span><span class="n">value</span> <span class="o">!=</span> <span class="p">.</span><span class="n">need</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>                <span class="k">return</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="p">.</span><span class="n">need</span> <span class="p">{</span>
+</span><span class='line'>                <span class="n">NotificationCenter</span><span class="p">.</span><span class="k">default</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="nl">name</span><span class="p">:</span> <span class="bp">NSNotification</span><span class="p">.</span><span class="n">Name</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">showPopAdvertise</span><span class="p">,</span> <span class="nl">object</span><span class="p">:</span> <span class="nb">nil</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}).</span><span class="n">disposed</span><span class="p">(</span><span class="nl">by</span><span class="p">:</span> <span class="n">disposeBag</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// 推送跳转优先级在这个例子里排最后</span>
+</span><span class='line'>        <span class="n">apns</span><span class="p">.</span><span class="n">subscribe</span><span class="p">(</span><span class="nl">onNext</span><span class="p">:</span> <span class="p">{</span> <span class="n">status</span> <span class="k">in</span>
+</span><span class='line'>            <span class="c1">// 当需要考虑优先级的任务非常多时，下面的 guard 语句就会显得比较难看，并且其他任务的处理方式也会变得复杂，所以目前实现方式更适用于中小项目</span>
+</span><span class='line'>            <span class="n">guard</span> <span class="nb">self</span><span class="p">.</span><span class="n">upgrade</span><span class="p">.</span><span class="n">value</span> <span class="o">!=</span> <span class="p">.</span><span class="n">need</span><span class="p">,</span> <span class="nb">self</span><span class="p">.</span><span class="n">switchCity</span><span class="p">.</span><span class="n">value</span> <span class="o">!=</span> <span class="p">.</span><span class="n">need</span><span class="p">,</span> <span class="nb">self</span><span class="p">.</span><span class="n">popAdvertise</span><span class="p">.</span><span class="n">value</span> <span class="o">!=</span> <span class="p">.</span><span class="n">need</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>                <span class="k">return</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="p">.</span><span class="n">need</span> <span class="p">{</span>
+</span><span class='line'>                <span class="n">NotificationCenter</span><span class="p">.</span><span class="k">default</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="nl">name</span><span class="p">:</span> <span class="bp">NSNotification</span><span class="p">.</span><span class="n">Name</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">apns</span><span class="p">,</span> <span class="nl">object</span><span class="p">:</span> <span class="nb">nil</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}).</span><span class="n">disposed</span><span class="p">(</span><span class="nl">by</span><span class="p">:</span> <span class="n">disposeBag</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// 需要换肤时直接通知相关服务</span>
+</span><span class='line'>        <span class="n">skin</span><span class="p">.</span><span class="n">subscribe</span><span class="p">(</span><span class="nl">onNext</span><span class="p">:</span> <span class="p">{</span> <span class="n">status</span> <span class="k">in</span>
+</span><span class='line'>            <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="p">.</span><span class="n">need</span> <span class="p">{</span>
+</span><span class='line'>                <span class="n">NotificationCenter</span><span class="p">.</span><span class="k">default</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="nl">name</span><span class="p">:</span> <span class="bp">NSNotification</span><span class="p">.</span><span class="n">Name</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">skin</span><span class="p">,</span> <span class="nl">object</span><span class="p">:</span> <span class="nb">nil</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}).</span><span class="n">disposed</span><span class="p">(</span><span class="nl">by</span><span class="p">:</span> <span class="n">disposeBag</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// 需要展示小红点提醒时直接通知相关服务</span>
+</span><span class='line'>        <span class="n">trackPoint</span><span class="p">.</span><span class="n">subscribe</span><span class="p">(</span><span class="nl">onNext</span><span class="p">:</span> <span class="p">{</span> <span class="n">status</span> <span class="k">in</span>
+</span><span class='line'>            <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="p">.</span><span class="n">need</span> <span class="p">{</span>
+</span><span class='line'>                <span class="n">NotificationCenter</span><span class="p">.</span><span class="k">default</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="nl">name</span><span class="p">:</span> <span class="bp">NSNotification</span><span class="p">.</span><span class="n">Name</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">trackPoint</span><span class="p">,</span> <span class="nl">object</span><span class="p">:</span> <span class="nb">nil</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}).</span><span class="n">disposed</span><span class="p">(</span><span class="nl">by</span><span class="p">:</span> <span class="n">disposeBag</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// 需要展示过期提醒时直接通知相关服务</span>
+</span><span class='line'>        <span class="n">remind</span><span class="p">.</span><span class="n">subscribe</span><span class="p">(</span><span class="nl">onNext</span><span class="p">:</span> <span class="p">{</span> <span class="n">status</span> <span class="k">in</span>
+</span><span class='line'>            <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="p">.</span><span class="n">need</span> <span class="p">{</span>
+</span><span class='line'>                <span class="n">NotificationCenter</span><span class="p">.</span><span class="k">default</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="nl">name</span><span class="p">:</span> <span class="bp">NSNotification</span><span class="p">.</span><span class="n">Name</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">remind</span><span class="p">,</span> <span class="nl">object</span><span class="p">:</span> <span class="nb">nil</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}).</span><span class="n">disposed</span><span class="p">(</span><span class="nl">by</span><span class="p">:</span> <span class="n">disposeBag</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面介绍的方案应该能够满足大部分 app 的需求，如果你的 app 在使用组件化的同时业务也超鸡儿复杂，有很多需要考虑优先级的任务，则需要另外考虑实现方案或者对上面方案进行扩展，比如在 Task 中增加一个队列，用于存储当前需要执行的所有任务，并且任务可根据设置的优先级调整其在队列中的顺序，并支持挂起、执行中、已完成等状态，就像 NSOperationQueue 那样。。。</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[如何做好技术管理]]></title>
-    <link href="http://lijingcheng.github.io/blog/2019/06/12/tech-manage/"/>
+    <link href="https://lijingcheng.github.io/blog/2019/06/12/tech-manage/"/>
     <updated>2019-06-12T19:18:55+08:00</updated>
-    <id>http://lijingcheng.github.io/blog/2019/06/12/tech-manage</id>
+    <id>https://lijingcheng.github.io/blog/2019/06/12/tech-manage</id>
     <content type="html"><![CDATA[<p>好的技术管理者应该是一名情商高、会沟通并且懂业务的技术人员，如果再懂一点管理，就能够胜任大部分工作。</p>
 
 <!-- more -->
@@ -85,9 +309,9 @@
   
   <entry>
     <title type="html"><![CDATA[了解一点互联网架构]]></title>
-    <link href="http://lijingcheng.github.io/blog/2019/04/12/app-kai-fa-xu-yao-liao-jie-de-hou-duan-zhi-shi/"/>
+    <link href="https://lijingcheng.github.io/blog/2019/04/12/app-kai-fa-xu-yao-liao-jie-de-hou-duan-zhi-shi/"/>
     <updated>2019-04-12T17:28:16+08:00</updated>
-    <id>http://lijingcheng.github.io/blog/2019/04/12/app-kai-fa-xu-yao-liao-jie-de-hou-duan-zhi-shi</id>
+    <id>https://lijingcheng.github.io/blog/2019/04/12/app-kai-fa-xu-yao-liao-jie-de-hou-duan-zhi-shi</id>
     <content type="html"><![CDATA[<p>早期互联网应用通常用户少、并发低、数据量也比较小，所以将应用程序、文件服务、数据库服务都集中部署在一台服务器上就能够满足需求，这种方式易于开发和部署，但它做不到高可用和高并发，当服务器出现故障或项目升级时需要停止服务。</p>
 
 <!-- more -->
@@ -103,25 +327,25 @@
 
 <p><strong> 下图为58架构师沈剑画的互联网应用分层架构图（侵删），将互联网架构分为以下几层：客户端层、反向代理层、Web应用层、服务层和数据层</strong></p>
 
-<p><img src="http://lijingcheng.github.io/images/backend.png" height="500" width="500" alt="" /></p>
+<p><img src="https://lijingcheng.github.io/images/backend.png" height="500" width="500" alt="" /></p>
 
 <h2>客户端层</h2>
 
 <p>客户端层的主体通常是浏览器、app 和小程序，它们的主要任务就是向用户展示数据并提供所需的数据交互功能，它会频繁的与Web应用层交换数据，在这过程中客户端会向 DNS 服务器发起域名解析请求，如果 DNS 服务器指向了某个 CDN 服务，则会将域名解析操作交给 CDN 中的 DNS 负载均衡系统处理，在识别出访问者是北京某联通用户后，会根据用户 IP 将离用户最近的联通机房中部署的反向代理服务集群中的某个服务器外网地址返回，该地址在被访问时会实施负载均衡策略并将请求转发给内网中Web应用集群中的某一台服务器。</p>
 
-<p><img src="http://lijingcheng.github.io/images/dns.png" height="500" width="500" alt="" /></p>
+<p><img src="https://lijingcheng.github.io/images/dns.png" height="500" width="500" alt="" /></p>
 
 <p><code>当系统遇到性能问题时，通常会对Web服务器做集群，然后通过反向代理去做负载均衡，当系统吞吐超过反向代理的性能极限并且难以扩容时，可以在 DNS 服务器上对同一个域名配置多个反向代理服务器 IP，然后每次 DNS 解析请求时通过轮询或其他方式返回不同 IP，从而达到负载均衡目的，大型网站通常会使用 DNS 来做一级负载均衡，然后再在内部做第二级负载均衡。</code></p>
 
 <p>一些访问量较高的网站、直播、视频平台都会利用 CDN 来解决不同地域不同网络访问静态资源的速度问题，当用户就近的缓存服务器没有相关资源时才会访问源服务器获取资源，并且根据策略决定是否更新缓存数据。</p>
 
-<p><img src="http://lijingcheng.github.io/images/cdn.png" height="500" width="500" alt="" /></p>
+<p><img src="https://lijingcheng.github.io/images/cdn.png" height="500" width="500" alt="" /></p>
 
 <h2>反向代理层</h2>
 
 <p>通常代理服务器是相对于用户来说的，它可以代替用户去获取网络信息，从而隐藏真实的客户端信息（VPN），而反向代理的目的是为了隐藏Web服务器，它以代理服务器的身份来接受网络连接请求，然后根据负载均衡策略将请求转发给内网上的某台服务器上，以解决系统面临大量用户访问时负载过高的问题，在转发过程中负载均衡技术能够提供服务器的失效检测功能，然后将用户请求转发到可用节点上，从而保证所有服务持续可用</p>
 
-<p><img src="http://lijingcheng.github.io/images/reverseproxy.jpg" height="500" width="500" alt="" /></p>
+<p><img src="https://lijingcheng.github.io/images/reverseproxy.jpg" height="500" width="500" alt="" /></p>
 
 <p>负载均衡技术包括 DNS 负载均衡、硬件负载均衡和软件负载均衡，其中硬件负载均衡是通过网络设备硬件来抗压力，虽然性能好但是太贵，很多公司负担不起，基于软件做的负载均衡只需要在正常服务器上部署软件即可，它还分为四层协议和七层协议两种：</p>
 
@@ -157,7 +381,7 @@
 </ul>
 
 
-<p> <img src="http://lijingcheng.github.io/images/boat.jpg" height="500" width="500" alt="" /></p>
+<p> <img src="https://lijingcheng.github.io/images/boat.jpg" height="500" width="500" alt="" /></p>
 
 <blockquote><p>熔断和隔离都属于问题后的容错处理机制，而服务降级和限流降级则是一种预防模式。</p></blockquote>
 
@@ -172,7 +396,7 @@
 </ul>
 
 
-<p><img src="http://lijingcheng.github.io/images/mq.jpg" height="500" width="500" alt="" /></p>
+<p><img src="https://lijingcheng.github.io/images/mq.jpg" height="500" width="500" alt="" /></p>
 
 <blockquote><p>当调用方需要关心执行结果时通常使用 RPC，不关心执行结果仍使用 RPC 调用会造成服务之间耦合以及响应速度慢等问题，这时比较适合使用消息队列，例如用户注册账户后的发送验证邮件问题，如果必须完成验证邮件中的提示操作才算完成注册则需要在注册操作后通过 RPC 来调用发邮件服务，否则应该使用消息队列。</p></blockquote>
 
@@ -184,7 +408,7 @@
 
 <p>大部分互联网业务都是读多写少，数据库的读操作往往会成为性能瓶颈，引入缓存层后如果用户在访问时能够命中缓存，便能够减小数据库的访问压力又可以提高访问速度，所以优化缓存命中率以及缓存与数据的一致性就变的很重要，一般可通过淘汰过期缓存以及命中率低的缓存数据来提高命中率。</p>
 
-<p><img src="http://lijingcheng.github.io/images/cache.jpeg" height="300" width="300" alt="" /></p>
+<p><img src="https://lijingcheng.github.io/images/cache.jpeg" height="300" width="300" alt="" /></p>
 
 <p>使用缓存还需要考虑当发生缓存穿透以及缓存雪崩时的处理办法，缓存穿透指的是对缓存中不存在的数据进行请求，该请求将会穿透缓存到达数据库，当相关流量非常大或有人故意攻击时会造成缓存雪崩，从而导致数据库无法处理这么大的请求而崩溃。</p>
 
@@ -192,7 +416,7 @@
 
 <p>系统在使用缓存后仍然会有一部分请求因缓存没命中而将读操作直接操作在数据库上，在数据库读写并发量高时，数据库便会因负载压力过大而影响性能，所以一般会将业务数据库做读写分离，即分为一个主库以及一个或多个从库，写请求访问主数据库，读请求访问从数据库，从而改善数据库负载压力，主数据库会通过主从复制机制将数据更新同步到从数据库。</p>
 
-<p><img src="http://lijingcheng.github.io/images/rw.jpg" height="500" width="500" alt="" /></p>
+<p><img src="https://lijingcheng.github.io/images/rw.jpg" height="500" width="500" alt="" /></p>
 
 <h3>分库分表</h3>
 
@@ -212,15 +436,15 @@
 
 <p><code>范围法对于数据库扩展性上较好，可以随时加一个 order_3 用来存储 2kw-3kw 的数据，缺点是负载不一定均衡，新订单所在的表被访问的频率会非常高，哈希法相对来说负载较均衡，使用较广泛</code></p>
 
-<p><img src="http://lijingcheng.github.io/images/fb.jpeg" height="500" width="500" alt="" /></p>
+<p><img src="https://lijingcheng.github.io/images/fb.jpeg" height="500" width="500" alt="" /></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[学习骑摩托〜]]></title>
-    <link href="http://lijingcheng.github.io/blog/2019/03/28/an-quan-xing-che-zhi-mo-tuo-che-pian/"/>
+    <link href="https://lijingcheng.github.io/blog/2019/03/28/an-quan-xing-che-zhi-mo-tuo-che-pian/"/>
     <updated>2019-03-28T15:02:12+08:00</updated>
-    <id>http://lijingcheng.github.io/blog/2019/03/28/an-quan-xing-che-zhi-mo-tuo-che-pian</id>
+    <id>https://lijingcheng.github.io/blog/2019/03/28/an-quan-xing-che-zhi-mo-tuo-che-pian</id>
     <content type="html"><![CDATA[<p>总结了一些骑车时需要注意的事情，也许能帮助到新手。</p>
 
 <!-- more -->
@@ -273,7 +497,7 @@
 <h3>行驶</h3>
 
 <ul>
-<li>注意横风，远离大车</li>
+<li>注意横风，远离大车，从大车边上超车时也要注意气流变化</li>
 <li>摩托车制动距离比汽车长，跟车时要加大距离，并且不要跟在前车的正后方，马路中间相对脏一些，例如机油、垃圾等，优先跟左后侧，可以降低左侧车强行并线概率</li>
 <li>在车道上行驶时要跟上汽车的速度，不要过快或过慢，并且要明白自己是弱势群体，不要和汽车较劲</li>
 <li>换线时一定要转头看一下，并且要注意其他汽车是否也要换线</li>
@@ -327,9 +551,9 @@
   
   <entry>
     <title type="html"><![CDATA[iOS 应用的开发设计]]></title>
-    <link href="http://lijingcheng.github.io/blog/2018/09/05/ios-appde-zu-jian-hua-she-ji/"/>
+    <link href="https://lijingcheng.github.io/blog/2018/09/05/ios-appde-zu-jian-hua-she-ji/"/>
     <updated>2018-09-05T18:40:19+08:00</updated>
-    <id>http://lijingcheng.github.io/blog/2018/09/05/ios-appde-zu-jian-hua-she-ji</id>
+    <id>https://lijingcheng.github.io/blog/2018/09/05/ios-appde-zu-jian-hua-she-ji</id>
     <content type="html"><![CDATA[<p>一个 app 从设计到发布应用商店会经历需求设计、UI设计、架构设计、开发、优化、测试等流程，每个环节做的好与坏都会影响到整个 app 的质量，作为开发人员，不仅要对需求以及 UI 的合理性进行评审，还要保证提供给测试的代码是经过自测并且覆盖了相关测试用例，更重要的是要做好架构设计、开发以及优化这三个环节。</p>
 
 <!-- more -->
@@ -720,9 +944,9 @@
   
   <entry>
     <title type="html"><![CDATA[安全行车注意事项]]></title>
-    <link href="http://lijingcheng.github.io/blog/2017/10/19/new-driver/"/>
+    <link href="https://lijingcheng.github.io/blog/2017/10/19/new-driver/"/>
     <updated>2017-10-19T20:04:50+08:00</updated>
-    <id>http://lijingcheng.github.io/blog/2017/10/19/new-driver</id>
+    <id>https://lijingcheng.github.io/blog/2017/10/19/new-driver</id>
     <content type="html"><![CDATA[<p>总结了一些开车时需要注意的事情，希望能帮助到刚拿到驾照的新司机。</p>
 
 <!-- more -->
@@ -799,9 +1023,9 @@
   
   <entry>
     <title type="html"><![CDATA[从 Objective-C 过渡到 Swift]]></title>
-    <link href="http://lijingcheng.github.io/blog/2017/03/17/swift-base/"/>
+    <link href="https://lijingcheng.github.io/blog/2017/03/17/swift-base/"/>
     <updated>2017-03-17T19:10:37+08:00</updated>
-    <id>http://lijingcheng.github.io/blog/2017/03/17/swift-base</id>
+    <id>https://lijingcheng.github.io/blog/2017/03/17/swift-base</id>
     <content type="html"><![CDATA[<p><strong>Swift - 不仅支持面向对象和面向协议开发，同时还支持函数式开发，在使用封装继承多态的同时，也可以用协议去组合代码，还可以利用高阶函数去简化代码、组织程序。</strong></p>
 
 <!-- more -->
@@ -2717,9 +2941,9 @@
   
   <entry>
     <title type="html"><![CDATA[使用 Carthage 做依赖管理]]></title>
-    <link href="http://lijingcheng.github.io/blog/2016/12/23/shi-yong-carthage-zuo-yi-lai-guan-li/"/>
+    <link href="https://lijingcheng.github.io/blog/2016/12/23/shi-yong-carthage-zuo-yi-lai-guan-li/"/>
     <updated>2016-12-23T19:18:47+08:00</updated>
-    <id>http://lijingcheng.github.io/blog/2016/12/23/shi-yong-carthage-zuo-yi-lai-guan-li</id>
+    <id>https://lijingcheng.github.io/blog/2016/12/23/shi-yong-carthage-zuo-yi-lai-guan-li</id>
     <content type="html"><![CDATA[<p><strong><a href="https://github.com/Carthage/Carthage">Carthage</a> - <em>A simple, decentralized dependency manager for Cocoa.</em></strong></p>
 
 <p>Carthage 会用最简单的方式来管理第三方库，它会在下载完第三方库代码后，通过 xcodebuild 将其编译成动态库，但它不会像 CocoaPods 那样去修改你的项目文件和编译设置，这些都需要你自己去完成。</p>
@@ -2844,9 +3068,9 @@
   
   <entry>
     <title type="html"><![CDATA[使用 Xcodebuild 打包 IPA 并上传蒲公英]]></title>
-    <link href="http://lijingcheng.github.io/blog/2016/12/05/tong-guo-xcodebuildda-bao-ipabing-shang-chuan-pu-gong-ying/"/>
+    <link href="https://lijingcheng.github.io/blog/2016/12/05/tong-guo-xcodebuildda-bao-ipabing-shang-chuan-pu-gong-ying/"/>
     <updated>2016-12-05T18:49:45+08:00</updated>
-    <id>http://lijingcheng.github.io/blog/2016/12/05/tong-guo-xcodebuildda-bao-ipabing-shang-chuan-pu-gong-ying</id>
+    <id>https://lijingcheng.github.io/blog/2016/12/05/tong-guo-xcodebuildda-bao-ipabing-shang-chuan-pu-gong-ying</id>
     <content type="html"><![CDATA[<p> xcodebuild - 是苹果提供的项目自动构建工具，包含在 Command Line Tools 中，可以完成 iOS 项目的编译、打包和签名等工作。</p>
 
 <p>shell script - 是一种命令语言，有点像 Windows 下的批处理，但更强大，它可以跑在 Linux/Unix 系统的 shell 程序中。</p>
@@ -3046,9 +3270,9 @@
   
   <entry>
     <title type="html"><![CDATA[iOS 开发 Tips]]></title>
-    <link href="http://lijingcheng.github.io/blog/2016/06/09/ioskai-fa-tips/"/>
+    <link href="https://lijingcheng.github.io/blog/2016/06/09/ioskai-fa-tips/"/>
     <updated>2016-06-09T10:58:59+08:00</updated>
-    <id>http://lijingcheng.github.io/blog/2016/06/09/ioskai-fa-tips</id>
+    <id>https://lijingcheng.github.io/blog/2016/06/09/ioskai-fa-tips</id>
     <content type="html"><![CDATA[<!-- more -->
 
 
@@ -3308,9 +3532,9 @@
   
   <entry>
     <title type="html"><![CDATA[代码重构及代码Review]]></title>
-    <link href="http://lijingcheng.github.io/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/"/>
+    <link href="https://lijingcheng.github.io/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu/"/>
     <updated>2016-05-09T10:50:10+08:00</updated>
-    <id>http://lijingcheng.github.io/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu</id>
+    <id>https://lijingcheng.github.io/blog/2016/05/09/man-chang-de-dai-ma-zhong-gou-zhi-lu</id>
     <content type="html"><![CDATA[<p><strong>代码重构 - <em>重构就是在不改变软件系统外部行为的前提下，改善它的内部结构。</em></strong></p>
 
 <p>Martin Flower 在《重构》中有一句经典的话："任何一个傻瓜都能写出计算机可以理解的程序，只有写出人类容易理解的程序才是优秀的程序员。"</p>
@@ -3402,6 +3626,7 @@
 <li>命名要做到“见名知意”，UI 控件的命名要能看出来是什么控件</li>
 <li>使用 xib 或 storyboard 画界面来降低代码量，UI 控件可通过纯代码实现</li>
 <li>尽量避免循环引用问题</li>
+<li>Model 中对应接口返回 Int 类型字段如果需要定义成枚举，需要注意接口返回未定义 case 的场景</li>
 <li>避免对可选类型强解包，可用 <code>if let foo = foo { ... }</code> 或可选链 <code>foo?.doSomething()</code></li>
 <li>尽早的退出方法，可提升代码的可读性，例：<code>guard xx else { return }</code>或<code>if xxx { return}</code></li>
 <li>定义 model 用 struct，值类型是线程安全的，并以栈的形式分配，速度上比 class 快</li>
@@ -3420,9 +3645,9 @@
   
   <entry>
     <title type="html"><![CDATA[了解 Block]]></title>
-    <link href="http://lijingcheng.github.io/blog/2015/12/03/liao-jie-block/"/>
+    <link href="https://lijingcheng.github.io/blog/2015/12/03/liao-jie-block/"/>
     <updated>2015-12-03T15:09:29+08:00</updated>
-    <id>http://lijingcheng.github.io/blog/2015/12/03/liao-jie-block</id>
+    <id>https://lijingcheng.github.io/blog/2015/12/03/liao-jie-block</id>
     <content type="html"><![CDATA[<p>Block 是 Apple 为 C、C++ 以及 Objective-C 添加的特性，使得这些语言可以用类 lambda 表达式的语法来创建闭包。在适当的时候使用 block 替代 delegation 可以使代码看起来更紧凑，但也需要注意 block 带来的循环引用问题。</p>
 
 <!-- more -->
@@ -3576,9 +3801,9 @@
   
   <entry>
     <title type="html"><![CDATA[Objective-C Runtime 开发]]></title>
-    <link href="http://lijingcheng.github.io/blog/2015/09/21/objective-c-runtimekai-fa/"/>
+    <link href="https://lijingcheng.github.io/blog/2015/09/21/objective-c-runtimekai-fa/"/>
     <updated>2015-09-21T14:30:27+08:00</updated>
-    <id>http://lijingcheng.github.io/blog/2015/09/21/objective-c-runtimekai-fa</id>
+    <id>https://lijingcheng.github.io/blog/2015/09/21/objective-c-runtimekai-fa</id>
     <content type="html"><![CDATA[<p><strong>Runtime - 使用 C 和汇编实现的运行时代码库，Objective-C 中有很多语言特性都是通过它来实现。</strong></p>
 
 <p>了解 Runtime 开发可以帮助我们更灵活的使用 Objective-C 这门语言，我们可以将程序功能推迟到运行时再去决定怎么做，还可以利用 Runtime 来解决项目开发中的一些设计和技术问题，使开发过程更加具有灵活性。</p>
@@ -3599,7 +3824,7 @@
 </ul>
 
 
-<p><img src="http://lijingcheng.github.io/images/runtime_class.jpeg" height="500" width="500" alt="" /></p>
+<p><img src="https://lijingcheng.github.io/images/runtime_class.jpeg" height="500" width="500" alt="" /></p>
 
 <h1>消息传递 (Messaging)</h1>
 
@@ -3938,9 +4163,9 @@
   
   <entry>
     <title type="html"><![CDATA[iOS 内存管理]]></title>
-    <link href="http://lijingcheng.github.io/blog/2015/07/12/iosnei-cun-guan-li/"/>
+    <link href="https://lijingcheng.github.io/blog/2015/07/12/iosnei-cun-guan-li/"/>
     <updated>2015-07-12T15:07:54+08:00</updated>
-    <id>http://lijingcheng.github.io/blog/2015/07/12/iosnei-cun-guan-li</id>
+    <id>https://lijingcheng.github.io/blog/2015/07/12/iosnei-cun-guan-li</id>
     <content type="html"><![CDATA[<p><strong>内存管理 - 指程序在运行时申请内存，并在使用完后释放内存的过程</strong></p>
 
 <p>内存管理不当造成的主要问题便是内存泄漏和过度释放，虽然 ARC 使我们可以不去关注内存管理上的一些细节问题，但掌握一些相关知识还是很有必要的。</p>
@@ -4053,7 +4278,7 @@
 </ul>
 
 
-<p><img src="http://lijingcheng.github.io/images/retaincount.jpeg" height="600" width="600" alt="" /></p>
+<p><img src="https://lijingcheng.github.io/images/retaincount.jpeg" height="600" width="600" alt="" /></p>
 
 <h1>属性修饰符</h1>
 
@@ -4361,7 +4586,7 @@
 
 <p>通过下面这张图可以更好的理解这些细节</p>
 
-<p><img src="http://lijingcheng.github.io/images/autorelease_pool.jpeg" height="600" width="600" alt="" /></p>
+<p><img src="https://lijingcheng.github.io/images/autorelease_pool.jpeg" height="600" width="600" alt="" /></p>
 
 <h2>Swift 中的内存管理</h2>
 
@@ -4495,9 +4720,9 @@
   
   <entry>
     <title type="html"><![CDATA[iOS 多线程开发]]></title>
-    <link href="http://lijingcheng.github.io/blog/2015/06/03/iosduo-xian-cheng-kai-fa/"/>
+    <link href="https://lijingcheng.github.io/blog/2015/06/03/iosduo-xian-cheng-kai-fa/"/>
     <updated>2015-06-03T15:07:00+08:00</updated>
-    <id>http://lijingcheng.github.io/blog/2015/06/03/iosduo-xian-cheng-kai-fa</id>
+    <id>https://lijingcheng.github.io/blog/2015/06/03/iosduo-xian-cheng-kai-fa</id>
     <content type="html"><![CDATA[<p><strong>多线程 - <em>合理的线程分配能够提高程序的执行效率和资源利用率。</em></strong></p>
 
 <p>GCD 基于 C API，Operation Queue 是在 GCD 基础上实现的，效率上较 GCD 会差一点点，但代码可读性和易用性较高，简单的任务可用 GCD 去实现，复杂一些的还是推荐使用 Operation Queue 来处理。微小的性能提升远不如写出可维护性高的代码来的实在。</p>
@@ -5218,9 +5443,9 @@
   
   <entry>
     <title type="html"><![CDATA[iOS 应用的生命周期]]></title>
-    <link href="http://lijingcheng.github.io/blog/2015/03/28/iosying-yong-de-sheng-ming-zhou-qi/"/>
+    <link href="https://lijingcheng.github.io/blog/2015/03/28/iosying-yong-de-sheng-ming-zhou-qi/"/>
     <updated>2015-03-28T11:23:29+08:00</updated>
-    <id>http://lijingcheng.github.io/blog/2015/03/28/iosying-yong-de-sheng-ming-zhou-qi</id>
+    <id>https://lijingcheng.github.io/blog/2015/03/28/iosying-yong-de-sheng-ming-zhou-qi</id>
     <content type="html"><![CDATA[<p><strong>生命周期 - 程序的生命周期是指应用程序从启动到结束整个阶段的全过程.</strong></p>
 
 <p>点击应用图标打开程序，系统会首先通过 main 函数进行相关设置，然后通过 RunLoop 保持程序能够始终运行并监听处理分发事件，当没有事件发生时 RunLoop 便处于睡眠状态，节省资源。当发生事件后，RunLoop 将事件对象分发给相应视图处理。当用户按下 Home 键，应用会在进入后台后短暂运行，直到被系统挂起。</p>
@@ -5441,9 +5666,9 @@
   
   <entry>
     <title type="html"><![CDATA[在 Git 环境下维护多个 SSH Keys]]></title>
-    <link href="http://lijingcheng.github.io/blog/2015/03/01/zai-githuan-jing-xia-wei-hu-duo-ge-ssh-keys/"/>
+    <link href="https://lijingcheng.github.io/blog/2015/03/01/zai-githuan-jing-xia-wei-hu-duo-ge-ssh-keys/"/>
     <updated>2015-03-01T18:11:42+08:00</updated>
-    <id>http://lijingcheng.github.io/blog/2015/03/01/zai-githuan-jing-xia-wei-hu-duo-ge-ssh-keys</id>
+    <id>https://lijingcheng.github.io/blog/2015/03/01/zai-githuan-jing-xia-wei-hu-duo-ge-ssh-keys</id>
     <content type="html"><![CDATA[<p>SSH Key - 通过 SSH 密钥登录服务器，可以避免密码在网络中传输，也就保证了登录过程的安全，也不会因此受到中间人攻击，如果在 SSH 密钥登录基础上再加上密码短语 （passphrase）的使用，安全性便会再次提高。</p>
 
 <!-- more -->
@@ -5505,9 +5730,9 @@
   
   <entry>
     <title type="html"><![CDATA[使用 CocoaPods 做依赖管理]]></title>
-    <link href="http://lijingcheng.github.io/blog/2015/02/11/yong-cocoapodswei-iosxiang-mu-zuo-yi-lai-guan-li/"/>
+    <link href="https://lijingcheng.github.io/blog/2015/02/11/yong-cocoapodswei-iosxiang-mu-zuo-yi-lai-guan-li/"/>
     <updated>2015-02-11T15:10:58+08:00</updated>
-    <id>http://lijingcheng.github.io/blog/2015/02/11/yong-cocoapodswei-iosxiang-mu-zuo-yi-lai-guan-li</id>
+    <id>https://lijingcheng.github.io/blog/2015/02/11/yong-cocoapodswei-iosxiang-mu-zuo-yi-lai-guan-li</id>
     <content type="html"><![CDATA[<p><strong><a href="http://www.cocoapods.org">CocoaPods</a> - <em>Get on with building your app, not duplicating code.</em></strong></p>
 
 <p>可以为 Cocoa 和 Swift 项目使用的第三方类库和我们自己的私有类库提供依赖管理，我们只需要告诉它要使用的类库名称和版本，然后再执行一条命令，它就会自动将这个类库的源码从 GitHub 上下载到本地，并且为工程设置好相应的系统依赖和编译项。使用 CocoaPods 可以大大节省我们在设置和更新类库时所花的时间。</p>
@@ -5785,9 +6010,9 @@
   
   <entry>
     <title type="html"><![CDATA[GitHub Pages + Octopress 搭博客]]></title>
-    <link href="http://lijingcheng.github.io/blog/2015/01/04/zai-macxia-tong-guo-github-pages-plus-octopressda-jian-bo-ke/"/>
+    <link href="https://lijingcheng.github.io/blog/2015/01/04/zai-macxia-tong-guo-github-pages-plus-octopressda-jian-bo-ke/"/>
     <updated>2015-01-04T14:51:02+08:00</updated>
-    <id>http://lijingcheng.github.io/blog/2015/01/04/zai-macxia-tong-guo-github-pages-plus-octopressda-jian-bo-ke</id>
+    <id>https://lijingcheng.github.io/blog/2015/01/04/zai-macxia-tong-guo-github-pages-plus-octopressda-jian-bo-ke</id>
     <content type="html"><![CDATA[<p><strong><a href="https://pages.github.com">Github Pages</a> - <em>Websites for you and your projects.</em></strong> <br/>
 可用来搭建静态网站，提供免费域名、空间、无限流量，并且在世界各地都有较好的访问速度。不过网站也会轻易被人 clone，如果在意的话可以付费给 GitHub 从而使用私有库。
 <br/><br/>
