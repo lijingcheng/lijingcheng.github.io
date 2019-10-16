@@ -4,7 +4,7 @@
   <title><![CDATA[风行的博客]]></title>
   <link href="https://lijingcheng.github.io/atom.xml" rel="self"/>
   <link href="https://lijingcheng.github.io/"/>
-  <updated>2019-10-16T16:29:43+08:00</updated>
+  <updated>2019-10-16T17:36:49+08:00</updated>
   <id>https://lijingcheng.github.io/</id>
   <author>
     <name><![CDATA[风行]]></name>
@@ -4738,8 +4738,8 @@
 <li>进程和线程
 
 <ul>
-<li>进程是一个可执行程序，至少有一个线程，也可以包含多个线程</li>
-<li>线程是执行程序最基本的单元，在进程中负责执行任务，每个进程至少有一个线程（主线程）</li>
+<li>进程是一个可执行程序，它拥有自己的地址空间，至少有一个线程，也可以包含多个线程，进程内的线程对于其他进程不可见</li>
+<li>线程是执行程序最基本的单元，在进程中负责执行任务并使用进程的地址空间，每个进程至少有一个线程（主线程）</li>
 </ul>
 </li>
 <li>主线程和子线程
