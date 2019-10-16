@@ -4,7 +4,7 @@
   <title><![CDATA[风行的博客]]></title>
   <link href="https://lijingcheng.github.io/atom.xml" rel="self"/>
   <link href="https://lijingcheng.github.io/"/>
-  <updated>2019-08-29T17:56:57+08:00</updated>
+  <updated>2019-10-16T16:11:01+08:00</updated>
   <id>https://lijingcheng.github.io/</id>
   <author>
     <name><![CDATA[风行]]></name>
@@ -3599,16 +3599,18 @@
 
 <h1>代码 Review</h1>
 
-<p>对于代码质量更多时候还是需要通过持续的代码 Review 来保证，需要做到以下几点：</p>
+<p>有效并持续的 Code Review 不仅可以提高代码质量，降低程序风险，还可以提高开发人员技术水平，但前提是需要开发人员能够真正认可并意识到这并不是在浪费时间，而且在实施前最好能够得到公司认可，并能够将 Code Review 的时间计入工作量，下面列出几条需要注意的地方：</p>
 
 <ul>
 <li><p>要有一个 CheckList，对一些代码问题进行定义，要求开发人员以此为准</p></li>
 <li><p>对于代码规范上的问题应该通过自动 Review 工具去做，如 OCLint/SwiftLint</p></li>
-<li><p>对于代码逻辑及性能上的问题可通过 pull/merge request 方式去做</p></li>
+<li><p>对于代码逻辑及性能上的问题可通过 Pull Request 方式去做</p></li>
+<li><p>审查要及时，打回时被审查者要尽量优先修改问题然后再次提交</p></li>
+<li><p>Review 过程中不要太关注代码细节，并且不要过度主观，例如同一功能可用多种方式实现并且它们之间没有明显好坏的情况下不用要求别人修改代码</p></li>
+<li><p>按功能提交代码，不要攒一堆然后一次提交</p></li>
+<li><p>提交描述要写清楚，并且加上前辍，如 fix: fea:</p></li>
 </ul>
 
-
-<p>Review 的目的不仅是要保证代码质量，提高团队开发人员技术水平也是一个重要目的。</p>
 
 <h1>CheckList</h1>
 
