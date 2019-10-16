@@ -640,6 +640,41 @@
 
 <p></p>
 
+<p>dispatch_barrier_async 能够高效的解决属性的同步问题（get 方法可以并发执行，但是 set 方法只能同步执行并且在执行过程中 get 方法不能同时执行）</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">_syncQueue</span> <span class="o">=</span> <span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_DEFAULT</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">userName</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">__weak</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">localUserName</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">dispatch_sync</span><span class="p">(</span><span class="n">_syncQueue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">localUserName</span> <span class="o">=</span> <span class="n">_userName</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">localUserName</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setUserName:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">userName</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">dispatch_barrier_async</span><span class="p">(</span><span class="n">_syncQueue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">_userName</span> <span class="o">=</span> <span class="n">userName</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
 <ul>
 <li>利用 dispatch_semaphore_t 信号量限制任务并发数，dispatch_semaphore_wait 函数会消耗一次这个可用数，如果可用数已满则开始等待，dispatch_semaphore_signal 函数每次执行都会将该可用计数加 1，以此来表明已经释放了资源，如果此刻有因为等待可用资源而被阻塞的任务，系统会从等待的队列中解锁一个任务来执行。</li>
 </ul>
