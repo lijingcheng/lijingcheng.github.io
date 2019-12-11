@@ -78,20 +78,20 @@
 
 
 <div class="entry-content"><p><strong><a href="https://pages.github.com">Github Pages</a> - <em>Websites for you and your projects.</em></strong> <br/>
-可用来搭建静态网站，提供免费域名、空间、无限流量，并且在世界各地都有较好的访问速度。不过网站也会轻易被人 clone，如果在意的话可以付费给 GitHub 从而使用私有库。
-<br/><br/>
-<strong><a href="http://octopress.org">Octopress</a> - <em>A blogging framework for hackers.</em></strong><br/>
-开源的静态博客系统，可用来为我们的静态网站提供所需的 HTML。</p>
+可用来搭建静态网站，提供免费域名、空间、无限流量，并且在世界各地都有较好的访问速度。不过网站也会轻易被人 clone，如果在意的话可以付费给 GitHub 从而使用私有库。</p>
 
 <!-- more -->
 
+
+<p><strong><a href="http://octopress.org">Octopress</a> - <em>A blogging framework for hackers.</em></strong><br/>
+开源的静态博客系统，可用来为我们的静态网站提供所需的 HTML。</p>
 
 <h1>准备工作</h1>
 
 <ul>
 <li>需要有 Git 环境，最好为 GitHub 另外维护一个 SSH Key</li>
 <li>在 GitHub 上新建名为 yourname.github.io 的版本库，之后可通过 yourname.github.io 域名来访问博客，如果你有自己的域名，可通过配置 Octopress 的 CNAME 文件进行关联</li>
-<li>需要有 1.9.3 及以上版本的 ruby 环境。(通过 ruby &ndash;version 查看，如需升级可用 rvm 或 rbenv)</li>
+<li>需要有 1.9.3 及以上版本的 ruby 环境。(尽量使用 rvm 管理 ruby 并设置当前使用的版本，可避免因权限导致的 gem install 失败问题)</li>
 <li>更改 ruby 的源，可提高下载速度</li>
 </ul>
 
@@ -105,8 +105,6 @@
 
 
 <p></p>
-
-<p><br/></p>
 
 <h1>Octopress 环境搭建</h1>
 
@@ -126,9 +124,7 @@
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo gem install bundler 
-</span><span class='line'>rbenv rehash 
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo gem install bundler
 </span><span class='line'>bundle install</span></code></pre></td></tr></table></div></figure>
 
 
@@ -156,8 +152,6 @@
 <li>配置 <a href="http://octopress.org/docs/configuring">Octopress</a>，建议同时删除 HTML 和 CSS 中用不到的东西，可提高访问速度</li>
 </ul>
 
-
-<p><br/></p>
 
 <h1>写博客并发布</h1>
 
@@ -197,8 +191,6 @@
 </pre></td><td class='code'><pre><code class=''><span class='line'>rake deploy</span></code></pre></td></tr></table></div></figure>
 
 
-<blockquote><p>如果提交失败，提示让先 pull 文件，但是本地文件已经是最新的，可按下面方式解决：进入 _deploy 目录，执行 git reset –hard origin/master 将本地状态回退到和远程一样，然后回到根目录下重新 generate 并 deploy。</p></blockquote>
-
 <ul>
 <li>将 Octopress 修改过的 markdown 等资源文件提交到 source 分支</li>
 </ul>
@@ -211,8 +203,6 @@
 </span><span class='line'>git commit -m ‘your commit message’
 </span><span class='line'>git push origin source</span></code></pre></td></tr></table></div></figure>
 
-
-<p><br></p>
 
 <h2>如果更换了电脑或希望多台电脑能够写博客</h2>
 
@@ -300,6 +290,10 @@
   <ul id="最新">
     
       <li class="post">
+        <a href="/blog/2019/12/05/design_patterns/">iOS 开发中的设计模式</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2019/08/29/ios-app-start/">iOS 应用的启动任务设计</a>
       </li>
     
@@ -313,10 +307,6 @@
     
       <li class="post">
         <a href="/blog/2019/03/28/an-quan-xing-che-zhi-mo-tuo-che-pian/">学习骑摩托〜</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2018/09/05/ios-appde-zu-jian-hua-she-ji/">iOS 应用的开发设计</a>
       </li>
     
   </ul>

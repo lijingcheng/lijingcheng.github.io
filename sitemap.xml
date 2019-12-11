@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>https://lijingcheng.github.io/blog/2019/12/05/design_patterns/</loc>
+<lastmod>2019-12-05T19:18:55+08:00</lastmod>
+</url>
+<url>
 <loc>https://lijingcheng.github.io/blog/2019/08/29/ios-app-start/</loc>
 <lastmod>2019-08-29T15:18:55+08:00</lastmod>
 </url>
