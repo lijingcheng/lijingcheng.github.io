@@ -96,7 +96,9 @@ jobs:
   build-deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@master
+      with:
+        submodules: true
 
     - name: Setup Hugo
       uses: peaceiris/actions-hugo@v2.3.1
