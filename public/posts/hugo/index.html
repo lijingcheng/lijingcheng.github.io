@@ -115,7 +115,34 @@ paginate = 10
 <p>将要发布的文章内的 draft 改为 false 后就可以生成静态页面了</p>
 <pre><code>hugo
 </code></pre><p>使用 GitHub Actions 将生成的静态页面发布到 Github Pages，GitHub Actions 是 GitHub 推出的持续集成服务，使用起来非常简单，首先在 GitHub 网站中打开项目首页，然后在 Actions 中设置好 ACCESS_TOKEN，然后再把写好的角本放到仓库根目录下的 .github/workflow/deploy.yml 文件中就可以了，甚至连角本都可以直接使用别人写好的。</p>
-<pre><code>
+<pre><code>name: github pages
+
+# 当 master 分支发生 push 事件时执行下面任务
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Setup Hugo
+      uses: peaceiris/actions-hugo@v2
+      with:
+        hugo-version: '0.61.0' 
+
+    - name: Build
+      run: hugo --minify
+
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v2
+      env:
+        ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        PUBLISH_BRANCH: gh-pages
+        PUBLISH_DIR: ./public
 </code></pre>
     </div>
     <div class="post-footer">
