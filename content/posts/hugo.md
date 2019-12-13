@@ -81,7 +81,7 @@ hugo server -D
 hugo
 ```
 
-使用 GitHub Actions 将生成的静态页面发布到 Github Pages，GitHub Actions 是 GitHub 推出的持续集成服务，使用起来非常简单，首先在 GitHub 网站中打开项目首页，然后在 Actions 中设置好 ACCESS_TOKEN，然后再把写好的角本放到仓库根目录下的 .github/workflow/deploy.yml 文件中就可以了，甚至连角本都可以直接使用别人写好的。
+使用 GitHub Actions 将生成的静态页面发布到 Github Pages，GitHub Actions 是 GitHub 推出的持续集成服务，使用起来非常简单，首先在 GitHub 网站中打开项目首页，然后在 Actions 中设置好 ACCESS_TOKEN，然后再把写好的角本放到仓库根目录下的 .github/workflow/deploy.yml 文件中就可以了，甚至连角本都可以直接使用别人写好的。 
 
 ```
 name: github pages
