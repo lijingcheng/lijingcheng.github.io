@@ -114,7 +114,7 @@ paginate = 10
 </code></pre><p>通过 <a href="http://localhost:1313">http://localhost:1313</a> 查看</p>
 <p>将要发布的文章内的 draft 改为 false 后就可以生成静态页面了</p>
 <pre><code>hugo
-</code></pre><p>使用 GitHub Actions 将生成的静态页面发布到 Github Pages，GitHub Actions 是 GitHub 推出的持续集成服务，使用起来非常简单，首先在 GitHub 网站中打开项目首页，然后在 Actions 中设置好 ACCESS_TOKEN，然后再把写好的角本放到仓库根目录下的 .github/workflow/deploy.yml 文件中就可以了，甚至连角本都可以直接使用别人写好的。</p>
+</code></pre><p>使用 GitHub Actions 将生成的静态页面发布到 Github Pages，GitHub Actions 是 GitHub 推出的持续集成服务，使用起来非常简单，首先在 GitHub 网站中打开项目首页，然后在 Actions 中设置 ACCESS_TOKEN，然后再把写好的角本放到仓库根目录下的 .github/workflow/deploy.yml 文件中就可以了，甚至连角本都可以直接使用别人写好的。</p>
 <pre><code>name: github pages
 
 # 当 master 分支发生 push 事件时执行下面任务
