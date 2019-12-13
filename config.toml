@@ -1,0 +1,16 @@
+baseURL = "https://lijingcheng.github.io"
+languageCode = "zh-cn"
+title = "风行's Blog"
+theme = "m10c"
+paginate = 10
+
+[params]
+  author = "风行"
+  avatar = "images/avatar.png"
+  description = "一直在学习的大龄程序员"
+  [[params.social]]
+    name = "github"
+    url = "https://github.com/lijingcheng"
+  [[params.social]]
+    name = "instagram"
+    url = "https://www.instagram.com/bj_lijingcheng/"

@@ -1,0 +1,17 @@
+name: GitHub Pages
+
+# 当 source 分支发生 push 事件时执行下面任务
+on:
+  push:
+    branches:
+      - source
+
+jobs:
+  deploy-hugo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: start
+        run: echo start deploy-hugo
+
+      - name: end
+        run: echo end deploy-hugo

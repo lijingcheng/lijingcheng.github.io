@@ -1,0 +1,259 @@
+---
+title: "iOS 应用的开发设计"
+date: 2018-09-05 18:40:19 +0800
+draft: false
+---
+
+一个 app 从设计到发布应用商店会经历需求设计、UI设计、架构设计、开发、优化、测试等流程，每个环节做的好与坏都会影响到整个 app 的质量，作为开发人员，不仅要对需求以及 UI 的合理性进行评审，还要保证提供给测试的代码是经过自测并且覆盖了相关测试用例，更重要的是要做好架构设计、开发以及优化这三个环节。
+
+# 架构设计
+架构设计可以以业务为驱动，按照最适合自己的方式去设计，设计思路和方法尽量统一，同类型问题用同样方式去解决，下面几点是我认为比较重要的：
+
+- 关注分离  
+将系统分解为多个模块并各司其职，纵向分层，横向拆分业务。
+
+- 高内聚  
+一个模块只完成一个功能，并合理有度的进行封装。
+
+- 松耦合  
+依赖关系越少越好，尽量不横向依赖，不跨层访问。继承是紧耦合的一种操作，它通常与多态一起存在，如果仅仅是为了代码重用而做的继承还不如用组合。
+
+- 适度设计  
+对业务方该限制的地方要进行限制，该灵活的地方也要给业务方创造灵活实现的条件，架构的设计要保持一定量的超前性而做到易扩展，但不要设计过度，避免多做无用功而增加框架复杂度。好的架构是随着时间而更新的，而不是一开始就设计好了一切。
+
+- 技术选型  
+不要仅是为了体验新技术而改变现有架构，等别人把坑踩平后再根据团队及业务情况考虑是否使用，技术本身没有什么好不好，只有适合不适合。
+
+框架是服务开发人员的，需要满足通用性和易用性两个要求，其中易用性更重要
+
+# 开发
+## MVVM
+MVVM 相对 MVC 来说最大的优点是，ViewModel 是独立的，可复用到别的模块，并且更易于做单元测试，而 View 和 ViewController 仅用来做 UI 展示，它与 ViewModel 之间是相互影响的，ViewModel 处理过的数据要能够及时响应到 View，而用户在 View 中做了修改数据的操作后，ViewModel 中对应的数据也应该及时更新，响应式编程方式能够更容易的处理这个过程
+
+## 响应式编程
+响应式编程是一种面向数据及其变化响应的编程方式，它能够将数据、UI事件和异步操作更方便的进行序列化处理，相比传统编程方式来说，它可以使逻辑相关的代码能够紧凑的聚在一起，它通过信号机制来实现，用信号来记录值的变化，并通过信号绑定的方式来响应变化，下面这个例子很好的描述了响应式编程的作用
+
+```objc
+a = 2 // signal
+b = 2 // signal
+c = a + b // signal binding c = 4 
+b = 3 // c = 5
+```
+
+目前我们在 Swift 项目中选择使用 RxSwift + MVVM 的方式进行开发，使用 RxSwift 需要掌握以下几个概念：
+
+- Observable（被观察者）：相当于一个事件序列，它会主动向订阅者发送新产生的事件内容，包括 onNext、onError、onCompleted()
+- Subscribe（订阅者）：订阅后便可以根据事件产生的数据进行操作
+- Scheduler（调度器）：可分别通过 subscribeOn 和 observeOn 指定 Observable 或 Subscribe 在哪个线程上执行，默认是当前线程。
+- Operator（[操作符](https://beeth0ven.github.io/RxSwift-Chinese-Documentation/content/decision_tree.html)）：RxSwift 提供了很多操作符，合理运用便会极大提高开发效率
+- Subject：既可以作为 Observable 发送事件也可以作为 Subscribe 监听事件，它包括以下几种：
+    - PublishSubject：订阅者只会接收到订阅操作之后的事件，也就是所说的热信号。
+    - ReplaySubject：订阅者会接受到订阅之前的事件（可根据 bufferSize 指定数量）以及订阅之后的事件，类似于冷信号。
+    - BehaviorSubject：订阅之后首先会接收到最近一次发送的事件，如果最近没有发送，那么发送一个初始事件。
+    - AsyncSubject：订阅者只有在 Observable 发送 onCompleted() 时才能够收到它之前发送的最后一个事件，即使是在这之后的新订阅者也能够收到。
+
+## 跨平台开发
+跨平台开发的方式很多，做技术选型时要根据业务及团队情况去选择
+
+### Hybrid（H5 + Native）
+使用 WebView 承载 H5 页面并通过 JSBridge 实现交互，性能略差，可通过预下载资源等方式进行优化。
+
+### Reatct Native
+RN 中虚拟 DOM 会通过 JavaScriptCore 映射为原生控件，性能比 H5 高一些，但由于渲染时需要 JS 和Native 通信，在有些场景（拖动）可能会因为通信频繁导致卡顿，可以通过延迟渲染方式解决，但更重要的问题是维护成本大。
+
+### Flutter
+Flutter 使用 Skia 2D 渲染引擎来绘制 UI，采用 Dart 语言开发，Dart 是类型安全的语言，比 JS 运行速度快也更安全一些，它支持 AOT(Ahead of time 提前编译) 和 JIT(Just-in-time 即时编译) 两种运行方式，在开发阶段采用 JIT 来实现热重载，在发布时采用 AOT 来生成高效的 ARM 代码以保证应用性能，所以 Flutter 应用发布后不能像 Hybrid 和 RN 那些使用 JS 作为开发语言的框架去动态下发代码。
+
+### SwiftUI
+SwiftUI 使用 DSL 声明式 UI、跨自家平台、Xcode 通过单独编译我们当前操作的视图文件，利用 Swift dynamic repacement 特性将更新内容注入到正在运行的程序中来实现热重载。
+
+## 组件化开发
+随着 app 功能和体积的增长，也带来了一些问题
+
+- 编译速度缓慢
+- commit 代码经常要 merge
+- 业务代码混在一起、开发功能类似的新项目时需要从头搭建
+
+### 拆分组件  
+组件即功能组件，模块即业务模块，拆分时要把握好粒度，要考虑到维护成本
+  
+- 每个组件对应一个 project，身为组件的同时还能够独立运行和打测试包
+- 大点的项目除了按框架分层拆分还可以按业务模块拆分，需要把握好拆分粒度
+- 小项目按框架分层拆分就可以了
+
+### 组件之间的依赖关系  
+- 业务模块依赖于框架
+- 业务模块之间避免横向依赖（可适当的有些重复代码或存放重复资源）
+- 禁止框架依赖业务模块
+
+### 组件化实施  
+通过 CocoaPods 来实现组件化
+
+- Podfile：定义私有库地址和需要依赖的组件及版本
+- Podspec：定义组件的依赖库、编译设置、以及需要打包的资源及代码，资源包括 xib、国际化文件、assets 等
+
+### 组件中的资源访问
+访问 image、xib、storyboard 时需要指定 bundle，如果项目中使用了 R.swift，可以在各组件中通过以下角本来修改 R.generated.swift 中设置的 bundle，修改后在组件中使用 R.image.xxx()，此代码在组件中是指 main bundle，在主工程中会将其认定为 core bundle。
+
+```shell
+$PODS_ROOT/R.swift/rswift" generate "$SRCROOT" --accessLevel public
+sed -i '' -e "s/Bundle(for: R.Class.self)/Bundle.core/g" “$SRCROOT/
+```
+
+还需要在各组件中正确使用 open、public、private
+
+### 组件之间的路由跳转
+网上有很多关于这方面的文章，我们使用的是一种较简单比较适合我们的方式：Router.open 跳转方法需要传入几个比较重要的参数：name、storyboard、bundle，如果要打开的 ViewController 是通过代码或 xib 实现的，需要在这里指定 name，然后会通过 viewControllerWithClassName 方法得到 VC 对象，如果 ViewController 是定义在 storyboard 里的，那么在跳转时需要指定 storyboard，如果要打开的是别的组件中的 ViewController，还需要指定对应 bundle。
+
+通过上面方式实现组件间的路由跳转需要对 ViewController 和 params 有以下要求
+
+- ViewController 的类名要与 xib 名或 storyboard 中的 id 相同，如果要支持被其他组件使用并且是通过 xib 画的 UI，还需要重写 init() 并调用 super.init(nibName: nil, bundle: Bundle.xxx) 设置 nibName 和 bundle
+- 跳转页面传参通过 KVC 方式实现，所以要求 ViewController 的相关参数要加上 @objc，还需要加上注释说明属性用途
+- ViewControllerName 和 propertyName 尽量不去变更，如有变更需要让别人知道
+
+下面代码描述了 open 方法的定义和如何根据 ViewController 名字得到其对象
+
+```swift
+    public static func open(_ name: String, storyboard: String = "", bundle: Bundle = Bundle.main, params: [String: Any] = [:], needLogin: Bool = false, animated: Bool = true, present: Bool = false, completion: (() -> Void)? = nil) {
+        let viewController = RouterService.viewControllerWithClassName(name, storyboard: storyboard, bundle: bundle)
+        
+        RouterService.open(viewController, params: params, needLogin: needLogin, animated: animated, present: present, completion: completion)
+    }
+    
+    public static func viewControllerWithClassName(_ name: String, storyboard: String = "", bundle: Bundle) -> UIViewController? {
+        var viewController: UIViewController?
+        
+        if storyboard.isEmpty {
+            var bundleName: String?
+            
+            if bundle == Bundle.main {
+                bundleName = (Bundle.main.infoDictionary!["CFBundleExecutable"] as! String).replacingOccurrences(of: "-", with: "_")
+            } else {
+                bundleName = bundle.infoDictionary!["CFBundleName"] as? String
+            }
+            
+            if let vc = NSClassFromString((bundleName! + "." + name)) as? UIViewController.Type {
+                viewController = vc.init()
+            }
+        } else {
+            try? ObjC.catchException {
+                viewController = UIStoryboard(name: storyboard, bundle: bundle).instantiateViewController(withIdentifier: name)
+            }
+        }
+        
+        return viewController
+    }
+```
+
+再介绍几个小功能和需要注意的地方
+
+- 打开页面时指定是否需要登录，然后将原本想要跳转的页面信息及参数传递给登录页，当登录成功后直接跳转到该页面，并将登录页本身从导航堆栈中移除
+- pop 页面时除 navigation 的三种方式外，增加锚点方式返回，例如在购买商品页面填加锚点，然后当页面流转到购买成功时，可将导航堆栈反转过来，pop 到最近的一个锚点页面或指定锚点页面
+- 页面跳转如果设置了使用动画，在动画结束前不会响应其它跳转任务
+- pop 时要考虑到导航堆栈里不存在指定页面的场景，还要确定当前 VC 是否是 navigationController
+- 传参使用字典还是 Model 也是需要注意的问题，虽然用字典代替 Model 存储数据对于组件化架构来说是解决组件之间数据传递参数的好办法，并且可以做到组件间的松耦合，但使用起来较麻烦，容易出错，所以建议简单的数据模型可以不定义成 Model，复杂模型还是有必要使用 Model，代码清楚，复用性好，有维护多组件能力的团队可以将多个业务组件共用的 Model 单独以组件形式维护，或者像我们一样允许组件中存在重复 Model
+
+### 组件的多环境打包
+App 运行环境通常有测试环境、预上线环境、正常环境三种，这里分别用 QA、STG、PRD 表示，有些公司还会有企业开发者账号，用来自己分发项目更方便的去做测试工作，下面针对这种情况做多环境打包设置
+
+- 通过 xcconfig 方式在原先的 debug、release 上扩展出 staging、enterprisePRD、production，切换环境时只要在 Scheme 中的 Build Configration 中设置一下就可以了（对于 xcconfig 这里不做详细介绍）
+- 上面列出的 debug 和 release 对应 QA，enterprisePRD 和 production 对应 PRD，其中 production 作为正式打包上线的设置项
+- xcconfig 文件中可针对不同环境设置不同的 app 名字，还可以对 enterprisePRD 设置不同的微信Id 或其它内容
+ 
+组件在不同环境中 podspec 的内容也会不同，主要体现在 version 和 source 字段
+
+```ruby
+# 开发环境
+s.version      = '6.5.5'
+s.source       = { :git =>'http://gitlab.mx.com/ios/wandafilm-card.git', :branch => "feature/#{s.version}"}
+```
+
+```ruby
+# 上线环境，需要打 git tag
+s.version      = '6.5.5.master'
+s.source       = { :git =>'http://gitlab.mx.com/ios/wandafilm-core.git', :branch => 'master', :tag => s.version}
+```
+
+# 优化
+## 线上 Bug 率
+处理线上 Bug 降低 Bug 率需要根据项目团队情况按优先级处理，优先级由高到低为：
+
+- 次数较多的 Bug 不管是否好处理都需要优先处理，并根据情况决定是否需要发版，还需要将原因及如何避免等问题分享给团队成员，避免其他人再次出现类似问题
+- 次数较少但是容易处理的 Bug 修改后需要关注新版本上线后是否还会出现
+- 无法复现但是有一定影响的 Bug 可根据情况添加保护性代码避免 app 崩溃，但要求能够预知是否会造成其他问题（数据异常，页面异常等）
+- 次数少处理难度大的 Bug 放最后，有时间时再去调查原因
+
+修改 Bug 或者重构优化功能后要告知测试人员影响范围，避免因没覆盖测试而上线出现问题
+
+## 数据安全
+我们从 AppStore 下载的 app 其实都已经由苹果加壳，要砸壳后才能有办法看到汇编形式的源代码，如果我们要自己再加一层壳，可以对关键代码的方法名做一些混淆，以增加别人分析代码的复杂度，不过这对于大多数 app 来说不太值得去做，我们可以把精力放在其他更易做并且更有效率的地方，例如：
+
+- 不将敏感数据直接存储在沙盒里
+- 使用 Https 保证数据传输安全
+- 调用接口时对敏感数据进行加密
+
+加密数据通常有两种方式
+
+- 对称加密：文件加密和解密使用相同的密钥，AES 相对其他对称加密方式来说更安全些。
+- 非对称加密：需要公钥和私钥，用公钥对数据进行加密，只有对应的私钥才能解密；如果用私钥对数据进行加密，那么只有对应的公钥才能解密。可以用 RSA 来做非对称加密，相对对称加密来说非对称加密速度较慢，但非常安全，据说还没被破解过。
+    - 苹果官方生成一对公私钥，在 iOS 系统里内置公钥，私钥由苹果后台保存，我们上传 app 到 AppStore 时，苹果后台用私钥对 app 数据进行签名，iOS 系统下载这个 app 后，用公钥验证这个签名，若签名正确，这个 app 肯定是由苹果后台认证的，并且没有被修改过。
+
+对敏感数据进行加密通常选择对称加密，这时如何使用密钥则是一件非常重要的事，不管是 app 在代码中写死密钥还是简单的通过接口获取密钥都不安全，下面介绍一种相对更安全的方式：
+
+- 首先由客户端向服务端发起获取钥匙的请求
+- 服务端生成公钥`pk1`和私钥`pk2`，然后将公钥`pk1`发送给客户端（假设此时黑客已经获取到了公钥`pk1`）
+- 客户端这时首先生成公钥`pk3`和私钥`pk4`，然后将公钥`pk3`通过服务端返回的公钥`pk1`加密并发送给服务端（假设此时黑客截获加密后的`pk3`，虽然知道这是由`pk1`加密的，但是他不知道与其对应的私钥`pk2`，所以无法对客户端发送的公钥进行解密）
+- 服务端收到加密后的`pk3`后可以通过私钥`pk2`解密，并使用`pk3`对生成的对称加密密钥`xxx`进行加密并发送给客户端（黑客这时因为不知道公钥`pk3`是什么，所以得不到对称加密的密钥）
+- 客户端收到数据后，可以用自己的私钥`pk4`解密并得到对称加密用的密钥`xxx`，客户端将密钥`xxx`存储在内存中，接下来两端就可以使用`xxx`作为 key 来加密数据并进行安全的数据传输了。
+
+## 启动时间
+可以通过 Instruments 的 Time Profiler 工具来查看耗费时间，也可以通过在 Xcode 中修改项目的 scheme，在 Run -> Auguments 增加环境变量 DYLD_PRINT_STATISTICS 并设置为 1，然后观察控制台打出的 log 来查看
+
+- pre-main 阶段系统会由 dyld（the dynamic link editor）加载相关动态链接库，然后再初始化 runtime 环境，并由 runtime 触发 + load 方法，所以不要在 load 方法里执行耗时任务，否则会影响启动时间，并且用不到的代码文件要及时删除。
+- 检查 didFinishLaunchingWithOptions 及启动相关的方法，将部分操作改为异步执行或延迟处理
+- 首页相关 ViewController 尽量使用代码实现
+
+## App 瘦身
+- 将部分资源文件从工程中移除，改为从接口获取，并且可以通过给数据加版本号，避免每次重复下载。
+- 清理无用的代码文件和资源，不要 @1x 图片，如果用到了 ProtoBuf，可以将 .proto 文件从 Compile Sources 中移除。
+- 压缩图片，目前发现 [tinypng.com](tinypng.com) 的压缩效果最好，而且是无损的。
+- 小图标可以使用 iconfont 替代，大图可以用 pdf 替代
+- 启动图界面用 LaunchScreen.storyboard，不要用多张 Default 图。
+- 用 .xcassets 来管理图片，Xcode 能够把里边的所有 png 图片压缩成 .car 文件。并且 iOS9 之后，如果是用 .xcassets 管理图片，AppStore 会根据不同设备准备不同的安装包，每个包内只有对应尺寸的图片，例如 iPhone6 下载 app 时，包里就只有 @2x 图。
+- 放弃 iPhone5s 之前发布的 32 位手机，仅支持 arm64
+
+## 流量
+- 合理使用本地缓存数据并及时更新缓存
+- 考虑用 ProtoBuf 替代 JSON，也可以仅是个别数据量大的接口改为 ProtoBuf 格式数据
+- 轮询接口方式可以用 WebSocket 替代
+- 请求的图片格式考虑由 jpg 改为 webp，减少图片下载时间，再想办法提高图片转码时间
+- 按 UIImageView 大小取合适大小的图片，不要直接取原图，同一图片用在不同界面时，尽量要求 UI 统一视图比例，然后 app 统一获取同样大小图片，这样做的话不管对 app 还是 CDN 都能够提高缓存利用率
+- 非关键的业务数据，可以通过合并接口的方式，减少和服务器的交互次数。
+- 请求接口前客户端通过对 request params 做检查来减少不必要的网络请求
+- 可以用 ETag 这种服务端加本地验证的方式处理返回数据，当数据没有更新时不返回数据，而是返回 304
+- 数据量大时要提示用户是否在非 wifi 环境下下载
+- 网络框架增加取消请求功能，避免返回用户已经不需要的数据
+
+## UI 交互
+- 延迟处理不需要马上展现的视图或操作
+- 不要阻塞主线程，能异步去做的就不要同步。
+- 由于 UIKit 中大部分对象都不是线程安全的，所以 UI 操作都需要放在主线程做串行处理，否则可能会导致未知行为（动画异常、页面错乱、Crash）。
+- 优化表格滑动  
+    - 提前算 Cell 高度并缓存，如果要加载的数据也是要经过处理才展示的也提前处理好
+    - 异步绘制，滑动过程中不加载图片
+    - 当 Cell 中有很多子视图并且他们要在不同条件下展示时，考虑拆成多个 Cell
+    - 不要在 Cell 中频繁生成 NSDateFormatter 对象
+- 通过设置模拟器的 Debug 菜单下的几项设置来查看图层视图是否需要优化
+    - Color Blended layers  
+    大多情况是因为视图的 backgroundColor 与父视图颜色不一致或者是透明的，它会用红色表示有问题的视图，而绿色的表示没问题
+    - Color copied images  
+    当图片的色彩格式不能被 GPU 处理时，会交由 CPU 处理，应该尽可能避免这种问题
+    - Color misaligned images  
+    图片大小与控件不一致，会用黄色表示图片被缩放了，用紫色表示像素没对齐
+    - Color offscreen-rendered  
+    用黄色标示哪些 layer 做了离屏渲染（当 GPU 无法将渲染结果直接写入 frame buffer，而是将结果暂存在其他内存后再写入 frame buffer），多数时候离屏渲染会影响性能，应该尽量避免，无法避免时可通过 shouldRasterize 来缓存渲染结果，降低影响，在开发过程中需要重点关注列表中对 View 做圆角设置和添加阴影操作。
+        - cornerRadius + clipsToBounds 设置圆角会触发离屏渲染，仅使用 cornerRadius 不会触发，但效果不好，可以用带圆角效果的 layer 盖住视图实现圆角效果，以避免离屏渲染
+        - 使用 shadowPath 添加阴影可以避免离屏渲染
+
+PS：过早的优化是万恶之源！
+
