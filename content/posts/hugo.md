@@ -14,7 +14,7 @@ Octopress 自 2015 年开始就没再更新过，再加上我使用的模板在�
 brew install hugo
 ```
 
-新建站点
+# 新建站点
 
 ```
 hugo new site blog
@@ -31,7 +31,7 @@ hugo new site blog
 - static 可以把图片等静态资源放这里
 - themes 存放网站主题文件
 
-安装主题
+# 安装主题
 [Hugo](https://themes.gohugo.io/) 整理了很多开发者制作的主题，安装时直接将主题下载到刚创建的 themes 目录中就可以了，具体方式可参考各主题的介绍说明
 
 ```
@@ -61,27 +61,28 @@ paginate = 10
     url = "https://www.instagram.com/bj_lijingcheng/"
 ```
 
-新建文章
+# 新建文章
 
 ```
 hugo new posts/first.md
 ```
 
-本地预览
+# 本地预览
 
 ```
 hugo server -D
 ```
 
-通过 [http://localhost:1313](http://localhost:1313) 查看
+通过 [http://localhost:1313](http://localhost:1313) 查看，发布文章之前需要将文章内的 draft 改为 false
 
-将要发布的文章内的 draft 改为 false 后就可以生成静态页面了
+# 发布文章
+使用 GitHub Actions 将生成的静态页面发布到 Github Pages，GitHub Actions 是 GitHub 推出的持续集成服务，使用起来非常简单，首先要在本地生成 ssh deploy key
 
 ```
-hugo
+ssh-keygen -t rsa -b 4096 -C "your.email" -f gh-pages -N ""
 ```
 
-使用 GitHub Actions 将生成的静态页面发布到 Github Pages，GitHub Actions 是 GitHub 推出的持续集成服务，使用起来非常简单，首先在 GitHub 网站中打开项目首页，然后在 Actions 中设置 ACCESS_TOKEN，然后再把写好的角本放到仓库根目录下的 .github/workflow/deploy.yml 文件中就可以了，甚至连角本都可以直接使用别人写好的。 
+在 GitHub 网站中打开项目的设置页面，将刚生成的 ssh 公钥添加到 Deploy Keys 并选择 Allow write access，然后将私钥添加到 Secrets，可以命名为 ACTIONS_DEPLOY_KEY，然后再把写好的角本放到仓库根目录下的 .github/workflow/deploy.yml 文件中，角本内容可以引用别人写好的。
 
 ```
 name: github pages
@@ -97,6 +98,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+      with:
+        submodules: true
 
     - name: Setup Hugo
       uses: peaceiris/actions-hugo@v2.3.1
@@ -109,7 +112,7 @@ jobs:
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v2.5.1
       env:
-        ACTIONS_DEPLOY_KEY: ${{ secrets.ACCESS_TOKEN }}
+        ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
         PUBLISH_BRANCH: gh-pages
         PUBLISH_DIR: ./public
 ```
