@@ -412,7 +412,7 @@ PS：目前项目里的支付功能用的就算是策略模式
 模版方法模式在基类中定义了一个算法的框架，将不变的行为抽离封装起来以去除重复代码，然后允许子类在不修改结构的情况下重写算法的特定步骤，并可以扩展新的行为。模板方法将整个算法转换为一系列独立的步骤，当你只希望客户端扩展某个特定算法步骤， 而不是整个算法或其结构时， 可使用模板方法模式。
 
 ```swift
-继承 UIViewController 后通过重写 viewDidLoad  viewDidAppear 继承 UIView 重写 layoutSubviews...
+继承 UIViewController 后通过重写 viewDidLoad  viewDidAppear 继承 UIView 重写 layoutSubviews..
 ```
 
 
