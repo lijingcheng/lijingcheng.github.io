@@ -4,7 +4,7 @@ date: 2015-01-04 14:51:02 +0800
 draft: false
 ---
 
-[Github Pages](https://pages.github.com) 可用来搭建静态网站，它提供了免费域名、空间、无限流量，并且在世界各地都有较好的访问速度。不过网站也会轻易被人 clone，如果在意的话可以使用私有库。
+[Github Pages](https://pages.github.com) 可用来搭建静态网站，它提供了免费域名、空间、无限流量，并且在世界各地都有较好的访问速度。
 
 [Octopress](http://octopress.org) 是开源的静态博客系统，可用来为静态网站提供所需的 HTML。
 
@@ -65,13 +65,13 @@ rake generate
 rake preview
 ```
 
-部署并将 Octopress 生成的 HTML 等文件提交到 master 分支
+部署并将 Octopress 生成的 HTML 等文件提交到 gh-pages 分支
 
 ```
 rake deploy
 ```
 
-将 Octopress 修改过的 markdown 等资源文件提交到 source 分支
+将 Octopress 修改过的 markdown 等资源文件提交到 master 分支
 
 ```
 git add .
@@ -79,4 +79,4 @@ git commit -m 'your commit message'
 git push origin source
 ```
 
-如果希望多台电脑能够一起使用 Octopress，首先下载 source 分支到你的电脑上，然后再下载 master 分支到博客根目录下的 _deploy 文件夹，然后就可以正常使用了。
+如果希望多台电脑能够一起使用 Octopress，首先下载 master 分支到你的电脑上，然后再下载 gh-pages 分支到博客根目录下的 _deploy 文件夹，然后就可以正常使用了。
