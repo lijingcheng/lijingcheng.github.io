@@ -106,6 +106,9 @@ jobs:
       with:
         hugo-version: '0.61.0' 
 
+    - name: Prepare Hugo
+      run: git submodule sync && git submodule update --init
+
     - name: Build
       run: hugo --minify
 
