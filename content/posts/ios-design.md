@@ -114,35 +114,33 @@ sed -i '' -e "s/Bundle(for: R.Class.self)/Bundle.core/g" “$SRCROOT/
 下面代码描述了 open 方法的定义和如何根据 ViewController 名字得到其对象
 
 ```swift
-    public static func open(_ name: String, storyboard: String = "", bundle: Bundle = Bundle.main, params: [String: Any] = [:], needLogin: Bool = false, animated: Bool = true, present: Bool = false, completion: (() -> Void)? = nil) {
-        let viewController = RouterService.viewControllerWithClassName(name, storyboard: storyboard, bundle: bundle)
+public static func open(_ name: String, storyboard: String = "", bundle: Bundle = Bundle.main, params: [String: Any] = [:], needLogin: Bool = false, animated: Bool = true, present: Bool = false, completion: (() -> Void)? = nil) {
+    let viewController = RouterService.viewControllerWithClassName(name, storyboard: storyboard, bundle: bundle)
         
-        RouterService.open(viewController, params: params, needLogin: needLogin, animated: animated, present: present, completion: completion)
-    }
+    RouterService.open(viewController, params: params, needLogin: needLogin, animated: animated, present: present, completion: completion)
+}
     
-    public static func viewControllerWithClassName(_ name: String, storyboard: String = "", bundle: Bundle) -> UIViewController? {
-        var viewController: UIViewController?
-        
-        if storyboard.isEmpty {
-            var bundleName: String?
+public static func viewControllerWithClassName(_ name: String, storyboard: String = "", bundle: Bundle) -> UIViewController? {
+    var viewController: UIViewController?
+    
+    if storyboard.isEmpty {
+        var bundleName: String?
             
-            if bundle == Bundle.main {
-                bundleName = (Bundle.main.infoDictionary!["CFBundleExecutable"] as! String).replacingOccurrences(of: "-", with: "_")
-            } else {
-                bundleName = bundle.infoDictionary!["CFBundleName"] as? String
-            }
-            
-            if let vc = NSClassFromString((bundleName! + "." + name)) as? UIViewController.Type {
-                viewController = vc.init()
-            }
+        if bundle == Bundle.main {
+            bundleName = (Bundle.main.infoDictionary!["CFBundleExecutable"] as! String).replacingOccurrences(of: "-", with: "_")
         } else {
-            try? ObjC.catchException {
-                viewController = UIStoryboard(name: storyboard, bundle: bundle).instantiateViewController(withIdentifier: name)
-            }
+            bundleName = bundle.infoDictionary!["CFBundleName"] as? String
         }
-        
-        return viewController
+            
+        if let vc = NSClassFromString((bundleName! + "." + name)) as? UIViewController.Type {
+            viewController = vc.init()
+        }
+    } else {
+        viewController = UIStoryboard(name: storyboard, bundle: bundle).instantiateViewController(withIdentifier: name)
     }
+
+    return viewController
+}
 ```
 
 再介绍几个小功能和需要注意的地方
