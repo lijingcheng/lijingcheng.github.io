@@ -1,0 +1,66 @@
+<!doctype html><html lang=zh-cn><head><title>将博客从 Octopress 迁移到 Hugo // 风行's Blog</title><meta charset=utf-8><meta name=generator content="Hugo 0.61.0"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=author content="风行"><meta name=description content><link rel=stylesheet href=https://lijingcheng.github.io/css/main.min.61bb32028587f24ca28522d8d197970c7ef33284e5fffb45a75fcbbb2dbc4dcb.css><meta name=twitter:card content="summary"><meta name=twitter:title content="将博客从 Octopress 迁移到 Hugo"><meta name=twitter:description content="迁移原因 Octopress 自 2015 年开始就没再更新过，再加上我使用的模板在宽屏显示器上也体验不太好，所以打算更新下博客样式，于是在目前比较流行的静态博客生成工具 Hexo 和 Hugo 之间经过比较后选择了 Hugo，相对来说 Hugo 不仅适合搭建博客，也同样适合搭建网站，它基于 go 语言，在发布时速度比较快，并且依赖较少。
+安装 Hugo 建议使用 Homebrew 安装 Hugo
+brew install hugo 新建站点 hugo new site blog 新建站点后进入 blog 目录，查看生成的文件及主要目录
+ archetypes 目录下会有个模板文件，新生成的文章会以此为模板 config.toml 网站配置文件 content 用来存放 Markdown 文件 layouts 存放 html 模板文件，如果使用了第三方模板，可以将 themes 里 layouts 目录下的 html 复制过来，然后在这里修改，hugo 会优先使用这个目录下的该文件，以后再更新 themes 下的模板文件时也不用担心文件冲突问题 data 存储数据文件供模板使用 public 生成的静态网站文件会放在这里 static 可以把图片等静态资源放这里 themes 存放网站主题文件  安装主题 Hugo 整理了很多开发者制作的主题，安装时直接将主题下载到刚创建的 themes 目录中就可以了，具体方式可参考各主题的介绍说明
+cd blog git init git submodule add https://github."><meta property="og:title" content="将博客从 Octopress 迁移到 Hugo"><meta property="og:description" content="迁移原因 Octopress 自 2015 年开始就没再更新过，再加上我使用的模板在宽屏显示器上也体验不太好，所以打算更新下博客样式，于是在目前比较流行的静态博客生成工具 Hexo 和 Hugo 之间经过比较后选择了 Hugo，相对来说 Hugo 不仅适合搭建博客，也同样适合搭建网站，它基于 go 语言，在发布时速度比较快，并且依赖较少。
+安装 Hugo 建议使用 Homebrew 安装 Hugo
+brew install hugo 新建站点 hugo new site blog 新建站点后进入 blog 目录，查看生成的文件及主要目录
+ archetypes 目录下会有个模板文件，新生成的文章会以此为模板 config.toml 网站配置文件 content 用来存放 Markdown 文件 layouts 存放 html 模板文件，如果使用了第三方模板，可以将 themes 里 layouts 目录下的 html 复制过来，然后在这里修改，hugo 会优先使用这个目录下的该文件，以后再更新 themes 下的模板文件时也不用担心文件冲突问题 data 存储数据文件供模板使用 public 生成的静态网站文件会放在这里 static 可以把图片等静态资源放这里 themes 存放网站主题文件  安装主题 Hugo 整理了很多开发者制作的主题，安装时直接将主题下载到刚创建的 themes 目录中就可以了，具体方式可参考各主题的介绍说明
+cd blog git init git submodule add https://github."><meta property="og:type" content="article"><meta property="og:url" content="https://lijingcheng.github.io/posts/hugo/"><meta property="article:published_time" content="2019-12-11T16:28:43+08:00"><meta property="article:modified_time" content="2019-12-11T16:28:43+08:00"></head><body><header class=app-header><a href=https://lijingcheng.github.io><img class=app-header-avatar src=/images/avatar.png alt=风行></a><h1>风行's Blog</h1><p>一直在学习的大龄程序员</p><div class=app-header-social><a target=_blank href=https://github.com/lijingcheng rel="noreferrer noopener"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github"><title>github</title><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77a5.44 5.44.0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg></a><a target=_blank href=https://www.instagram.com/bj_lijingcheng/ rel="noreferrer noopener"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-instagram"><title>instagram</title><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg></a></div></header><main class=app-container><article class=post><header class=post-header><h1 class=post-title>将博客从 Octopress 迁移到 Hugo</h1><div class=post-meta><div><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar"><title>calendar</title><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Dec 11, 2019</div></div></header><div class=post-content><h1 id=heading>迁移原因</h1><p>Octopress 自 2015 年开始就没再更新过，再加上我使用的模板在宽屏显示器上也体验不太好，所以打算更新下博客样式，于是在目前比较流行的静态博客生成工具 Hexo 和 Hugo 之间经过比较后选择了 Hugo，相对来说 Hugo 不仅适合搭建博客，也同样适合搭建网站，它基于 go 语言，在发布时速度比较快，并且依赖较少。</p><h1 id=-hugo>安装 Hugo</h1><p>建议使用 Homebrew 安装 Hugo</p><pre><code>brew install hugo
+</code></pre><h1 id=heading-1>新建站点</h1><pre><code>hugo new site blog
+</code></pre><p>新建站点后进入 blog 目录，查看生成的文件及主要目录</p><ul><li>archetypes 目录下会有个模板文件，新生成的文章会以此为模板</li><li>config.toml 网站配置文件</li><li>content 用来存放 Markdown 文件</li><li>layouts 存放 html 模板文件，如果使用了第三方模板，可以将 themes 里 layouts 目录下的 html 复制过来，然后在这里修改，hugo 会优先使用这个目录下的该文件，以后再更新 themes 下的模板文件时也不用担心文件冲突问题</li><li>data 存储数据文件供模板使用</li><li>public 生成的静态网站文件会放在这里</li><li>static 可以把图片等静态资源放这里</li><li>themes 存放网站主题文件</li></ul><h1 id=heading-2>安装主题</h1><p><a href=https://themes.gohugo.io/>Hugo</a> 整理了很多开发者制作的主题，安装时直接将主题下载到刚创建的 themes 目录中就可以了，具体方式可参考各主题的介绍说明</p><pre><code>cd blog
+git init
+git submodule add https://github.com/vaga/hugo-theme-m10c.git themes/m10c
+</code></pre><p>修改 config.toml</p><pre><code>baseURL = &quot;https://lijingcheng.github.io&quot;
+languageCode = &quot;zh-cn&quot;
+title = &quot;风行's Blog&quot;
+theme = &quot;m10c&quot;
+paginate = 10
+
+[params]
+  author = &quot;风行&quot;
+  avatar = &quot;images/avatar.png&quot;
+  description = &quot;一直在学习的大龄程序员&quot;
+  [[params.social]]
+    name = &quot;github&quot;
+    url = &quot;https://github.com/lijingcheng&quot;
+  [[params.social]]
+    name = &quot;instagram&quot;
+    url = &quot;https://www.instagram.com/bj_lijingcheng/&quot;
+</code></pre><h1 id=heading-3>新建文章</h1><pre><code>hugo new posts/first.md
+</code></pre><h1 id=heading-4>本地预览</h1><pre><code>hugo server -D
+</code></pre><p>通过 <a href=http://localhost:1313>http://localhost:1313</a> 查看，发布文章之前需要将文章内的 draft 改为 false</p><h1 id=heading-5>发布文章</h1><p>使用 GitHub Actions 将生成的静态页面发布到 Github Pages，GitHub Actions 是 GitHub 推出的持续集成服务，使用起来非常简单，首先要在本地生成 ssh deploy key</p><pre><code>ssh-keygen -t rsa -b 4096 -C &quot;your.email&quot; -f gh-pages -N &quot;&quot;
+</code></pre><p>在 GitHub 网站中打开项目的设置页面，将刚生成的 ssh 公钥添加到 Deploy Keys 并选择 Allow write access，然后将私钥添加到 Secrets，可以命名为 ACTIONS_DEPLOY_KEY，然后再把写好的角本放到仓库根目录下的 .github/workflow/deploy.yml 文件中，角本内容可以引用别人写好的。</p><pre><code>name: github pages
+
+# 当 hugo-branch 分支发生 push 事件时执行下面任务
+on:
+  push:
+    branches:
+      - hugo-branch
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        submodules: true
+
+    - name: Setup Hugo
+      uses: peaceiris/actions-hugo@v2.3.1
+      with:
+        hugo-version: '0.61.0'
+
+    - name: Build
+      run: hugo --minify
+
+    - name: add nojekyll
+      run: touch ./public/.nojekyll
+
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v2.5.1
+      env:
+        ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        PUBLISH_BRANCH: master
+        PUBLISH_DIR: ./public
+</code></pre></div><div class=post-footer></div></article></main></body></html>

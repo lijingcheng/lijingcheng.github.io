@@ -1,0 +1,119 @@
+<!doctype html><html lang=zh-cn><head><title>Objective-C Runtime 开发 // 风行's Blog</title><meta charset=utf-8><meta name=generator content="Hugo 0.61.0"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=author content="风行"><meta name=description content><link rel=stylesheet href=https://lijingcheng.github.io/css/main.min.61bb32028587f24ca28522d8d197970c7ef33284e5fffb45a75fcbbb2dbc4dcb.css><meta name=twitter:card content="summary"><meta name=twitter:title content="Objective-C Runtime 开发"><meta name=twitter:description content="Runtime 是使用 C 和汇编实现的运行时代码库，Objective-C 中有很多语言特性都是通过它来实现。了解 Runtime 开发可以帮助我们更灵活的使用 Objective-C 这门语言，我们可以将程序功能推迟到运行时再去决定怎么做，还可以利用 Runtime 来解决项目开发中的一些设计和技术问题，使开发过程更加具有灵活性。
+一些关键字  self：类的隐藏参数变量，指向当前调用方法的对象 super：是编译器的标示符，通过 super 调用方法会被翻译成 objc_msgSendSuper(self, _cmd,&mldr;) SEL：以方法名为内容的 C 字符串 IMP：指向方法实现的函数指针 id：指向类对象或实例对象的指针 isa：为 id 对象所属类型 (objc_class)，Objc 中的继承就是通过 isa 指针找到 objc_class，然后再通过 super_class 去找对应的父类 metaclass：在 Objc 中，类本身也是对象，实例对象的 isa 指向它所属的类，而类对象的 isa 指向元类 (metaclass)，元类的 isa 直接指向根元类，根元类的isa指向它自己，它们之间的关系如下图所示。  消息传递 (Messaging) Objective-C 对于调用对象的某个方法这种行为叫做给对象发送消息，实际上就是沿着它的 isa 指针去查找真正的函数地址。下面我们来了解一下这个过程：
+我们写一个给对象发送消息的代码
+[array insertObject:obj atIndex:5]; 编译器首先会将上面代码翻译成这种样子
+objc_msgSend(array, @selector(insertObject:atIndex:), obj, 5); 系统在运行时会通过 array 对象的 isa 指针找到对应的 class（如果是给类发消息，则找到的是metaclass），然后在 class 的 cache 方法列表中用 SEL 去找对应 method，如果找不到便去 class 的方法列表中去找，如果在方法列表中也找不对对应 method 时，便沿着继承体系继续向上查找，找到后将 method 放入 cache，以便下次能快速定位，然后再去执行 method 的 IMP，找不到时系统便报错：unrecognized selector sent to insertObject:atIndex:"><meta property="og:title" content="Objective-C Runtime 开发"><meta property="og:description" content="Runtime 是使用 C 和汇编实现的运行时代码库，Objective-C 中有很多语言特性都是通过它来实现。了解 Runtime 开发可以帮助我们更灵活的使用 Objective-C 这门语言，我们可以将程序功能推迟到运行时再去决定怎么做，还可以利用 Runtime 来解决项目开发中的一些设计和技术问题，使开发过程更加具有灵活性。
+一些关键字  self：类的隐藏参数变量，指向当前调用方法的对象 super：是编译器的标示符，通过 super 调用方法会被翻译成 objc_msgSendSuper(self, _cmd,&mldr;) SEL：以方法名为内容的 C 字符串 IMP：指向方法实现的函数指针 id：指向类对象或实例对象的指针 isa：为 id 对象所属类型 (objc_class)，Objc 中的继承就是通过 isa 指针找到 objc_class，然后再通过 super_class 去找对应的父类 metaclass：在 Objc 中，类本身也是对象，实例对象的 isa 指向它所属的类，而类对象的 isa 指向元类 (metaclass)，元类的 isa 直接指向根元类，根元类的isa指向它自己，它们之间的关系如下图所示。  消息传递 (Messaging) Objective-C 对于调用对象的某个方法这种行为叫做给对象发送消息，实际上就是沿着它的 isa 指针去查找真正的函数地址。下面我们来了解一下这个过程：
+我们写一个给对象发送消息的代码
+[array insertObject:obj atIndex:5]; 编译器首先会将上面代码翻译成这种样子
+objc_msgSend(array, @selector(insertObject:atIndex:), obj, 5); 系统在运行时会通过 array 对象的 isa 指针找到对应的 class（如果是给类发消息，则找到的是metaclass），然后在 class 的 cache 方法列表中用 SEL 去找对应 method，如果找不到便去 class 的方法列表中去找，如果在方法列表中也找不对对应 method 时，便沿着继承体系继续向上查找，找到后将 method 放入 cache，以便下次能快速定位，然后再去执行 method 的 IMP，找不到时系统便报错：unrecognized selector sent to insertObject:atIndex:"><meta property="og:type" content="article"><meta property="og:url" content="https://lijingcheng.github.io/posts/runtime/"><meta property="article:published_time" content="2015-09-21T14:30:27+08:00"><meta property="article:modified_time" content="2015-09-21T14:30:27+08:00"></head><body><header class=app-header><a href=https://lijingcheng.github.io><img class=app-header-avatar src=/images/avatar.png alt=风行></a><h1>风行's Blog</h1><p>一直在学习的大龄程序员</p><div class=app-header-social><a target=_blank href=https://github.com/lijingcheng rel="noreferrer noopener"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github"><title>github</title><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77a5.44 5.44.0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg></a><a target=_blank href=https://www.instagram.com/bj_lijingcheng/ rel="noreferrer noopener"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-instagram"><title>instagram</title><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg></a></div></header><main class=app-container><article class=post><header class=post-header><h1 class=post-title>Objective-C Runtime 开发</h1><div class=post-meta><div><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar"><title>calendar</title><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Sep 21, 2015</div></div></header><div class=post-content><p><a href>Runtime</a> 是使用 C 和汇编实现的运行时代码库，Objective-C 中有很多语言特性都是通过它来实现。了解 Runtime 开发可以帮助我们更灵活的使用 Objective-C 这门语言，我们可以将程序功能推迟到运行时再去决定怎么做，还可以利用 Runtime 来解决项目开发中的一些设计和技术问题，使开发过程更加具有灵活性。</p><h1 id=heading>一些关键字</h1><ul><li>self：类的隐藏参数变量，指向当前调用方法的对象</li><li>super：是编译器的标示符，通过 super 调用方法会被翻译成 objc_msgSendSuper(self, _cmd,&mldr;)</li><li>SEL：以方法名为内容的 C 字符串</li><li>IMP：指向方法实现的函数指针</li><li>id：指向类对象或实例对象的指针</li><li>isa：为 id 对象所属类型 (objc_class)，Objc 中的继承就是通过 isa 指针找到 objc_class，然后再通过 super_class 去找对应的父类</li><li>metaclass：在 Objc 中，类本身也是对象，实例对象的 isa 指向它所属的类，而类对象的 isa 指向元类 (metaclass)，元类的 isa 直接指向根元类，根元类的isa指向它自己，它们之间的关系如下图所示。</li></ul><p><img src=/images/runtime_class.jpeg alt></p><h1 id=-messaging>消息传递 (Messaging)</h1><p>Objective-C 对于调用对象的某个方法这种行为叫做给对象发送消息，实际上就是沿着它的 isa 指针去查找真正的函数地址。下面我们来了解一下这个过程：</p><p>我们写一个给对象发送消息的代码</p><pre><code>[array insertObject:obj atIndex:5];
+</code></pre><p>编译器首先会将上面代码翻译成这种样子</p><pre><code>objc_msgSend(array, @selector(insertObject:atIndex:), obj, 5);
+</code></pre><p>系统在运行时会通过 array 对象的 isa 指针找到对应的 class（如果是给类发消息，则找到的是metaclass），然后在 class 的 cache 方法列表中用 SEL 去找对应 method，如果找不到便去 class 的方法列表中去找，如果在方法列表中也找不对对应 method 时，便沿着继承体系继续向上查找，找到后将 method 放入 cache，以便下次能快速定位，然后再去执行 method 的 IMP，找不到时系统便报错：unrecognized selector sent to insertObject:atIndex:</p><p>Runtime 提供了三种方法避免因为找不到方法而崩溃</p><p>当找不到方法实现时，Runtime 会先发送 +resolveInstanceMethod: 或 +resolveClassMethod: 消息，我们可以重写它然后为对象指定一个处理方法。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-objc data-lang=objc><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>dynamicXXXMethod</span>(<span style=color:#66d9ef>id</span> obj, <span style=color:#66d9ef>SEL</span> _cmd) {
+    NSLog(<span style=color:#e6db74>@&#34;</span><span style=color:#e6db74>ok...</span><span style=color:#e6db74>&#34;</span>);
+}
+
++ (<span style=color:#66d9ef>BOOL</span>)<span style=color:#a6e22e>resolveInstanceMethod:</span>(<span style=color:#66d9ef>SEL</span>)aSEL {
+    <span style=color:#66d9ef>if</span>(aSEL <span style=color:#f92672>=</span><span style=color:#f92672>=</span> <span style=color:#66d9ef>@selector</span>(xxx:)) {
+        class_addMethod([self <span style=color:#66d9ef>class</span>], aSEL, (<span style=color:#66d9ef>IMP</span>)dynamicXXXMethod, <span style=color:#e6db74></span><span style=color:#e6db74>&#34;</span><span style=color:#e6db74>v@:</span><span style=color:#e6db74>&#34;</span>);
+        
+        <span style=color:#66d9ef>return</span> YES;
+    }
+    
+    <span style=color:#66d9ef>return</span> [super resolveInstanceMethod];
+}
+
+</code></pre></div><p>class_addMethod 方法的最后一个参数用来指定所添加方法的参数及返回值，叫 <a href=https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html>Type Encodings</a>。</p><p>如果 resolve 方法返回 NO，Runtime 会发送 -forwardingTargetForSelector: 消息，允许我们将消息转发给能处理它的其它对象。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-objc data-lang=objc>- (<span style=color:#66d9ef>id</span>)<span style=color:#a6e22e>forwardingTargetForSelector:</span>(<span style=color:#66d9ef>SEL</span>)aSelector {
+    <span style=color:#66d9ef>if</span>(aSelector <span style=color:#f92672>=</span><span style=color:#f92672>=</span> <span style=color:#66d9ef>@selector</span>(xxx:)){
+        <span style=color:#66d9ef>return</span> otherObject;
+    }
+
+    <span style=color:#66d9ef>return</span> [super forwardingTargetForSelector:aSelector];
+}
+</code></pre></div><p>当 -forwardingTargetForSelector: 返回 nil 时，Runtime 会发送 -methodSignatureForSelector: 和 -forwardInvocation: 消息。我们可以选择忽略消息、抛出异常、将消息转由当前对象或其它对象的任意消息来处理。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-objc data-lang=objc><span style=color:#75715e>//根据 SEL 生成 NSInvocation 对象，然后再由 -forwardInvocation: 方法进行转发。
+</span><span style=color:#75715e></span>- (NSMethodSignature <span style=color:#f92672>*</span>)<span style=color:#a6e22e>methodSignatureForSelector:</span>(<span style=color:#66d9ef>SEL</span>)aSelector {
+    NSMethodSignature <span style=color:#f92672>*</span>signature <span style=color:#f92672>=</span> [super methodSignatureForSelector:aSelector];
+
+    <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>signature) {
+        signature <span style=color:#f92672>=</span> [otherObject instanceMethodSignatureForSelector:aSelector];
+    }
+
+    <span style=color:#66d9ef>return</span> signature;
+}
+
+- (<span style=color:#66d9ef>void</span>)<span style=color:#a6e22e>forwardInvocation:</span>(NSInvocation <span style=color:#f92672>*</span>)invocation {
+    <span style=color:#66d9ef>SEL</span> sel <span style=color:#f92672>=</span> invocation.selector;
+
+    <span style=color:#66d9ef>if</span>([otherObject respondsToSelector:sel]) {
+        [invocation invokeWithTarget:otherObject]; <span style=color:#75715e>// 转发消息
+</span><span style=color:#75715e></span>    } 
+    <span style=color:#66d9ef>else</span> {
+        [self doesNotRecognizeSelector:sel]; <span style=color:#75715e>// 抛出异常
+</span><span style=color:#75715e></span>    }
+}
+</code></pre></div><h1 id=kvo>KVO</h1><p>当我们为对象添加观察者后，Runtime 会在运行时创建这个对象所在类的子类，并且将该对象的 isa 指针指向这个子类，然后重写监听属性的 set 方法并在方法中调用 -willChangeValueForKey: 和 -didChangeValueForKey: 来通知观察者，所以如果直接修改实例变量便不会触发监听方法。当移除观察者后，Runtime 便会将这个子类删除。</p><p>所以 isa 指针并不总是指向实例对象所属的类，也有可能指向一个中间类，所以不能依靠它来确定类型，而是应该用 class 方法来确定实例对象的类。</p><h1 id=-associated-objects>关联对象 (Associated Objects)</h1><p>在 Category 中可以为类添加实例方法或类方法，但是不支持添加实例变量，所以即使我们在 Category 中为类添加了 property，也不能直接使用它，Runtime 可以解决这个问题，我们只需要定义一个指针，然后通过 objc_setAssociatedObject 方法将指针与对象进行关联并指定内存管理方式，数据以 KeyValue 的形式存储在一个 HashMap 里。</p><p>Objc 中的类和对象都是结构体，Category 也是这样，定义的方法和属性在结构体中的存储，并在运行时按倒序添加到主类中（添加的方法会放在方法列表的上面），所以如果添加的方法与原类中的一样，那么在调用此方法时，优先找到的便是我们添加的这个方法。如果有多个 Category 添加同样名称的方法，那么这些方法在方法列表中的顺序取决于他们的编译顺序，也就是这些 Category 文件在 Compile Sources 中的顺序。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-objc data-lang=objc><span style=color:#66d9ef>@interface</span> <span style=color:#a6e22e>NSObject</span> (JC)
+
+<span style=color:#66d9ef>@property</span> (<span style=color:#66d9ef>nonatomic</span>, <span style=color:#66d9ef>copy</span>) NSString <span style=color:#f92672>*</span>ID;
+
+<span style=color:#66d9ef>@end</span>
+
+<span style=color:#66d9ef>@implementation</span> <span style=color:#a6e22e>NSObject</span> (JC)
+
+<span style=color:#66d9ef>static</span> <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span>IDKey;
+
+- (NSString <span style=color:#f92672>*</span>)<span style=color:#a6e22e>ID</span> {
+    <span style=color:#66d9ef>return</span> objc_getAssociatedObject(self, <span style=color:#f92672>&amp;</span>IDKey);
+}
+
+- (<span style=color:#66d9ef>void</span>)<span style=color:#a6e22e>setID:</span>(NSString <span style=color:#f92672>*</span>)ID {
+    objc_setAssociatedObject(self, <span style=color:#f92672>&amp;</span>IDKey, ID, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+<span style=color:#66d9ef>@end</span>  
+</code></pre></div><h1 id=aopmethod-swizzling>AOP(Method Swizzling)</h1><p>我们可以通过继承、Category、AOP 方式来扩展类的功能。</p><ul><li>继承比较适合在设计底层代码架构时使用，不适当的使用会让代码看起来很啰嗦，并且增加维护难度。</li><li>Category 适合为现有类添加方法。</li><li>当需要修改现有类的方法并且拿不到源码时，继承和 AOP 都能解决问题，但是用 AOP 来解决代码耦合度更低。其实就算能拿到源码，往往直接去改源码也不是个好办法。</li></ul><p>在 Objective-C 中，可以通过 Method Swizzling 技术来实现 AOP，下面我们通过交换两个方法的实现代码来向已存在的方法中添加其它功能。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-objc data-lang=objc><span style=color:#75715e>#</span><span style=color:#75715e>import &lt;objc</span><span style=color:#75715e>/</span><span style=color:#75715e>runtime.h&gt; </span><span style=color:#75715e>
+</span><span style=color:#75715e></span> 
+<span style=color:#66d9ef>@implementation</span> <span style=color:#a6e22e>UIViewController</span> (Tracking) 
+ 
++ (<span style=color:#66d9ef>void</span>)<span style=color:#a6e22e>load</span> { 
+    <span style=color:#66d9ef>static</span> dispatch_once_t onceToken; 
+    dispatch_once(<span style=color:#f92672>&amp;</span>onceToken, <span style=color:#f92672>^</span>{ 
+        <span style=color:#66d9ef>Class</span> aClass <span style=color:#f92672>=</span> [self <span style=color:#66d9ef>class</span>]; 
+ 
+        <span style=color:#66d9ef>SEL</span> originalSelector <span style=color:#f92672>=</span> <span style=color:#66d9ef>@selector</span>(viewWillAppear:); 
+        <span style=color:#66d9ef>SEL</span> swizzledSelector <span style=color:#f92672>=</span> <span style=color:#66d9ef>@selector</span>(swizzled_viewWillAppear:); 
+ 
+        Method originalMethod <span style=color:#f92672>=</span> class_getInstanceMethod(aClass, originalSelector); 
+        Method swizzledMethod <span style=color:#f92672>=</span> class_getInstanceMethod(aClass, swizzledSelector); 
+        
+        <span style=color:#75715e>// 如果要对类方法进行交换，使用下面注释的代码
+</span><span style=color:#75715e></span>        <span style=color:#75715e>// Class aClass = object_getClass((id)self);
+</span><span style=color:#75715e></span>        <span style=color:#75715e>// 
+</span><span style=color:#75715e></span>        <span style=color:#75715e>// Method originalMethod = class_getClassMethod(aClass, originalSelector);
+</span><span style=color:#75715e></span>        <span style=color:#75715e>// Method swizzledMethod = class_getClassMethod(aClass, swizzledSelector);
+</span><span style=color:#75715e></span> 
+ 		<span style=color:#75715e>// 交换两个方法的实现
+</span><span style=color:#75715e></span> 		<span style=color:#75715e>// 防止 aClass 不存在 originalSelector，所以添加一下试试，但指向地址为新方法地址
+</span><span style=color:#75715e></span>        <span style=color:#66d9ef>BOOL</span> didAddMethod <span style=color:#f92672>=</span> class_addMethod(aClass, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod)); 
+ 
+        <span style=color:#66d9ef>if</span> (didAddMethod) { 
+        	<span style=color:#75715e>// 添加成功，说明 aClass 不存在 originalSelector，所以替换 swizzledSelector 的 IMP 为 originalMethod，实质上它们都指向 swizzledMethod
+</span><span style=color:#75715e></span>            class_replaceMethod(aClass, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod)); 
+        } 
+        <span style=color:#66d9ef>else</span> { 
+         	<span style=color:#75715e>// 添加失败，说明 aClass 存在 originalSelector，直接交换
+</span><span style=color:#75715e></span>            method_exchangeImplementations(originalMethod, swizzledMethod); 
+        } 
+    }); 
+} 
+ 
+<span style=color:#75715e>#</span><span style=color:#75715e>pragma mark - Method Swizzling </span><span style=color:#75715e>
+</span><span style=color:#75715e></span>
+<span style=color:#75715e>// 由于方法实现已经被交换，所以系统在调用 viewWillAppear: 时，实际上会调用 swizzled_viewWillAppear:
+</span><span style=color:#75715e></span>- (<span style=color:#66d9ef>void</span>)<span style=color:#a6e22e>swizzled_viewWillAppear:</span>(<span style=color:#66d9ef>BOOL</span>)animated { 
+	<span style=color:#75715e>// 下面代码表面上看起来会引起递归调用，由于函数实现已经被交换，实际上会调用 viewWillAppear:
+</span><span style=color:#75715e></span>   [self swizzled_viewWillAppear:animated]; 
+
+	<span style=color:#75715e>// 在原有基础上添加其它功能(写日志等)
+</span><span style=color:#75715e></span>} 
+ 
+<span style=color:#66d9ef>@end</span>
+</code></pre></div><p>需要注意一个问题，如果你用了 swizzled_viewWillAppear 作为方法名，那么如果你引用的第三方 SDK 中也用了这个方法名来做方法交换，那会造成方法的递归调用，所以你最好换一个不会被重复使用的方法名，例如 mx_swizzled_viewWillAppear。</p><h1 id=heading-1>其它</h1><p>我们可以通过 Runtime 特性来获得类的所有属性名称和类型，然后再通过 KVC 将 JSON 中的值填充给该类的对象。还可以在程序运行时为类添加方法或替换方法从而使对象能够更灵活的根据需要来选择实现方法。总之 Runtime 库就象一堆积木，只要发挥想象力便能实现各种各样的功能，但前提是你需要了解它。</p></div><div class=post-footer></div></article></main></body></html>
