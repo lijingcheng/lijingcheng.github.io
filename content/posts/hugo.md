@@ -91,7 +91,7 @@ name: github pages
 on:
   push:
     branches:
-      - master
+      - hugo-branch
 
 jobs:
   build-deploy:
@@ -113,6 +113,6 @@ jobs:
       uses: peaceiris/actions-gh-pages@v2.5.1
       env:
         ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-        PUBLISH_BRANCH: gh-pages
+        PUBLISH_BRANCH: master
         PUBLISH_DIR: ./public
 ```

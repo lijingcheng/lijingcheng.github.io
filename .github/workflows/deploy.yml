@@ -1,10 +1,10 @@
 name: github pages
 
-# 当 master 分支发生 push 事件时执行下面任务
+# 当 hugo-branch 分支发生 push 事件时执行下面任务
 on:
   push:
     branches:
-      - master
+      - hugo-branch
 
 jobs:
   build-deploy:
@@ -26,5 +26,5 @@ jobs:
       uses: peaceiris/actions-gh-pages@v2.5.1
       env:
         ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-        PUBLISH_BRANCH: gh-pages
+        PUBLISH_BRANCH: master
         PUBLISH_DIR: ./public
