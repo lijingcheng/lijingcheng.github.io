@@ -19,11 +19,11 @@ jobs:
       with:
         hugo-version: '0.61.0'
 
-    - name: Prepare Hugo
-      run: git submodule sync && git submodule update --init
-
     - name: Build
       run: hugo --minify
+
+    - name: add nojekyll
+      run: touch ./public/.nojekyll
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v2.5.1

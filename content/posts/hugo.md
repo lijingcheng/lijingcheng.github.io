@@ -87,7 +87,7 @@ ssh-keygen -t rsa -b 4096 -C "your.email" -f gh-pages -N ""
 ```
 name: github pages
 
-# 当 master 分支发生 push 事件时执行下面任务
+# 当 hugo-branch 分支发生 push 事件时执行下面任务
 on:
   push:
     branches:
@@ -104,13 +104,13 @@ jobs:
     - name: Setup Hugo
       uses: peaceiris/actions-hugo@v2.3.1
       with:
-        hugo-version: '0.61.0' 
-
-    - name: Prepare Hugo
-      run: git submodule sync && git submodule update --init
+        hugo-version: '0.61.0'
 
     - name: Build
       run: hugo --minify
+
+    - name: add nojekyll
+      run: touch ./public/.nojekyll
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v2.5.1
