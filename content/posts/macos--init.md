@@ -1,5 +1,5 @@
 ---
-title: "我的 MacOS 装机必备"
+title: "我的 MacOS 装机必备应用"
 date: 2019-12-19T11:01:18+08:00
 draft: false
 ---
