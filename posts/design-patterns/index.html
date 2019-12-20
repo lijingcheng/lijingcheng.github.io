@@ -1,0 +1,381 @@
+<!doctype html><html lang=zh-cn><head><title>iOS 开发中的设计模式 // 风行's Blog</title><meta charset=utf-8><meta name=generator content="Hugo 0.61.0"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=author content="风行"><meta name=description content><link rel=stylesheet href=https://lijingcheng.github.io/css/main.min.61bb32028587f24ca28522d8d197970c7ef33284e5fffb45a75fcbbb2dbc4dcb.css><meta name=twitter:card content="summary"><meta name=twitter:title content="iOS 开发中的设计模式"><meta name=twitter:description content="1994 年被称为四人帮（Gang of Four）的 Erich Gamma、Richard Helm、Ralph Johnson、John Vlissides 四位作者发表了一本名为《Design Patterns: Elements of Reusable Object-Oriented Software》的书，据说是由他们首次在书里提出了设计模式的概念，书中收录了 23 种设计模式。
+设计模式是对软件开发设计中一些常见问题的解决方案，为了便于沟通，又给每种方案起了名字并归类，设计模式不局限于某种开发语言，也不局限于面向对象设计思想，它同样可应用于函数式开发和面向协议开发。
+设计原则 其实我们在不知不觉时已经使用到了很多模式，在分别介绍它们前需要先了解下设计模式的六大原则和一个法则，制定这些原则的目的并不是要我们刻板的去遵守它们，而是要根据实际情况去灵活运用。
+开闭原则 当程序需要新增功能时，不去修改原有的代码，而是通过新增代码的方式去做扩展，这样做可以避免影响到原有功能，并且能够提高程序的稳定性和灵活性，易于维护和升级。
+单一职责原则 单一职责的核心思想就是高内聚、低耦合，一个类或方法只做它该做的事情，这样做的好处是代码复杂性低、可维护性高，当代码发生变化时影响范围较小。
+接口隔离原则 代码之间的依赖关系应该建立在已满足单一职责的接口上，并且不去依赖它不需要的接口，所以要避免出现庞大臃肿的接口，满足接口隔离原则可以降低代码耦合度，提高程序设计灵活性。
+里氏替换原则 使用父类的地方必须能够使用其子类，但父类未必能胜任子类做的事情，如果子类不能完整地实现父类的方法，或者父类的某些方法在子类中已经发生“畸变”，则建议断开继承关系，改为通过依赖、聚合、组合等方式来实现代码的复用。
+依赖倒置原则 程序要依赖于抽象（接口或抽象类）而不依赖于具体实现，抽象不应该关注细节，细节应该依赖于抽象，本质就是我们常说的面向接口编程。依赖倒置的好处是可以使各个类或模块彼此独立，互不影响，从而实现模块间的松耦合。在实际开发中的一个应用就是当我们在做组件化开发时，核心组件和功能组件不依赖于业务组件，不关心业务细节，业务组件可依赖于多个上层功能组件。
+合成聚合复用原则 合成/聚合指在一个对象里面使用一些已有类的对象，使之成为自己的一部分来达到复用已有功能的目的，相对继承来说耦合性低一些，当只有“Is - A”才应该使用继承，“Has - A”应当使用聚合。
+迪米特法则 迪米特法则又叫最少知识原则，一个对象应当对其他对象尽可能少的了解，也就是说要尽量少发布 public 的属性和方法，这样利于降低类与类之间的代码耦合度，在代码发生变更时影响范围较小，并且系统功能模块也会相对独立。
+设计模式 设计模式可以根据其意图或目的分为创建型、结构型、行为型三类，分别关注创建对象、组合代码和对象间的通信问题。
+创建型设计模式 创建型模式关注创建对象的机制，通过将对象的创建和使用分离来增加代码的灵活性和可复用性。包含简单工厂模式、工厂方法模式、抽象工厂模式、建造者模式、原型模式和单例模式。
+简单工厂模式（Simple Factory） 在工厂类中定义用于创建实例的静态方法，然后根据传入参数的不同返回不同实例，被创建的实例具有共同的父类或接口，调用处只关心要什么，不用关心具体创建方式。
+class MapFactory { static func getMap(_ type: MapType) -> Map { switch type { case .baidu: return BaiduMap() case .system: return SystemMap() } } 将对象的创建和对象本身业务处理分离可以降低系统的耦合度，使得两者修改起来都相对容易。简单工厂模式最大的问题在于工厂类的职责相对过重，增加新的产品（高德地图）需要修改工厂类的判断逻辑，这一点与开闭原则是相违背的。"><meta property="og:title" content="iOS 开发中的设计模式"><meta property="og:description" content="1994 年被称为四人帮（Gang of Four）的 Erich Gamma、Richard Helm、Ralph Johnson、John Vlissides 四位作者发表了一本名为《Design Patterns: Elements of Reusable Object-Oriented Software》的书，据说是由他们首次在书里提出了设计模式的概念，书中收录了 23 种设计模式。
+设计模式是对软件开发设计中一些常见问题的解决方案，为了便于沟通，又给每种方案起了名字并归类，设计模式不局限于某种开发语言，也不局限于面向对象设计思想，它同样可应用于函数式开发和面向协议开发。
+设计原则 其实我们在不知不觉时已经使用到了很多模式，在分别介绍它们前需要先了解下设计模式的六大原则和一个法则，制定这些原则的目的并不是要我们刻板的去遵守它们，而是要根据实际情况去灵活运用。
+开闭原则 当程序需要新增功能时，不去修改原有的代码，而是通过新增代码的方式去做扩展，这样做可以避免影响到原有功能，并且能够提高程序的稳定性和灵活性，易于维护和升级。
+单一职责原则 单一职责的核心思想就是高内聚、低耦合，一个类或方法只做它该做的事情，这样做的好处是代码复杂性低、可维护性高，当代码发生变化时影响范围较小。
+接口隔离原则 代码之间的依赖关系应该建立在已满足单一职责的接口上，并且不去依赖它不需要的接口，所以要避免出现庞大臃肿的接口，满足接口隔离原则可以降低代码耦合度，提高程序设计灵活性。
+里氏替换原则 使用父类的地方必须能够使用其子类，但父类未必能胜任子类做的事情，如果子类不能完整地实现父类的方法，或者父类的某些方法在子类中已经发生“畸变”，则建议断开继承关系，改为通过依赖、聚合、组合等方式来实现代码的复用。
+依赖倒置原则 程序要依赖于抽象（接口或抽象类）而不依赖于具体实现，抽象不应该关注细节，细节应该依赖于抽象，本质就是我们常说的面向接口编程。依赖倒置的好处是可以使各个类或模块彼此独立，互不影响，从而实现模块间的松耦合。在实际开发中的一个应用就是当我们在做组件化开发时，核心组件和功能组件不依赖于业务组件，不关心业务细节，业务组件可依赖于多个上层功能组件。
+合成聚合复用原则 合成/聚合指在一个对象里面使用一些已有类的对象，使之成为自己的一部分来达到复用已有功能的目的，相对继承来说耦合性低一些，当只有“Is - A”才应该使用继承，“Has - A”应当使用聚合。
+迪米特法则 迪米特法则又叫最少知识原则，一个对象应当对其他对象尽可能少的了解，也就是说要尽量少发布 public 的属性和方法，这样利于降低类与类之间的代码耦合度，在代码发生变更时影响范围较小，并且系统功能模块也会相对独立。
+设计模式 设计模式可以根据其意图或目的分为创建型、结构型、行为型三类，分别关注创建对象、组合代码和对象间的通信问题。
+创建型设计模式 创建型模式关注创建对象的机制，通过将对象的创建和使用分离来增加代码的灵活性和可复用性。包含简单工厂模式、工厂方法模式、抽象工厂模式、建造者模式、原型模式和单例模式。
+简单工厂模式（Simple Factory） 在工厂类中定义用于创建实例的静态方法，然后根据传入参数的不同返回不同实例，被创建的实例具有共同的父类或接口，调用处只关心要什么，不用关心具体创建方式。
+class MapFactory { static func getMap(_ type: MapType) -> Map { switch type { case .baidu: return BaiduMap() case .system: return SystemMap() } } 将对象的创建和对象本身业务处理分离可以降低系统的耦合度，使得两者修改起来都相对容易。简单工厂模式最大的问题在于工厂类的职责相对过重，增加新的产品（高德地图）需要修改工厂类的判断逻辑，这一点与开闭原则是相违背的。"><meta property="og:type" content="article"><meta property="og:url" content="https://lijingcheng.github.io/posts/design-patterns/"><meta property="article:published_time" content="2019-12-20T14:18:55+08:00"><meta property="article:modified_time" content="2019-12-20T14:18:55+08:00"></head><body><header class=app-header><a href=https://lijingcheng.github.io><img class=app-header-avatar src=/images/avatar.png alt=风行></a><h1>风行's Blog</h1><p>一直在学习的大龄程序员</p><div class=app-header-social><a target=_blank href=https://github.com/lijingcheng rel="noreferrer noopener"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github"><title>github</title><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77a5.44 5.44.0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg></a><a target=_blank href=https://www.instagram.com/bj_lijingcheng/ rel="noreferrer noopener"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-instagram"><title>instagram</title><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg></a></div></header><main class=app-container><article class=post><header class=post-header><h1 class=post-title>iOS 开发中的设计模式</h1><div class=post-meta><div><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar"><title>calendar</title><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Dec 20, 2019</div></div></header><div class=post-content><p>1994 年被称为四人帮（Gang of Four）的 Erich Gamma、Richard Helm、Ralph Johnson、John Vlissides 四位作者发表了一本名为《Design Patterns: Elements of Reusable Object-Oriented Software》的书，据说是由他们首次在书里提出了设计模式的概念，书中收录了 23 种设计模式。</p><p>设计模式是对软件开发设计中一些常见问题的解决方案，为了便于沟通，又给每种方案起了名字并归类，设计模式不局限于某种开发语言，也不局限于面向对象设计思想，它同样可应用于函数式开发和面向协议开发。</p><h1 id=heading>设计原则</h1><p>其实我们在不知不觉时已经使用到了很多模式，在分别介绍它们前需要先了解下设计模式的六大原则和一个法则，制定这些原则的目的并不是要我们刻板的去遵守它们，而是要根据实际情况去灵活运用。</p><h3 id=heading-1>开闭原则</h3><p>当程序需要新增功能时，不去修改原有的代码，而是通过新增代码的方式去做扩展，这样做可以避免影响到原有功能，并且能够提高程序的稳定性和灵活性，易于维护和升级。</p><h3 id=heading-2>单一职责原则</h3><p>单一职责的核心思想就是高内聚、低耦合，一个类或方法只做它该做的事情，这样做的好处是代码复杂性低、可维护性高，当代码发生变化时影响范围较小。</p><h3 id=heading-3>接口隔离原则</h3><p>代码之间的依赖关系应该建立在已满足单一职责的接口上，并且不去依赖它不需要的接口，所以要避免出现庞大臃肿的接口，满足接口隔离原则可以降低代码耦合度，提高程序设计灵活性。</p><h3 id=heading-4>里氏替换原则</h3><p>使用父类的地方必须能够使用其子类，但父类未必能胜任子类做的事情，如果子类不能完整地实现父类的方法，或者父类的某些方法在子类中已经发生“畸变”，则建议断开继承关系，改为通过依赖、聚合、组合等方式来实现代码的复用。</p><h3 id=heading-5>依赖倒置原则</h3><p>程序要依赖于抽象（接口或抽象类）而不依赖于具体实现，抽象不应该关注细节，细节应该依赖于抽象，本质就是我们常说的面向接口编程。依赖倒置的好处是可以使各个类或模块彼此独立，互不影响，从而实现模块间的松耦合。在实际开发中的一个应用就是当我们在做组件化开发时，核心组件和功能组件不依赖于业务组件，不关心业务细节，业务组件可依赖于多个上层功能组件。</p><h3 id=heading-6>合成聚合复用原则</h3><p>合成/聚合指在一个对象里面使用一些已有类的对象，使之成为自己的一部分来达到复用已有功能的目的，相对继承来说耦合性低一些，当只有“Is - A”才应该使用继承，“Has - A”应当使用聚合。</p><h3 id=heading-7>迪米特法则</h3><p>迪米特法则又叫最少知识原则，一个对象应当对其他对象尽可能少的了解，也就是说要尽量少发布 public 的属性和方法，这样利于降低类与类之间的代码耦合度，在代码发生变更时影响范围较小，并且系统功能模块也会相对独立。</p><h1 id=heading-8>设计模式</h1><p>设计模式可以根据其意图或目的分为创建型、结构型、行为型三类，分别关注创建对象、组合代码和对象间的通信问题。</p><h2 id=heading-9>创建型设计模式</h2><p>创建型模式关注创建对象的机制，通过将对象的创建和使用分离来增加代码的灵活性和可复用性。包含简单工厂模式、工厂方法模式、抽象工厂模式、建造者模式、原型模式和单例模式。</p><h3 id=simple-factory>简单工厂模式（Simple Factory）</h3><p>在工厂类中定义用于创建实例的静态方法，然后根据传入参数的不同返回不同实例，被创建的实例具有共同的父类或接口，调用处只关心要什么，不用关心具体创建方式。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MapFactory</span> {
+    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>getMap</span>(<span style=color:#66d9ef>_</span> type: MapType) -&gt; Map {
+        <span style=color:#66d9ef>switch</span> type {
+        <span style=color:#66d9ef>case</span> .baidu:
+            <span style=color:#66d9ef>return</span> BaiduMap()
+        <span style=color:#66d9ef>case</span> .system:
+            <span style=color:#66d9ef>return</span> SystemMap()
+    }
+}
+</code></pre></div><p>将对象的创建和对象本身业务处理分离可以降低系统的耦合度，使得两者修改起来都相对容易。简单工厂模式最大的问题在于工厂类的职责相对过重，增加新的产品（高德地图）需要修改工厂类的判断逻辑，这一点与开闭原则是相违背的。</p><h3 id=factory-method>工厂方法模式（Factory Method）</h3><p>工厂方法模式在简单工厂模式的基础上演变为抽象出一个工厂父类或接口，然后用不同的工厂子类来生成各自的产品，也就是说每个对象都有一个与之对应的工厂。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=color:#66d9ef>protocol</span> <span style=color:#a6e22e>MapFactory</span> {
+    <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>getMap</span>() -&gt; Map
+}
+
+<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>BaiduMapFactory</span>: MapFactory {
+    <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>getMap</span>() -&gt; Map {
+        <span style=color:#66d9ef>return</span> BaiduMap()
+    }
+}
+
+<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>SystemMapFactory</span>: MapFactory {
+    <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>getMap</span>() -&gt; Map {
+        <span style=color:#66d9ef>return</span> SystemMap()
+    }
+}
+
+<span style=color:#66d9ef>let</span> map = BaiduMapFactory().getMap()
+</code></pre></div><p>使用工厂方法模式在增加新产品（高德地图）时无须修改现有代码，只需要为它创建一个具体类和对应的工厂类，这更符合“开闭原则”，但这样就需要创建新的子类，在一定程度上增加了系统的复杂性。</p><h3 id=abstract-factory>抽象工厂模式（Abstract Factory）</h3><p>抽象工厂模式是工厂模式的进一步深化，工厂方法模式只有一个抽象产品，而抽象工厂模式有多个抽象产品，并且每个抽象工厂都会生产多种产品，这是和工厂方法最大的不同点。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=color:#66d9ef>protocol</span> <span style=color:#a6e22e>MapFactory</span> {
+    <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>getMap</span>() -&gt; Map
+}
+
+<span style=color:#75715e>//</span><span style=color:#75715e> </span><span style=color:#75715e>g</span><span style=color:#75715e>e</span><span style=color:#75715e>t</span><span style=color:#75715e>L</span><span style=color:#75715e>o</span><span style=color:#75715e>c</span><span style=color:#75715e>a</span><span style=color:#75715e>t</span><span style=color:#75715e>i</span><span style=color:#75715e>o</span><span style=color:#75715e>n</span><span style=color:#75715e>(</span><span style=color:#75715e>)</span><span style=color:#75715e> </span><span style=color:#75715e>放</span><span style=color:#75715e>到</span><span style=color:#75715e> </span><span style=color:#75715e>M</span><span style=color:#75715e>a</span><span style=color:#75715e>p</span><span style=color:#75715e>F</span><span style=color:#75715e>a</span><span style=color:#75715e>c</span><span style=color:#75715e>t</span><span style=color:#75715e>o</span><span style=color:#75715e>r</span><span style=color:#75715e>y</span><span style=color:#75715e> </span><span style=color:#75715e>里</span><span style=color:#75715e>也</span><span style=color:#75715e>可</span><span style=color:#75715e>以</span>
+<span style=color:#66d9ef>protocol</span> <span style=color:#a6e22e>LocationFactory</span> {
+    <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>getLocation</span>() -&gt; CLLocationCoordinate2D
+}
+
+<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>BaiduMapFactory</span>: MapFactory, LocationFactory {
+    <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>getMap</span>() -&gt; Map {
+        <span style=color:#66d9ef>return</span> BaiduMap()
+    }
+    
+    <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>getLocation</span>() -&gt; CLLocationCoordinate2D {
+        <span style=color:#66d9ef>return</span> CLLocationCoordinate2D(latitude: <span style=color:#ae81ff>36.1111</span>, longitude: <span style=color:#ae81ff>116.1111</span>)
+    }
+}
+
+<span style=color:#66d9ef>let</span> map = BaiduMapFactory().getMap()
+<span style=color:#66d9ef>let</span> location = BaiduMapFactory().getLocation()
+</code></pre></div><p>在增加新的产品时需要修改所有的工厂角色，包括抽象工厂类，在所有的工厂类中都需要增加生产新产品的方法，抽象工厂模式不能很好地支持“开闭原则”。</p><p>Foundation 框架中广泛使用的类簇是一种将公共抽象父类下的许多私有子类组织在一起的体系结构。抽象父类声明了创建其私有子类实例的方法，并根据传入参数来选择用哪个具体子类来创建对象。常见类簇有 NSData、NSArray、NSDictionary、NSString、NSNumber，它们作为抽象父类存在，我们在 debug 时见到的 NSCFBoolean 和 NSCFNumber 就是 NSNumber 的私有子类，抽象父类定义接口后由私有子类负责实现。这样设计的最大好处是框架底层子类变化时不会影响到接口的变化，增强了接口稳定性。</p><h3 id=builder>建造者模式（Builder）</h3><p>建造者模式可以通过一个独立的 Builder 类一步一步创建一个复杂的对象，它将复杂对象的创建步骤分解在不同的方法中，使用者不必知道复杂对象内部组成的细节，建造者模式把要构建的复杂对象本身与它的创建过程从业务逻辑代码中分离出来，使得相同的创建过程可以创建不同的复杂对象。缺点是由于该模式需要新增多个类，因此代码整体复杂程度会有所增加。</p><p>下面例子中，菜单栏是一个复杂对象，它是由多个不同类型的菜单对象、菜单分组对象、分隔栏组成，不同 app 的菜单栏可以由不同菜单组成，UIMenuBuilder 类可根据情况一步一步组装出 UIMenuBar。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=color:#66d9ef>override</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>buildMenu</span>(with builder: UIMenuBuilder) {
+    <span style=color:#66d9ef>super</span>.buildMenu(with: builder)
+
+    <span style=color:#66d9ef>let</span> refreshMenu = UIMenu(title: <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>Refresh</span><span style=color:#e6db74>&#34;</span>, ...)
+    builder.insertChild(refreshMenu, atStartOfMenu: .file)
+
+    <span style=color:#66d9ef>let</span> preferencesMenu = UIMenu(title: <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>Preferences...</span><span style=color:#e6db74>&#34;</span>, ...)
+    builder.insertSibling(preferencesMenu, atEndOfMenu: .about)
+}
+</code></pre></div><h3 id=prototype>原型模式（Prototype）</h3><p>原型模式可以将克隆对象的过程安排在对象所属类的内部完成，这样可以避免克隆操作散落在各个业务代码中，并且解决无法克隆对象私有属性的问题，在多数情况下可被理解为一种深复制的行为。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Order</span>: NSCopying {
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>var</span> orderId: Int64?
+    
+    <span style=color:#66d9ef>required</span> <span style=color:#66d9ef>init</span>(orderId: Int64?) {
+        <span style=color:#66d9ef>self</span>.orderId = orderId
+    }
+    
+    <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>copy</span>(with zone: NSZone? = <span style=color:#66d9ef>nil</span>) -&gt; Any {
+        <span style=color:#66d9ef>let</span> obj = type(of: <span style=color:#66d9ef>self</span>).<span style=color:#66d9ef>init</span>()
+        obj.orderId = orderId
+        
+        <span style=color:#66d9ef>return</span> obj
+    }
+}
+
+<span style=color:#66d9ef>let</span> order2 = order1.copy()
+</code></pre></div><h3 id=singleton>单例模式（Singleton）</h3><p>能够保证一个类只有一个实例，并提供一个全局访问该实例的方式，当保持实例对象仅有一份是有必要的，或者实例需要访问某些共享资源时可以考虑使用单例模式，这样可以实现线程安全，避免线程同步问题，iOS 开发中常见的单例类有 NSFileManager、UIApplication、NSUserDefaults 等。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Network</span> {
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>let</span> shared = Network()
+    
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>init</span>() { }
+    
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>download</span>(<span style=color:#66d9ef>_</span> url: String, finishedCallback: @escaping (<span style=color:#66d9ef>_</span> success: Bool) -&gt; Void = { <span style=color:#66d9ef>_</span> <span style=color:#66d9ef>in</span> }) {
+        
+    }
+}
+
+Network.shared.download(<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>url</span><span style=color:#e6db74>&#34;</span>) { success <span style=color:#66d9ef>in</span>
+    ...
+}
+</code></pre></div><p>正确的使用单例模式能够节约系统资源，对于一些需要频繁创建和销毁的对象，单例模式无疑可以提高系统的性能。如果使用不当的话单例类很容易变得职责过重，违反单一职责原则，并且单例类比较不容易扩展，因为只有一个实例，所以不适合需要保存实例状态的场景。还要注意单例只有在程序被杀掉时才会释放，所以偶尔使用一次又很占内存的对象需要慎重考虑使用。</p><h2 id=heading-10>结构型设计模式</h2><p>结构型模式关注如何将对象和类组装成较大的结构，并且能够保持结构的灵活性。包含适配器模式，组合模式、桥接模式、装饰模式、组合模式、外观（门面）模式、享元模式和代理模式。</p><h3 id=adapter>适配器模式（Adapter）</h3><p>现实生活中当我们需要电脑读取不同类型的存储卡时，读卡器就是存储卡和电脑之间的适配器。适配器模式通常在已有程序中使用，它可以在不修改原有代码的基础上让相互不兼容的类能够很好地合作，完全符合“开闭原则”，下面通过两个例子介绍下适配器模式的使用。</p><ol><li>App 在拿到接口返回的 JSON 格式数据后会通过第三方库将其转为 Model 对象供业务类使用，当有一天接口支持返回 Protobuf 格式数据后，因为无法直接修改 JSON 转 Model 的第三方库，所以我们可以定义一个适配器类，将收到的 Protobuf 数据转为 JSON 后再交给第三方库，适配器类只负责提供接口转换数据，不做别的事情。</li><li>Alamofire 提供的 RequestAdapter 类就是适配器模式的一个应用，我们可以通过它来给 request 对象添加 cookie 或 header，Alamofire 在发起网络请求前会将它自己对 request 对象的设置和我们通过 adapter 对 request 对象的设置做 merge 操作后再发起请求。</li></ol><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>APIAdapter</span>: RequestAdapter {
+    <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>adapt</span>(<span style=color:#66d9ef>_</span> urlRequest: URLRequest, completion: @escaping (Result&lt;URLRequest&gt;) -&gt; Void) {
+        <span style=color:#66d9ef>var</span> request = urlRequest
+
+        request.setValue(xxx, forHTTPHeaderField: <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>SignString</span><span style=color:#e6db74>&#34;</span>)
+        request.setValue(request.url?.host, forHTTPHeaderField: <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>Host</span><span style=color:#e6db74>&#34;</span>)
+        request.setValue(<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>gzip;q=1.0, compress;q=0.5</span><span style=color:#e6db74>&#34;</span>, forHTTPHeaderField: <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>Accept-Encoding</span><span style=color:#e6db74>&#34;</span>)
+
+        completion(.success(request))
+    }
+}
+
+<span style=color:#66d9ef>let</span> session = Session(configuration: configuration, adapter: APIAdapter())
+session.request(request).validate().responseJSON { response <span style=color:#66d9ef>in</span>
+    ...
+}
+
+<span style=color:#75715e>//</span><span style=color:#75715e> </span><span style=color:#75715e>s</span><span style=color:#75715e>e</span><span style=color:#75715e>s</span><span style=color:#75715e>s</span><span style=color:#75715e>i</span><span style=color:#75715e>o</span><span style=color:#75715e>n</span><span style=color:#75715e>.</span><span style=color:#75715e>r</span><span style=color:#75715e>e</span><span style=color:#75715e>q</span><span style=color:#75715e>u</span><span style=color:#75715e>e</span><span style=color:#75715e>s</span><span style=color:#75715e>t</span><span style=color:#75715e>(</span><span style=color:#75715e>)</span><span style=color:#75715e> </span><span style=color:#75715e>会</span><span style=color:#75715e>在</span><span style=color:#75715e>其</span><span style=color:#75715e>调</span><span style=color:#75715e>用</span><span style=color:#75715e>的</span><span style=color:#75715e> </span><span style=color:#75715e>p</span><span style=color:#75715e>e</span><span style=color:#75715e>r</span><span style=color:#75715e>f</span><span style=color:#75715e>o</span><span style=color:#75715e>r</span><span style=color:#75715e>m</span><span style=color:#75715e>S</span><span style=color:#75715e>e</span><span style=color:#75715e>t</span><span style=color:#75715e>u</span><span style=color:#75715e>p</span><span style=color:#75715e>O</span><span style=color:#75715e>p</span><span style=color:#75715e>e</span><span style=color:#75715e>r</span><span style=color:#75715e>a</span><span style=color:#75715e>t</span><span style=color:#75715e>i</span><span style=color:#75715e>o</span><span style=color:#75715e>n</span><span style=color:#75715e>s</span><span style=color:#75715e> </span><span style=color:#75715e>方</span><span style=color:#75715e>法</span><span style=color:#75715e>中</span><span style=color:#75715e>读</span><span style=color:#75715e>取</span><span style=color:#75715e> </span><span style=color:#75715e>a</span><span style=color:#75715e>d</span><span style=color:#75715e>a</span><span style=color:#75715e>p</span><span style=color:#75715e>t</span><span style=color:#75715e>e</span><span style=color:#75715e>r</span><span style=color:#75715e> </span><span style=color:#75715e>修</span><span style=color:#75715e>改</span><span style=color:#75715e>的</span><span style=color:#75715e> </span><span style=color:#75715e>r</span><span style=color:#75715e>e</span><span style=color:#75715e>q</span><span style=color:#75715e>u</span><span style=color:#75715e>e</span><span style=color:#75715e>s</span><span style=color:#75715e>t</span><span style=color:#75715e> </span><span style=color:#75715e>对</span><span style=color:#75715e>象</span><span style=color:#75715e>并</span><span style=color:#75715e>与</span><span style=color:#75715e>默</span><span style=color:#75715e>认</span><span style=color:#75715e> </span><span style=color:#75715e>r</span><span style=color:#75715e>e</span><span style=color:#75715e>q</span><span style=color:#75715e>u</span><span style=color:#75715e>e</span><span style=color:#75715e>s</span><span style=color:#75715e>t</span><span style=color:#75715e> </span><span style=color:#75715e>对</span><span style=color:#75715e>象</span><span style=color:#75715e>做</span><span style=color:#75715e>合</span><span style=color:#75715e>并</span><span style=color:#75715e>操</span><span style=color:#75715e>作</span><span style=color:#75715e>（</span><span style=color:#75715e>下</span><span style=color:#75715e>面</span><span style=color:#75715e>方</span><span style=color:#75715e>法</span><span style=color:#75715e>已</span><span style=color:#75715e>移</span><span style=color:#75715e>除</span><span style=color:#75715e>无</span><span style=color:#75715e>关</span><span style=color:#75715e>代</span><span style=color:#75715e>码</span><span style=color:#75715e>）</span>
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>performSetupOperations</span>(<span style=color:#66d9ef>for</span> request: Request, convertible: URLRequestConvertible) {
+    <span style=color:#66d9ef>if</span> <span style=color:#66d9ef>let</span> adapter = adapter {
+        adapter.adapt(initialRequest) { (result) <span style=color:#66d9ef>in</span>
+            <span style=color:#66d9ef>let</span> adaptedRequest = <span style=color:#66d9ef>try</span> result.unwrap()
+            <span style=color:#66d9ef>self</span>.rootQueue.async {
+                request.didAdaptInitialRequest(initialRequest, to: adaptedRequest)
+                <span style=color:#66d9ef>self</span>.didCreateURLRequest(adaptedRequest, <span style=color:#66d9ef>for</span>: request)
+            }
+        }
+    } <span style=color:#66d9ef>else</span> {
+        rootQueue.async { <span style=color:#66d9ef>self</span>.didCreateURLRequest(initialRequest, <span style=color:#66d9ef>for</span>: request) }
+    }
+}
+</code></pre></div><p>适配器模式灵活性和扩展性都非常好，但是会导致代码整体复杂度增加，因为你需要新增一系列接口和类来做数据或接口的转换，所以在能够直接修改原有代码的场景下尽量不去使用适配器模式。</p><h3 id=bridge>桥接模式（Bridge）</h3><p>当使用继承来解决某个问题时会导致产生很多子类时，便可以考虑是否能够使用桥接模式，桥接模式可以将继承关系转换为关联关系，从而降低了类与类之间的耦合，减少了代码编写量，桥接模式还可以用来拆分或重组一个具有多重功能的庞杂类。</p><p>UIKit 提供的 UIButton 类有多种默认样式，包括 system、infoLight、infoDark、plain、roundedRect 等，如果分别提供相关子类会导致 UIButton 控件使用的复杂性，并且灵活性也不好，所以 UIButton 对开发者提供了 buttonType 属性控制样式，并且内部也并没有用继承的方式实现多个子类。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift>UIButton(type: .system)
+</code></pre></div><h3 id=decorator>装饰模式（Decorator）</h3><p>当天气变冷时你可以穿上一件毛衣，如果还觉得冷，可以再套上一件夹克，如果遇到下雨，还可以再外面再穿上一件雨衣，所有这些衣物都“扩展”了你自己，但衣服并不是你的一部分，如果不需要这些衣服时可以很方便的脱掉，这就是现实生活中的装饰模式。</p><p>装饰模式允许向一个现有的对象添加新的功能，同时又不改变其结构，当需要动态地给对象添加一些职责时使用装饰器模式比使用子类更加灵活，它不仅松耦合而且可以避免由于继承引起的代码复杂性。在 iOS 开发中扩展是苹果用装饰模式帮我们实现好的功能，它可以让你在不使用继承的情况下，给已存在的类、结构体或者枚举添加一些新的功能。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=color:#66d9ef>extension</span> <span style=color:#a6e22e>Dictionary</span> {
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>toJSON</span>() -&gt; Data? {
+        ...
+    }
+}
+</code></pre></div><h3 id=composite>组合模式（Composite）</h3><p>组合模式可以将对象组合成树状结构，树的父节点和子节点具有相同的类型，相同的接口，可以像使用独立对象一样使用它们，组合模式以递归方式处理对象树中的所有项目，它最大的优点在于可以用统一的方式使用树状结构中的组合对象和单个对象，并且可以很容易的在组合体内加入同类型的单个对象。</p><p>UIView 对象就是被组合成一个树形结构，它可以包含其他的 UIView 对象，这种组合方式便于统一处理事件，例如在做界面渲染时，事件会在父视图中被处理，然后再传递给子视图，因为他们都是相同的类型，所以事件可以很方便的传递到树形结构中的每一个视图。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>TestView</span>: UIView {
+    <span style=color:#66d9ef>override</span> <span style=color:#66d9ef>init</span>(frame: CGRect) {
+        <span style=color:#66d9ef>super</span>.<span style=color:#66d9ef>init</span>(frame: frame)
+        
+        addSubview(contentView) <span style=color:#75715e>//</span><span style=color:#75715e> </span><span style=color:#75715e>向</span><span style=color:#75715e>树</span><span style=color:#75715e>性</span><span style=color:#75715e>结</span><span style=color:#75715e>构</span><span style=color:#75715e>中</span><span style=color:#75715e>添</span><span style=color:#75715e>加</span><span style=color:#75715e>结</span><span style=color:#75715e>点</span><span style=color:#75715e>，</span><span style=color:#75715e>c</span><span style=color:#75715e>o</span><span style=color:#75715e>n</span><span style=color:#75715e>t</span><span style=color:#75715e>e</span><span style=color:#75715e>n</span><span style=color:#75715e>t</span><span style=color:#75715e>V</span><span style=color:#75715e>i</span><span style=color:#75715e>e</span><span style=color:#75715e>w</span><span style=color:#75715e> </span><span style=color:#75715e>还</span><span style=color:#75715e>可</span><span style=color:#75715e>以</span><span style=color:#75715e>作</span><span style=color:#75715e>为</span><span style=color:#75715e>父</span><span style=color:#75715e>结</span><span style=color:#75715e>点</span><span style=color:#75715e>添</span><span style=color:#75715e>加</span><span style=color:#75715e>新</span><span style=color:#75715e>的</span><span style=color:#75715e>子</span><span style=color:#75715e>结</span><span style=color:#75715e>点</span>
+    }
+
+    <span style=color:#75715e>//</span><span style=color:#75715e> </span><span style=color:#75715e>T</span><span style=color:#75715e>e</span><span style=color:#75715e>s</span><span style=color:#75715e>t</span><span style=color:#75715e>V</span><span style=color:#75715e>i</span><span style=color:#75715e>e</span><span style=color:#75715e>w</span><span style=color:#75715e> </span><span style=color:#75715e>被</span><span style=color:#75715e>触</span><span style=color:#75715e>发</span><span style=color:#75715e>要</span><span style=color:#75715e>调</span><span style=color:#75715e>整</span><span style=color:#75715e> </span><span style=color:#75715e>f</span><span style=color:#75715e>r</span><span style=color:#75715e>a</span><span style=color:#75715e>m</span><span style=color:#75715e>e</span><span style=color:#75715e> </span><span style=color:#75715e>时</span><span style=color:#75715e>，</span><span style=color:#75715e>会</span><span style=color:#75715e>通</span><span style=color:#75715e>过</span><span style=color:#75715e> </span><span style=color:#75715e>l</span><span style=color:#75715e>a</span><span style=color:#75715e>y</span><span style=color:#75715e>o</span><span style=color:#75715e>u</span><span style=color:#75715e>t</span><span style=color:#75715e>S</span><span style=color:#75715e>u</span><span style=color:#75715e>b</span><span style=color:#75715e>v</span><span style=color:#75715e>i</span><span style=color:#75715e>e</span><span style=color:#75715e>w</span><span style=color:#75715e>s</span><span style=color:#75715e> </span><span style=color:#75715e>来</span><span style=color:#75715e>调</span><span style=color:#75715e>整</span><span style=color:#75715e>子</span><span style=color:#75715e>视</span><span style=color:#75715e>图</span><span style=color:#75715e>的</span><span style=color:#75715e> </span><span style=color:#75715e>f</span><span style=color:#75715e>r</span><span style=color:#75715e>a</span><span style=color:#75715e>m</span><span style=color:#75715e>e</span>
+    <span style=color:#66d9ef>override</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>layoutSubviews</span>() {
+        <span style=color:#66d9ef>super</span>.layoutSubviews()
+
+        contentView.frame = .zero
+    }
+}
+</code></pre></div><h3 id=facade>外观（门面）模式（Facade）</h3><p>外观模式在复杂的业务系统上仅提供必要的 API，这样不仅降低了系统的复杂度，同时也降低了代码间的依赖度，当底层的类发生改变时接口并不需要做修改，如果把所有接口都暴露给使用者，不仅学习成本高，而且存在误用的隐患。在现实生活中当我们选择报团旅游时，只需要对接导游，不用自己去购买交通工具的票，也不用自己去预定旅馆、饭馆、购买景点门票等，这些也是外观模式的应用。</p><p>在项目中发起一个网络请求时，只需要指定接口和业务类型，get 方法会以 GET 方式发起请求，并调用卡业务所在域名，同时会设置 header、添加签名、Cookie 等内容，调用方不用关注这些细节，当需要修改 header 或添加其它内容时，不会影响业务代码。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift>Network.<span style=color:#66d9ef>get</span>(<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>xxx.api</span><span style=color:#e6db74>&#34;</span>, type: .card)
+</code></pre></div><h3 id=flyweight>享元模式（Flyweight）</h3><p>享元模式的目的是通过共享已存在的对象，减少创建对象所产生的内存开销，在享元模式中通常会出现工厂模式，享元工厂类会提供一个用于存储对象的池子，当用户需要对象时，首先从池中获取，如果不存在则创建新对象返回给用户，并保存到池子里。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>tableView</span>(<span style=color:#66d9ef>_</span> tableView: UITableView, cellForRowAt indexPath: IndexPath) -&gt; UITableViewCell {
+    <span style=color:#66d9ef>let</span> cell = tableView.dequeueReusableCell(withIdentifier: <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>reuseIdentifier</span><span style=color:#e6db74>&#34;</span>) <span style=color:#66d9ef>as</span>? Cell
+        
+    <span style=color:#66d9ef>return</span> cell!
+}
+</code></pre></div><h3 id=proxy>代理模式（Proxy）</h3><p>当一个类的对象不想或不能直接引用另一个对象时，可以通过“代理对象”来作为中介者完成想要做的事情，代理对象可以在只有实际需要时才创建，以便在某种场景下节约系统资源，代理模式可以有效降低系统的耦合度，在 iOS 开发中代理模式应用非常广泛，常用于数据和事件的传递，当从 A 页面跳转到 B 页面，然后在 B 页面发生相关事件时需要 A 页面即时更新，就可以通过代理模式来实现，系统也提供了很多基于代理模式实现的 API。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>ViewController</span>: UITableViewDelegate, UITableViewDataSource {
+    <span style=color:#66d9ef>override</span> <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>viewDidLoad</span>() {
+        <span style=color:#66d9ef>super</span>.viewDidLoad()
+
+        tableView.delegate = <span style=color:#66d9ef>self</span>
+        tableView.dataSource = <span style=color:#66d9ef>self</span>
+    }
+    
+    <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>tableView</span>(<span style=color:#66d9ef>_</span> tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int {
+        <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>3</span>
+    }
+    
+    <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>tableView</span>(<span style=color:#66d9ef>_</span> tableView: UITableView, cellForRowAt indexPath: IndexPath) -&gt; UITableViewCell {
+        <span style=color:#66d9ef>let</span> cell = tableView.dequeueReusableCell(withIdentifier: <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>reuseIdentifier</span><span style=color:#e6db74>&#34;</span>) <span style=color:#66d9ef>as</span>? Cell
+
+        <span style=color:#66d9ef>return</span> cell!
+    }
+}
+</code></pre></div><h2 id=heading-11>行为型设计模式</h2><p>行为型设计模式主要关注对象之间的通信，包含责任链模式、命令模式、迭代器模式、中介者模式、备忘录模式、观察者模式、访问者模式、策略模式、状态模式和模板方法模式。</p><h3 id=chain-of-responsibilities>责任链模式（Chain Of Responsibilities）</h3><p>责任链模式可以把程序事件的发送者和接收者解耦合，发送方只需把事件消息发送出去，接收者负责对事件进行处理，并且事件可以有不止一个可处理它的对象，这些对象会形成一个响应链，事件沿着响应链进行传递，链条上的每个处理者都可以对事件进行处理，或者将其传递给链上的下个处理者，甚至还可以动态在链上增加处理者，缺点是不容易调试。</p><p>iOS 的事件响应链还稍复杂一些，它是先一步一步找到可以最优先响应的视图对象，然后再反向寻找这条链上的哪个对象可以处理事件，我们平时常用的 View 和 ViewController 都继承自能够提供事件响应及传递事件功能的 UIResponder 类。</p><p>下面通过一个例子看下责任链模式在 iOS 中的应用，该例子实现的功能是在当子视图添加到父视图后，默认情况下其响应事件的范围就是父视图的 bounds，如果部分界面超出了这个范围，则超出部分无法响应事件，未超出部分仍然可以响应事件，为了使超出父视图范围的子视图也能响应事件，需要实现主视图的 - hitTest:withEvent: 方法，并想办法返回这个子视图来作为事件的响应者。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=color:#75715e>//</span><span style=color:#75715e> </span><span style=color:#75715e>h</span><span style=color:#75715e>i</span><span style=color:#75715e>t</span><span style=color:#75715e>T</span><span style=color:#75715e>e</span><span style=color:#75715e>s</span><span style=color:#75715e>t</span><span style=color:#75715e> </span><span style=color:#75715e>方</span><span style=color:#75715e>法</span><span style=color:#75715e>返</span><span style=color:#75715e>回</span><span style=color:#75715e>的</span><span style=color:#75715e>视</span><span style=color:#75715e>图</span><span style=color:#75715e>会</span><span style=color:#75715e>作</span><span style=color:#75715e>为</span><span style=color:#75715e>响</span><span style=color:#75715e>应</span><span style=color:#75715e>者</span><span style=color:#75715e>来</span><span style=color:#75715e>处</span><span style=color:#75715e>理</span><span style=color:#75715e>事</span><span style=color:#75715e>件</span><span style=color:#75715e>，</span><span style=color:#75715e>如</span><span style=color:#75715e>果</span><span style=color:#75715e>返</span><span style=color:#75715e>回</span><span style=color:#75715e> </span><span style=color:#75715e>n</span><span style=color:#75715e>i</span><span style=color:#75715e>l</span><span style=color:#75715e>，</span><span style=color:#75715e>则</span><span style=color:#75715e>事</span><span style=color:#75715e>件</span><span style=color:#75715e>会</span><span style=color:#75715e>传</span><span style=color:#75715e>递</span><span style=color:#75715e>给</span><span style=color:#75715e>下</span><span style=color:#75715e>一</span><span style=color:#75715e>响</span><span style=color:#75715e>应</span><span style=color:#75715e>者</span>
+<span style=color:#f92672>-</span> (UIView <span style=color:#f92672>*</span>)hitTest:(CGPoint)point withEvent:(UIEvent <span style=color:#f92672>*</span>)event {
+    UIView <span style=color:#f92672>*</span>view = [<span style=color:#66d9ef>super</span> hitTest:point withEvent:event];
+    
+    <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>view) {
+        <span style=color:#66d9ef>for</span> (UIView <span style=color:#f92672>*</span>subView <span style=color:#66d9ef>in</span> <span style=color:#66d9ef>self</span>.subviews) {
+            CGPoint p = [subView convertPoint:point fromView:<span style=color:#66d9ef>self</span>];
+            <span style=color:#66d9ef>if</span> (CGRectContainsPoint(subView.bounds, p)) {
+                view = subView;
+            }
+        }
+    }
+    
+    <span style=color:#66d9ef>return</span> view;
+}
+</code></pre></div><h3 id=command>命令模式（Command）</h3><p>命令模式的本质是对事件进行封装，将事件的发送者和接收者完全解耦，发送事件的对象只需要知道如何发送，而不必知道收到事件后如何处理，接收者也仅需要关心如何处理事件，而不用关心是谁发送的，命令对象通常以数组的形式组合到一起，并支持添加和删除等操作。现实生活中电视机通过遥控器来切换节目就是典型的命令模式的应用，遥控器作为发送者负责发送“开机”、“换台”、“调声音”等命令，电视机作为接收者来响应相关操作。</p><p>在 iOS 中 Target-Action 机制是命令模式的一个应用，UIButton 继承自 UIControl，UIButton 负责绘制控件并触发命令，UIControl 通过 targetActions 数组管理所有命令对象，每个命令对象由 target、action、event 组成，当命令被触发时由 self 或其它对象作为接收者来执行命令。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=color:#66d9ef>let</span> button = UIButton(frame: .zero)
+button.addTarget(<span style=color:#66d9ef>self</span>, action: <span style=color:#66d9ef>#selector</span>(onClick), <span style=color:#66d9ef>for</span>: .touchUpInside)
+button.addTarget(<span style=color:#66d9ef>self</span>, action: <span style=color:#66d9ef>#selector</span>(touchCancel), <span style=color:#66d9ef>for</span>: .touchCancel)
+</code></pre></div><h3 id=iterator>迭代器模式（Iterator）</h3><p>迭代器模式能在不暴露集合底层表现形式（列表、栈和树等）的情况下遍历集合中所有的元素，它将集合的遍历行为抽取为单独的迭代器对象，迭代器通常会提供一个获取集合元素的基本方法，我们可不断调用该方法直至它不返回任何内容，就意味着迭代器已经遍历了所有元素。迭代器可以对同一数据类型提供多种遍历方式，比如说对有序列表就可以有正序遍历和倒序遍历两种迭代器，大多数语言在实现集合时都提供了迭代器，通常情况下我们不需要自己去实现。</p><p>在 iOS 中由 NSFastEnumeration 协议定义规则，NSArray、NSDictionary 等类确认协议并实现相关方法后就可以通过 enumerateKeysAndObjectsWithOptions 来遍历了，也可以通过集合对象来调用 objectEnumerator 生成 NSEnumerator 类型的迭代器对象，然后通过迭代器对象的 nextObject 方法遍历集合，直到遍历结束 nextObject 返回 nil。苹果推荐使用 NSFastEnumeration，因为其速度更快，效率高。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-objc data-lang=objc>NSEnumerator <span style=color:#f92672>*</span>enumerator <span style=color:#f92672>=</span> [dict objectEnumerator];
+       
+<span style=color:#66d9ef>id</span> obj <span style=color:#f92672>=</span> nil;
+<span style=color:#66d9ef>while</span> (obj <span style=color:#f92672>=</span> [enumerator nextObject]) {
+    ...
+}
+</code></pre></div><p>在 Swift 中使用更方便</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=color:#66d9ef>for</span> (offset, item) <span style=color:#66d9ef>in</span> items.enumerated() {
+    ...  
+}
+</code></pre></div><h3 id=mediator>中介者模式（Mediator）</h3><p>中介者模式可以减少对象之间混乱无序的依赖关系，它会限制对象之间的直接交互，迫使它们通过一个中介者对象进行合作。在组件化开发时中介者模式可以实现项目中多组件之间的解耦合，避免它们之间互相依赖。中介者模式和代理模式的主要区别在于代理模式是一对一，中介者模式则是一对多。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift>Router.open(<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>CardDetailViewController</span><span style=color:#e6db74>&#34;</span>, bundle: Bundle.card, params: [<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>cardId</span><span style=color:#e6db74>&#34;</span>: cardId])
+</code></pre></div><p>MVC 中的 Controller 就是一个中介者，它的作用就是把 Model 和 View 隔离开并使它们之间可以协同工作。</p><h3 id=memento>备忘录模式（Memento）</h3><p>游戏存档、数据库回滚以及编辑器中的撤消操作都是通过备忘录模式实现的，它主要是将不同状态的相关对象分别存起来，然后在需要时再恢复使用，在使用时要注意存储对象过多时的资源消耗问题，所以通常会将太久前的对象转为磁盘存储，近期对象用内存存储，以提高读取效率。</p><p>在 iOS 中是通过归档来实现的备忘录模式，需要存储到磁盘的对象要确认 NSCoding 并实现相关方法，然后就可以使用 NSKeyedArchiver 和 NSKeyedUnarchiver 来存储和读取归档后的对象，UserDefaults 不算备忘录模式，因为它存储不了对象。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>User</span>: NSObject, NSCoding {
+    <span style=color:#66d9ef>var</span> userId: String?
+    <span style=color:#66d9ef>var</span> nickName: String?
+    
+    <span style=color:#66d9ef>required</span> <span style=color:#66d9ef>init</span>(coder decoder: NSCoder) {
+        <span style=color:#66d9ef>super</span>.<span style=color:#66d9ef>init</span>()
+        
+        userId = decoder.decodeObject(forKey: <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>userId</span><span style=color:#e6db74>&#34;</span>) <span style=color:#66d9ef>as</span>? String
+        nickName = decoder.decodeObject(forKey: <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>nickName</span><span style=color:#e6db74>&#34;</span>) <span style=color:#66d9ef>as</span>? String
+    }
+
+    <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>encode</span>(with coder: NSCoder) {
+        coder.encode(userId, forKey: <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>userId</span><span style=color:#e6db74>&#34;</span>)
+        coder.encode(nickName, forKey: <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>nickName</span><span style=color:#e6db74>&#34;</span>)
+    }
+}
+</code></pre></div><h3 id=observer>观察者模式（Observer）</h3><p>观察者模式实现了一种订阅机制，可在对象事件发生时通知多个“观察”该对象的其他对象，它实现了观察者和订阅者的解耦，需要注意的是订阅者的通知顺序通常是随机的。</p><p>iOS 通过 Notification 和 Key-Value Observing 实现了观察者模式。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift>webView.observe(<span style=color:#960050;background-color:#1e0010>\</span>.estimatedProgress) { [<span style=color:#66d9ef>weak</span> <span style=color:#66d9ef>self</span>] (webView, change) <span style=color:#66d9ef>in</span>
+    ...
+}
+
+NotificationCenter.<span style=color:#66d9ef>default</span>.rx.notification(Notification.Name.User.didLogin).subscribe(onNext: { notification <span style=color:#66d9ef>in</span>
+    ...
+}).disposed(by: disposeBag)
+</code></pre></div><h3 id=visitor>访问者模式（Visitor）</h3><p>在一个对象或者集合包含了很多其他的对象时，当要对这些对象增加一些新的方法，而且还是在业务上或功能上相关性很低的方法时，如果用直接修改代码的方式添加会污染对象所属类，这样不符合“开闭原则”和“单一职责原则”，这时可以考虑使用访问者模式处理，它可以在不修改对象类代码的情况下扩展对象功能，方式就是增加访问者类，并定义访问各个对象的方法。</p><p>访问者可以有多个，不同访问者访问对象的处理方式可以不同，例如饼图、柱图在处理不同业务数据时，可以有不同的表现样式，现实生活中对于相同食材，不同类型大厨做出来的味道和样子也可以不同，这些都可以理解成是访问者模式的应用。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>protocol</span> <span style=color:#a6e22e>Course</span> {
+    <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>scoresOfYear</span>() -&gt; [Float]
+}
+
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Math</span>: Course {
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>scoresOfYear</span>() -&gt; [Float] {
+        <span style=color:#66d9ef>return</span> [<span style=color:#ae81ff>70</span>, <span style=color:#ae81ff>80</span>]
+    }
+}
+
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>English</span>: Course {
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>scoresOfYear</span>() -&gt; [Float] {
+        <span style=color:#66d9ef>return</span> [<span style=color:#ae81ff>90</span>, <span style=color:#ae81ff>95</span>]
+    }
+}
+
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>protocol</span> <span style=color:#a6e22e>Chart</span> {
+    <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>draw</span>(<span style=color:#66d9ef>_</span> course: Math?)
+    <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>draw</span>(<span style=color:#66d9ef>_</span> course: English?)
+}
+
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>PieChart</span>: Chart {
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>draw</span>(<span style=color:#66d9ef>_</span> course: Math?) {
+        <span style=color:#66d9ef>let</span> score = course?.scoresOfYear()
+        <span style=color:#75715e>//</span><span style=color:#75715e> </span><span style=color:#75715e>用</span><span style=color:#75715e>饼</span><span style=color:#75715e>图</span><span style=color:#75715e>展</span><span style=color:#75715e>示</span><span style=color:#75715e>数</span><span style=color:#75715e>学</span><span style=color:#75715e>成</span><span style=color:#75715e>绩</span>
+    }
+    
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>draw</span>(<span style=color:#66d9ef>_</span> course: English?) {
+        <span style=color:#66d9ef>let</span> score = course?.scoresOfYear()
+        <span style=color:#75715e>//</span><span style=color:#75715e> </span><span style=color:#75715e>用</span><span style=color:#75715e>饼</span><span style=color:#75715e>图</span><span style=color:#75715e>展</span><span style=color:#75715e>示</span><span style=color:#75715e>英</span><span style=color:#75715e>语</span><span style=color:#75715e>成</span><span style=color:#75715e>绩</span>
+    }
+}
+
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>BarChart</span>: Chart {
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>draw</span>(<span style=color:#66d9ef>_</span> course: Math?) {
+        <span style=color:#75715e>//</span><span style=color:#75715e> </span><span style=color:#75715e>用</span><span style=color:#75715e>柱</span><span style=color:#75715e>图</span><span style=color:#75715e>展</span><span style=color:#75715e>示</span><span style=color:#75715e>数</span><span style=color:#75715e>学</span><span style=color:#75715e>成</span><span style=color:#75715e>绩</span>
+    }
+    
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>draw</span>(<span style=color:#66d9ef>_</span> course: English?) {
+        <span style=color:#75715e>//</span><span style=color:#75715e> </span><span style=color:#75715e>用</span><span style=color:#75715e>柱</span><span style=color:#75715e>图</span><span style=color:#75715e>展</span><span style=color:#75715e>示</span><span style=color:#75715e>英</span><span style=color:#75715e>语</span><span style=color:#75715e>成</span><span style=color:#75715e>绩</span>
+    }
+}
+</code></pre></div><p>访问者模式适用于数据结构相对稳定的系统，它把数据结构和作用于数据结构上的操作之间的耦合解脱开，如果频繁变化，那么访问者类也需要频繁修改，这样就意义不大了。</p><h3 id=strategy>策略模式（Strategy）</h3><p>完成一项任务，往往可以有多种方式，每一种方式称为一个策略，我们可以根据环境或者条件的不同选择不同的策略来完成指定任务。策略模式让算法独立于使用它的用户，并且可以避免把复杂的、与算法相关的数据结构暴露给用户，用户可以在不修改原有系统的基础上选择算法或行为，也可以灵活地增加新的算法或行为。</p><p>iOS 开发中 Array 类提供的 sorted 方法就是策略模式的应用，数组对象只需要指定排序方式，然后排序方法内部便会使用不同的排序实现类，排序方法将算法的实现和使用的代码隔离开，我们甚至可以在运行时动态指定要用哪种排序方式。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift>print([<span style=color:#ae81ff>3</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>5</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>7</span>].sorted(by: <span style=color:#f92672>&lt;</span>))
+
+print([<span style=color:#ae81ff>3</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>5</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>7</span>].sorted(by: <span style=color:#f92672>&gt;</span>))
+</code></pre></div><p>策略模式另一种应用场景是解决多 if-else 问题，下面代码是没使用策略模式的实现方式。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>textFieldDidEndEditing</span>(<span style=color:#66d9ef>_</span> textField: UITextField) {
+    <span style=color:#66d9ef>if</span> textField == phoneNumberTextField {
+        <span style=color:#66d9ef>if</span> textField.text.isPhoneNumber {
+             ...
+        } <span style=color:#66d9ef>else</span> {
+             ...
+        }
+    } <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span> textField == captchaTextField {
+        <span style=color:#66d9ef>if</span> textField.text.isCaptcha {
+            ...
+        } <span style=color:#66d9ef>else</span> {
+            ...
+        }
+    }
+    ...
+}
+</code></pre></div><p>使用策略模式后大概是下面这样</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>protocol</span> <span style=color:#a6e22e>InputValidate</span> {
+    <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>check</span>(<span style=color:#66d9ef>_</span> text: String?) -&gt; Bool
+}
+
+<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>PhoneNumberValidate</span>: InputValidate {
+    <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>check</span>(<span style=color:#66d9ef>_</span> text: String?) -&gt; Bool {
+        <span style=color:#66d9ef>return</span> text.isPhoneNumber
+    }
+}
+
+<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>SMSCaptchaValidate</span>: InputValidate {
+    <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>check</span>(<span style=color:#66d9ef>_</span> text: String?) -&gt; Bool {
+        <span style=color:#66d9ef>return</span> text.isSMSCaptcha
+    }
+}
+
+<span style=color:#66d9ef>extension</span> <span style=color:#a6e22e>UITextField</span> {
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>AssociatedKeys</span> {
+        <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>var</span> validateObjectKey = <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>UITextField.validateObjectKey</span><span style=color:#e6db74>&#34;</span>
+    }
+
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>var</span> validateObject: InputValidate? {
+        <span style=color:#66d9ef>get</span> {
+            <span style=color:#66d9ef>return</span> objc_getAssociatedObject(<span style=color:#66d9ef>self</span>, &amp;AssociatedKeys.validateObjectKey) <span style=color:#66d9ef>as</span>? InputValidate
+        }
+        <span style=color:#66d9ef>set</span> {
+            objc_setAssociatedObject(<span style=color:#66d9ef>self</span>, &amp;AssociatedKeys.validateObjectKey, newValue, .OBJC_ASSOCIATION_RETAIN)
+        }
+    }
+}
+
+<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>ViewController</span>: UIViewController, UITextFieldDelegate {
+    <span style=color:#66d9ef>@IBOutlet</span> <span style=color:#66d9ef>weak</span> <span style=color:#66d9ef>var</span> phoneNumberTextField: UITextField!
+    <span style=color:#66d9ef>@IBOutlet</span> <span style=color:#66d9ef>weak</span> <span style=color:#66d9ef>var</span> captchaTextField: UITextField!
+ 
+    <span style=color:#66d9ef>override</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>viewDidLoad</span>() {
+        <span style=color:#66d9ef>super</span>.viewDidLoad()
+        
+        phoneNumberTextField.validateObject = PhoneNumberValidate()
+        captchaTextField.validateObject = SMSCaptchaValidate()
+    }
+    
+    <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>textFieldDidEndEditing</span>(<span style=color:#66d9ef>_</span> textField: UITextField) {
+        <span style=color:#66d9ef>if</span> textField.validateObject?.check(textField.text) ?? <span style=color:#66d9ef>true</span> {
+            ...
+        } <span style=color:#66d9ef>else</span> {
+            ...
+        }
+    }
+}
+</code></pre></div><p>策略模式的缺点是它会产生很多策略类，我们必须知道所有的策略类，并自行决定使用哪一个策略类。</p><h3 id=state>状态模式（State）</h3><p>状态模式允许对象在其内部状态改变时同时改变对象的行为，它建议为对象的所有可能状态新建一个类，然后将所有状态的对应行为抽取到这些类中，当对象的行为取决于它的状态，或者代码中包含大量与对象状态有关的条件语句时可考虑使用状态模式。</p><p>下面代码的应用场景比较符合状态模式，只是不同状态不一定会对应不同的类。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=color:#66d9ef>let</span> button = UIButton(type: .custom)
+        
+button.setTitle(<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>默认状态</span><span style=color:#e6db74>&#34;</span>, <span style=color:#66d9ef>for</span>: .normal)
+button.setTitle(<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>选中状态</span><span style=color:#e6db74>&#34;</span>, <span style=color:#66d9ef>for</span>: .selected)
+button.setTitle(<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>禁用状态</span><span style=color:#e6db74>&#34;</span>, <span style=color:#66d9ef>for</span>: .disabled)
+        
+button.setTitleColor(.black, <span style=color:#66d9ef>for</span>: .normal)
+button.setTitleColor(.darkGray, <span style=color:#66d9ef>for</span>: .selected)
+button.setTitleColor(.lightGray, <span style=color:#66d9ef>for</span>: .disabled)
+        
+button.setBackgroundImage(R.image.buttonNormal(), <span style=color:#66d9ef>for</span>: .normal)
+button.setBackgroundImage(R.image.buttonSelected(), <span style=color:#66d9ef>for</span>: .selected)
+button.setBackgroundImage(R.image.buttonDisabled(), <span style=color:#66d9ef>for</span>: .disabled)
+</code></pre></div><p>状态模式与策略模式的区别主要在于策略模式是通过外界注入再以不同算法实现，而状态模式是根据内部状态的改变来切换不同算法，并且状态之间知道彼此的存在，且能触发从一个状态到另一个状态的转换，策略模式则几乎完全不知道其他策略的存在。</p><p>状态模式和策略模式的相同点是它们在使用时必然会增加系统类和对象的个数，而且类的结构与实现都较为复杂，如果使用不当将导致程序结构和代码的混乱。</p><h3 id=template-method>模板方法模式（Template Method）</h3><p>我们将实现某个功能的整个算法拆分为一系列独立的步骤，当你只希望子类扩展某个特定算法步骤，而不是整个算法时可使用模板方法模式。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>ViewController</span>: UIViewController {
+    <span style=color:#66d9ef>override</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>viewDidLoad</span>() {
+        <span style=color:#66d9ef>super</span>.viewDidLoad()
+
+    }
+    
+    <span style=color:#66d9ef>override</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>viewWillLayoutSubviews</span>() {
+        <span style=color:#66d9ef>super</span>.viewWillLayoutSubviews()
+
+    }
+    
+    <span style=color:#66d9ef>override</span> <span style=color:#66d9ef>var</span> shouldAutorotate: Bool {
+        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>false</span>
+    }
+    
+    <span style=color:#66d9ef>override</span> <span style=color:#66d9ef>var</span> supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        <span style=color:#66d9ef>return</span> .portrait
+    }
+}
+</code></pre></div><h1 id=heading-12>总结</h1><p>正确合理的使用设计模式可以使代码变得更加简洁，并易于维护和扩展，不合理的使用会增加代码复杂度并导致代码混乱，所以我们在设计开发时不要过度设计，不要为了"套模式"而使用设计模式，而是要具体问题具体分析，根据实际情况进行权衡。</p><hr><p>1994 年除了诞生了设计模式这本书以外还有很多重要事件：中国互联网与美国互联网连接、曼德拉当选南非首任黑人总统，还产生了很多精彩电影，《肖申克的救赎》、《阿甘正传》、《低俗小说》、《狮子王》、《夜访吸血鬼》、《这个杀手不太冷》、《阳光灿烂的日子》、《精武英雄》、《重庆森林》、《东邪西毒》、《活着》</p></div><div class=post-footer></div></article></main></body></html>
