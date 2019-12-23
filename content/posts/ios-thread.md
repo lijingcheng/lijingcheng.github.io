@@ -83,7 +83,7 @@ perform 方法只对拥有 RunLoop 的线程有效，如果创建的线程没有
 # GCD（Grand Central Dispatch）
 GCD 是苹果为多核的并行计算提出的解决方案，它会自动地利用更多的 CPU 内核（比如双核、四核），最重要的是它会自动管理线程的生命周期（创建线程、调度任务、销毁线程）。同时它基于 C 语言，使用 Block 方式，使用起来更加方便灵活。
 
-最常用的使用方式是通过 dispatch_async 异步执行耗时操作，由于 UIKit 中大部分类都不是线程安全的，所以需要在主队列中处理 UI，在 dispatch 到主队列时 libDispatch 会唤醒主线程的 Runloop，并把 block 中的内容交给 Runloop 来处理，如果 dispatch 到其他线程则由 libDispatch 自己处理。
+最常用的使用方式是通过 dispatch_async 异步执行耗时操作，由于 UIKit 中大部分类都不是线程安全的，所以需要在主队列中处理 UI，在 dispatch 到主队列时 libDispatch 会唤醒主线程的 Runloop，并把 block 中的内容交给 Runloop 来处理，如果 dispatch 到其他线程则由 libDispatch 自己处理，需要注意的是当你监听某个通知并在响应代码里更新 UI 时相关代码也需要放在主线程里，因为发送通知的代码可能不在主线程。
 
 ```objc
 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -195,6 +195,20 @@ for (int i = 0; i < 5; i++) {
         NSLog(@"任务4%@", [NSThread currentThread]);
     });
 }
+```
+
+当 dispatch_sync 的目标队列不是主队列时， 这个同步任务在哪个线程，那么 Block 中的代码就会在哪个线程中执行，下面的测试代码都是在主线程中执行，可以通过 isMainThread 的输出结果验证一下。
+
+```objc
+dispatch_sync(dispatch_get_global_queue(0, 0), ^{
+     NSLog(@"%d", [NSThread isMainThread]); // 1
+});
+
+dispatch_async(dispatch_get_global_queue(0, 0), ^{
+    dispatch_sync(dispatch_get_global_queue(0, 0), ^{
+         NSLog(@"%d", [NSThread isMainThread]); // 0
+    });
+});
 ```
 
 NSTimer 在使用时会受 RunLoop 影响而导致延迟触发，当有更精准的计时需求时，可用 GCD 的计时器
