@@ -33,7 +33,7 @@ swap(X, Y); <span style=color:#75715e>// 线程1
 - (<span style=color:#66d9ef>void</span>)<span style=color:#a6e22e>performSelectorOnMainThread:</span><span style=color:#a6e22e>withObject:</span><span style=color:#a6e22e>waitUntilDone:</span>; 
 - (<span style=color:#66d9ef>void</span>)<span style=color:#a6e22e>performSelector:</span><span style=color:#a6e22e>onThread:</span><span style=color:#a6e22e>withObject:</span><span style=color:#a6e22e>waitUntilDone:</span><span style=color:#a6e22e>modes:</span>;
 - (<span style=color:#66d9ef>void</span>)<span style=color:#a6e22e>performSelector:</span><span style=color:#a6e22e>onThread:</span><span style=color:#a6e22e>withObject:</span><span style=color:#a6e22e>waitUntilDone:</span>;
-</code></pre></div><p>perform 方法只对拥有 RunLoop 的线程有效，如果创建的线程没有添加 RunLoop，perform 的 selector 将无法执行，如果该线程不存在了，程序会 Crash。</p><h1 id=gcdgrand-central-dispatch>GCD（Grand Central Dispatch）</h1><p>GCD 是苹果为多核的并行计算提出的解决方案，它会自动地利用更多的 CPU 内核（比如双核、四核），最重要的是它会自动管理线程的生命周期（创建线程、调度任务、销毁线程）。同时它基于 C 语言，使用 Block 方式，使用起来更加方便灵活。</p><p>最常用的使用方式是通过 dispatch_async 异步执行耗时操作，由于 UIKit 中大部分类都不是线程安全的，所以需要在主队列中处理 UI，在 dispatch 到主队列时 libDispatch 会唤醒主线程的 Runloop，并把 block 中的内容交给 Runloop 来处理，如果 dispatch 到其他线程则由 libDispatch 自己处理。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-objc data-lang=objc>dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, <span style=color:#ae81ff>0</span>), <span style=color:#f92672>^</span>{
+</code></pre></div><p>perform 方法只对拥有 RunLoop 的线程有效，如果创建的线程没有添加 RunLoop，perform 的 selector 将无法执行，如果该线程不存在了，程序会 Crash。</p><h1 id=gcdgrand-central-dispatch>GCD（Grand Central Dispatch）</h1><p>GCD 是苹果为多核的并行计算提出的解决方案，它会自动地利用更多的 CPU 内核（比如双核、四核），最重要的是它会自动管理线程的生命周期（创建线程、调度任务、销毁线程）。同时它基于 C 语言，使用 Block 方式，使用起来更加方便灵活。</p><p>最常用的使用方式是通过 dispatch_async 异步执行耗时操作，由于 UIKit 中大部分类都不是线程安全的，所以需要在主队列中处理 UI，在 dispatch 到主队列时 libDispatch 会唤醒主线程的 Runloop，并把 block 中的内容交给 Runloop 来处理，如果 dispatch 到其他线程则由 libDispatch 自己处理，需要注意的是当你监听某个通知并在响应代码里更新 UI 时相关代码也需要放在主线程里，因为发送通知的代码可能不在主线程。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-objc data-lang=objc>dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, <span style=color:#ae81ff>0</span>), <span style=color:#f92672>^</span>{
     dispatch_async(dispatch_get_main_queue(), <span style=color:#f92672>^</span>{
         ...
     });
@@ -103,6 +103,15 @@ dispatch_queue_t concurrentQueue <span style=color:#f92672>=</span> dispatch_que
         NSLog(<span style=color:#e6db74>@&#34;</span><span style=color:#e6db74>任务4%@</span><span style=color:#e6db74>&#34;</span>, [NSThread currentThread]);
     });
 }
+</code></pre></div><p>当 dispatch_sync 的目标队列不是主队列时， 这个同步任务在哪个线程，那么 Block 中的代码就会在哪个线程中执行，下面的测试代码都是在主线程中执行，可以通过 isMainThread 的输出结果验证一下。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-objc data-lang=objc>dispatch_sync(dispatch_get_global_queue(<span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>), <span style=color:#f92672>^</span>{
+     NSLog(<span style=color:#e6db74>@&#34;</span><span style=color:#e6db74>%d</span><span style=color:#e6db74>&#34;</span>, [NSThread isMainThread]); <span style=color:#75715e>// 1
+</span><span style=color:#75715e></span>});
+
+dispatch_async(dispatch_get_global_queue(<span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>), <span style=color:#f92672>^</span>{
+    dispatch_sync(dispatch_get_global_queue(<span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>), <span style=color:#f92672>^</span>{
+         NSLog(<span style=color:#e6db74>@&#34;</span><span style=color:#e6db74>%d</span><span style=color:#e6db74>&#34;</span>, [NSThread isMainThread]); <span style=color:#75715e>// 0
+</span><span style=color:#75715e></span>    });
+});
 </code></pre></div><p>NSTimer 在使用时会受 RunLoop 影响而导致延迟触发，当有更精准的计时需求时，可用 GCD 的计时器</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-objc data-lang=objc>dispatch_source_t timer <span style=color:#f92672>=</span> dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, dispatch_get_global_queue(<span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>));
 dispatch_source_set_timer(timer, dispatch_walltime(NULL, <span style=color:#ae81ff>0</span>), <span style=color:#ae81ff>1.0</span> <span style=color:#f92672>*</span> NSEC_PER_SEC, <span style=color:#ae81ff>0</span>);<span style=color:#75715e>// 每秒触发一次
 </span><span style=color:#75715e></span>    
