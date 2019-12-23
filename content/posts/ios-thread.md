@@ -95,7 +95,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
 GCD 有 5个不同队列：主队列，3个不同优先级的全局队列，以及一个优先级更低的后台队列（用于 I/O），我们还可以自己创建队列。通常不建议给队列设置优先级，因为多任务在访问共享资源时，可能会造成优先级反转问题。
 
-获取主队列：主队列是串行队列，所以比较适合处理共享资源、更新 UI 等事情  
+获取主队列：主队列是串行队列，所以比较适合处理共享资源、更新 UI 等事情，主队列中的代码在主线程中执行，但主线程中除了主队列，还可以执行其它队列的代码。
 
 ```objc
 dispatch_queue_t queue = dispatch_get_main_queue();
@@ -201,14 +201,43 @@ for (int i = 0; i < 5; i++) {
 
 ```objc
 dispatch_sync(dispatch_get_global_queue(0, 0), ^{
-     NSLog(@"%d", [NSThread isMainThread]); // 1
+     NSLog(@"%d", [NSThread isMainThread]); // 输出 1，同时证明了主线程中除了主队列，还可以执行其它队列
 });
 
 dispatch_async(dispatch_get_global_queue(0, 0), ^{
     dispatch_sync(dispatch_get_global_queue(0, 0), ^{
-         NSLog(@"%d", [NSThread isMainThread]); // 0
+         NSLog(@"%d", [NSThread isMainThread]); // 输出 0
     });
 });
+```
+
+因为 isMainThread 存在这个问题，所以建议通过判断是否是主队列来替代 isMainThread，如果你使用 Objective-C 语言开发，可以参考 SDWebImage 的实现。
+
+```objc
+#ifndef dispatch_main_async_safe
+#define dispatch_main_async_safe(block)\
+    if (strcmp(dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL), dispatch_queue_get_label(dispatch_get_main_queue())) == 0) {\
+        block();\
+    } else {\
+        dispatch_async(dispatch_get_main_queue(), block);\
+    }
+#endif
+```
+
+如果你使用的 Swift，可参考 RxSwift 对是否是主队列的实现。
+
+```swift
+extension DispatchQueue {
+    private static var token: DispatchSpecificKey<()> = {
+        let key = DispatchSpecificKey<()>()
+        DispatchQueue.main.setSpecific(key: key, value: ())
+        return key
+    }()
+
+    static var isMain: Bool {
+        return DispatchQueue.getSpecific(key: token) != nil
+    }
+}
 ```
 
 NSTimer 在使用时会受 RunLoop 影响而导致延迟触发，当有更精准的计时需求时，可用 GCD 的计时器
