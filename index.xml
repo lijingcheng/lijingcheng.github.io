@@ -15,18 +15,26 @@ class MapFactory { static func getMap(_ type: MapType) -&amp;gt; Map { switch ty
 工具 Shadowsocks、Alfred、Unarchiver、MacBooster、Agenda、有道词典
 办公 Canary Mail、Pages、Keynote、Numbers、MWeb、Sublime Text、XMind
 开发 Xcode、Sourcetree、Sketch、Charles、Injectionlll、Lookin
-终端 iTerm、Homebrew、RVM、CocoaPods、ZSH、Oh My ZSH、Hugo</description></item><item><title>将博客从 Octopress 迁移到 Hugo</title><link>https://lijingcheng.github.io/posts/hugo/</link><pubDate>Wed, 11 Dec 2019 16:28:43 +0800</pubDate><guid>https://lijingcheng.github.io/posts/hugo/</guid><description>迁移原因 Octopress 自 2015 年开始就没再更新过，再加上我使用的模板在宽屏显示器上也体验不太好，所以打算更新下博客样式，于是在目前比较流行的静态博客生成工具 Hexo 和 Hugo 之间经过比较后选择了 Hugo，相对来说 Hugo 不仅适合搭建博客，也同样适合搭建网站，它基于 go 语言，在发布时速度比较快，并且依赖较少。
+终端 iTerm、Homebrew、RVM、CocoaPods、ZSH、Oh My ZSH、Hugo</description></item><item><title>使用 Hugo + GitHub Actions 升级博客</title><link>https://lijingcheng.github.io/posts/hugo/</link><pubDate>Wed, 11 Dec 2019 16:28:43 +0800</pubDate><guid>https://lijingcheng.github.io/posts/hugo/</guid><description>最近打算更新下博客模板并优化下内容的发布流程，于是放弃了多年不更新的 Octopress，在目前比较流行的静态博客生成工具 Hexo 和 Hugo 之间选择了后者，主要看重的是 Hugo 在发布时速度比较快，并且依赖较少。
+关于发布流程，首先打算使用持续集成服务来提高内容发布效率，简化操作步骤，以达到提交 Markdown 源文件到 GitHub 后就能够自动完成博客站点的部署，在 Travis CI 和 GitHub Actions 之间选择了后者，对我来说最看重的就是它可以复用别人写好的 Action 并根据自己的需要来组合使用。
 安装 Hugo 建议使用 Homebrew 安装 Hugo
 brew install hugo 新建站点 hugo new site blog 新建站点后进入 blog 目录，查看生成的文件及主要目录
-archetypes 目录下会有个模板文件，新生成的文章会以此为模板 config.toml 网站配置文件 content 用来存放 Markdown 文件 layouts 存放 html 模板文件，如果使用了第三方模板，可以将 themes 里 layouts 目录下的 html 复制过来，然后在这里修改，hugo 会优先使用这个目录下的该文件，以后再更新 themes 下的模板文件时也不用担心文件冲突问题 data 存储数据文件供模板使用 public 生成的静态网站文件会放在这里 static 可以把图片等静态资源放这里 themes 存放网站主题文件 安装主题 Hugo 整理了很多开发者制作的主题，安装时直接将主题下载到刚创建的 themes 目录中就可以了，具体方式可参考各主题的介绍说明
-cd blog git init git submodule add https://github.</description></item><item><title>iOS 应用的启动任务设计</title><link>https://lijingcheng.github.io/posts/ios-task/</link><pubDate>Thu, 29 Aug 2019 15:18:55 +0800</pubDate><guid>https://lijingcheng.github.io/posts/ios-task/</guid><description>从点击 app 图标到看到首页内容就算是一次启动过程，在这个短则一两秒的过程中 app 要做的事情却有很多，本文主要介绍如何管理这些任务的执行方式和优先级问题。
+archetypes 目录下会有个模板文件，新生成的文章会以此为模板
+config.toml 网站配置文件
+content 用来存放 Markdown 文件
+layouts 存放 html 模板文件，如果使用了第三方模板，可以将 themes 里 layouts 目录下的 html 复制过来，然后在这里修改，hugo 会优先使用这个目录下的该文件，以后再更新 themes 下的模板文件时也不用担心文件冲突问题
+data 存储数据文件供模板使用</description></item><item><title>iOS 应用的启动任务设计</title><link>https://lijingcheng.github.io/posts/ios-task/</link><pubDate>Thu, 29 Aug 2019 15:18:55 +0800</pubDate><guid>https://lijingcheng.github.io/posts/ios-task/</guid><description>从点击 app 图标到看到首页内容就算是一次启动过程，在这个短则一两秒的过程中 app 要做的事情却有很多，本文主要介绍如何管理这些任务的执行方式和优先级问题。
 下面列出 app 启动过程中会去执行的一些主要任务：
-设置 app UI 样式 开启定位、埋点、网络状态、通知监听等服务 初始化一些第三方服务 如果是通过点击推送通知进入的 app 还会去存储相关数据用于在进入首页后跳转页面或弹框 访问一些接口并处理返回结果 上面列出的大部分任务都不需要我们主动去管理，只要在处理过程中注意不要影响启动速度就可以了，需要我们去管理的任务主要是对于一些接口返回数据的处理，像 升级检查、换肤、弹窗广告 这类接口在拿到返回数据后不能够马上处理，而是需要先保存数据然后等待首页展示出来后再做 UI 效果处理，并且这些任务通常还需要考虑优先级问题，例如当需要展示升级提示时就不应该再展示弹窗广告。
+设置 app UI 样式
+开启定位、埋点、网络状态、通知监听等服务
+初始化一些第三方服务
+如果是通过点击推送通知进入的 app 还会去存储相关数据用于在进入首页后跳转页面或弹框
+访问一些接口并处理返回结果
+上面列出的大部分任务都不需要我们主动去管理，只要在处理过程中注意不要影响启动速度就可以了，需要我们去管理的任务主要是对于一些接口返回数据的处理，像 升级检查、换肤、弹窗广告 这类接口在拿到返回数据后不能够马上处理，而是需要先保存数据然后等待首页展示出来后再做 UI 效果处理，并且这些任务通常还需要考虑优先级问题，例如当需要展示升级提示时就不应该再展示弹窗广告。
 我目前的处理方案是基于 RxSwift 响应式编程框架实现，每项任务都是可以被订阅的，订阅者可以监听任务状态并作出响应，每项任务的最初状态是unknown未知的，也就是接口还未返回数据时的状态，当接口返回数据后，再根据情况将状态改为need或noneed，也就是需要处理或不需要处理，我们可以让接口调用处只将关注点放在改变任务状态上，不同状态时该如何处理是由该任务的管理类决定，具体什么时候以及是否需要处理则是由该任务的订阅者去决定。
 下面以检查升级任务为主线看下具体代码实现，首先在 app 启动后发起异步接口调用，并根据返回数据修改任务状态，此时不用考虑 app 是否已经进入首页，以及如果弹框提示用户等功能
 NetworkService.get(&amp;#34;xxx.api&amp;#34;) { [weak self] (result, error) in if ... { Task.shared.upgrade.accept(.need) } else { Task.shared.upgrade.accept(.noneed) } } 当 app 进入首页后，会在 viewDidAppear 方法中发出 Notification 用来触发任务订阅管理功能
-NotificationCenter.default.rx.notification(Notification.Name.Event.appDidAppear).subscribe(onNext: { notification in Task.shared.subscribe() }).disposed(by: disposeBag) 然后我们再来看下 Task 的具体实现，在下面例子中列出了七个需要处理的任务，其中换肤、小红点、过期提醒这三个任务是进入首页后就可以直接执行，不用考虑优先级问题，而升级提示、切换城市、弹窗广告、推送跳转这四个任务之间有优先级关系，需要特殊处理一下
-struct Task { static let shared = Task() private init() { } enum Status: Int { case unknown, need, noneed } //BehaviorRelay类型的任务在被订阅后，订阅者会先收到最近一次的事件或初始事件 var upgrade = BehaviorRelay(value: Status.</description></item><item><title>如何做好技术管理</title><link>https://lijingcheng.github.io/posts/manage/</link><pubDate>Wed, 12 Jun 2019 19:18:55 +0800</pubDate><guid>https://lijingcheng.github.io/posts/manage/</guid><description>好的技术管理者应该是一名情商高、会沟通并且懂业务的技术人员，如果再懂一点管理，就能够胜任大部分工作。
+NotificationCenter.default.rx.notification(Notification.Name.Event.appDidAppear).subscribe(onNext: { notification in Task.</description></item><item><title>如何做好技术管理</title><link>https://lijingcheng.github.io/posts/manage/</link><pubDate>Wed, 12 Jun 2019 19:18:55 +0800</pubDate><guid>https://lijingcheng.github.io/posts/manage/</guid><description>好的技术管理者应该是一名情商高、会沟通并且懂业务的技术人员，如果再懂一点管理，就能够胜任大部分工作。
 情商高 要能够控制情绪，遇事不抱怨，懂得在适当的时候和场景下如何夸奖和批评别人，争论事情时要注意对事不对人，更重要的是要能够做到换位思考。
 会沟通 沟通能力是每一个技术人员都需要具备的基本能力，技术管理者在这方面应该做的更好。在沟通环节中有两个问题很重要，聆听和表达，其中懂得聆听尤为重要，先让别人把话说完！除此之外还需要注意的是如果在 QQ 或其它工具上沟通不清楚的问题一定要当面沟通，这样效率高而且不容易造成双方误解。
 懂业务 只有对业务具有较深入的了解才能综合技术和业务角度去思考问题并做出适合的架构设计。
@@ -41,15 +49,20 @@ PS：尽量不去做越级沟通的事
 组员做的时候还要给予技术以及资源等方面的支持，并定期评估结果给予反馈，当任一环节出现 delay 时要想办法及时补救，避免积少成多造成项目进度失控。进度把控上需要时刻监督执行的效果，但不是靠天天问进度来了解，也不要完全不管不问，对不熟悉的团队要把重点放在人身上，对熟悉并靠谱的团队要把重点放在事上，当事情结束后对做的好的经予鼓励，做的不好的要指出错误，并且错误的指出要明确和及时，要对事不对人，有些事情可能还需要小范围或单独去沟通。
 PS：要保护成员不被部门间其他乱七八糟的事情干扰，团队气氛还是很重要的</description></item><item><title>了解一点互联网架构</title><link>https://lijingcheng.github.io/posts/architecture/</link><pubDate>Fri, 12 Apr 2019 17:28:16 +0800</pubDate><guid>https://lijingcheng.github.io/posts/architecture/</guid><description>早期互联网应用通常用户少、并发低、数据量也比较小，所以将应用程序、文件服务、数据库服务都集中部署在一台服务器上就能够满足需求，这种方式易于开发和部署，但它做不到高可用和高并发，当服务器出现故障或项目升级时需要停止服务。
 随着时代发展，用户量及数据量快速膨胀，访问量也越来越多，于是对系统的高可用和高并发等方面都有了更高要求，互联网应用架构逐渐发展成需要集群部署以及分布式部署来满足需求。
-集群部署可以简单理解成多台机器部署相同服务，它是用来解决高可用、高并发以及海量数据问题的常用手段，在使用时需要考虑负载均衡、异地多活、容灾备份、以及熔断隔离等问题。 分布式部署可以简单理解成多台机器部署不同服务，使用时需要考虑各服务间的通信等问题，如 RPC，消息队列以及分布式事务和分布式锁。 下图为58架构师沈剑画的互联网应用分层架构图（侵删），将互联网架构分为以下几层：客户端层、反向代理层、Web应用层、服务层和数据层
+集群部署可以简单理解成多台机器部署相同服务，它是用来解决高可用、高并发以及海量数据问题的常用手段，在使用时需要考虑负载均衡、异地多活、容灾备份、以及熔断隔离等问题。
+分布式部署可以简单理解成多台机器部署不同服务，使用时需要考虑各服务间的通信等问题，如 RPC，消息队列以及分布式事务和分布式锁。
+下图为58架构师沈剑画的互联网应用分层架构图（侵删），将互联网架构分为以下几层：客户端层、反向代理层、Web应用层、服务层和数据层
 客户端层 客户端层的主体通常是浏览器、app 和小程序，它们的主要任务就是向用户展示数据并提供所需的数据交互功能，它会频繁的与Web应用层交换数据，在这过程中客户端会向 DNS 服务器发起域名解析请求，如果 DNS 服务器指向了某个 CDN 服务，则会将域名解析操作交给 CDN 中的 DNS 负载均衡系统处理，在识别出访问者是北京某联通用户后，会根据用户 IP 将离用户最近的联通机房中部署的反向代理服务集群中的某个服务器外网地址返回，该地址在被访问时会实施负载均衡策略并将请求转发给内网中Web应用集群中的某一台服务器。
 当系统遇到性能问题时，通常会对Web服务器做集群，然后通过反向代理去做负载均衡，当系统吞吐超过反向代理的性能极限并且难以扩容时，可以在 DNS 服务器上对同一个域名配置多个反向代理服务器 IP，然后每次 DNS 解析请求时通过轮询或其他方式返回不同 IP，从而达到负载均衡目的，大型网站通常会使用 DNS 来做一级负载均衡，然后再在内部做第二级负载均衡。
 一些访问量较高的网站、直播、视频平台都会利用 CDN 来解决不同地域不同网络访问静态资源的速度问题，当用户就近的缓存服务器没有相关资源时才会访问源服务器获取资源，并且根据策略决定是否更新缓存数据。
 反向代理层 通常代理服务器是相对于用户来说的，它可以代替用户去获取网络信息，从而隐藏真实的客户端信息（VPN），而反向代理的目的是为了隐藏Web服务器，它以代理服务器的身份来接受网络连接请求，然后根据负载均衡策略将请求转发给内网上的某台服务器上，以解决系统面临大量用户访问时负载过高的问题，在转发过程中负载均衡技术能够提供服务器的失效检测功能，然后将用户请求转发到可用节点上，从而保证所有服务持续可用
 负载均衡技术包括 DNS 负载均衡、硬件负载均衡和软件负载均衡，其中硬件负载均衡是通过网络设备硬件来抗压力，虽然性能好但是太贵，很多公司负担不起，基于软件做的负载均衡只需要在正常服务器上部署软件即可，它还分为四层协议和七层协议两种：
-基于第四层传输层来做流量分发的称为四层负载均衡，例如 LVS（Linux Virtual Server），四层负载均衡服务器在接受到客户端请求后通过修改数据包的地址信息（IP + 端口号）将流量转发出去 基于第七层应用层来做流量分发的称为七层负载均衡，例如 Nginx 反向代理软件，它通过代理方式实现负载均衡 第四层的负载均衡性能相对来说要高一些，但对于一般应用来说七层就够用了，一些大型网站通常会采用 DNS + 四层 + 七层负载的方式进行多层次负载均衡
+基于第四层传输层来做流量分发的称为四层负载均衡，例如 LVS（Linux Virtual Server），四层负载均衡服务器在接受到客户端请求后通过修改数据包的地址信息（IP + 端口号）将流量转发出去
+基于第七层应用层来做流量分发的称为七层负载均衡，例如 Nginx 反向代理软件，它通过代理方式实现负载均衡
+第四层的负载均衡性能相对来说要高一些，但对于一般应用来说七层就够用了，一些大型网站通常会采用 DNS + 四层 + 七层负载的方式进行多层次负载均衡
 常用负载均衡策略包括：
-轮询：将请求轮流发送到每个服务器上，这适合每台服务器性能差不多的场景，如果有性能差异，那么性能较差的服务器可能无法承担所分配的负载 加权轮询：在轮询的基础上，根据服务器的性能差异，为服务器赋予一定的权重，性能高的服务器分配更高的权重 最少连接：由于每个请求的连接时间不一样，使用轮询或者加权轮询方式可能会使某个服务器当前连接数过大，而有的服务器连接过小造成负载不均衡，最少连接策略就是将请求发送给当前最少连接数的服务器上 加权最少连接：在最少连接的基础上，根据服务器的性能为每台服务器分配权重，再根据权重计算出每台服务器能处理的连接数 源地址哈希：通过对客户端 IP 计算哈希值后，再对服务器数量取模得到目标服务器的序号，这样可以保证同一 IP 的客户端的请求会转发到同一台服务器上 Web应用层 Web应用层通常由多个服务器形成一个或多个集群来向客户端提供服务，当请求量非常大时便要求系统具有处理高并发的能力，并且能够保障一定的高可用性，在高可用上可通过异地多活、容灾备份、以及熔断隔离等方式来保障，高并发上可通过服务降级、限流降级等方式处理。</description></item><item><title>学习骑档车〜</title><link>https://lijingcheng.github.io/posts/moto/</link><pubDate>Thu, 28 Mar 2019 15:02:12 +0800</pubDate><guid>https://lijingcheng.github.io/posts/moto/</guid><description>总结了一些骑摩托车时需要注意的事情，也许能帮助到新手，开车文章中写的大部分内容同样适用于骑摩托车。
+轮询：将请求轮流发送到每个服务器上，这适合每台服务器性能差不多的场景，如果有性能差异，那么性能较差的服务器可能无法承担所分配的负载
+加权轮询：在轮询的基础上，根据服务器的性能差异，为服务器赋予一定的权重，性能高的服务器分配更高的权重</description></item><item><title>学习骑档车〜</title><link>https://lijingcheng.github.io/posts/moto/</link><pubDate>Thu, 28 Mar 2019 15:02:12 +0800</pubDate><guid>https://lijingcheng.github.io/posts/moto/</guid><description>总结了一些骑摩托车时需要注意的事情，也许能帮助到新手，开车文章中写的大部分内容同样适用于骑摩托车。
 起步 上车后首先确认车辆处于空挡，然后打侧踢，通电后拉住离合再打火（养成这个习惯可避免因车辆误挂在空档外的其他档位上而导致在打火后窜出去）
 捏住离合和前刹车后挂一档，然后再换脚踩后刹松开前刹（高档位停车时要注意把档位放回一档，高档位起步很容易烧离合，或者熄火）
 打左转向，观察后视镜并回头确认安全后慢松离合，松快了会熄火，如果希望起步能快点，可以先加一点点油，然后再慢松离合，松的过慢对离合不好，松太快并且油门给的很大时车会前冲，甚至翘头（找到离合咬合点的位置后，可快速松到咬合点位置再慢松）
@@ -81,7 +94,19 @@ PS：要保护成员不被部门间其他乱七八糟的事情干扰，团队气
 框架是服务开发人员的，需要满足通用性和易用性两个要求，其中易用性更重要
 开发 MVVM MVVM 相对 MVC 来说最大的优点是，ViewModel 是独立的，可复用到别的模块，并且更易于做单元测试，而 View 和 ViewController 仅用来做 UI 展示，它与 ViewModel 之间是相互影响的，ViewModel 处理过的数据要能够及时响应到 View，而用户在 View 中做了修改数据的操作后，ViewModel 中对应的数据也应该及时更新，响应式编程方式能够更容易的处理这个过程
 响应式编程 响应式编程是一种面向数据及其变化响应的编程方式，它能够将数据、UI事件和异步操作更方便的进行序列化处理，相比传统编程方式来说，它可以使逻辑相关的代码能够紧凑的聚在一起，它通过信号机制来实现，用信号来记录值的变化，并通过信号绑定的方式来响应变化，下面这个例子很好的描述了响应式编程的作用
-a = 2 // signal b = 2 // signal c = a + b // signal binding c = 4 b = 3 // c = 5 目前我们在 Swift 项目中选择使用 RxSwift + MVVM 的方式进行开发，使用 RxSwift 需要掌握以下几个概念：</description></item><item><title>开车需要注意的事情〜</title><link>https://lijingcheng.github.io/posts/car/</link><pubDate>Thu, 19 Oct 2017 20:04:50 +0800</pubDate><guid>https://lijingcheng.github.io/posts/car/</guid><description>总结了一些开车时需要注意的事情，希望能帮助到刚拿到驾照的新司机。
+a = 2 // signal b = 2 // signal c = a + b // signal binding c = 4 b = 3 // c = 5 目前我们在 Swift 项目中选择使用 RxSwift + MVVM 的方式进行开发，使用 RxSwift 需要掌握以下几个概念：</description></item><item><title>iOS 组件化开发</title><link>https://lijingcheng.github.io/posts/ios-componentization/</link><pubDate>Mon, 30 Apr 2018 19:11:27 +0800</pubDate><guid>https://lijingcheng.github.io/posts/ios-componentization/</guid><description>随着 app 功能和体积的增长，也带来了如编译速度变慢、提交代码经常出现冲突、以及业务代码混在一起，开发功能类似的新项目时需要从头搭建等问题，于是很多团队都选择了利用组件化开发来解决这些问题，下面介绍下在组件化开发过程中需要注意哪些地方。
+拆分组件 组件即功能组件，模块即业务模块，拆分时要把握好粒度，要考虑到维护成本
+每个组件对应一个 project，身为组件的同时还能够独立运行和打测试包
+大点的项目除了按框架分层拆分还可以按业务模块拆分，需要把握好拆分粒度
+小项目按框架分层拆分就可以了
+组件之间的依赖关系 业务模块依赖于框架
+业务模块之间避免横向依赖（可适当的有些重复代码或存放重复资源）
+禁止框架依赖业务模块
+组件化实施 通过 CocoaPods 来实现组件化
+Podfile：定义私有库地址和需要依赖的组件及版本
+Podspec：定义组件的依赖库、编译设置、以及需要打包的资源及代码，资源包括 xib、国际化文件、assets 等
+组件中的资源访问 访问 image、xib、storyboard 时需要指定 bundle，如果项目中使用了 R.swift，可以在各组件中通过以下角本来修改 R.generated.swift 中设置的 bundle，修改后在组件中使用 R.image.xxx()，此代码在组件中是指 main bundle，在主工程中会将其认定为 core bundle。
+$PODS_ROOT/R.swift/rswift&amp;#34; generate &amp;#34;$SRCROOT&amp;#34; --accessLevel public sed -i &amp;#39;&amp;#39; -e &amp;#34;s/Bundle(for: R.Class.self)/Bundle.core/g&amp;#34;“$SRCROOT/ 还需要在各组件中正确使用 open、public、private</description></item><item><title>开车需要注意的事情〜</title><link>https://lijingcheng.github.io/posts/car/</link><pubDate>Thu, 19 Oct 2017 20:04:50 +0800</pubDate><guid>https://lijingcheng.github.io/posts/car/</guid><description>总结了一些开车时需要注意的事情，希望能帮助到刚拿到驾照的新司机。
 起步 不要酒后/疲劳/生气时开车
 确认车周围有没有障碍物或人（曾顶着停车桩开了十多米）
 车上所有人都要系安全带
@@ -108,16 +133,20 @@ Hello World print(&amp;#34;Hello world!&amp;#34;) //打印并换行 数据类型
 let age: Int = 4 //常量age在32-bit平台下为Int32,在64-bit下为Int64 var twoThousand = 2_000 //变量twoThousand会被编译器自动推断为Int类型，并且用_增强可读性 浮点数 32/64 位浮点数分别用 Float 和 Double 表示，精度分别为 6/15+ 位数字。
 let pi = 3.14159 //浮点数值总是会被推断为Double let a = Int(pi) //自动截断，值为3 let b = Int(exactly: pi) //要求更为精确的转换，当精度有损失，认为转换失败，值为nil 布尔值 let isChild: Bool = true //orfalse 字符 Character 类型通常由编码无关的 Unicode 字符组成
 var c: Character = &amp;#34;e&amp;#34; //如果不指定类型，双引号会被推断为字符串类型 Character 可以由一个或多个 Unicode 标量（Scalar）组成</description></item><item><title>使用 Carthage 做依赖管理</title><link>https://lijingcheng.github.io/posts/carthage/</link><pubDate>Fri, 23 Dec 2016 19:18:47 +0800</pubDate><guid>https://lijingcheng.github.io/posts/carthage/</guid><description>Carthage 会在帮你下载完第三方依赖库后，通过 xcodebuild 将其编译成动态库，但它不会像 CocoaPods 那样去修改你的项目文件和编译设置，这些都需要你自己去完成。
-Carthage VS CocoaPods CocoaPods 需要我们在本地维护第三方库依赖的 podspec 文件，大部分 pod 命令执行时都会去读取此文件，Carthage 则是去中心化的管理方式，不需要维护这种说明文件，它会去直接下载项目并编译成动态库使用，所以对使用 Carthage 的项目来说，最低系统适配要求 iOS8+ CocoaPods 在执行 pod install 后会帮我们做好所有配置工作，我们只需要用它提供的 workspace 文件打开项目即可，使用 Carthage 的话需要我们自己到项目中进行动态库以及打包资源的配置，但是好处是项目配置信息相对 CocoaPods 来说较干净 Carthage 使用的是动态库方式，所以无法进行调试，看不到源码，但带来的好处是编译速度的提高 Carthage 的下载源目前仅支持 GitHub（GitHub.com 和 GitHub Enterprise），CocoaPods 除了 GitHub，还支持我们托管在公司的 Git 仓库，还有本地路径 目前支持 CocoaPods 的第三方库比 Carthage 要多一些 我们可以在一个项目里同时使用 CocoaPods 和 Carthage，可以用 Carthage 管理比较成熟并且不需要调试的第三方库，用来提高编译速度，再用 CocoaPods 管理其它有可能需要进行代码调试的第三方库，还可以用来在组件化开发中做依赖设置。
-安装 Carthage 建议通过 HomeBrew 安装
-brew install carthage 使用 Carthage 在项目目录下创建 Cartfile 文件，并写入想要使用的第三方库</description></item><item><title>使用 xcodebuild 打包 IPA 并上传蒲公英</title><link>https://lijingcheng.github.io/posts/xcodebuild/</link><pubDate>Mon, 05 Dec 2016 18:49:45 +0800</pubDate><guid>https://lijingcheng.github.io/posts/xcodebuild/</guid><description>xcodebuild 是苹果提供的项目自动构建工具，包含在 Command Line Tools 中，可以完成 iOS 项目的编译、打包和签名等工作。
+Carthage VS CocoaPods CocoaPods 需要我们在本地维护第三方库依赖的 podspec 文件，大部分 pod 命令执行时都会去读取此文件，Carthage 则是去中心化的管理方式，不需要维护这种说明文件，它会去直接下载项目并编译成动态库使用，所以对使用 Carthage 的项目来说，最低系统适配要求 iOS8+
+CocoaPods 在执行 pod install 后会帮我们做好所有配置工作，我们只需要用它提供的 workspace 文件打开项目即可，使用 Carthage 的话需要我们自己到项目中进行动态库以及打包资源的配置，但是好处是项目配置信息相对 CocoaPods 来说较干净
+Carthage 使用的是动态库方式，所以无法进行调试，看不到源码，但带来的好处是编译速度的提高
+Carthage 的下载源目前仅支持 GitHub（GitHub.com 和 GitHub Enterprise），CocoaPods 除了 GitHub，还支持我们托管在公司的 Git 仓库，还有本地路径
+目前支持 CocoaPods 的第三方库比 Carthage 要多一些
+我们可以在一个项目里同时使用 CocoaPods 和 Carthage，可以用 Carthage 管理比较成熟并且不需要调试的第三方库，用来提高编译速度，再用 CocoaPods 管理其它有可能需要进行代码调试的第三方库，还可以用来在组件化开发中做依赖设置。
+安装 Carthage 建议通过 HomeBrew 安装</description></item><item><title>使用 xcodebuild 打包 IPA 并上传蒲公英</title><link>https://lijingcheng.github.io/posts/xcodebuild/</link><pubDate>Mon, 05 Dec 2016 18:49:45 +0800</pubDate><guid>https://lijingcheng.github.io/posts/xcodebuild/</guid><description>xcodebuild 是苹果提供的项目自动构建工具，包含在 Command Line Tools 中，可以完成 iOS 项目的编译、打包和签名等工作。
 shell script 是一种命令语言，有点像 Windows 下的批处理，但更强大，它可以跑在 Linux/Unix 系统的 shell 程序中。
 为什么要用 xcodebuild 通过 Xcode 对项目进行编译打包，并将 IPA 分发给测试人员这一过程操作步骤多并繁琐，而在 shell 脚本中使用 xcodebuild 命令执行这一过程便会非常方便快捷，特别是当项目进入测试阶段，每天都会打一个或多个测试包时，使用脚本进行自动化打包能够大大提高我们的工作效率。
 以前的作法 AFNetworking 的作者 mattt 曾经提供了一个名为 shenzhen 的打包服务，使用起来非常简单方便，并且能够在打包后上传到很多分发平台上，可惜已经有两年多没有再维护了。
 造个轮子 因为打包脚本写起来比较简单，并且它也会随着 Xcode 的发展而改变，所以在这里我们还是选择自己写一个脚本使用并维护，下面的介绍不会太详细，如果有更多需求可以使用以下命令来查看帮助，并修改脚本。
 xcodebuild --help 完成打包并分发这一过程通常分为四个步骤： &amp;ldquo;build 工程 -&amp;gt; 生成 xcarchive 文件 -&amp;gt; 生成 ipa 文件 -&amp;gt; 上传到分发平台&amp;rdquo;
 完整脚本 新建 xxx.sh 文件，然后将下面脚本复制过去，如果你也在用 CocoaPods，并且只需要打 Release 包，那么只需要用蒲公英提供给你的 userKey 和 apiKey 替换掉脚本里的就可以了。
-#!/bin/sh ########################################################################## ###### 1.执行 chmod +x .</description></item><item><title>iOS 开发 tips</title><link>https://lijingcheng.github.io/posts/ios-tips/</link><pubDate>Thu, 09 Jun 2016 10:58:59 +0800</pubDate><guid>https://lijingcheng.github.io/posts/ios-tips/</guid><description>用模拟器调试动画功能时，让动画执行的慢一些
+#!/bin/sh ########################################################################## ###### 1.执行 chmod +x .</description></item><item><title>iOS 开发 Tips</title><link>https://lijingcheng.github.io/posts/ios-tips/</link><pubDate>Thu, 09 Jun 2016 10:58:59 +0800</pubDate><guid>https://lijingcheng.github.io/posts/ios-tips/</guid><description>用模拟器调试动画功能时，让动画执行的慢一些
 模拟器菜单：Debug -&amp;gt; Show Animations 取两位整数，不够补 0
 NSLog(@&amp;quot;%@&amp;quot;, [NSString stringWithFormat:@&amp;quot;%02d月&amp;quot;, 3]); 在不知道谁是第一响应者时隐藏键盘
 [[[UIApplication sharedApplication] keyWindow] endEditing:YES]; Provisioning Profiles 所在路径
@@ -143,18 +172,32 @@ self.navigationController.interactivePopGestureRecognizer.delegate = self; 在 x
 模糊的命名：要做到见名知意
 if/else 嵌套过多：尽量不超过3层，如果不能简化逻辑，可通过拆分方法或添加注释方式解决
 Xcode 提供的重构功能 跟别的开发工具相比 Xcode 提供的重构功能简直弱暴了，不过有总比没有好，Xcode 提供了以下几个重构功能，从菜单栏中进入：Edit -&amp;gt; Refactor，或在代码上右键，然后选择 Refactor
-Rename：重命名类、方法、变量 Extract：将方法中的一段代码抽取为一个独立的方法 Create Superclass：给当前选中的类创建父类 Move Up：将选中方法或属性移到父类中 Move Down：将父类中选中的属性移到子类中 Encapsulate：封装，生成 setter/getter，一般用不上 相对来说，Rename 更常用一些，有时也会用到 Extract，最后吐槽一下</description></item><item><title>了解 Block</title><link>https://lijingcheng.github.io/posts/block/</link><pubDate>Thu, 03 Dec 2015 15:09:29 +0800</pubDate><guid>https://lijingcheng.github.io/posts/block/</guid><description>Block 是 Objective-C 语言创建闭包的方式，从 iOS4 开始 block 便在很多场景下替代了 delegate，相对来说 block 的最大优点就是可以使代码集中在一起，提高可读性，但也提高了代码调试的复杂度，并增加了循环引用产生的场景。
+Rename：重命名类、方法、变量
+Extract：将方法中的一段代码抽取为一个独立的方法
+Create Superclass：给当前选中的类创建父类</description></item><item><title>了解 Block</title><link>https://lijingcheng.github.io/posts/block/</link><pubDate>Thu, 03 Dec 2015 15:09:29 +0800</pubDate><guid>https://lijingcheng.github.io/posts/block/</guid><description>Block 是 Objective-C 语言创建闭包的方式，从 iOS4 开始 block 便在很多场景下替代了 delegate，相对来说 block 的最大优点就是可以使代码集中在一起，提高可读性，但也提高了代码调试的复杂度，并增加了循环引用产生的场景。
 一些概念 Block 会使 app 运行成本增高，因为 delegate 只是保存了一个对象指针，而 block 本身实际上就是对象，它会被编译成 struct 并为其内容分配空间，struct 内容主要包括 isa 指针、block 对应实现函数的地址以及 block 复制过来的变量，这些内容也会随着需要从栈内存复制到堆内存。
-isa：指向 block 对应的 Class _NSConcreteGlobalBlock：定义在全局区的 block 会作为代码片段存在 _NSConcreteStackBlock：定义在方法中的 block 会保存在栈中，当函数返回时被销毁 _NSConcreteMallocBlock：为了增加 block 的生命周期，可以用 copy 方法将其复制到堆中，如果 block 已经在堆里了，再次进行 copy 只会增加引用计数 IMP：block 块中的代码会作为方法形式存在，IMP 指向方法地址 复制的变量：block 能够读取它所在函数的内部变量，该变量会被复制到 struct 中，默认是值复制，不能修改，加上 __block 修饰的是引用复制，可以修改 简单例子 __block NSInteger mutiplier = 7; // 用 __block 修饰后，在 block 里就可以修改 mutiplier 的值 // 定义名为 myBlock 的代码块，返回值类型为 NSInteger，并有一个名为 num 的 NSInteger 型参数 NSInteger (^myBlock)(NSInteger) = ^(NSInteger num){ mutiplier = 3; return num * mutiplier; }; NSLog(@&amp;#34;%ld&amp;#34;, myBlock(3)); // 像调用函数一样使用 block 循环引用 对象之间相互持有便会造成循环引用问题，下面用一个经典例子看一下解决方式</description></item><item><title>Objective-C Runtime 开发</title><link>https://lijingcheng.github.io/posts/runtime/</link><pubDate>Mon, 21 Sep 2015 14:30:27 +0800</pubDate><guid>https://lijingcheng.github.io/posts/runtime/</guid><description>Runtime 是使用 C 和汇编实现的运行时代码库，Objective-C 中有很多语言特性都是通过它来实现。了解 Runtime 开发可以帮助我们更灵活的使用 Objective-C 这门语言，我们可以将程序功能推迟到运行时再去决定怎么做，还可以利用 Runtime 来解决项目开发中的一些设计和技术问题，使开发过程更加具有灵活性。
-一些关键字 self：类的隐藏参数变量，指向当前调用方法的对象 super：是编译器的标示符，通过 super 调用方法会被翻译成 objc_msgSendSuper(self, _cmd,&amp;hellip;) SEL：以方法名为内容的 C 字符串 IMP：指向方法实现的函数指针 id：指向类对象或实例对象的指针 isa：为 id 对象所属类型 (objc_class)，Objc 中的继承就是通过 isa 指针找到 objc_class，然后再通过 super_class 去找对应的父类 metaclass：在 Objc 中，类本身也是对象，实例对象的 isa 指向它所属的类，而类对象的 isa 指向元类 (metaclass)，元类的 isa 直接指向根元类，根元类的isa指向它自己，它们之间的关系如下图所示。 消息传递 (Messaging) Objective-C 对于调用对象的某个方法这种行为叫做给对象发送消息，实际上就是沿着它的 isa 指针去查找真正的函数地址。下面我们来了解一下这个过程：
+isa：指向 block 对应的 Class
+_NSConcreteGlobalBlock：定义在全局区的 block 会作为代码片段存在 _NSConcreteStackBlock：定义在方法中的 block 会保存在栈中，当函数返回时被销毁 _NSConcreteMallocBlock：为了增加 block 的生命周期，可以用 copy 方法将其复制到堆中，如果 block 已经在堆里了，再次进行 copy 只会增加引用计数 IMP：block 块中的代码会作为方法形式存在，IMP 指向方法地址
+复制的变量：block 能够读取它所在函数的内部变量，该变量会被复制到 struct 中，默认是值复制，不能修改，加上 __block 修饰的是引用复制，可以修改
+简单例子 __block NSInteger mutiplier = 7; // 用 __block 修饰后，在 block 里就可以修改 mutiplier 的值 // 定义名为 myBlock 的代码块，返回值类型为 NSInteger，并有一个名为 num 的 NSInteger 型参数 NSInteger (^myBlock)(NSInteger) = ^(NSInteger num){ mutiplier = 3; return num * mutiplier; }; NSLog(@&amp;#34;%ld&amp;#34;, myBlock(3)); // 像调用函数一样使用 block 循环引用 对象之间相互持有便会造成循环引用问题，下面用一个经典例子看一下解决方式</description></item><item><title>Objective-C Runtime 开发</title><link>https://lijingcheng.github.io/posts/runtime/</link><pubDate>Mon, 21 Sep 2015 14:30:27 +0800</pubDate><guid>https://lijingcheng.github.io/posts/runtime/</guid><description>Runtime 是使用 C 和汇编实现的运行时代码库，Objective-C 中有很多语言特性都是通过它来实现。了解 Runtime 开发可以帮助我们更灵活的使用 Objective-C 这门语言，我们可以将程序功能推迟到运行时再去决定怎么做，还可以利用 Runtime 来解决项目开发中的一些设计和技术问题，使开发过程更加具有灵活性。
+一些关键字 self：类的隐藏参数变量，指向当前调用方法的对象
+super：是编译器的标示符，通过 super 调用方法会被翻译成 objc_msgSendSuper(self, _cmd,&amp;hellip;)
+SEL：以方法名为内容的 C 字符串
+IMP：指向方法实现的函数指针
+id：指向类对象或实例对象的指针
+isa：为 id 对象所属类型 (objc_class)，Objc 中的继承就是通过 isa 指针找到 objc_class，然后再通过 super_class 去找对应的父类
+metaclass：在 Objc 中，类本身也是对象，实例对象的 isa 指向它所属的类，而类对象的 isa 指向元类 (metaclass)，元类的 isa 直接指向根元类，根元类的isa指向它自己，它们之间的关系如下图所示。
+消息传递 (Messaging) Objective-C 对于调用对象的某个方法这种行为叫做给对象发送消息，实际上就是沿着它的 isa 指针去查找真正的函数地址。下面我们来了解一下这个过程：
 我们写一个给对象发送消息的代码
-[array insertObject:obj atIndex:5]; 编译器首先会将上面代码翻译成这种样子
-objc_msgSend(array, @selector(insertObject:atIndex:), obj, 5); 系统在运行时会通过 array 对象的 isa 指针找到对应的 class（如果是给类发消息，则找到的是metaclass），然后在 class 的 cache 方法列表中用 SEL 去找对应 method，如果找不到便去 class 的方法列表中去找，如果在方法列表中也找不对对应 method 时，便沿着继承体系继续向上查找，找到后将 method 放入 cache，以便下次能快速定位，然后再去执行 method 的 IMP，找不到时系统便报错：unrecognized selector sent to insertObject:atIndex:</description></item><item><title>iOS 内存管理</title><link>https://lijingcheng.github.io/posts/ios-memory/</link><pubDate>Sun, 12 Jul 2015 15:07:54 +0800</pubDate><guid>https://lijingcheng.github.io/posts/ios-memory/</guid><description>内存管理 指程序在运行时申请内存，并在使用完后释放内存的过程，内存管理不当造成的主要问题便是内存泄漏和过度释放，虽然 ARC 使我们可以不去关注内存管理上的一些细节问题，但掌握一些相关知识还是很有必要的。
-一些概念 MRC：manual reference counting，自己编写内存管理代码（retain、release、autorelease&amp;hellip;） ARC：automatic reference counting，编译器会在编译阶段为代码加上优化过的内存管理代码，这样就可以让我们不必花费大量时间在内存管理上面，可以将更多的精力放在业务代码上。 内存泄漏：不再使用的对象内存没有释放掉，将导致内存占用无限增长，即便是使用 ARC，也会因为循环引用问题而造成内存泄露，并且还要注意与 CoreFoundation 对象进行桥接时要手动释放内存。 内存过度释放：释放了仍需要使用中的对象，将有可能导致应用崩溃 内存管理规则 内存管理是建立在对象的拥有关系上的，当拥有对象后就要负责释放它，并且不要释放非自己持有的对象，具体规则如下：
+[array insertObject:obj atIndex:5]; 编译器首先会将上面代码翻译成这种样子</description></item><item><title>iOS 内存管理</title><link>https://lijingcheng.github.io/posts/ios-memory/</link><pubDate>Sun, 12 Jul 2015 15:07:54 +0800</pubDate><guid>https://lijingcheng.github.io/posts/ios-memory/</guid><description>内存管理 指程序在运行时申请内存，并在使用完后释放内存的过程，内存管理不当造成的主要问题便是内存泄漏和过度释放，虽然 ARC 使我们可以不去关注内存管理上的一些细节问题，但掌握一些相关知识还是很有必要的。
+一些概念 MRC：manual reference counting，自己编写内存管理代码（retain、release、autorelease&amp;hellip;）
+ARC：automatic reference counting，编译器会在编译阶段为代码加上优化过的内存管理代码，这样就可以让我们不必花费大量时间在内存管理上面，可以将更多的精力放在业务代码上。
+内存泄漏：不再使用的对象内存没有释放掉，将导致内存占用无限增长，即便是使用 ARC，也会因为循环引用问题而造成内存泄露，并且还要注意与 CoreFoundation 对象进行桥接时要手动释放内存。
+内存过度释放：释放了仍需要使用中的对象，将有可能导致应用崩溃
+内存管理规则 内存管理是建立在对象的拥有关系上的，当拥有对象后就要负责释放它，并且不要释放非自己持有的对象，具体规则如下：
 拥有对象所有权
 通过 alloc/new/copy/mutableCopy 创建对象 在某些场景里避免一个对象被移除，可以对它进行 retain Student * stu1 = [[Student alloc] init]; Student * stu2 = [stu1 retain]; 放弃对象拥有权
-立即释放：给对象发送一个 release 消息 延迟释放：给对象发送一个 autorelease 消息 + (Student *)studentWithName:(NSString *)name { Student *stu = [[Student alloc] initWithName:name]; return [stu autorelease]; } 实现 dealloc 方法来释放对象自身内存与它所持有的资源，此方法由系统在该对象被销毁时自动调用
-- (void)dealloc { [_firstName release]; [_lastName release]; [super dealloc]; // 必须先释放自己占有的资源再通过此行代码释放自己 } ARC 带来的变化</description></item><item><title>iOS 多线程开发</title><link>https://lijingcheng.github.io/posts/ios-thread/</link><pubDate>Wed, 03 Jun 2015 15:07:00 +0800</pubDate><guid>https://lijingcheng.github.io/posts/ios-thread/</guid><description>合理的线程分配能够提高程序的执行效率和资源利用率，在 iOS 开发中通常使用 GCD 或 Operation Queue 来操作线程，GCD 基于 C API，Operation Queue 是在 GCD 基础上实现的，效率上较 GCD 会差一点点，但代码可读性和易用性较高，简单的任务可用 GCD 去实现，复杂一些的还是推荐使用 Operation Queue 来处理。微小的性能提升远不如写出可维护性高的代码来的实在。
+立即释放：给对象发送一个 release 消息 延迟释放：给对象发送一个 autorelease 消息 + (Student *)studentWithName:(NSString *)name { Student *stu = [[Student alloc] initWithName:name]; return [stu autorelease]; } 实现 dealloc 方法来释放对象自身内存与它所持有的资源，此方法由系统在该对象被销毁时自动调用</description></item><item><title>iOS 多线程开发</title><link>https://lijingcheng.github.io/posts/ios-thread/</link><pubDate>Wed, 03 Jun 2015 15:07:00 +0800</pubDate><guid>https://lijingcheng.github.io/posts/ios-thread/</guid><description>合理的线程分配能够提高程序的执行效率和资源利用率，在 iOS 开发中通常使用 GCD 或 Operation Queue 来操作线程，GCD 基于 C API，Operation Queue 是在 GCD 基础上实现的，效率上较 GCD 会差一点点，但代码可读性和易用性较高，简单的任务可用 GCD 去实现，复杂一些的还是推荐使用 Operation Queue 来处理。微小的性能提升远不如写出可维护性高的代码来的实在。
 一些概念 进程和线程
 进程是一个可执行程序，它拥有自己的地址空间，至少有一个线程，也可以包含多个线程，进程内的线程对于其他进程不可见 线程是执行程序最基本的单元，在进程中负责执行任务并使用进程的地址空间，每个进程至少有一个线程（主线程） 主线程和子线程
 主线程是随着进程的创建而创建的，主线程结束，其他线程也会结束 子线程由其他线程创建，一般子线程退出不会影响主线程 同步和异步
@@ -164,7 +207,10 @@ objc_msgSend(array, @selector(insertObject:atIndex:), obj, 5); 系统在运行�
 正常情况下优先级高的任务会比优先级低的先执行 优先级反转指程序在运行时，低优先级的任务由于某种原因不能释放掉锁，所以阻塞了高优先级的任务，而其他不需要该共享资源的低优先级任务会在高优先级任务之前执行，从而反转了任务的优先级。设置任务的优先级会让本来就复杂的并行编程变得更加复杂和不可预见，所以建议只使用默认优先级。 生产者和消费者模式：是通过一个容器来解决生产者和消费者的强耦合问题。生产者和消费者彼此之间不直接通讯，而通过阻塞队列来进行通讯，所以生产者生产完数据之后不用等待消费者处理，直接扔给阻塞队列，消费者不找生产者要数据，而是直接从阻塞队列里取，阻塞队列就相当于一个缓冲区，平衡了生产者和消费者的处理能力。我们还可以使用多个线程来生产数据，同样可以使用多个消费线程来消费数据。而更复杂的情况是，消费者消费的数据，有可能需要继续处理，于是消费者处理完数据之后，它又要作为生产者把数据放在新的队列里，交给其他消费者继续处理。
 为了防止多个线程抢夺同一个资源造成数据安全问题可采取以下措施</description></item><item><title>iOS 应用的生命周期</title><link>https://lijingcheng.github.io/posts/ios-life/</link><pubDate>Sat, 28 Mar 2015 11:23:29 +0800</pubDate><guid>https://lijingcheng.github.io/posts/ios-life/</guid><description>程序的生命周期是指应用程序从启动到结束整个阶段的全过程，点击应用图标打开程序，系统会首先通过 main 函数进行相关设置，然后通过 RunLoop 保持程序能够始终运行并监听处理分发事件，当没有事件发生时 RunLoop 便处于睡眠状态，节省资源。当发生事件后，RunLoop 将事件对象分发给相应视图处理。当用户按下 Home 键，应用会在进入后台后短暂运行，直到被系统挂起。
 main 函数 main 函数是 app 的入口函数
-int main(int argc, char * argv[]) { @autoreleasepool { return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class])); } } 在进入 main 函数之前，系统会由 dyld（the dynamic link editor）加载相关动态链接库，然后再初始化 runtime 环境，并由 runtime 触发 + load 方法，所以不要在 load 方法里执行耗时任务，否则会影响启动时间。 @autoreleasepool 用来管理主线程中标记为自动释放的对象。 UIApplicationMain 根据传入参数以及 info.plist 文件来初始化 app argc 和 argv 参数在 iOS 应用中用不到 第三个参数为 app 的首要类名，用来监听并管理应用的生命周期，默认使用 UIApplication 最后一个参数为 app 首要类的代理类，它负责实际处理 UIApplication 监听到的应用程序生命周期事件，具体参考 UIApplicationDelegate main 函数会在初始化 app 后启动主线程及 RunLoop RunLoop RunLoop 能够保持程序始终运行并监听处理分发事件，当没有事件发生时进入休眠状态，有事件发生时系统会将接收到的事件放在一个队列里，然后唤醒 RunLoop 依次处理事件，使用队列不仅可以解决线程同步问题也促使我们要把更新 UI 的代码放在主线程中运行，以免由于多个线程抢占资源产生奇怪的问题。RunLoop 可以接收的事件来自两种不同的来源，分别是输入源和定时源，输入源传递异步事件，事件通常来自于其他线程或程序，如一些 UI 事件等。定时源则传递同步事件，发生在特定时间或者重复的时间间隔，如 NSTimer。</description></item><item><title>在 Git 环境下维护多个 SSH Keys</title><link>https://lijingcheng.github.io/posts/sshkeys/</link><pubDate>Sun, 01 Mar 2015 18:11:42 +0800</pubDate><guid>https://lijingcheng.github.io/posts/sshkeys/</guid><description>SSH Key 登录方式可以避免密码在网络中传输，也就保证了登录过程的安全，也不会因此受到中间人攻击，如果在 SSH 密钥登录基础上再加上密码短语 （passphrase）的使用，安全性便会再次提高。
+int main(int argc, char * argv[]) { @autoreleasepool { return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class])); } } 在进入 main 函数之前，系统会由 dyld（the dynamic link editor）加载相关动态链接库，然后再初始化 runtime 环境，并由 runtime 触发 + load 方法，所以不要在 load 方法里执行耗时任务，否则会影响启动时间。
+@autoreleasepool 用来管理主线程中标记为自动释放的对象。
+UIApplicationMain 根据传入参数以及 info.plist 文件来初始化 app
+argc 和 argv 参数在 iOS 应用中用不到 第三个参数为 app 的首要类名，用来监听并管理应用的生命周期，默认使用 UIApplication 最后一个参数为 app 首要类的代理类，它负责实际处理 UIApplication 监听到的应用程序生命周期事件，具体参考 UIApplicationDelegate main 函数会在初始化 app 后启动主线程及 RunLoop RunLoop RunLoop 能够保持程序始终运行并监听处理分发事件，当没有事件发生时进入休眠状态，有事件发生时系统会将接收到的事件放在一个队列里，然后唤醒 RunLoop 依次处理事件，使用队列不仅可以解决线程同步问题也促使我们要把更新 UI 的代码放在主线程中运行，以免由于多个线程抢占资源产生奇怪的问题。RunLoop 可以接收的事件来自两种不同的来源，分别是输入源和定时源，输入源传递异步事件，事件通常来自于其他线程或程序，如一些 UI 事件等。定时源则传递同步事件，发生在特定时间或者重复的时间间隔，如 NSTimer。</description></item><item><title>在 Git 环境下维护多个 SSH Keys</title><link>https://lijingcheng.github.io/posts/sshkeys/</link><pubDate>Sun, 01 Mar 2015 18:11:42 +0800</pubDate><guid>https://lijingcheng.github.io/posts/sshkeys/</guid><description>SSH Key 登录方式可以避免密码在网络中传输，也就保证了登录过程的安全，也不会因此受到中间人攻击，如果在 SSH 密钥登录基础上再加上密码短语 （passphrase）的使用，安全性便会再次提高。
 作为一个程序猿，我们经常会往公司的 Git 服务器上提交代码，还有很多猿在 GitHub 上也有自己的开源项目，不管是公司的服务器还是 GitHub 服务器都会在你提交代码时通过维护在服务器上的公钥进行验证，如果你希望能够以不同身份向不同服务器提交代码，那么你需要在机器上维护多个 SSH Key，并且将不同的公钥添加到不同的服务器中。
 下面介绍下在已经拥有一个用于公司服务器的 SSH Key 后，如何再添加一个用于 GitHub 的 SSH Key。
 首先进入 .ssh 目录
