@@ -178,6 +178,7 @@ Network.shared.download("url") { success in
 现实生活中当我们需要电脑读取不同类型的存储卡时，读卡器就是存储卡和电脑之间的适配器。适配器模式通常在已有程序中使用，它可以在不修改原有代码的基础上让相互不兼容的类能够很好地合作，完全符合“开闭原则”，下面通过两个例子介绍下适配器模式的使用。
 
 1. App 在拿到接口返回的 JSON 格式数据后会通过第三方库将其转为 Model 对象供业务类使用，当有一天接口支持返回 Protobuf 格式数据后，因为无法直接修改 JSON 转 Model 的第三方库，所以我们可以定义一个适配器类，将收到的 Protobuf 数据转为 JSON 后再交给第三方库，适配器类只负责提供接口转换数据，不做别的事情。
+
 2. Alamofire 提供的 RequestAdapter 类就是适配器模式的一个应用，我们可以通过它来给 request 对象添加 cookie 或 header，Alamofire 在发起网络请求前会将它自己对 request 对象的设置和我们通过 adapter 对 request 对象的设置做 merge 操作后再发起请求。
 
 ```swift

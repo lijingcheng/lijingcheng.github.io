@@ -140,10 +140,15 @@ pod repo update
 可以按[官方指导](https://guides.cocoapods.org/making/private-cocoapods.html)来做，大致步骤与在 GitHub 上维护开源项目相似，区别如下：
 
 - 需要通过 Git 建立自己的 spec 仓库，并在 Podfile 文件中填加 source
+
 - 通过 pod repo 来查看现有的 spec 仓库
+
 - 通过 pod repo add repo_name source_url 在 ~/.cocoapods/repos/ 目录下新建自己的 spec 仓库
+
 - 通过 pod repo push --allow-warnings repo_name spec_name.podspec 命令将已经写好的 podspec 文件填加到 spec 仓库中
+
 - 私有库新增版本后需要打 tag 并修改 podspec 文件中的 version，然后再次更新 spec 仓库
+
 - 在 Podfile 中可直接通过 pod repo_name 安装私有库
 
 

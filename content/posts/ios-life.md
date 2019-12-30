@@ -18,7 +18,9 @@ int main(int argc, char * argv[]) {
 ```  
 
 - 在进入 main 函数之前，系统会由 dyld（the dynamic link editor）加载相关动态链接库，然后再初始化 runtime 环境，并由 runtime 触发 + load 方法，所以不要在 load 方法里执行耗时任务，否则会影响启动时间。
+
 - @autoreleasepool 用来管理主线程中标记为自动释放的对象。
+
 - UIApplicationMain 根据传入参数以及 info.plist 文件来初始化 app  
 	- argc 和 argv 参数在 iOS 应用中用不到
 	- 第三个参数为 app 的首要类名，用来监听并管理应用的生命周期，默认使用 UIApplication
@@ -31,14 +33,19 @@ RunLoop 能够保持程序始终运行并监听处理分发事件，当没有事
 RunLoop 的开启和退出
 
 - 苹果提供了 NSRunLoop 和 CFRunLoopRef 来操作 Runloop，CFRunLoopRef 是线程安全的，NSRunLoop 基于 CFRunLoopRef 并提供了面向对象的 API，API 不是线程安全的
+
 - 苹果不允许我们直接创建 Runloop，只能在线程内部通过 `[NSRunLoop currentRunLoop]` 来获取，第一次调用此方法时便会创建 Runloop
+
 - 主线程的 Runloop 是默认开启的，子线程需要我们自己开启，并且在开启后通过添加 port 来监听事件，否则 RunLoop 在启动后便会结束（除了 NSTimer）
+
 - 可以通过给 RunLoop 设置过期时间来使 Runloop 能够退出，或者通过 CFRunLoopStop 直接退出（会在执行完正在运行的事件后退出，并且如果给 Runloop 添加了 port，那么需要 remove port）
 
 那么什么情况下需要我们在子线程中开启并使用 RunLoop 呢？
 
 - 创建常驻线程，可以像 AFN 那样给新线程开启 Runloop 的同时添加端口来监听事件，这样它就能一直处于等待事件的状态中，线程就不会结束了。
+
 - 线程间需要持续交互，需要在开启 Runloop 时同时指定一个用于唤醒它的 NSPort 端口对象，然后使用端口对象来进行多线程间的通信。
+
 - 使用 NSTimer 或 performSelector 系列方法。
 	- performSelecter:afterDelay: 会创建 timer 并添加到当前线程的 RunLoop 中，如果当前线程没有 RunLoop，此方法失效。
 	- performSelector:onThread: 会创建 timer 并添加到指定线程的 RunLoop 中，如果指定线程没有 RunLoop，此方法失效。
@@ -71,8 +78,11 @@ RunLoop 的开启和退出
 当发生触摸操作后，系统会将这一事件封装成 UIEvent 对象并放到由 UIApplication 管理的事件队列中，再由 RunLoop 接收事件并传递给触摸点所在的视图，该视图即为 "hit-test视图"，而查找这一视图的过程就叫做 "hit-testing"。hit-testing 过程大致如下: 
  
 - RunLoop 将接收到的事件分发给 UIWindow。
+
 - UIWindow 通过 hitTest:withEvent: 方法在视图树中递归查找触摸点所在的视图。
+
 - 当前视图通过 hitTest 方法调用 pointInside:withEvent: 来判定触摸点是否在当前视图，如果不在 hitTest 返回 nil，在的话则从当前视图的 subViews 末尾向前遍历，依次向每个 subView 发送 hitTest 消息，以此规则一直到某个 subView 不再返回 nil 或遍历完成。
+
 - 最终由最后一个遍历到并且不返回 nil 的视图作为 hit-test视图。
 
 在这过程中如果视图不具备响应事件的条件(userInteractionEnabled 或 enabled 为 NO，hidden=YES 或 alpha=0)，那么 hitTest 就不会调用 pointInside 方法，会直接返回 nil，该视图的子视图也就不会被遍历到，如果我们想改变这一点，或者有别的需求需要改变事件传递的规则，那么需要自定义父视图并重写以下方法来控制子视图。

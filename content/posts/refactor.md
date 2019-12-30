@@ -40,14 +40,20 @@ draft: false
 跟别的开发工具相比 Xcode 提供的重构功能简直弱暴了，不过有总比没有好，Xcode 提供了以下几个重构功能，从菜单栏中进入：Edit -> Refactor，或在代码上右键，然后选择 Refactor
 
 - Rename：重命名类、方法、变量
+
 - Extract：将方法中的一段代码抽取为一个独立的方法
+
 - Create Superclass：给当前选中的类创建父类
+
 - Move Up：将选中方法或属性移到父类中
+
 - Move Down：将父类中选中的属性移到子类中
+
 - Encapsulate：封装，生成 setter/getter，一般用不上
 
 相对来说，Rename 更常用一些，有时也会用到 Extract，最后吐槽一下
 
 - Extract：使用时 Xcode 经常崩掉
+
 - Rename：并不能保证全部覆盖到，还需要自己再次检查
 

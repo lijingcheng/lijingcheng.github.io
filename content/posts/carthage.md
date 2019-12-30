@@ -8,9 +8,13 @@ draft: false
 
 # Carthage VS CocoaPods
 - CocoaPods 需要我们在本地维护第三方库依赖的 podspec 文件，大部分 pod 命令执行时都会去读取此文件，Carthage 则是去中心化的管理方式，不需要维护这种说明文件，它会去直接下载项目并编译成动态库使用，所以对使用 Carthage 的项目来说，最低系统适配要求 iOS8+
+
 - CocoaPods 在执行 pod install 后会帮我们做好所有配置工作，我们只需要用它提供的 workspace 文件打开项目即可，使用 Carthage 的话需要我们自己到项目中进行动态库以及打包资源的配置，但是好处是项目配置信息相对 CocoaPods 来说较干净
+
 - Carthage 使用的是动态库方式，所以无法进行调试，看不到源码，但带来的好处是编译速度的提高
+
 - Carthage 的下载源目前仅支持 GitHub（GitHub.com 和 GitHub Enterprise），CocoaPods 除了 GitHub，还支持我们托管在公司的 Git 仓库，还有本地路径
+
 - 目前支持 CocoaPods 的第三方库比 Carthage 要多一些
 
 我们可以在一个项目里同时使用 CocoaPods 和 Carthage，可以用 Carthage 管理比较成熟并且不需要调试的第三方库，用来提高编译速度，再用 CocoaPods 管理其它有可能需要进行代码调试的第三方库，还可以用来在组件化开发中做依赖设置。
@@ -73,14 +77,24 @@ Target -> Build Phases -> Copy Bundle Resources
 Carthage 仅支持动态库，所以你的开源项目也只能支持 iOS8 及以上版本
 
 - Carthage 提供给用户的动态库是根据项目中的 `动态库 Target` 编译打包后生成的，所以首先我们需要新建一个 Target，选择 Cocoa Touch Framework（动态库），并设置 Deployment Target
+
 - 添加 .h 文件到 Build Phases -> Headers -> Public
+
 - 添加 .m 文件到 Build Phases -> Compile Sources
+
 - 添加其它资源文件到 Build Phases -> Copy Bundle Sources
+
 - Carthage 只构建从 .xcodeproj 分享出来的 scheme，所以需要我们在 Manage Schemes 中将新生成的 scheme 设置为 shared
+
 - 通过 `carthage build --no-skip-current` 来检测 scheme 是否能够构建成功，然后检查 Carthage/Build 目录
+
 - Carthage 通过搜索 Git tag 来决定用户可以下载哪个版本的项目资源，所以还需要在提交代码后添加 tag 并 push 到 GitHub，格式建议写成 1.2.0 或 v1.2
+
 - 通过在 Readme.md 中添加下面内容，用来在 github 上项目介绍中显示 ![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)
 
 ```
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)]()
 ```
+
+
+

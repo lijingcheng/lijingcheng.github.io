@@ -8,8 +8,11 @@ draft: false
 
 # 一些概念
 - MRC：manual reference counting，自己编写内存管理代码（retain、release、autorelease...）
+
 - ARC：automatic reference counting，编译器会在编译阶段为代码加上优化过的内存管理代码，这样就可以让我们不必花费大量时间在内存管理上面，可以将更多的精力放在业务代码上。
+
 - 内存泄漏：不再使用的对象内存没有释放掉，将导致内存占用无限增长，即便是使用 ARC，也会因为循环引用问题而造成内存泄露，并且还要注意与 CoreFoundation 对象进行桥接时要手动释放内存。
+
 - 内存过度释放：释放了仍需要使用中的对象，将有可能导致应用崩溃
 
 # 内存管理规则
@@ -108,9 +111,13 @@ retain 表示在 setter 中将参数对象 retain 后再进行赋值，一般用
 
 ### ARC 中包括 assign/weak/unsafe_unretained/copy/strong
 - assign：同 MRC 中的 assign 一样，只是不再用来修饰 delegate 对象。
+
 - weak：可以避免循环引用，用来修饰对象，但在 setter 中是简单赋值，不改变引用计数，和 assign 的区别在于属性被销毁后会被设置为 nil，所以能在继续使用该属性时避免程序崩溃，一般用来修饰 delegate 对象和 IBOutlet 对象。
+
 - unsafe_unretained：和 weak 相似，区别在于被销毁时不会置为 nil (unsafe)，它主要是为了兼容 4.0 系统而存在(iOS4 以及之前没有 weak)，由于 weak 会对性能有一点影响，因此对性能要求很高的地方可以考虑使用 unsafe_unretained 替换 weak
+
 - copy：同 MRC 中的 copy 一样
+
 - strong：同 MRC 中的 retain 一样
 
 ### runtime 是如何将 weak 对象设置为 nil?

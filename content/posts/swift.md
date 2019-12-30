@@ -824,11 +824,15 @@ class SomeSubclass: SomeClass5 {
 ### 访问控制
 Swift 中的访问控制模型基于模块和源文件这两个概念，并为代码中的实体提供了五种不同的访问级别。
 
-* open：可以被任何模块访问、继承和重写。
-* public：可以被任何模块访问，但只能被所定义模块中的类继承和重写。
-* internal(默认)：只能被所定义的模块内部访问。
-* fileprivate：只能被所定义的文件内部访问。
-* private：只能在所定义的作用域内使用。
+- open：可以被任何模块访问、继承和重写。
+
+- public：可以被任何模块访问，但只能被所定义模块中的类继承和重写。
+
+- internal(默认)：只能被所定义的模块内部访问。
+
+- fileprivate：只能被所定义的文件内部访问。
+
+- private：只能在所定义的作用域内使用。
 
 类的访问级别会影响到类成员的默认访问级别，不可以在某个实体中定义访问级别更低的东西。
 
@@ -1153,6 +1157,7 @@ print(#file, #function, #line)
 如果没有使用方法返回的对象，编译器会有一个警告，有两种方法可以解决。
 
 - 如果是自己写的方法，在 func 前加 @discardableResult 修饰符，代表可以不使用返回值
+
 - 对于第三方库中的方法：_ = navigationController?.popViewController(animated: true)
 
 ### defer 语句

@@ -1,11 +1,12 @@
 ---
-title: "将博客从 Octopress 迁移到 Hugo"
+title: "使用 Hugo + GitHub Actions 升级博客"
 date: 2019-12-11T16:28:43+08:00
 draft: false
 ---
 
-# 迁移原因
-Octopress 自 2015 年开始就没再更新过，再加上我使用的模板在宽屏显示器上也体验不太好，所以打算更新下博客样式，于是在目前比较流行的静态博客生成工具 Hexo 和 Hugo 之间经过比较后选择了 Hugo，相对来说 Hugo 不仅适合搭建博客，也同样适合搭建网站，它基于 go 语言，在发布时速度比较快，并且依赖较少。
+最近打算更新下博客模板并优化下内容的发布流程，于是放弃了多年不更新的 Octopress，在目前比较流行的静态博客生成工具 Hexo 和 Hugo 之间选择了后者，主要看重的是 Hugo 在发布时速度比较快，并且依赖较少。
+
+关于发布流程，首先打算使用持续集成服务来提高内容发布效率，简化操作步骤，以达到提交 Markdown 源文件到 GitHub 后就能够自动完成博客站点的部署，在 Travis CI 和 GitHub Actions 之间选择了后者，对我来说最看重的就是它可以复用别人写好的 Action 并根据自己的需要来组合使用。
 
 # 安装 Hugo
 建议使用 Homebrew 安装 Hugo
@@ -23,12 +24,19 @@ hugo new site blog
 新建站点后进入 blog 目录，查看生成的文件及主要目录
 
 - archetypes 目录下会有个模板文件，新生成的文章会以此为模板
+
 - config.toml 网站配置文件
+
 - content 用来存放 Markdown 文件
+
 - layouts 存放 html 模板文件，如果使用了第三方模板，可以将 themes 里 layouts 目录下的 html 复制过来，然后在这里修改，hugo 会优先使用这个目录下的该文件，以后再更新 themes 下的模板文件时也不用担心文件冲突问题
+
 - data 存储数据文件供模板使用
+
 - public 生成的静态网站文件会放在这里
+
 - static 可以把图片等静态资源放这里
+
 - themes 存放网站主题文件
 
 # 安装主题
@@ -119,3 +127,4 @@ jobs:
         PUBLISH_BRANCH: master
         PUBLISH_DIR: ./public
 ```
+

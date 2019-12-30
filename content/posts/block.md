@@ -13,7 +13,9 @@ Block 会使 app 运行成本增高，因为 delegate 只是保存了一个对�
 	- _NSConcreteGlobalBlock：定义在全局区的 block 会作为代码片段存在
 	- _NSConcreteStackBlock：定义在方法中的 block 会保存在栈中，当函数返回时被销毁
 	- _NSConcreteMallocBlock：为了增加 block 的生命周期，可以用 copy 方法将其复制到堆中，如果 block 已经在堆里了，再次进行 copy 只会增加引用计数
+
 - IMP：block 块中的代码会作为方法形式存在，IMP 指向方法地址
+
 - 复制的变量：block 能够读取它所在函数的内部变量，该变量会被复制到 struct 中，默认是值复制，不能修改，加上 __block 修饰的是引用复制，可以修改
 
 # 简单例子
@@ -93,3 +95,4 @@ if (self.selectedHandler) {
     self.selectedHandler(self.items[indexPath.item][@"itemId"]);
 }
 ```
+

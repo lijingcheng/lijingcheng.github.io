@@ -8,11 +8,17 @@ draft: false
 
 # 一些关键字
 - self：类的隐藏参数变量，指向当前调用方法的对象
+
 - super：是编译器的标示符，通过 super 调用方法会被翻译成 objc_msgSendSuper(self, _cmd,...)
+
 - SEL：以方法名为内容的 C 字符串
+
 - IMP：指向方法实现的函数指针
+
 - id：指向类对象或实例对象的指针
+
 - isa：为 id 对象所属类型 (objc_class)，Objc 中的继承就是通过 isa 指针找到 objc_class，然后再通过 super_class 去找对应的父类
+
 - metaclass：在 Objc 中，类本身也是对象，实例对象的 isa 指向它所属的类，而类对象的 isa 指向元类 (metaclass)，元类的 isa 直接指向根元类，根元类的isa指向它自己，它们之间的关系如下图所示。
 
 ![](/images/runtime_class.jpeg)
@@ -131,7 +137,9 @@ static const void *IDKey;
 我们可以通过继承、Category、AOP 方式来扩展类的功能。
 
 - 继承比较适合在设计底层代码架构时使用，不适当的使用会让代码看起来很啰嗦，并且增加维护难度。
+
 - Category 适合为现有类添加方法。
+
 - 当需要修改现有类的方法并且拿不到源码时，继承和 AOP 都能解决问题，但是用 AOP 来解决代码耦合度更低。其实就算能拿到源码，往往直接去改源码也不是个好办法。
 
 在 Objective-C 中，可以通过 Method Swizzling 技术来实现 AOP，下面我们通过交换两个方法的实现代码来向已存在的方法中添加其它功能。
