@@ -194,7 +194,7 @@ static const void *IDKey;
 @end
 ```  
 
-使用 Method Swizzling 需要注意两个问题
+使用 Method Swizzling 需要注意下面几个问题
 
 - 需要在 +load 方法中执行 Method Swizzling，+initialize 方法有可能不会被调用
 
