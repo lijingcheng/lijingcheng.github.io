@@ -194,7 +194,17 @@ static const void *IDKey;
 @end
 ```  
 
-需要注意一个问题，如果你用了 swizzled_viewWillAppear 作为方法名，那么如果你引用的第三方 SDK 中也用了这个方法名来做方法交换，那会造成方法的递归调用，所以你最好换一个不会被重复使用的方法名，例如 mx_swizzled_viewWillAppear。
+使用 Method Swizzling 需要注意两个问题
+
+- 需要在 +load 方法中执行 Method Swizzling，+initialize 方法有可能不会被调用
+
+- 避免父类与子类同时 hook 父类的某方法，避免不了时至少要保证不在 +load 方法中执行 super.load()，避免父类中的 +load 方法被执行两次
+
+- 需要在 dispatch_once 中执行，避免因多线程等问题倒致的偶数次交换后失效的问题
+
+- 如果你用了 swizzled_viewWillAppear 作为方法名，那么如果你引用的第三方 SDK 中也用了这个方法名来做方法交换，那会造成方法的递归调用，所以你最好换一个不会被重复使用的方法名，例如 mx_swizzled_viewWillAppear
+
+- 即便使用了 mx_swizzled_viewWillAppear 避免了与第三方库或自己项目中别的地方对 viewWillAppear 交换倒致的递归调用问题，仍然存在调用顺序问题，解决办法就是在 Build Phases 中调整类文件的顺序
 
 # 其它
 我们可以通过 Runtime 特性来获得类的所有属性名称和类型，然后再通过 KVC 将 JSON 中的值填充给该类的对象。还可以在程序运行时为类添加方法或替换方法从而使对象能够更灵活的根据需要来选择实现方法。总之 Runtime 库就象一堆积木，只要发挥想象力便能实现各种各样的功能，但前提是你需要了解它。

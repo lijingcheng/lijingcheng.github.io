@@ -84,7 +84,7 @@ hugo server -D
 通过 [http://localhost:1313](http://localhost:1313) 查看，发布文章之前需要将文章内的 draft 改为 false
 
 # 发布文章
-使用 GitHub Actions 将生成的静态页面发布到 Github Pages，GitHub Actions 是 GitHub 推出的持续集成服务，使用起来非常简单，首先要在本地生成 ssh deploy key
+使用 GitHub Actions 将生成的静态页面发布到 Github Pages，首先要在本地生成 ssh deploy key
 
 ```
 ssh-keygen -t rsa -b 4096 -C "your.email" -f gh-pages -N ""
