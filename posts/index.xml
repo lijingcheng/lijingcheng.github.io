@@ -26,15 +26,14 @@ layouts 存放 html 模板文件，如果使用了第三方模板，可以将 th
 data 存储数据文件供模板使用</description></item><item><title>iOS 应用的启动任务设计</title><link>https://lijingcheng.github.io/posts/ios-task/</link><pubDate>Thu, 29 Aug 2019 15:18:55 +0800</pubDate><guid>https://lijingcheng.github.io/posts/ios-task/</guid><description>从点击 app 图标到看到首页内容就算是一次启动过程，在这个短则一两秒的过程中 app 要做的事情却有很多，本文主要介绍如何管理这些任务的执行方式和优先级问题。
 下面列出 app 启动过程中会去执行的一些主要任务：
 设置 app UI 样式
-开启定位、埋点、网络状态、通知监听等服务
+开启定位、埋点、网络状态监听、通知监听等服务
 初始化一些第三方服务
 如果是通过点击推送通知进入的 app 还会去存储相关数据用于在进入首页后跳转页面或弹框
 访问一些接口并处理返回结果
 上面列出的大部分任务都不需要我们主动去管理，只要在处理过程中注意不要影响启动速度就可以了，需要我们去管理的任务主要是对于一些接口返回数据的处理，像 升级检查、换肤、弹窗广告 这类接口在拿到返回数据后不能够马上处理，而是需要先保存数据然后等待首页展示出来后再做 UI 效果处理，并且这些任务通常还需要考虑优先级问题，例如当需要展示升级提示时就不应该再展示弹窗广告。
-我目前的处理方案是基于 RxSwift 响应式编程框架实现，每项任务都是可以被订阅的，订阅者可以监听任务状态并作出响应，每项任务的最初状态是unknown未知的，也就是接口还未返回数据时的状态，当接口返回数据后，再根据情况将状态改为need或noneed，也就是需要处理或不需要处理，我们可以让接口调用处只将关注点放在改变任务状态上，不同状态时该如何处理是由该任务的管理类决定，具体什么时候以及是否需要处理则是由该任务的订阅者去决定。
-下面以检查升级任务为主线看下具体代码实现，首先在 app 启动后发起异步接口调用，并根据返回数据修改任务状态，此时不用考虑 app 是否已经进入首页，以及如果弹框提示用户等功能
-NetworkService.get(&amp;#34;xxx.api&amp;#34;) { [weak self] (result, error) in if ... { Task.shared.upgrade.accept(.need) } else { Task.shared.upgrade.accept(.noneed) } } 当 app 进入首页后，会在 viewDidAppear 方法中发出 Notification 用来触发任务订阅管理功能
-NotificationCenter.default.rx.notification(Notification.Name.Event.appDidAppear).subscribe(onNext: { notification in Task.</description></item><item><title>如何做好技术管理</title><link>https://lijingcheng.github.io/posts/manage/</link><pubDate>Wed, 12 Jun 2019 19:18:55 +0800</pubDate><guid>https://lijingcheng.github.io/posts/manage/</guid><description>好的技术管理者应该是一名情商高、会沟通并且懂业务的技术人员，如果再懂一点管理，就能够胜任大部分工作。
+我目前的处理方案是基于 RxSwift 响应式编程框架实现，每项任务都是可以被订阅的，订阅者可以监听任务状态并作出响应，每项任务的最初状态是 unknown 未知的，也就是接口还未返回数据时的状态，当接口返回数据后，再根据情况将状态改为 need 或 noneed，也就是需要处理或不需要处理，我们可以让接口调用处只将关注点放在改变任务状态上，不同状态时该如何处理是由该任务的管理类决定，具体什么时候以及是否需要处理则是由该任务的订阅者去决定。
+下面以 检查升级 任务为主线看下具体代码实现，首先在 app 启动后发起异步接口调用，并根据返回数据修改任务状态，此时不用考虑 app 是否已经进入首页，以及如果弹框提示用户等功能
+NetworkService.get(&amp;#34;xxx.api&amp;#34;) { [weak self] (result, error) in if ... { Task.shared.upgrade.accept(.need) } else { Task.shared.upgrade.accept(.noneed) } } 当 app 进入首页后，会在 viewDidAppear 方法中发出 Notification 用来触发任务订阅管理功能</description></item><item><title>如何做好技术管理</title><link>https://lijingcheng.github.io/posts/manage/</link><pubDate>Wed, 12 Jun 2019 19:18:55 +0800</pubDate><guid>https://lijingcheng.github.io/posts/manage/</guid><description>好的技术管理者应该是一名情商高、会沟通并且懂业务的技术人员，如果再懂一点管理，就能够胜任大部分工作。
 情商高 要能够控制情绪，遇事不抱怨，懂得在适当的时候和场景下如何夸奖和批评别人，争论事情时要注意对事不对人，更重要的是要能够做到换位思考。
 会沟通 沟通能力是每一个技术人员都需要具备的基本能力，技术管理者在这方面应该做的更好。在沟通环节中有两个问题很重要，聆听和表达，其中懂得聆听尤为重要，先让别人把话说完！除此之外还需要注意的是如果在 QQ 或其它工具上沟通不清楚的问题一定要当面沟通，这样效率高而且不容易造成双方误解。
 懂业务 只有对业务具有较深入的了解才能综合技术和业务角度去思考问题并做出适合的架构设计。

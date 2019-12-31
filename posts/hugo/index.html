@@ -37,7 +37,7 @@ paginate = 10
     url = &quot;https://www.instagram.com/bj_lijingcheng/&quot;
 </code></pre><h1 id=heading-2>新建文章</h1><pre><code>hugo new posts/first.md
 </code></pre><h1 id=heading-3>本地预览</h1><pre><code>hugo server -D
-</code></pre><p>通过 <a href=http://localhost:1313>http://localhost:1313</a> 查看，发布文章之前需要将文章内的 draft 改为 false</p><h1 id=heading-4>发布文章</h1><p>使用 GitHub Actions 将生成的静态页面发布到 Github Pages，GitHub Actions 是 GitHub 推出的持续集成服务，使用起来非常简单，首先要在本地生成 ssh deploy key</p><pre><code>ssh-keygen -t rsa -b 4096 -C &quot;your.email&quot; -f gh-pages -N &quot;&quot;
+</code></pre><p>通过 <a href=http://localhost:1313>http://localhost:1313</a> 查看，发布文章之前需要将文章内的 draft 改为 false</p><h1 id=heading-4>发布文章</h1><p>使用 GitHub Actions 将生成的静态页面发布到 Github Pages，首先要在本地生成 ssh deploy key</p><pre><code>ssh-keygen -t rsa -b 4096 -C &quot;your.email&quot; -f gh-pages -N &quot;&quot;
 </code></pre><p>在 GitHub 网站中打开项目的设置页面，将刚生成的 ssh 公钥添加到 Deploy Keys 并选择 Allow write access，然后将私钥添加到 Secrets，可以命名为 ACTIONS_DEPLOY_KEY，然后再把写好的角本放到仓库根目录下的 .github/workflow/deploy.yml 文件中，角本内容可以引用别人写好的。</p><pre><code>name: github pages
 
 # 当 hugo-branch 分支发生 push 事件时执行下面任务
