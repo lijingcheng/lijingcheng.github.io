@@ -410,6 +410,7 @@ webView.observe(\.estimatedProgress) { [weak self] (webView, change) in
     ...
 }
 
+// 通知中心会以 Set 存储注册通知的关系，所以通知发出后，响应者们收到通知的顺序是无序的
 NotificationCenter.default.rx.notification(Notification.Name.User.didLogin).subscribe(onNext: { notification in
     ...
 }).disposed(by: disposeBag)
