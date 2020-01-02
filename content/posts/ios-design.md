@@ -110,7 +110,7 @@ SwiftUI 使用 DSL 声明式 UI、跨自家平台、Xcode 通过单独编译我�
 
 - 调用接口时 app 要做验签，并且对传输的敏感数据进行加密
 
-- 不要将对称加密要用到的 Key 存储在客户端
+- 不要将对称加密用到的 Key 存储在客户端
 
 ## 启动时间
 可以通过 Instruments 的 Time Profiler 工具来查看耗费时间，也可以通过在 Xcode 中修改项目的 scheme，在 Run -> Auguments 增加环境变量 DYLD_PRINT_STATISTICS 并设置为 1，然后观察控制台打出的 log 来查看
