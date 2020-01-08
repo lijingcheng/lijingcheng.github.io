@@ -20,46 +20,108 @@ draft: true
 
 - 对于找谁审核代码这个问题，首先每份代码都要明确责任人，可以让同一套代码有两个人负责，这样不仅能够明确责任，还可以在其中一人休长假或有突发事件人不在的情况下，另一人能够有能力修改相关代码
 
-代码提交规范在这里也需要重点说一下，首先要按功能提交代码，不要攒一堆然后一次提交，否则不仅会一次性大量占用审查者时间，而且会增加审查难度，还需要注意的是提交描述要根据情况写清楚修改内容以及原因，并且加上前辍，格式如：type(scope):subject
+代码提交规范在这里也需要重点说一下，首先要按功能提交代码，不要攒一堆然后一次提交，否则不仅会一次性大量占用审查者时间，而且会增加审查难度，还需要注意的是提交描述要根据修改内容写清楚，遵守 Git Commit 规范，这样可以促使团队形成一致的代码提交风格，在需要回溯提交历史时也方便查找，AngularJS 框架在 github 上的提交记录被业内许多人认可，后来 Angular 团队的 [Git Commit 规范](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines)也就逐渐被大家引用，它还有配套的工具来帮助我们在提交时选择模板，并可以根据提交记录生成 ChangeLog，我们还可以在这基础上通过 Git Hooks 来强制要求每条提交记录都能够遵守规范。
 
+关于 Angular 规范大家可从它们提供的文档中详细了解，这里只简单介绍一下，首先看下提交记录的格式
 
+```
+type(scope):subject
+```
 
-下面列出的提交规范，可根据团队情况选择工具强制执行并较验，也可以通过大家自觉遵守执行，然后用 git hook 方式检查。
+实际例子中大概是下面这样
 
-本文介绍Angular 规范是目前使用最广的写法，比较合理和系统化，并且有配套的工具。
-
-可以直接从commit生成Change log。
-
-
-
-( 1 ) type（必须） : commit 的类别，只允许使用下面几个标识：
-
-feat : 新功能
-fix : 修复bug
-docs : 文档改变
-style : 代码格式改变
-refactor : 某个已有功能重构
-perf : 性能优化
-test : 增加测试
-build : 改变了build工具 如 grunt换成了 npm
-revert : 撤销上一次的 commit
-chore : 构建过程或辅助工具的变动
-( 2 ) scope（可选） : 用于说明 commit 影响的范围，比如数据层、控制层、视图层等等，视项目不同而不同。影响非常多时可用 * 表示
-
-( 3 ) subject（必须） : commit 的简短描述，不超过50个字符。
-commitizen 是一个撰写合格 Commit message 的工具，
-格式：type(scope):subject
-
+```
 feat(首页):增加通知公告功能
 
 fix(卡列表):默认图不正确
 
-docs(StringExt):修改方法注释
+refactor:优化 WebViewController 白屏时的处理
 
-refactor(BannerView):修改轮播图切换规则
+docs:为购卡功能添加注释
 
-other(角本):pod install 之前清理缓存
+style:整理代码风格
 
+chore:其它琐事
+```
+
+上面的格式我们可以直接写在提交信息中，也可以借助 commitizen 工具来撰写具有上面格式的提交信息，在安装 commitizen 之前首先需要安装 NPM，它是 Node.js 环境下的包管理器 NPM，用来安装第三方 js 库（Node.js 可以使 JavaScript 脱离浏览器的运行环境，可用于开发后台程序）
+
+安装 NPM
+
+brew install npm
+
+安装 commitizen
+
+npm install -g commitizen
+
+生成配置文件 package.json
+
+npm init --yes
+
+初始化 commitizen
+commitizen init cz-conventional-changelog --save --save-exact
+
+如果要使用 commitizen，那么提交代码时要使用 git cz，而不是 git commit，貌似 SourceTree 没办法自定义命令...
+
+
+
+
+
+conventional-changelog-cli - conventional-changelog 核心命令行工具
+standard-changelog - 针对 angular commit 格式的命令行工具
+conventional-github-releaser - 利用 git metadata 针对 Github 的发布工具
+conventional-commits-detector - commit message 规范引用检测
+commitizen - 针对开发者简单的 commit 规范
+commitlint - commit Lint 工具
+standard-version - 标准版本号
+
+
+
+git hook 在 pre-commit 时检查 commit msg 是否符合规范
+
+安装。husky
+
+npm install husky --save-dev
+
+编辑 package.json
+{
+  "scripts": {
+    "precommit": "webpack  --config ./web/webpack.config.js",
+    "...": "..."
+  }
+}
+
+这时候，我们需要一款 Node 插件 validate-commit-msg 来检查项目中 Commit message 是否规范。
+
+1.首先，安装插件：
+
+npm install --save-dev validate-commit-msg
+
+{
+  "config": {
+    "validate-commit-msg": {
+  "types": ["feat", "fix", "docs", "style", "refactor", "perf", "test", "build", "ci", "chore", "revert"],
+  "scope": {
+    "required": false,
+    "allowed": ["*"],
+    "validate": false,
+    "multiple": false
+  },
+  "warnOnFail": false,
+  "maxSubjectLength": 100,
+  "subjectPattern": ".+",
+  "subjectPatternErrorMsg": "subject does not match subject pattern!",
+  "helpMessage": "",
+  "autoFix": false
+}
+  }
+}
+
+生成 CHANGELOG.md
+
+npm install -g conventional-changelog-cli
+$ cd my-project
+$ conventional-changelog -p angular -i CHANGELOG.md -s
 
 下面列出的代码审查 CheckList 有一部分仅适用于 Swift 开发
 

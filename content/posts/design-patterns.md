@@ -419,7 +419,7 @@ NotificationCenter.default.rx.notification(Notification.Name.User.didLogin).subs
 ### 访问者模式（Visitor）
 在一个对象或者集合包含了很多其他的对象时，当要对这些对象增加一些新的方法，而且还是在业务上或功能上相关性很低的方法时，如果用直接修改代码的方式添加会污染对象所属类，这样不符合“开闭原则”和“单一职责原则”，这时可以考虑使用访问者模式处理，它可以在不修改对象类代码的情况下扩展对象功能，方式就是增加访问者类，并定义访问各个对象的方法。
 
-访问者可以有多个，不同访问者访问对象的处理方式可以不同，例如饼图、柱图在处理不同业务数据时，可以有不同的表现样式，现实生活中对于相同食材，不同类型大厨做出来的味道和样子也可以不同，这些都可以理解成是访问者模式的应用。
+访问者可以有多个，不同访问者访问对象的处理方式可以不同，例如饼图、柱图、线图在处理不同业务数据时，可以有着不同的表现样式，又因为不同图表的表现能力不同，获取业务数据的规则也可以不同，现实生活中对于相同食材，不同类型大厨做出来的味道和样子也可以不同，这些都可以理解成是访问者模式的应用。
 
 ```swift
 public protocol Course {
@@ -438,12 +438,12 @@ public class English: Course {
     }
 }
 
-public protocol Chart {
+public protocol ChartFactory {
     func draw(_ course: Math?)
     func draw(_ course: English?)
 }
 
-public class PieChart: Chart {
+public class PieChartFactory: ChartFactory {
     public func draw(_ course: Math?) {
         let score = course?.scoresOfYear()
         // 用饼图展示数学成绩
@@ -455,13 +455,13 @@ public class PieChart: Chart {
     }
 }
 
-public class BarChart: Chart {
+public class BarChartFactory: ChartFactory {
     public func draw(_ course: Math?) {
-        // 用柱图展示数学成绩
+        // 用柱图展示数学成绩，因为柱图 item 多时效果比饼图好，可以按月展示 scoresOfMonth
     }
     
     public func draw(_ course: English?) {
-        // 用柱图展示英语成绩
+        // 用柱图展示英语成绩，因为柱图 item 多时效果比饼图好，可以按月展示 scoresOfMonth
     }
 }
 ```
