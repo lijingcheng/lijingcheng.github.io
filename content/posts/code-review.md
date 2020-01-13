@@ -1,14 +1,14 @@
 ---
 title: "Code Review"
-date: 2020-01-07T10:00:38+08:00
-draft: true
+date: 2020-01-13T10:00:38+08:00
+draft: false
 ---
 
 持续并有效的 Code Review 不仅可以提高代码质量，降低程序风险，还可以提高开发人员技术水平，但前提是需要开发人员能够真正认可并意识到这并不是在浪费时间，而且在实施前最好能够得到公司认可，并能够将 Code Review 时间计入工作量，下面列出几个需要注意的地方：
 
-- 要有一个 CheckList，对一些代码问题进行定义，并要求开发人员以此为准，定义的问题可按级别分类，高级别的必须解决，低级别的根据具体情况处理
+- 要有一个 CheckList，对一些代码问题进行定义，并要求开发人员以此为准
 
-- 代码风格上的问题应该通过自动审查工具去做，如 [OCLint](https://github.com/oclint/oclint)/[SwiftLint](https://github.com/realm/SwiftLint)，代码逻辑及性能上的问题可通过 Merge Request 方式去做，整个团队一起互相 Review 的方式不适合频繁实行，应该以总结的性质定期来做
+- 代码风格上的问题应该通过自动审查工具去做，如 [OCLint](https://github.com/oclint/oclint)/[SwiftLint](https://github.com/realm/SwiftLint)，代码逻辑及性能上的问题可通过 Merge Request 去做，整个团队一起互相 Review 的方式不适合频繁实行，应该以总结的性质定期来做
 
 - 要在代码提交测试前做，避免测试人员返工，影响进度
 
@@ -20,110 +20,20 @@ draft: true
 
 - 对于找谁审核代码这个问题，首先每份代码都要明确责任人，可以让同一套代码有两个人负责，这样不仅能够明确责任，还可以在其中一人休长假或有突发事件人不在的情况下，另一人能够有能力修改相关代码
 
-代码提交规范在这里也需要重点说一下，首先要按功能提交代码，不要攒一堆然后一次提交，否则不仅会一次性大量占用审查者时间，而且会增加审查难度，还需要注意的是提交描述要根据修改内容写清楚，遵守 Git Commit 规范，这样可以促使团队形成一致的代码提交风格，在需要回溯提交历史时也方便查找，AngularJS 框架在 github 上的提交记录被业内许多人认可，后来 Angular 团队的 [Git Commit 规范](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines)也就逐渐被大家引用，它还有配套的工具来帮助我们在提交时选择模板，并可以根据提交记录生成 ChangeLog，我们还可以在这基础上通过 Git Hooks 来强制要求每条提交记录都能够遵守规范。
+- 要按功能提交代码，不要攒一堆然后一次提交，否则不仅会一次性大量占用审查者时间，而且会增加审查难度，还需要注意的是提交描述要根据修改内容写清楚，遵守 Git Commit 规范，这样可以促使团队形成一致的代码提交风格，在需要回溯提交历史时也方便查找
+    - Angular 团队在开源框架 AngularJS 中的提交记录所遵守的[规范](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines)被业内很多人认可和使用，格式为：`type(scope):subject`
+        - feat(首页):增加公告功能
+        - fix(卡列表):默认图不正确
+        - refactor:优化 WebView 遇到白屏时的处理
+        - docs:为购卡功能添加注释
+        - style:整理代码风格
+        - chore:其它琐事...
+    - 我们可以手动按规范来编写提交信息，也可以借助一些 js 库来帮我们遵守规范，首先我们需要安装 Node.js 环境下的包管理器 npm（Node.js 可以使 JavaScript 脱离浏览器的运行环境）
+        - 使用 commitizen 来辅助我们编写符合 `type(scope):subject` 格式的提交信息
+        - 使用 commitlint 对提交信息进行格式检查，并通过 husky 库更方便的通过 git hook 在 pre-commit 时强制要求每条提交记录都能够遵守规范
+    - 当我们开始按规范编写提交信息后，便可以使用 conventional-changelog-cli 生成提交记录
 
-关于 Angular 规范大家可从它们提供的文档中详细了解，这里只简单介绍一下，首先看下提交记录的格式
-
-```
-type(scope):subject
-```
-
-实际例子中大概是下面这样
-
-```
-feat(首页):增加通知公告功能
-
-fix(卡列表):默认图不正确
-
-refactor:优化 WebViewController 白屏时的处理
-
-docs:为购卡功能添加注释
-
-style:整理代码风格
-
-chore:其它琐事
-```
-
-上面的格式我们可以直接写在提交信息中，也可以借助 commitizen 工具来撰写具有上面格式的提交信息，在安装 commitizen 之前首先需要安装 NPM，它是 Node.js 环境下的包管理器 NPM，用来安装第三方 js 库（Node.js 可以使 JavaScript 脱离浏览器的运行环境，可用于开发后台程序）
-
-安装 NPM
-
-brew install npm
-
-安装 commitizen
-
-npm install -g commitizen
-
-生成配置文件 package.json
-
-npm init --yes
-
-初始化 commitizen
-commitizen init cz-conventional-changelog --save --save-exact
-
-如果要使用 commitizen，那么提交代码时要使用 git cz，而不是 git commit，貌似 SourceTree 没办法自定义命令...
-
-
-
-
-
-conventional-changelog-cli - conventional-changelog 核心命令行工具
-standard-changelog - 针对 angular commit 格式的命令行工具
-conventional-github-releaser - 利用 git metadata 针对 Github 的发布工具
-conventional-commits-detector - commit message 规范引用检测
-commitizen - 针对开发者简单的 commit 规范
-commitlint - commit Lint 工具
-standard-version - 标准版本号
-
-
-
-git hook 在 pre-commit 时检查 commit msg 是否符合规范
-
-安装。husky
-
-npm install husky --save-dev
-
-编辑 package.json
-{
-  "scripts": {
-    "precommit": "webpack  --config ./web/webpack.config.js",
-    "...": "..."
-  }
-}
-
-这时候，我们需要一款 Node 插件 validate-commit-msg 来检查项目中 Commit message 是否规范。
-
-1.首先，安装插件：
-
-npm install --save-dev validate-commit-msg
-
-{
-  "config": {
-    "validate-commit-msg": {
-  "types": ["feat", "fix", "docs", "style", "refactor", "perf", "test", "build", "ci", "chore", "revert"],
-  "scope": {
-    "required": false,
-    "allowed": ["*"],
-    "validate": false,
-    "multiple": false
-  },
-  "warnOnFail": false,
-  "maxSubjectLength": 100,
-  "subjectPattern": ".+",
-  "subjectPatternErrorMsg": "subject does not match subject pattern!",
-  "helpMessage": "",
-  "autoFix": false
-}
-  }
-}
-
-生成 CHANGELOG.md
-
-npm install -g conventional-changelog-cli
-$ cd my-project
-$ conventional-changelog -p angular -i CHANGELOG.md -s
-
-下面列出的代码审查 CheckList 有一部分仅适用于 Swift 开发
+下面列出的代码审查 CheckList 可供参考，其中一部分仅适用于 Swift 开发
 
 - 代码简洁不重复
 
@@ -145,11 +55,11 @@ $ conventional-changelog -p angular -i CHANGELOG.md -s
 
 - 相似意义的常量超过 2 个时就要考虑用枚举代替
 
-- 命名要做到“见名知意”，UI 控件的命名要能看出来是什么控件
+- 命名要做到“见名知意”，UI 控件的命名要能看出来是做什么的
 
 - 方法内变量的声明尽量离使用它的地方近一些
 
-- 使用 xib 或 storyboard 画界面来降低代码量，UI 控件可通过纯代码实现
+- 对性能要求不高的界面建议使用 xib 或 storyboard 来画以降低代码量
 
 - 尽量避免循环引用问题
 
@@ -157,7 +67,7 @@ $ conventional-changelog -p angular -i CHANGELOG.md -s
 
 - 避免对可选类型强解包，可用 `if let foo = foo { ... }` 或可选链 `foo?.doSomething()`
 
-- 尽早的退出方法，可提升代码的可读性，例：`guard xx else { return }`或`if xxx { return} `，使用 guard 还能够有效减少 if-else 嵌套 
+- 尽早的退出方法，可提升代码的可读性，例：`guard xx else { return }` 或 `if xxx { return} `，使用 guard 还能够有效减少 if-else 嵌套 
 
 - 定义 model 用 struct，值类型是线程安全的，并以栈的形式分配，速度上比 class 快
 
