@@ -13,7 +13,7 @@ Telegram 支持多种语言来编写机器人，相对来说使用 Python 的比
 
 建议使用 PyCharm 作为 IDE 来编写程序，这样不仅可以在编写代码时有语法高亮和自动提示，而且还可以更方便的添加第三方库和包管理器，默认的包管理器是 pip，我们可以换成 pipenv，它会自动帮你管理虚拟环境和依赖文件。
 
-![](/images/pycharm_package.png)
+{{< figure src="/images/pycharm_package.png" width="500">}}
 
 下面列出几条 Python 语法中比较特别的地方
 
@@ -41,7 +41,7 @@ Telegram 支持多种语言来编写机器人，相对来说使用 Python 的比
 
 通过与 BotFather 交谈还能实现很多功能，详见以下图片内容
 
-![](/images/chat_with_botfather.png)
+{{< figure src="/images/chat_with_botfather.png" width="500">}}
 
 # 举个例子
 下面这个简单例子可以使机器人能够响应 /start 和 /help 命令，还能够在收到聊天信息时进行回复，需要注意的是，如果你需要 VPN 才能够使用 Telegram，那么在机器人程序里你需要将 VPN 软件中的代理设置写在代码里。
@@ -100,7 +100,7 @@ if __name__ == '__main__':
     - 关联机器人程序所在的 GitHub 仓库和代码分支，目的是当你提交代码到该分支后能够自动部署
     - 将一些如机器人 Token 这类的私密信息以环境变量的形式配置在 Heroku 提供的对应页面中，然后在代码中读取并使用，在本地开发调试程序时也需要将此类信息通过 PyCharm 配置到环境变量中
 
-![](/images/pycharm_var.png)
+{{< figure src="/images/pycharm_var.png" width="500">}}
 
 完整的例子可以参考 [https://github.com/lijingcheng/telegram-bot](https://github.com/lijingcheng/telegram-bot)
 
