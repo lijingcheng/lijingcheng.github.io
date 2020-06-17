@@ -69,7 +69,7 @@ draft: false
 
 - 尽早的退出方法，可提升代码的可读性，例：`guard xx else { return }` 或 `if xxx { return} `，使用 guard 还能够有效减少 if-else 嵌套 
 
-- 定义 model 用 struct，值类型是线程安全的，并以栈的形式分配，速度上比 class 快
+- 定义 model 用 struct，值类型是线程安全的，并在栈上分配，速度上比 class 快
 
 - 用于对接接口返回数据的 model 中的属性必须是 optional 的，当接口返回字段较少时，可用字典
 
@@ -87,6 +87,8 @@ draft: false
 - 尽量避免混合使用 Swift 类型和 NSObject 子类，这样会造成大量的类型转换，对性能有影响
 
 - 引用类属性尽量直接写属性名不加 self.（Block 除外）
+
+- 当文件中的代码量较大时，可用 extension 将同类型方法归类，例如 tableView 代理方法放到一个扩展里，IBAction 的方法也可以放到一个扩展里
 
 代码审查如果要做就一定要做好，并坚持下去，半途而废的话之前的工作也就白做了，最后推荐 Ray Wenderlich 提供的 [Swift Style Guide](https://github.com/raywenderlich/swift-style-guide) 和《代码整洁之道》、《重构—改善既有代码的设计》这两本书。
 
