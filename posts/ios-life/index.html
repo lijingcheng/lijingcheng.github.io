@@ -29,18 +29,17 @@ int main(int argc, char * argv[]) { @autoreleasepool { return UIApplicationMain(
 
     <span style=color:#66d9ef>return</span> CGRectContainsPoint(bounds, point);
 }
-</code></pre></div><p>当子视图添加到父视图后，其响应事件的范围就是父视图的 bounds，如果部分界面超出了这个范围，则超出部分无法响应事件，未超出部分仍然可以响应事件，为了使超出父视图范围的子视图也能响应事件，需要实现主视图的 <code>- hitTest:withEvent:</code> 方法。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-objc data-lang=objc>- (UIView <span style=color:#f92672>*</span>)<span style=color:#a6e22e>hitTest:</span>(CGPoint)point <span style=color:#a6e22e>withEvent:</span>(UIEvent <span style=color:#f92672>*</span>)event {
-    UIView <span style=color:#f92672>*</span>view <span style=color:#f92672>=</span> [super hitTest:point withEvent:event];
-    
-    <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>view) {
-        <span style=color:#66d9ef>for</span> (UIView <span style=color:#f92672>*</span>subView <span style=color:#66d9ef>in</span> self.subviews) {
-            CGPoint p <span style=color:#f92672>=</span> [subView convertPoint:point fromView:self];
-            <span style=color:#66d9ef>if</span> (CGRectContainsPoint(subView.bounds, p)) {
-                view <span style=color:#f92672>=</span> subView;
-            }
+</code></pre></div><p>当子视图添加到父视图后，其响应事件的范围就是父视图的 bounds，如果部分界面超出了这个范围，则超出部分无法响应事件，未超出部分仍然可以响应事件，为了使超出父视图范围的子视图也能响应事件，需要自定义这两个视图的父视图类并实现 <code>- hitTest:withEvent:</code> 方法。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>override</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>hitTest</span>(<span style=color:#66d9ef>_</span> point: CGPoint, with event: UIEvent?) -&gt; UIView? {
+    <span style=color:#66d9ef>guard</span> <span style=color:#66d9ef>let</span> mainView = subviews.first <span style=color:#66d9ef>else</span> { <span style=color:#75715e>//</span><span style=color:#75715e> </span><span style=color:#75715e>从</span><span style=color:#75715e>主</span><span style=color:#75715e>视</span><span style=color:#75715e>图</span><span style=color:#75715e>中</span><span style=color:#75715e>拿</span><span style=color:#75715e>到</span><span style=color:#75715e>相</span><span style=color:#75715e>对</span><span style=color:#75715e>来</span><span style=color:#75715e>说</span><span style=color:#75715e>的</span><span style=color:#75715e>这</span><span style=color:#75715e>个</span><span style=color:#75715e>父</span><span style=color:#75715e>视</span><span style=color:#75715e>图</span>
+        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>super</span>.hitTest(point, with: event)
+    }
+        
+    <span style=color:#66d9ef>for</span> subView <span style=color:#66d9ef>in</span> mainView.subviews {
+        <span style=color:#66d9ef>if</span> subView.bounds.contains(subView.convert(point, from: <span style=color:#66d9ef>self</span>)) {
+            <span style=color:#66d9ef>return</span> subView
         }
     }
-    
-    <span style=color:#66d9ef>return</span> view;
+        
+    <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>super</span>.hitTest(point, with: event)
 }
 </code></pre></div><h1 id=heading-1>前后台切换</h1><p>在程序进入后台后仍然能够在短时间里执行一些代码，然后便进入挂起状态，程序在挂起后仍然会驻留在内存中，但是不能执行代码，直到 iOS 系统内存降低发出警告后才会把相对耗内存的挂起程序清除掉。</p><p>当程序在前后台切换时，系统会调用 UIApplicationDelegate 的相关代理方法并发送通知，我们可以在不同情况下做出不同处理，例如在进入后台时暂停某些操作或存储某些数据，当恢复到前台时再恢复之前的暂停操作或读取之前存储的数据。</p></div><div class=post-footer></div></article></main></body></html>
