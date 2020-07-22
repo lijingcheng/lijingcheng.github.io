@@ -118,22 +118,21 @@ RunLoop 的开启和退出
 }
 ```
 
-当子视图添加到父视图后，其响应事件的范围就是父视图的 bounds，如果部分界面超出了这个范围，则超出部分无法响应事件，未超出部分仍然可以响应事件，为了使超出父视图范围的子视图也能响应事件，需要实现主视图的 `- hitTest:withEvent:` 方法。
+当子视图添加到父视图后，其响应事件的范围就是父视图的 bounds，如果部分界面超出了这个范围，则超出部分无法响应事件，未超出部分仍然可以响应事件，为了使超出父视图范围的子视图也能响应事件，需要自定义这两个视图的父视图类并实现 `- hitTest:withEvent:` 方法。
 
-```objc
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
-    UIView *view = [super hitTest:point withEvent:event];
-    
-    if (!view) {
-        for (UIView *subView in self.subviews) {
-            CGPoint p = [subView convertPoint:point fromView:self];
-            if (CGRectContainsPoint(subView.bounds, p)) {
-                view = subView;
-            }
+```swift
+public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    guard let mainView = subviews.first else { // 从主视图中拿到相对来说的这个父视图
+        return super.hitTest(point, with: event)
+    }
+        
+    for subView in mainView.subviews {
+        if subView.bounds.contains(subView.convert(point, from: self)) {
+            return subView
         }
     }
-    
-    return view;
+        
+    return super.hitTest(point, with: event)
 }
 ```
 
