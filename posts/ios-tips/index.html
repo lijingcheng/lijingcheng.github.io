@@ -29,24 +29,13 @@ self.navigationController.interactivePopGestureRecognizer.delegate = self; 在 x
 </code></pre><p>自定义 leftBarButtonItem 后，左滑返回手势失效</p><pre><code>self.navigationController.interactivePopGestureRecognizer.delegate = self;
 </code></pre><p>在 xib 中给 UILabel 或 UITextView 设置多行文字</p><pre><code>输入文字后，用 control + enter 来插入换行符，相当于在代码中添加 \n
 </code></pre><p>禁用 UIButton 并且颜色不变灰</p><pre><code>button.userInteractionEnabled = NO;
-</code></pre><p>UITableView 的分割线左边顶头</p><pre><code>tableView.separatorInset = UIEdgeInsetsZero;
-cell.layoutMargins = UIEdgeInsetsZero;
 </code></pre><p>修改约束后，用动画展示效果</p><pre><code>[UIView animateWithDuration:0.3f animations:^{
     [myView layoutIfNeeded];
 }];
 </code></pre><p>快速定位视图约束警告</p><pre><code>po [[UIWindow keyWindow] _autolayoutTrace]
 </code></pre><p>给 UIView 设置透明度后不影响 subviews</p><pre><code>superView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
-</code></pre><p>隐藏导航条下面的线</p><pre><code>navigationBar.setValue(hide, forKey: &quot;hidesShadow&quot;)
 </code></pre><p>隐藏 Grouped TableView 上边多余的间隔</p><pre><code>self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
-</code></pre><p>根据模糊程度生成 UIVisualEffectView</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=color:#66d9ef>extension</span> <span style=color:#a6e22e>UIVisualEffectView</span> {
-    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>convenience</span> <span style=color:#66d9ef>init</span>(blurRadius: CGFloat) {
-        <span style=color:#66d9ef>let</span> blurEffect = (NSClassFromString(<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>_UICustomBlurEffect</span><span style=color:#e6db74>&#34;</span>) <span style=color:#66d9ef>as</span>! UIBlurEffect.<span style=color:#66d9ef>Type</span>).<span style=color:#66d9ef>init</span>()
-        blurEffect.setValue(blurRadius, forKeyPath: <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>blurRadius</span><span style=color:#e6db74>&#34;</span>)
-
-        <span style=color:#66d9ef>self</span>.<span style=color:#66d9ef>init</span>(effect: blurEffect)
-    }
-}
-</code></pre></div><p>编译出 error 后继续编译</p><pre><code>Xcode -&gt; preference -&gt; general -&gt; 勾选 Continue building after errors
+</code></pre><p>编译出 error 后继续编译</p><pre><code>Xcode -&gt; preference -&gt; general -&gt; 勾选 Continue building after errors
 </code></pre><p>自定义类后，禁止通过 init 方法初始化对象</p><pre><code>- (instancetype)init UNAVAILABLE_ATTRIBUTE;
 或
 - (instancetype)init __attribute__((unavailable(&quot;init 方法不可用，请用 initWithName:&quot;)));
