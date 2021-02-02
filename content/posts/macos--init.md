@@ -5,16 +5,17 @@ draft: false
 ---
 
 ### 常规应用
-Chrome、微信、QQ、Telegram、网易云音乐、IINA、印象笔记
+Chrome、微信、Telegram、IINA
 
 ### 工具
-Shadowsocks、Alfred、Unarchiver、MacBooster、Agenda、有道词典
+ClashX Pro、Alfred、Unarchiver、MacBooster、Agenda、有道词典
 
 ### 办公
-Canary Mail、Pages、Keynote、Numbers、MWeb、Sublime Text、XMind
+网易邮箱、Pages、Keynote、Numbers、MWeb、Sublime Text、XMind、OmniPlan
 
 ### 开发
 Xcode、Sourcetree、Sketch、Charles、Injectionlll、Lookin
 
 ### 终端
 iTerm、Homebrew、RVM、CocoaPods、ZSH、Oh My ZSH、Hugo
+

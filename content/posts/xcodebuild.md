@@ -1,5 +1,5 @@
 ---
-title: "使用 xcodebuild 打包 IPA 并上传蒲公英"
+title: "使用 xcodebuild 打包 IPA 并上传蒲公英和 TestFlight"
 date: 2016-12-05 18:49:45 +0800
 draft: false
 ---
@@ -30,35 +30,23 @@ xcodebuild --help
 #!/bin/sh
 
 ##########################################################################
-######   1.执行 chmod +x ./xxx.sh 使脚本具有执行权限                    ######
-######   2.通过 ./xxx.sh 执行脚本，./ 不能省略                          ######
-######   3.Xcode 需要配置好证书，并且不能连接非测试机，否则会签名失败        ######
-######   4.将 .xcarchive 中的 .dSYM 文件备份一下                       ######
-######   5.在蒲公英网站的应用设置中添加成员后，便会在上传成功后给他发邮件     ######
+######  1.执行 chmod +x ./xxx.sh 使脚本具有执行权限                      ######
+######  2.通过 ./xxx.sh 执行脚本                                       ######
+######  3.Xcode 需要提前配置好证书                                      ######
+######  4.如果使用到 UMeng、JPush 等第三方库，可能还需要设置 bitcode = NO  ######  
 ##########################################################################
 
-# CocoaPods 打包需要使用 workspace 名字
-WorkSpace_Name=`find . -name *.xcworkspace | awk -F "[/.]" '{print $(NF-1)}'`
 
-# 要打包的 scheme 名字，默认与 workspace 名字一样
-Scheme_Name=${WorkSpace_Name}
+workspace_name=`find . -name *.xcworkspace | awk -F "[/.]" '{print $(NF-1)}'`
+scheme_name=${workspace_name}
+build_folder=$(PWD)/build/release-iphoneos
+file_name=${build_folder}/${scheme_name}$(date +%Y%m%d%H%M)
 
-# build 文件目录
-Build_File_Path=$(PWD)/build/Release-iphoneos
+start_time=`date +%s`
 
-# build 文件名字 (archive/ipa)
-Build_File_Name=${Build_File_Path}/${Scheme_Name}$(date +%Y%m%d%H%M)
+echo "================= 清理 ================="
 
-# 蒲公英
-PGY_User_Key="由蒲公英提供"
-PGY_API_Key="由蒲公英提供"
-
-# 开始时间
-Start_Time=`date +%s`
-
-echo "================= 开始编译 ================="
-
-xcodebuild clean -workspace ${WorkSpace_Name}.xcworkspace -scheme ${Scheme_Name} -configuration Release -sdk iphoneos SYMROOT=$(PWD)/build
+xcodebuild clean -workspace ${workspace_name}.xcworkspace -scheme ${scheme_name} -configuration Release -sdk iphoneos SYMROOT=$(PWD)/build
 
 if ! [ $? = 0 ]; then
     exit 1
@@ -66,48 +54,78 @@ fi
 
 echo "================= 开始构建 ================="
 
-xcodebuild archive -workspace ${WorkSpace_Name}.xcworkspace -scheme ${Scheme_Name} -archivePath ${Build_File_Name}.xcarchive
+xcodebuild archive -workspace ${workspace_name}.xcworkspace -scheme ${scheme_name} -configuration Release -archivePath ${file_name}.xcarchive
 
-if ! [ -d "${Build_File_Name}.xcarchive" ]; then
+if ! [ -d "${file_name}.xcarchive" ]; then
     exit 1
 fi
 
 echo "================= 导出ipa ================="
 
-xcodebuild -exportArchive -archivePath ${Build_File_Name}.xcarchive -exportPath ${Build_File_Path} -exportOptionsPlist $(PWD)/exportOptions.plist
+xcodebuild -exportArchive -archivePath ${file_name}.xcarchive -exportPath ${build_folder} -exportOptionsPlist $(PWD)/ExportOptions.plist
 
-if [ -e "${Build_File_Path}/${Scheme_Name}.ipa" ]; then
-    mv "${Build_File_Path}/${Scheme_Name}.ipa" "${Build_File_Name}.ipa"
+if [ -e "${build_folder}/${scheme_name}.ipa" ]; then
+    mv "${build_folder}/${scheme_name}.ipa" "${file_name}.ipa"
 else
     exit 1
 fi
 
-echo "================= 上传到蒲公英 ================="
+echo "================= 上传dSYM ================="
 
-curl -F "file=@${Build_File_Name}.ipa" -F "uKey=${PGY_User_Key}" -F "_api_key=${PGY_API_Key}" https://www.pgyer.com/apiv1/app/upload
+bugly_id=""
+bugly_key=""
+dsym_file_path="${file_name}.xcarchive/dSYMs/${scheme_name}.app.dSYM"
+app_version=$(sed -n '/MARKETING_VERSION/{s/MARKETING_VERSION = //;s/;//;s/^[[:space:]]*//;p;q;}' ${scheme_name}.xcodeproj/project.pbxproj)
+bundle_id=$(sed -n '/PRODUCT_BUNDLE_IDENTIFIER/{s/PRODUCT_BUNDLE_IDENTIFIER = //;s/;//;s/^[[:space:]]*//;p;q;}' ${scheme_name}.xcodeproj/project.pbxproj)
 
-# 结束时间
-End_Time=`date +%s`
+curl -k --verbose "https://api.bugly.qq.com/openapi/file/upload/symbol?app_key=${bugly_key}&app_id=${bugly_id}" --form "api_version=1" --form "app_id=${bugly_id}" --form "app_key=${bugly_key}" --form "symbolType=2" --form "bundleId=${bundle_id}" --form "productVersion=${app_version}($(date +%H%M))" --form "fileName=${scheme_name}.app.dSYM" --form "file=@${dsym_file_path}"
 
-echo "\n\n================= 耗时: $[ End_Time - Start_Time ] 秒 ================="
+echo "================= 上传到 TestFlight ================="
+
+apple_api_ey=""
+apple_api_issuer=""
+xcrun altool --upload-app -f "${file_name}.ipa" -t ios --apiKey "${apple_api_ey}" --apiIssuer "${apple_api_issuer}" --verbose
+
+echo "\n\n================= 耗时: $[ `date +%s` - start_time ] 秒 ================="
 ```
 
-在导出 ipa 文件时，需要我们提供一个 plist 文件，用于配置打包过程中所需要的参数，文件名为 exportOptions.plist，并放在项目根目录下，内容用下面提供的就可以，如果不满足需要，可通过 xcodebuild --help 查看帮助。
+如果是上传到蒲公英可以用下面角本替换上传 TestFlight 那段角本
+
+```shell
+echo "================= 上传到蒲公英 ================="
+pgy_user_key=""
+pgy_api_key=""
+curl -F "file=@${Build_File_Name}.ipa" -F "uKey=${pgy_user_key}" -F "_api_key=${pgy_api_key}" https://www.pgyer.com/apiv1/app/upload
+```
+
+在导出 ipa 文件时，需要我们提供一个 plist 文件，用于配置打包过程中所需要的参数，文件名为 ExportOptions.plist，并放在项目根目录下，内容用下面提供的就可以，如果不满足需要，可通过 xcodebuild --help 查看帮助。
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-  <key>provisioningProfiles</key>
-	<dict>
-		<key>com.bundleid</key>
-		<string>profile文件名</string>
-	</dict>
-	<key>teamID</key>
-	<string>your teamId</string>
-	<key>method</key>
-	<string>development</string>
+    <key>destination</key>
+    <string>export</string>
+    <key>method</key>
+    <string>app-store</string>
+    <key>provisioningProfiles</key>
+    <dict>
+        <key>${bundleId}</key>
+        <string>${profileName}</string>
+    </dict>
+    <key>signingCertificate</key>
+    <string>Apple Distribution</string>
+    <key>signingStyle</key>
+    <string>manual</string>
+    <key>stripSwiftSymbols</key>
+    <true/>
+    <key>teamID</key>
+    <string>${teamID}</string>
+    <key>uploadBitcode</key>
+    <false/>
+    <key>uploadSymbols</key>
+    <true/>
 </dict>
 </plist>
 ```

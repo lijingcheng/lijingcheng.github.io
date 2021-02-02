@@ -60,26 +60,32 @@ public static func open(_ name: String, storyboard: String = "", bundle: Bundle 
 }
     
 public static func viewControllerWithClassName(_ name: String, storyboard: String = "", bundle: Bundle) -> UIViewController? {
-    var viewController: UIViewController?
-    
-    if storyboard.isEmpty {
-        var bundleName: String?
+        var viewController: UIViewController?
+        
+        if storyboard.isEmpty {
+            var bundleName: String?
             
-        if bundle == Bundle.main {
-            bundleName = (Bundle.main.infoDictionary!["CFBundleExecutable"] as! String).replacingOccurrences(of: "-", with: "_")
+            if bundle == Bundle.main {
+                bundleName = (Bundle.main.infoDictionary!["CFBundleExecutable"] as! String).replacingOccurrences(of: "-", with: "_")
+            } else {
+                bundleName = bundle.infoDictionary!["CFBundleName"] as? String
+            }
+            
+            // Swift 语言开发的 VC 对象需要通过 bundle + name 的方式初始化
+            if let vc = NSClassFromString((bundleName! + "." + name)) as? UIViewController.Type {
+                viewController = vc.init()
+            } else {
+                // Objective-C 语言开发的 VC 对象在初始化时不需要加 bundle
+                if let vc = NSClassFromString(name) as? UIViewController.Type {
+                    viewController = vc.init()
+                }
+            }
         } else {
-            bundleName = bundle.infoDictionary!["CFBundleName"] as? String
+            viewController = UIStoryboard(name: storyboard, bundle: bundle).instantiateViewController(withIdentifier: name)
         }
-            
-        if let vc = NSClassFromString((bundleName! + "." + name)) as? UIViewController.Type {
-            viewController = vc.init()
-        }
-    } else {
-        viewController = UIStoryboard(name: storyboard, bundle: bundle).instantiateViewController(withIdentifier: name)
+        
+        return viewController
     }
-
-    return viewController
-}
 ```
 
 再介绍几个小功能和需要注意的地方

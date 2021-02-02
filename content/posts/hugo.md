@@ -101,6 +101,9 @@ on:
     branches:
       - hugo-branch
 
+env:
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
