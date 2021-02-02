@@ -68,9 +68,9 @@ curl -k --verbose <span style=color:#e6db74>&#34;</span><span style=color:#e6db7
 
 echo <span style=color:#e6db74>&#34;================= 上传到 TestFlight =================&#34;</span>
 
-apple_api_ey<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;&#34;</span>
+apple_api_key<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;&#34;</span>
 apple_api_issuer<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;&#34;</span>
-xcrun altool --upload-app -f <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>file_name<span style=color:#e6db74>}</span><span style=color:#e6db74>.ipa</span><span style=color:#e6db74>&#34;</span> -t ios --apiKey <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>apple_api_ey<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span> --apiIssuer <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>apple_api_issuer<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span> --verbose
+xcrun altool --upload-app -f <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>file_name<span style=color:#e6db74>}</span><span style=color:#e6db74>.ipa</span><span style=color:#e6db74>&#34;</span> -t ios --apiKey <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>apple_api_key<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span> --apiIssuer <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>apple_api_issuer<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span> --verbose
 
 echo <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>\n\n================= 耗时: </span>$<span style=color:#e6db74>[ `date +%s` - start_time ] 秒 =================</span><span style=color:#e6db74>&#34;</span>
 </code></pre></div><p>如果是上传到蒲公英可以用下面角本替换上传 TestFlight 那段角本</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>echo <span style=color:#e6db74>&#34;================= 上传到蒲公英 =================&#34;</span>
