@@ -32,9 +32,9 @@ Angular 团队在开源框架 AngularJS 中的提交记录所遵守的规范被�
 设计模式 设计模式可以根据其意图或目的分为创建型、结构型、行为型三类，分别关注创建对象、组合代码和对象间的通信问题。
 创建型设计模式 创建型模式关注创建对象的机制，通过将对象的创建和使用分离来增加代码的灵活性和可复用性。包含简单工厂模式、工厂方法模式、抽象工厂模式、建造者模式、原型模式和单例模式。
 简单工厂模式（Simple Factory） 在工厂类中定义用于创建实例的静态方法，然后根据传入参数的不同返回不同实例，被创建的实例具有共同的父类或接口，调用处只关心要什么，不用关心具体创建方式。
-class MapFactory { static func getMap(_ type: MapType) -&amp;gt; Map { switch type { case .baidu: return BaiduMap() case .system: return SystemMap() } } 将对象的创建和对象本身业务处理分离可以降低系统的耦合度，使得两者修改起来都相对容易。简单工厂模式最大的问题在于工厂类的职责相对过重，增加新的产品（高德地图）需要修改工厂类的判断逻辑，这一点与开闭原则是相违背的。</description></item><item><title>我的 MacOS 装机必备应用</title><link>https://lijingcheng.github.io/posts/macos-init/</link><pubDate>Thu, 19 Dec 2019 11:01:18 +0800</pubDate><guid>https://lijingcheng.github.io/posts/macos-init/</guid><description>常规应用 Chrome、微信、QQ、Telegram、网易云音乐、IINA、印象笔记
-工具 Shadowsocks、Alfred、Unarchiver、MacBooster、Agenda、有道词典
-办公 Canary Mail、Pages、Keynote、Numbers、MWeb、Sublime Text、XMind
+class MapFactory { static func getMap(_ type: MapType) -&amp;gt; Map { switch type { case .baidu: return BaiduMap() case .system: return SystemMap() } } 将对象的创建和对象本身业务处理分离可以降低系统的耦合度，使得两者修改起来都相对容易。简单工厂模式最大的问题在于工厂类的职责相对过重，增加新的产品（高德地图）需要修改工厂类的判断逻辑，这一点与开闭原则是相违背的。</description></item><item><title>我的 MacOS 装机必备应用</title><link>https://lijingcheng.github.io/posts/macos-init/</link><pubDate>Thu, 19 Dec 2019 11:01:18 +0800</pubDate><guid>https://lijingcheng.github.io/posts/macos-init/</guid><description>常规应用 Chrome、微信、Telegram、IINA
+工具 ClashX Pro、Alfred、Unarchiver、MacBooster、Agenda、有道词典
+办公 网易邮箱、Pages、Keynote、Numbers、MWeb、Sublime Text、XMind、OmniPlan
 开发 Xcode、Sourcetree、Sketch、Charles、Injectionlll、Lookin
 终端 iTerm、Homebrew、RVM、CocoaPods、ZSH、Oh My ZSH、Hugo</description></item><item><title>使用 Hugo + GitHub Actions 升级博客</title><link>https://lijingcheng.github.io/posts/hugo/</link><pubDate>Wed, 11 Dec 2019 16:28:43 +0800</pubDate><guid>https://lijingcheng.github.io/posts/hugo/</guid><description>最近打算更新下博客模板并优化下内容的发布流程，于是放弃了多年不更新的 Octopress，在目前比较流行的静态博客生成工具 Hexo 和 Hugo 之间选择了后者，主要看重的是 Hugo 在发布时速度比较快，并且依赖较少。
 关于发布流程，首先打算使用持续集成服务来提高内容发布效率，简化操作步骤，以达到提交 Markdown 源文件到 GitHub 后就能够自动完成博客站点的部署，在 Travis CI 和 GitHub Actions 之间选择了后者，对我来说最看重的就是它可以复用别人写好的 Action 并根据自己的需要来组合使用。
@@ -159,7 +159,7 @@ Carthage 使用的是动态库方式，所以无法进行调试，看不到源�
 Carthage 的下载源目前仅支持 GitHub（GitHub.com 和 GitHub Enterprise），CocoaPods 除了 GitHub，还支持我们托管在公司的 Git 仓库，还有本地路径
 目前支持 CocoaPods 的第三方库比 Carthage 要多一些
 我们可以在一个项目里同时使用 CocoaPods 和 Carthage，可以用 Carthage 管理比较成熟并且不需要调试的第三方库，用来提高编译速度，再用 CocoaPods 管理其它有可能需要进行代码调试的第三方库，还可以用来在组件化开发中做依赖设置。
-安装 Carthage 建议通过 HomeBrew 安装</description></item><item><title>使用 xcodebuild 打包 IPA 并上传蒲公英</title><link>https://lijingcheng.github.io/posts/xcodebuild/</link><pubDate>Mon, 05 Dec 2016 18:49:45 +0800</pubDate><guid>https://lijingcheng.github.io/posts/xcodebuild/</guid><description>xcodebuild 是苹果提供的项目自动构建工具，包含在 Command Line Tools 中，可以完成 iOS 项目的编译、打包和签名等工作。
+安装 Carthage 建议通过 HomeBrew 安装</description></item><item><title>使用 xcodebuild 打包 IPA 并上传蒲公英和 TestFlight</title><link>https://lijingcheng.github.io/posts/xcodebuild/</link><pubDate>Mon, 05 Dec 2016 18:49:45 +0800</pubDate><guid>https://lijingcheng.github.io/posts/xcodebuild/</guid><description>xcodebuild 是苹果提供的项目自动构建工具，包含在 Command Line Tools 中，可以完成 iOS 项目的编译、打包和签名等工作。
 shell script 是一种命令语言，有点像 Windows 下的批处理，但更强大，它可以跑在 Linux/Unix 系统的 shell 程序中。
 为什么要用 xcodebuild 通过 Xcode 对项目进行编译打包，并将 IPA 分发给测试人员这一过程操作步骤多并繁琐，而在 shell 脚本中使用 xcodebuild 命令执行这一过程便会非常方便快捷，特别是当项目进入测试阶段，每天都会打一个或多个测试包时，使用脚本进行自动化打包能够大大提高我们的工作效率。
 以前的作法 AFNetworking 的作者 mattt 曾经提供了一个名为 shenzhen 的打包服务，使用起来非常简单方便，并且能够在打包后上传到很多分发平台上，可惜已经有两年多没有再维护了。

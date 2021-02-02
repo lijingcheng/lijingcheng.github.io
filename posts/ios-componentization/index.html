@@ -31,26 +31,32 @@ $PODS_ROOT/R.swift/rswift&#34; generate &#34;$SRCROOT&#34; --accessLevel public 
 }
     
 <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>viewControllerWithClassName</span>(<span style=color:#66d9ef>_</span> name: String, storyboard: String = <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>&#34;</span>, bundle: Bundle) -&gt; UIViewController? {
-    <span style=color:#66d9ef>var</span> viewController: UIViewController?
-    
-    <span style=color:#66d9ef>if</span> storyboard.isEmpty {
-        <span style=color:#66d9ef>var</span> bundleName: String?
+        <span style=color:#66d9ef>var</span> viewController: UIViewController?
+        
+        <span style=color:#66d9ef>if</span> storyboard.isEmpty {
+            <span style=color:#66d9ef>var</span> bundleName: String?
             
-        <span style=color:#66d9ef>if</span> bundle == Bundle.main {
-            bundleName = (Bundle.main.infoDictionary![<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>CFBundleExecutable</span><span style=color:#e6db74>&#34;</span>] <span style=color:#66d9ef>as</span>! String).replacingOccurrences(of: <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>-</span><span style=color:#e6db74>&#34;</span>, with: <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>_</span><span style=color:#e6db74>&#34;</span>)
+            <span style=color:#66d9ef>if</span> bundle == Bundle.main {
+                bundleName = (Bundle.main.infoDictionary![<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>CFBundleExecutable</span><span style=color:#e6db74>&#34;</span>] <span style=color:#66d9ef>as</span>! String).replacingOccurrences(of: <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>-</span><span style=color:#e6db74>&#34;</span>, with: <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>_</span><span style=color:#e6db74>&#34;</span>)
+            } <span style=color:#66d9ef>else</span> {
+                bundleName = bundle.infoDictionary![<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>CFBundleName</span><span style=color:#e6db74>&#34;</span>] <span style=color:#66d9ef>as</span>? String
+            }
+            
+            <span style=color:#75715e>//</span><span style=color:#75715e> </span><span style=color:#75715e>S</span><span style=color:#75715e>w</span><span style=color:#75715e>i</span><span style=color:#75715e>f</span><span style=color:#75715e>t</span><span style=color:#75715e> </span><span style=color:#75715e>语</span><span style=color:#75715e>言</span><span style=color:#75715e>开</span><span style=color:#75715e>发</span><span style=color:#75715e>的</span><span style=color:#75715e> </span><span style=color:#75715e>V</span><span style=color:#75715e>C</span><span style=color:#75715e> </span><span style=color:#75715e>对</span><span style=color:#75715e>象</span><span style=color:#75715e>需</span><span style=color:#75715e>要</span><span style=color:#75715e>通</span><span style=color:#75715e>过</span><span style=color:#75715e> </span><span style=color:#75715e>b</span><span style=color:#75715e>u</span><span style=color:#75715e>n</span><span style=color:#75715e>d</span><span style=color:#75715e>l</span><span style=color:#75715e>e</span><span style=color:#75715e> </span><span style=color:#75715e>+</span><span style=color:#75715e> </span><span style=color:#75715e>n</span><span style=color:#75715e>a</span><span style=color:#75715e>m</span><span style=color:#75715e>e</span><span style=color:#75715e> </span><span style=color:#75715e>的</span><span style=color:#75715e>方</span><span style=color:#75715e>式</span><span style=color:#75715e>初</span><span style=color:#75715e>始</span><span style=color:#75715e>化</span>
+            <span style=color:#66d9ef>if</span> <span style=color:#66d9ef>let</span> vc = NSClassFromString((bundleName! <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>.</span><span style=color:#e6db74>&#34;</span> <span style=color:#f92672>+</span> name)) <span style=color:#66d9ef>as</span>? UIViewController.<span style=color:#66d9ef>Type</span> {
+                viewController = vc.<span style=color:#66d9ef>init</span>()
+            } <span style=color:#66d9ef>else</span> {
+                <span style=color:#75715e>//</span><span style=color:#75715e> </span><span style=color:#75715e>O</span><span style=color:#75715e>b</span><span style=color:#75715e>j</span><span style=color:#75715e>e</span><span style=color:#75715e>c</span><span style=color:#75715e>t</span><span style=color:#75715e>i</span><span style=color:#75715e>v</span><span style=color:#75715e>e</span><span style=color:#75715e>-</span><span style=color:#75715e>C</span><span style=color:#75715e> </span><span style=color:#75715e>语</span><span style=color:#75715e>言</span><span style=color:#75715e>开</span><span style=color:#75715e>发</span><span style=color:#75715e>的</span><span style=color:#75715e> </span><span style=color:#75715e>V</span><span style=color:#75715e>C</span><span style=color:#75715e> </span><span style=color:#75715e>对</span><span style=color:#75715e>象</span><span style=color:#75715e>在</span><span style=color:#75715e>初</span><span style=color:#75715e>始</span><span style=color:#75715e>化</span><span style=color:#75715e>时</span><span style=color:#75715e>不</span><span style=color:#75715e>需</span><span style=color:#75715e>要</span><span style=color:#75715e>加</span><span style=color:#75715e> </span><span style=color:#75715e>b</span><span style=color:#75715e>u</span><span style=color:#75715e>n</span><span style=color:#75715e>d</span><span style=color:#75715e>l</span><span style=color:#75715e>e</span>
+                <span style=color:#66d9ef>if</span> <span style=color:#66d9ef>let</span> vc = NSClassFromString(name) <span style=color:#66d9ef>as</span>? UIViewController.<span style=color:#66d9ef>Type</span> {
+                    viewController = vc.<span style=color:#66d9ef>init</span>()
+                }
+            }
         } <span style=color:#66d9ef>else</span> {
-            bundleName = bundle.infoDictionary![<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>CFBundleName</span><span style=color:#e6db74>&#34;</span>] <span style=color:#66d9ef>as</span>? String
+            viewController = UIStoryboard(name: storyboard, bundle: bundle).instantiateViewController(withIdentifier: name)
         }
-            
-        <span style=color:#66d9ef>if</span> <span style=color:#66d9ef>let</span> vc = NSClassFromString((bundleName! <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>.</span><span style=color:#e6db74>&#34;</span> <span style=color:#f92672>+</span> name)) <span style=color:#66d9ef>as</span>? UIViewController.<span style=color:#66d9ef>Type</span> {
-            viewController = vc.<span style=color:#66d9ef>init</span>()
-        }
-    } <span style=color:#66d9ef>else</span> {
-        viewController = UIStoryboard(name: storyboard, bundle: bundle).instantiateViewController(withIdentifier: name)
+        
+        <span style=color:#66d9ef>return</span> viewController
     }
-
-    <span style=color:#66d9ef>return</span> viewController
-}
 </code></pre></div><p>再介绍几个小功能和需要注意的地方</p><ul><li><p>打开页面时指定是否需要登录，然后将原本想要跳转的页面信息及参数传递给登录页，当登录成功后直接跳转到该页面，并将登录页本身从导航堆栈中移除</p></li><li><p>pop 页面时除 navigation 的三种方式外，增加锚点方式返回，例如在购买商品页面填加锚点，然后当页面流转到购买成功时，可将导航堆栈反转过来，pop 到最近的一个锚点页面或指定锚点页面</p></li><li><p>页面跳转如果设置了使用动画，在动画结束前不响应其它跳转任务</p></li><li><p>pop 时要考虑到导航堆栈里不存在指定页面的场景，还要确定当前 VC 是否是 navigationController</p></li><li><p>传参使用字典还是 Model 也是需要注意的问题，虽然用字典代替 Model 存储数据对于组件化架构来说是解决组件之间数据传递参数的好办法，并且可以做到组件间的松耦合，但使用起来较麻烦，容易出错，所以建议简单的数据模型可以不定义成 Model，复杂模型还是有必要使用 Model，代码清楚，复用性好，有维护多组件能力的团队可以将多个业务组件共用的 Model 单独以组件形式维护，或者像我们一样允许组件中存在重复 Model</p></li></ul><h1 id=heading-5>组件的多环境打包</h1><p>App 运行环境通常有测试环境、预上线环境、正常环境三种，这里分别用 QA、STG、PRD 表示，有些公司还会有企业开发者账号，用来自己分发项目更方便的去做测试工作，下面针对这种情况做多环境打包设置</p><ul><li><p>通过 xcconfig 方式在原先的 debug、release 上扩展出 staging、enterprisePRD、production，切换环境时只要在 Scheme 中的 Build Configration 中设置一下就可以了（对于 xcconfig 这里不做详细介绍）</p></li><li><p>上面列出的 debug 和 release 对应 QA，enterprisePRD 和 production 对应 PRD，其中 production 作为正式打包上线的设置项</p></li><li><p>xcconfig 文件中可针对不同环境设置不同的 app 名字，还可以对 enterprisePRD 设置不同的微信Id 或其它内容</p></li></ul><p>组件在不同环境中 podspec 的内容也会不同，主要体现在 version 和 source 字段</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ruby data-lang=ruby><span style=color:#75715e># 开发环境</span>
 s<span style=color:#f92672>.</span>version      <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;6.5.5&#39;</span>
 s<span style=color:#f92672>.</span>source       <span style=color:#f92672>=</span> { <span style=color:#e6db74>:git</span> <span style=color:#f92672>=</span><span style=color:#f92672>&gt;</span><span style=color:#e6db74>&#39;http://gitlab.mx.com/ios/wandafilm-card.git&#39;</span>, <span style=color:#e6db74>:branch</span> <span style=color:#f92672>=</span><span style=color:#f92672>&gt;</span> <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>feature/</span><span style=color:#e6db74>#{</span>s<span style=color:#f92672>.</span>version<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>}
