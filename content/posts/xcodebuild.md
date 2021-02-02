@@ -82,9 +82,9 @@ curl -k --verbose "https://api.bugly.qq.com/openapi/file/upload/symbol?app_key=$
 
 echo "================= 上传到 TestFlight ================="
 
-apple_api_ey=""
+apple_api_key=""
 apple_api_issuer=""
-xcrun altool --upload-app -f "${file_name}.ipa" -t ios --apiKey "${apple_api_ey}" --apiIssuer "${apple_api_issuer}" --verbose
+xcrun altool --upload-app -f "${file_name}.ipa" -t ios --apiKey "${apple_api_key}" --apiIssuer "${apple_api_issuer}" --verbose
 
 echo "\n\n================= 耗时: $[ `date +%s` - start_time ] 秒 ================="
 ```
