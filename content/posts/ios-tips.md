@@ -70,13 +70,6 @@ self.navigationController.interactivePopGestureRecognizer.delegate = self;
 button.userInteractionEnabled = NO;
 ```
 
-UITableView 的分割线左边顶头
-
-```
-tableView.separatorInset = UIEdgeInsetsZero;
-cell.layoutMargins = UIEdgeInsetsZero;
-```
-
 修改约束后，用动画展示效果
 
 ```
@@ -97,29 +90,10 @@ po [[UIWindow keyWindow] _autolayoutTrace]
 superView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
 ```
 
-隐藏导航条下面的线
-
-```
-navigationBar.setValue(hide, forKey: "hidesShadow")
-```
-
 隐藏 Grouped TableView 上边多余的间隔
 
 ```
 self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
-```
-
-根据模糊程度生成 UIVisualEffectView
-
-```swift
-extension UIVisualEffectView {
-    public convenience init(blurRadius: CGFloat) {
-        let blurEffect = (NSClassFromString("_UICustomBlurEffect") as! UIBlurEffect.Type).init()
-        blurEffect.setValue(blurRadius, forKeyPath: "blurRadius")
-
-        self.init(effect: blurEffect)
-    }
-}
 ```
 
 编译出 error 后继续编译
