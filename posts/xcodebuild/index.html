@@ -22,7 +22,6 @@ xcodebuild --help 完成打包并分发这一过程通常分为四个步骤： &
 <span style=color:#75715e>######  4.如果使用到 UMeng、JPush 等第三方库，可能还需要设置 bitcode = NO  ######</span>  
 <span style=color:#75715e>##########################################################################</span>
 
-
 workspace_name<span style=color:#f92672>=</span><span style=color:#e6db74>`</span>find . -name *.xcworkspace | awk -F <span style=color:#e6db74>&#34;[/.]&#34;</span> <span style=color:#e6db74>&#39;{print $(NF-1)}&#39;</span><span style=color:#e6db74>`</span>
 scheme_name<span style=color:#f92672>=</span><span style=color:#e6db74>${</span>workspace_name<span style=color:#e6db74>}</span>
 build_folder<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>PWD<span style=color:#66d9ef>)</span>/build/release-iphoneos
@@ -30,13 +29,13 @@ file_name<span style=color:#f92672>=</span><span style=color:#e6db74>${</span>bu
 
 start_time<span style=color:#f92672>=</span><span style=color:#e6db74>`</span>date +%s<span style=color:#e6db74>`</span>
 
-echo <span style=color:#e6db74>&#34;================= 清理 =================&#34;</span>
+echo <span style=color:#e6db74>&#34;================= 更新 build 版本号 =================&#34;</span>
 
-xcodebuild clean -workspace <span style=color:#e6db74>${</span>workspace_name<span style=color:#e6db74>}</span>.xcworkspace -scheme <span style=color:#e6db74>${</span>scheme_name<span style=color:#e6db74>}</span> -configuration Release -sdk iphoneos SYMROOT<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>PWD<span style=color:#66d9ef>)</span>/build
+app_version<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>sed -n <span style=color:#e6db74>&#39;/MARKETING_VERSION/{s/MARKETING_VERSION = //;s/;//;s/^[[:space:]]*//;p;q;}&#39;</span> <span style=color:#e6db74>${</span>scheme_name<span style=color:#e6db74>}</span>.xcodeproj/project.pbxproj<span style=color:#66d9ef>)</span>
+new_app_version<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>app_version<span style=color:#e6db74>}</span><span style=color:#e6db74>.</span><span style=color:#66d9ef>$(</span>date +%H%M<span style=color:#66d9ef>)</span><span style=color:#e6db74>&#34;</span>
+bundle_id<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>sed -n <span style=color:#e6db74>&#39;/PRODUCT_BUNDLE_IDENTIFIER/{s/PRODUCT_BUNDLE_IDENTIFIER = //;s/;//;s/^[[:space:]]*//;p;q;}&#39;</span> <span style=color:#e6db74>${</span>scheme_name<span style=color:#e6db74>}</span>.xcodeproj/project.pbxproj<span style=color:#66d9ef>)</span>
 
-<span style=color:#66d9ef>if</span> ! <span style=color:#f92672>[</span> $? <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span> <span style=color:#f92672>]</span>; <span style=color:#66d9ef>then</span>
-    exit <span style=color:#ae81ff>1</span>
-<span style=color:#66d9ef>fi</span>
+xcrun agvtool new-version -all <span style=color:#e6db74>${</span>new_app_version<span style=color:#e6db74>}</span>
 
 echo <span style=color:#e6db74>&#34;================= 开始构建 =================&#34;</span>
 
@@ -61,16 +60,20 @@ echo <span style=color:#e6db74>&#34;================= 上传dSYM ===============
 bugly_id<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;&#34;</span>
 bugly_key<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;&#34;</span>
 dsym_file_path<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>file_name<span style=color:#e6db74>}</span><span style=color:#e6db74>.xcarchive/dSYMs/</span><span style=color:#e6db74>${</span>scheme_name<span style=color:#e6db74>}</span><span style=color:#e6db74>.app.dSYM</span><span style=color:#e6db74>&#34;</span>
-app_version<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>sed -n <span style=color:#e6db74>&#39;/MARKETING_VERSION/{s/MARKETING_VERSION = //;s/;//;s/^[[:space:]]*//;p;q;}&#39;</span> <span style=color:#e6db74>${</span>scheme_name<span style=color:#e6db74>}</span>.xcodeproj/project.pbxproj<span style=color:#66d9ef>)</span>
-bundle_id<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>sed -n <span style=color:#e6db74>&#39;/PRODUCT_BUNDLE_IDENTIFIER/{s/PRODUCT_BUNDLE_IDENTIFIER = //;s/;//;s/^[[:space:]]*//;p;q;}&#39;</span> <span style=color:#e6db74>${</span>scheme_name<span style=color:#e6db74>}</span>.xcodeproj/project.pbxproj<span style=color:#66d9ef>)</span>
 
-curl -k --verbose <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>https://api.bugly.qq.com/openapi/file/upload/symbol?app_key=</span><span style=color:#e6db74>${</span>bugly_key<span style=color:#e6db74>}</span><span style=color:#e6db74>&amp;app_id=</span><span style=color:#e6db74>${</span>bugly_id<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span> --form <span style=color:#e6db74>&#34;api_version=1&#34;</span> --form <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>app_id=</span><span style=color:#e6db74>${</span>bugly_id<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span> --form <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>app_key=</span><span style=color:#e6db74>${</span>bugly_key<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span> --form <span style=color:#e6db74>&#34;symbolType=2&#34;</span> --form <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>bundleId=</span><span style=color:#e6db74>${</span>bundle_id<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span> --form <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>productVersion=</span><span style=color:#e6db74>${</span>app_version<span style=color:#e6db74>}</span><span style=color:#e6db74>(</span><span style=color:#66d9ef>$(</span>date +%H%M<span style=color:#66d9ef>)</span><span style=color:#e6db74>)</span><span style=color:#e6db74>&#34;</span> --form <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>fileName=</span><span style=color:#e6db74>${</span>scheme_name<span style=color:#e6db74>}</span><span style=color:#e6db74>.app.dSYM</span><span style=color:#e6db74>&#34;</span> --form <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>file=@</span><span style=color:#e6db74>${</span>dsym_file_path<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
+curl -k --verbose <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>https://api.bugly.qq.com/openapi/file/upload/symbol?app_key=</span><span style=color:#e6db74>${</span>bugly_key<span style=color:#e6db74>}</span><span style=color:#e6db74>&amp;app_id=</span><span style=color:#e6db74>${</span>bugly_id<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span> --form <span style=color:#e6db74>&#34;api_version=1&#34;</span> --form <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>app_id=</span><span style=color:#e6db74>${</span>bugly_id<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span> --form <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>app_key=</span><span style=color:#e6db74>${</span>bugly_key<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span> --form <span style=color:#e6db74>&#34;symbolType=2&#34;</span> --form <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>bundleId=</span><span style=color:#e6db74>${</span>bundle_id<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span> --form <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>productVersion=</span><span style=color:#e6db74>${</span>new_app_version<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span> --form <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>fileName=</span><span style=color:#e6db74>${</span>scheme_name<span style=color:#e6db74>}</span><span style=color:#e6db74>.app.dSYM</span><span style=color:#e6db74>&#34;</span> --form <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>file=@</span><span style=color:#e6db74>${</span>dsym_file_path<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
 
 echo <span style=color:#e6db74>&#34;================= 上传到 TestFlight =================&#34;</span>
 
 apple_api_key<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;&#34;</span>
 apple_api_issuer<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;&#34;</span>
+
 xcrun altool --upload-app -f <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>file_name<span style=color:#e6db74>}</span><span style=color:#e6db74>.ipa</span><span style=color:#e6db74>&#34;</span> -t ios --apiKey <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>apple_api_key<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span> --apiIssuer <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>apple_api_issuer<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span> --verbose
+
+echo <span style=color:#e6db74>&#34;================= 删除文件 =================&#34;</span>
+
+rm -f <span style=color:#e6db74>${</span>file_name<span style=color:#e6db74>}</span>.ipa
+rm -rf <span style=color:#e6db74>${</span>file_name<span style=color:#e6db74>}</span>.xcarchive
 
 echo <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>\n\n================= 耗时: </span>$<span style=color:#e6db74>[ `date +%s` - start_time ] 秒 =================</span><span style=color:#e6db74>&#34;</span>
 </code></pre></div><p>如果是上传到蒲公英可以用下面角本替换上传 TestFlight 那段角本</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>echo <span style=color:#e6db74>&#34;================= 上传到蒲公英 =================&#34;</span>
