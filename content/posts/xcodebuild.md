@@ -36,7 +36,6 @@ xcodebuild --help
 ######  4.如果使用到 UMeng、JPush 等第三方库，可能还需要设置 bitcode = NO  ######  
 ##########################################################################
 
-
 workspace_name=`find . -name *.xcworkspace | awk -F "[/.]" '{print $(NF-1)}'`
 scheme_name=${workspace_name}
 build_folder=$(PWD)/build/release-iphoneos
@@ -44,13 +43,13 @@ file_name=${build_folder}/${scheme_name}$(date +%Y%m%d%H%M)
 
 start_time=`date +%s`
 
-echo "================= 清理 ================="
+echo "================= 更新 build 版本号 ================="
 
-xcodebuild clean -workspace ${workspace_name}.xcworkspace -scheme ${scheme_name} -configuration Release -sdk iphoneos SYMROOT=$(PWD)/build
+app_version=$(sed -n '/MARKETING_VERSION/{s/MARKETING_VERSION = //;s/;//;s/^[[:space:]]*//;p;q;}' ${scheme_name}.xcodeproj/project.pbxproj)
+new_app_version="${app_version}.$(date +%H%M)"
+bundle_id=$(sed -n '/PRODUCT_BUNDLE_IDENTIFIER/{s/PRODUCT_BUNDLE_IDENTIFIER = //;s/;//;s/^[[:space:]]*//;p;q;}' ${scheme_name}.xcodeproj/project.pbxproj)
 
-if ! [ $? = 0 ]; then
-    exit 1
-fi
+xcrun agvtool new-version -all ${new_app_version}
 
 echo "================= 开始构建 ================="
 
@@ -75,16 +74,20 @@ echo "================= 上传dSYM ================="
 bugly_id=""
 bugly_key=""
 dsym_file_path="${file_name}.xcarchive/dSYMs/${scheme_name}.app.dSYM"
-app_version=$(sed -n '/MARKETING_VERSION/{s/MARKETING_VERSION = //;s/;//;s/^[[:space:]]*//;p;q;}' ${scheme_name}.xcodeproj/project.pbxproj)
-bundle_id=$(sed -n '/PRODUCT_BUNDLE_IDENTIFIER/{s/PRODUCT_BUNDLE_IDENTIFIER = //;s/;//;s/^[[:space:]]*//;p;q;}' ${scheme_name}.xcodeproj/project.pbxproj)
 
-curl -k --verbose "https://api.bugly.qq.com/openapi/file/upload/symbol?app_key=${bugly_key}&app_id=${bugly_id}" --form "api_version=1" --form "app_id=${bugly_id}" --form "app_key=${bugly_key}" --form "symbolType=2" --form "bundleId=${bundle_id}" --form "productVersion=${app_version}($(date +%H%M))" --form "fileName=${scheme_name}.app.dSYM" --form "file=@${dsym_file_path}"
+curl -k --verbose "https://api.bugly.qq.com/openapi/file/upload/symbol?app_key=${bugly_key}&app_id=${bugly_id}" --form "api_version=1" --form "app_id=${bugly_id}" --form "app_key=${bugly_key}" --form "symbolType=2" --form "bundleId=${bundle_id}" --form "productVersion=${new_app_version}" --form "fileName=${scheme_name}.app.dSYM" --form "file=@${dsym_file_path}"
 
 echo "================= 上传到 TestFlight ================="
 
 apple_api_key=""
 apple_api_issuer=""
+
 xcrun altool --upload-app -f "${file_name}.ipa" -t ios --apiKey "${apple_api_key}" --apiIssuer "${apple_api_issuer}" --verbose
+
+echo "================= 删除文件 ================="
+
+rm -f ${file_name}.ipa
+rm -rf ${file_name}.xcarchive
 
 echo "\n\n================= 耗时: $[ `date +%s` - start_time ] 秒 ================="
 ```
