@@ -7,7 +7,7 @@ paginate = 10
 [params]
   author = "风行"
   avatar = "images/avatar.png"
-  description = "一直在学习的大龄程序员"
+  description = "Do not repeat yourself!"
   [[params.social]]
     name = "github"
     url = "https://github.com/lijingcheng"
