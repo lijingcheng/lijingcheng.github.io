@@ -16,18 +16,6 @@ draft: false
 NSLog(@"%@", [NSString stringWithFormat:@"%02d月", 3]);
 ```
 
-在不知道谁是第一响应者时隐藏键盘
-
-```
-[[[UIApplication sharedApplication] keyWindow] endEditing:YES];
-```
-
-Provisioning Profiles 所在路径
-
-```
-~/Library/MobileDevice/Provisioning Profiles
-```
-
 解码 cms 加密后的授权文件
 
 ```
@@ -44,12 +32,6 @@ Xcode左侧导航处：Find -> Regular Expression，然后输入 @"[^"]*[\u4E00-
 
 ```
 build settings ->  Other Warning Flags -> -Wno-documentation
-```
-
-关闭 UINavigationController 滑动返回功能
-
-```
-self.navigationController.interactivePopGestureRecognizer.enabled = NO;
 ```
 
 自定义 leftBarButtonItem 后，左滑返回手势失效
@@ -119,21 +101,4 @@ Xcode -> preference -> general -> 勾选 Continue building after errors
 #pragma clang diagnostic pop
 
 ```
-
-KVC
-
-```objc
-	NSArray *numbers = @[@4, @81, @2]; // @[@{@"price": @4}, @{@"price": @81}, @{@"price": @2}]
-    
-    NSLog(@"max = %@", [numbers valueForKeyPath:@"@max.self"]); // @max.price
-    NSLog(@"min = %@", [numbers valueForKeyPath:@"@min.self"]); // @min.price
-    NSLog(@"sum = %@", [numbers valueForKeyPath:@"@sum.self"]); // @sum.price
-    NSLog(@"avg = %@", [numbers valueForKeyPath:@"@avg.self"]); // @avg.price
-    
-    //数组去重
-    NSArray *devices = @[@"iPhone6", @"iPhone5", @"iPhone6 Plus", @"iPhone6", @"iPhone5"];
-    
-    NSLog(@"devices = %@", [devices valueForKeyPath:@"@distinctUnionOfObjects.self"]); // iPhone5, iPhone6, iPhone6 Plus
-```
-
 
