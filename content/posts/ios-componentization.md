@@ -33,8 +33,7 @@ draft: false
 访问 image、xib、storyboard 时需要指定 bundle，如果项目中使用了 R.swift，可以在各组件中通过以下角本来修改 R.generated.swift 中设置的 bundle，修改后在组件中使用 R.image.xxx()，此代码在组件中是指 main bundle，在主工程中会将其认定为 core bundle。
 
 ```shell
-$PODS_ROOT/R.swift/rswift" generate "$SRCROOT" --accessLevel public
-sed -i '' -e "s/Bundle(for: R.Class.self)/Bundle.core/g" “$SRCROOT/
+"$PODS_ROOT/R.swift/rswift" generate "$SRCROOT/R.generated.swift" --hostingBundle MyBundleName
 ```
 
 还需要在各组件中正确使用 open、public、private
@@ -114,13 +113,13 @@ App 运行环境通常有测试环境、预上线环境、正常环境三种，�
 ```ruby
 # 开发环境
 s.version      = '6.5.5'
-s.source       = { :git =>'http://gitlab.mx.com/ios/wandafilm-card.git', :branch => "feature/#{s.version}"}
+s.source       = { :git =>'http://gitlab.xxx.com/ios/wandafilm-card.git', :branch => "feature/#{s.version}"}
 ```
 
 ```ruby
 # 上线环境，需要打 git tag
 s.version      = '6.5.5.master'
-s.source       = { :git =>'http://gitlab.mx.com/ios/wandafilm-core.git', :branch => 'master', :tag => s.version}
+s.source       = { :git =>'http://gitlab.xxx.com/ios/wandafilm-card.git', :branch => 'master', :tag => s.version}
 ```
 
 建议使用 Jenkins 或其他持续集成服务来完成打包发版工作，以减少不必要的重复操作，Jenkins 中的角本除了完成基础打包功能外还应完成以下功能
