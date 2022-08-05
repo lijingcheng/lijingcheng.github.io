@@ -168,15 +168,15 @@ xcodebuild --help 完成打包并分发这一过程通常分为四个步骤： &
 完整脚本 新建 xxx.sh 文件，然后将下面脚本复制过去，如果你也在用 CocoaPods，并且只需要打 Release 包，那么只需要用蒲公英提供给你的 userKey 和 apiKey 替换掉脚本里的就可以了。
 #!/bin/sh ########################################################################## ###### 1.执行 chmod +x .</description></item><item><title>iOS 开发 Tips</title><link>https://lijingcheng.github.io/posts/ios-tips/</link><pubDate>Thu, 09 Jun 2016 10:58:59 +0800</pubDate><guid>https://lijingcheng.github.io/posts/ios-tips/</guid><description>用模拟器调试动画功能时，让动画执行的慢一些
 模拟器菜单：Debug -&amp;gt; Show Animations 取两位整数，不够补 0
-NSLog(@&amp;quot;%@&amp;quot;, [NSString stringWithFormat:@&amp;quot;%02d月&amp;quot;, 3]); 在不知道谁是第一响应者时隐藏键盘
-[[[UIApplication sharedApplication] keyWindow] endEditing:YES]; Provisioning Profiles 所在路径
-~/Library/MobileDevice/Provisioning Profiles 解码 cms 加密后的授权文件
+NSLog(@&amp;quot;%@&amp;quot;, [NSString stringWithFormat:@&amp;quot;%02d月&amp;quot;, 3]); 解码 cms 加密后的授权文件
 终端：security cms -D -i example.mobileprovision 查找代码中的中文字符串，做国际化适配时会用到
 Xcode左侧导航处：Find -&amp;gt; Regular Expression，然后输入 @&amp;quot;[^&amp;quot;]*[\u4E00-\u9FA5]+[^&amp;quot;\n]*?&amp;quot; 忽略第三方 SDK 文档中的警告
-build settings -&amp;gt; Other Warning Flags -&amp;gt; -Wno-documentation 关闭 UINavigationController 滑动返回功能
-self.navigationController.interactivePopGestureRecognizer.enabled = NO; 自定义 leftBarButtonItem 后，左滑返回手势失效
+build settings -&amp;gt; Other Warning Flags -&amp;gt; -Wno-documentation 自定义 leftBarButtonItem 后，左滑返回手势失效
 self.navigationController.interactivePopGestureRecognizer.delegate = self; 在 xib 中给 UILabel 或 UITextView 设置多行文字
-输入文字后，用 control + enter 来插入换行符，相当于在代码中添加 \n 禁用 UIButton 并且颜色不变灰</description></item><item><title>代码重构</title><link>https://lijingcheng.github.io/posts/refactor/</link><pubDate>Mon, 09 May 2016 10:50:10 +0800</pubDate><guid>https://lijingcheng.github.io/posts/refactor/</guid><description>代码重构 就是在不改变软件系统外部行为的前提下，改善它的内部结构。Martin Flower 在《重构》中有一句经典的话：&amp;ldquo;任何一个傻瓜都能写出计算机可以理解的程序，只有写出人类容易理解的程序才是优秀的程序员。&amp;rdquo;
+输入文字后，用 control + enter 来插入换行符，相当于在代码中添加 \n 禁用 UIButton 并且颜色不变灰
+button.userInteractionEnabled = NO; 修改约束后，用动画展示效果
+[UIView animateWithDuration:0.3f animations:^{ [myView layoutIfNeeded]; }]; 快速定位视图约束警告
+po [[UIWindow keyWindow] _autolayoutTrace] 给 UIView 设置透明度后不影响 subviews</description></item><item><title>代码重构</title><link>https://lijingcheng.github.io/posts/refactor/</link><pubDate>Mon, 09 May 2016 10:50:10 +0800</pubDate><guid>https://lijingcheng.github.io/posts/refactor/</guid><description>代码重构 就是在不改变软件系统外部行为的前提下，改善它的内部结构。Martin Flower 在《重构》中有一句经典的话：&amp;ldquo;任何一个傻瓜都能写出计算机可以理解的程序，只有写出人类容易理解的程序才是优秀的程序员。&amp;rdquo;
 重构原则 随着时间推移，需求的频繁变化等原因都会导致代码质量逐步下降，所以持续重构就变得越来越重要，并且重构对开发人员技术水平及经验的要求会更高一些，下面列出几条重构原则：
 要充分理解旧代码后再进行修改，模块之间过度耦合导致牵一发而动全身，不易控制影响范围，有时代码摆放顺序的修改都会造成问题
 优先重构经常修改的部分，如果代码一两年都没有修改过，那么说明改动的收益很小
