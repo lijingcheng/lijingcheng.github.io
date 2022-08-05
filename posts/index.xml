@@ -126,7 +126,8 @@ a = 2 // signal b = 2 // signal c = a + b // signal binding c = 4 b = 3 // c = 5
 Podfile：定义私有库地址和需要依赖的组件及版本
 Podspec：定义组件的依赖库、编译设置、以及需要打包的资源及代码，资源包括 xib、国际化文件、assets 等
 组件中的资源访问 访问 image、xib、storyboard 时需要指定 bundle，如果项目中使用了 R.swift，可以在各组件中通过以下角本来修改 R.generated.swift 中设置的 bundle，修改后在组件中使用 R.image.xxx()，此代码在组件中是指 main bundle，在主工程中会将其认定为 core bundle。
-$PODS_ROOT/R.swift/rswift&amp;#34; generate &amp;#34;$SRCROOT&amp;#34; --accessLevel public sed -i &amp;#39;&amp;#39; -e &amp;#34;s/Bundle(for: R.Class.self)/Bundle.core/g&amp;#34;“$SRCROOT/ 还需要在各组件中正确使用 open、public、private</description></item><item><title>开车需要注意的事情〜</title><link>https://lijingcheng.github.io/posts/car/</link><pubDate>Thu, 19 Oct 2017 20:04:50 +0800</pubDate><guid>https://lijingcheng.github.io/posts/car/</guid><description>总结了一些开车时需要注意的事情，希望能帮助到刚拿到驾照的新司机。
+&amp;#34;$PODS_ROOT/R.swift/rswift&amp;#34; generate &amp;#34;$SRCROOT/R.generated.swift&amp;#34; --hostingBundle MyBundleName 还需要在各组件中正确使用 open、public、private
+组件之间的路由跳转 网上有很多关于这方面的文章，我们使用的是一种较简单比较适合我们的方式：Router.open 跳转方法需要传入几个比较重要的参数：name、storyboard、bundle，如果要打开的 ViewController 是通过代码或 xib 实现的，需要在这里指定 name，然后会通过 viewControllerWithClassName 方法得到 VC 对象，如果 ViewController 是定义在 storyboard 里的，那么在跳转时需要指定 storyboard，如果要打开的是别的组件中的 ViewController，还需要指定对应 bundle。</description></item><item><title>开车需要注意的事情〜</title><link>https://lijingcheng.github.io/posts/car/</link><pubDate>Thu, 19 Oct 2017 20:04:50 +0800</pubDate><guid>https://lijingcheng.github.io/posts/car/</guid><description>总结了一些开车时需要注意的事情，希望能帮助到刚拿到驾照的新司机。
 起步 不要酒后/疲劳/生气时开车
 确认车周围有没有障碍物或人（曾顶着停车桩开了十多米）
 车上所有人都要系安全带
