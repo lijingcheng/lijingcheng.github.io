@@ -14,5 +14,5 @@ Chrome、微信、ClashX Pro、Alfred、Unarchiver、Tencent Lemon、Agenda、�
 Xcode、Sourcetree、Charles、SwitchHosts
 
 ### 终端
-iTerm、Homebrew、RVM、CocoaPods、Oh My ZSH、Hugo
+iTerm、Homebrew、RVM、CocoaPods、Oh My ZSH、Hugo、SwiftLint
 
