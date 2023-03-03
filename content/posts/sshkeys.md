@@ -44,5 +44,5 @@ IdentityFile ~/.ssh/id_rsa
 touch config
 ```
 
-如果你使用 SourceTree 的话，也可以在添加 GitHub 帐户时直接生成密钥，它会帮你配置好一切并上传，这样就省去了上面一切操作步骤，但仅支持添加 GitHub 和 BitBucket 账号。
+如果你使用 SourceTree 的话，也可以在添加 GitHub 帐户时直接生成密钥，它会帮你配置好一切并上传，最后再自己将私钥添加到 SSH Agent 中。
 
