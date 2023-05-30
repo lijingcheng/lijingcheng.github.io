@@ -126,7 +126,7 @@ SwiftUI 使用 DSL 声明式 UI、跨自家平台、Xcode 通过单独编译我�
 
 - 清理无用的代码文件和资源，不要 @1x 图片，如果用到了 ProtoBuf，可以将 .proto 文件从 Compile Sources 中移除。
 
-- 压缩图片，目前发现 [tinypng.com](tinypng.com) 的压缩效果最好，而且是无损的。
+- 压缩图片 [tinypng.com](tinypng.com) 。
 
 - 小图标可以使用 iconfont 替代，大图可以用 pdf 替代
 
