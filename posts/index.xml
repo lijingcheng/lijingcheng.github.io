@@ -248,15 +248,4 @@ git clone git://github.com/imathis/octopress.git octopress 安装所需依赖
 cd octopress sudo gem install bundler bundle install 安装默认模板
 rake install 关联 GitHub Pages
 rake setup_github_pages git@github.com:yourname/yourname.github.io.git 配置 Octopress 时建议删除 HTML 和 CSS 中用不到的东西，可提高访问速度
-写博客并发布 新建文章（博客存储为 markdown 文件，位于 \octopress\source\_posts 目录下）</description></item><item><title/><link>https://lijingcheng.github.io/posts/ios-request/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://lijingcheng.github.io/posts/ios-request/</guid><description>接口请求过程
-一次接口请求的生命周期 从购卡接口的调用来看一下一次接口请求设及到的知识点
-HTTPS tcp 三次握手 重要数据 AES 加密 请求参数的 MD5 验签 request/response 数据加密 RequestAdapter 的设计模式应用 https 中 tcp 和数字证书的知识（三次握手，四次挥手） 数据返回时对于枚举字段在 Swift 中有坑的解决 tcp 四次挥手 （写的时候可以参考在浏览器打开网页经历了什么，也可以是以万达项目的角度讲，还可以细到讲网络库）
-MD5 MD5 是一种生成信息摘要的算法，可以从任意长度的明文字符串生成128位的哈希值。常用于对接口传输数据做验签，以保证数据传输安全，验签过程：
-1.发送方和请求方约定相同的字符串拼接规则，约定相同的密钥。 2.第三方平台接到支付请求，按规则拼接业务参数和密钥，利用MD5算法生成Sign。 3.用第三方平台自己生成的Sign和请求发送过来的Sign做对比，如果两个Sign值一模一样，则签名无误，如果两个Sign值不同，则信息做了篡改。这个过程叫做验签。
-MD5 是可以破解的
-破解方式并不是将 MD5 后的数据摘要还原成明文，因为128位的摘要是有穷的，而原文数量是无穷的，每一个摘要都可以由若干个原文通过Hash得到。所以对于 MD5 的破解都是通过碰撞的方式实现，也就是字符串生成的 MD5 摘要一样，
-设MD5的哈希函数是H（X），那么： H(A) = M H(B) = M 任意一个B即为破解结果。B有可能等于A，也可能不等于A。
-MD5碰撞通常用于登陆密码的破解。应用系统的数据库中存储的用户密码通常都是原密码的MD5哈希值
-常用碰撞方法
-暴力枚举法：通过枚举出所有原文并计算哈希，然后再看哪个哈希和给定的摘要一致，这种办法时间复杂度极度。 字典法：用现成的字典存储尽可能多的原文和哈希值，然后用指定的信息摘要去查找对应的原文，这种办法占空间大，但速度快 彩虹表：过于复杂。。。 差分攻击：过于复杂。。。 对于单机来说，暴力枚举法的时间成本很高，字典法的空间成本很高。但是利用分布式计算和分布式存储，仍然可以有效破解MD5算法。因此这两种方法同样被黑客们广泛使用。
-SHA 和 MD5 相似，也是一种生成信息摘要的哈希算法，MD5 的摘要长度为 128bit，SHA-1 的摘要长度为 160bit，虽然只多出了 32bit，但不同明文的碰撞几率降低了2^32 = 324294967296倍。2005 年时人们就研究出了破解 SHA-1 的办法，目前常用的有 SHA-256 和 SHA-512，信息摘要越长，发生碰撞的几率就越低，破解的难度就越大。但同时，耗费的性能和占用的空间也就越高。所以要按需要去选择。如果只是验证数据完整性，SHA-256 就足够了。如果希望安全性更高一些还可以考虑 MD5 和 SHA256 结合起来使用，可以将明文同时生成 MD5 摘要和 SHA-256 摘要，然后按规则各取一部分进行摘要合成，例如用 MD5 摘要的前 16 位字符拼接 SHA-256 摘要的后 32 位字符。</description></item></channel></rss>
+写博客并发布 新建文章（博客存储为 markdown 文件，位于 \octopress\source\_posts 目录下）</description></item></channel></rss>
