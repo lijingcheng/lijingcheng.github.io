@@ -38,6 +38,8 @@ draft: true
   {{< figure link="/images/sichuan/chengdu3.jpeg" thumb="-small">}}
 {{< /gallery >}}
 
+{{< load-photoswipe >}}
+
 ## 马尔康
 阿坝藏族羌族自治州首府，离成都300多公里，全程有高速，马尔康市是嘉绒藏区的核心地区，也是历史上最后的土司衰亡的地方，当年红军在这里留下了很多故事。
 
