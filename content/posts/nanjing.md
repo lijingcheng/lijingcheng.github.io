@@ -26,7 +26,7 @@ draft: false
 
 - 十一月中旬的南京也会经常下雨，还是需要带上雨伞，看起来南京温度比大多北方城市高一些，但下雨刮风后区别就没那么大了
 
-![景点地铁路线图](/images/nanjing/nanjing0.jpeg "景点地铁路线图")
+![景点地铁路线图](/images/nanjing/nanjing0.png "景点地铁路线图")
 
 ### Day0 下班后出发
 
