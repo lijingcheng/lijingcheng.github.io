@@ -1,4 +1,13 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 风行's Blog</title><link>https://lijingcheng.github.io/posts/</link><description>Recent content in Posts on 风行's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 16 Nov 2023 10:01:23 +0800</lastBuildDate><atom:link href="https://lijingcheng.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>南京四日游</title><link>https://lijingcheng.github.io/posts/nanjing/</link><pubDate>Thu, 16 Nov 2023 10:01:23 +0800</pubDate><guid>https://lijingcheng.github.io/posts/nanjing/</guid><description>南京也称金陵、江宁，是政治文化名城，先后有东吴、东晋、南朝宋、齐、梁、陈，南唐、明朝、太平天国、中华民国等朝代或政权定都在这里，所以也有“六朝古都”和“十朝都会”之称，南京市树雪松，市花为梅花。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 风行's Blog</title><link>https://lijingcheng.github.io/posts/</link><description>Recent content in Posts on 风行's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 26 Feb 2024 10:01:23 +0800</lastBuildDate><atom:link href="https://lijingcheng.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>雨崩徒步</title><link>https://lijingcheng.github.io/posts/yubeng/</link><pubDate>Mon, 26 Feb 2024 10:01:23 +0800</pubDate><guid>https://lijingcheng.github.io/posts/yubeng/</guid><description>雨崩位于云南省迪庆藏族自治州德钦县云岭乡境内，是梅里雪山脚下的藏族村落，分上雨崩和下雨崩两个村子，相距约一公里，从村子出发有多条徒步线路深入雪山，每条线路都可以做到当天往返，所以不需要带帐篷扎营，可以住在村子里的民宿，这里有几十一晚的青旅床位，也有几千一晚的豪华观景房，可以按自己条件去选择，丰俭由人。
+装包物品（35L背包） 身份证、保温杯、充电宝、耳机、充电头和线、零钱（去藏区都会带，用来在寺庙供奉）
+干湿纸巾、洗漱物品、腰包、髌骨带、雪套，冰爪、手电、哨子、墨镜
+冲锋衣、抓绒、薄羽绒马甲、厚长裤、速干长袖、厚袜子、内裤、徒步鞋、棉线帽子、手套
+布洛芬、创口贴、一周量的徒步路餐（威化、牛肉干、火腿肠、山楂片、M豆、士力架、坚果、葡萄干）
+花费支出 交通：春节期间出去玩，不想请假早走晚回，所以交通费是大头，而且是没办法省的钱，一共大概 5500 元
+北京飞丽江 1654 丽江坐汽车到飞来寺 197 飞来寺拼车到西当温泉 75 尼农村拼车到香格里拉 150 香格里拉飞北京 3178 北京大兴机场打车回家 248 门票：雨崩景区门票 55 元
+住宿：八天大概 1400 元
+飞来寺一天 300 上雨崩村五天，四天青旅床位共 400，一天标间 500 下雨崩村两天青旅床位共 200 吃饭：提前带好了一周的路餐，所以每天早晚两顿饭，平均早饭 20，晚饭 100，加上每天一瓶七块钱的可乐，一共大概 1000 元
+注意事项 雨崩海拔大概 3100，并且植被茂盛，高反几率不高，飞来寺海拔 3400 多，住宿时会高反</description></item><item><title>南京四日游</title><link>https://lijingcheng.github.io/posts/nanjing/</link><pubDate>Thu, 16 Nov 2023 10:01:23 +0800</pubDate><guid>https://lijingcheng.github.io/posts/nanjing/</guid><description>南京也称金陵、江宁，是政治文化名城，先后有东吴、东晋、南朝宋、齐、梁、陈，南唐、明朝、太平天国、中华民国等朝代或政权定都在这里，所以也有“六朝古都”和“十朝都会”之称，南京市树雪松，市花为梅花。
 装包物品 身份证、保温杯、充电宝、耳机、充电头和线、干湿纸巾、小零食、腰包、雨伞、洗漱物品、换洗衣物 特色美食 鸡鸣汤包、鸭血粉丝汤、藕粉、南京烤鸭、牛肉锅贴 酒店及交通出行 提前买往返车票，时间好的车次票不好买
 把最想去的地方安排在工作日，提前定酒店
 大部分景点地铁都直达，住大行宫和新街口地铁站之间的酒店交通比较方便，在支付宝的“出行”功能里把地铁和公交卡加上
@@ -285,13 +294,4 @@ git clone git://github.com/imathis/octopress.git octopress 安装所需依赖
 cd octopress sudo gem install bundler bundle install 安装默认模板
 rake install 关联 GitHub Pages
 rake setup_github_pages git@github.com:yourname/yourname.github.io.git 配置 Octopress 时建议删除 HTML 和 CSS 中用不到的东西，可提高访问速度
-写博客并发布 新建文章（博客存储为 markdown 文件，位于 \octopress\source\_posts 目录下）</description></item><item><title>雨崩徒步</title><link>https://lijingcheng.github.io/posts/yubeng/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://lijingcheng.github.io/posts/yubeng/</guid><description>雨崩位于云南省迪庆藏族自治州德钦县云岭乡境内，是梅里雪山脚下的藏族村落，分上雨崩和下雨崩两个村子，相距约一公里，从村子出发有多条徒步线路深入雪山，每条线路都可以做到当天往返，所以不需要带帐篷扎营，可以住在村子里的民宿，这里有几十一晚的青旅床位，也有几千一晚的豪华观景房，可以按自己条件去选择，丰俭由人。
-装包物品（35L背包） 身份证、保温杯、充电宝、耳机、充电头和线、零钱（去藏区都会带，用来在寺庙供奉）
-干湿纸巾、洗漱物品、腰包、髌骨带、雪套，冰爪、手电、哨子、墨镜
-冲锋衣、抓绒、薄羽绒马甲、厚长裤、速干长袖、厚袜子、内裤、徒步鞋、棉线帽子、手套
-布洛芬、创口贴、一周量的徒步路餐（威化、牛肉干、火腿肠、山楂片、M豆、士力架、坚果、葡萄干）
-花费支出 交通：春节期间出去玩，不想请假早走晚回，所以交通费是大头，而且是没办法省的钱，一共大概 5500 元
-北京飞丽江 1654 丽江坐汽车到飞来寺 197 飞来寺拼车到西当温泉 75 尼农村拼车到香格里拉 150 香格里拉飞北京 3178 北京大兴机场打车回家 248 门票：雨崩景区门票 55 元
-住宿：八天大概 1400 元
-飞来寺一天 300 上雨崩村五天，四天青旅床位共 400，一天标间 500 下雨崩村两天青旅床位共 200 吃饭：提前带好了一周的路餐，所以每天早晚两顿饭，平均早饭 20，晚饭 100，加上每天一瓶七块钱的可乐，一共大概 1000 元
-注意事项 雨崩海拔大概 3100，并且植被茂盛，高反几率不高，飞来寺海拔 3400 多，住宿时会高反</description></item></channel></rss>
+写博客并发布 新建文章（博客存储为 markdown 文件，位于 \octopress\source\_posts 目录下）</description></item></channel></rss>
