@@ -1,4 +1,39 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>风行's Blog</title><link>https://lijingcheng.github.io/</link><description>Recent content on 风行's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 26 Feb 2024 10:01:23 +0800</lastBuildDate><atom:link href="https://lijingcheng.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>雨崩徒步</title><link>https://lijingcheng.github.io/posts/yubeng/</link><pubDate>Mon, 26 Feb 2024 10:01:23 +0800</pubDate><guid>https://lijingcheng.github.io/posts/yubeng/</guid><description>雨崩位于云南省迪庆藏族自治州德钦县云岭乡境内，是梅里雪山脚下的藏族村落，分上雨崩和下雨崩两个村子，相距约一公里，从村子出发有多条徒步线路深入雪山，每条线路都可以做到当天往返，所以不需要带帐篷扎营，可以住在村子里的民宿，这里有几十一晚的青旅床位，也有几千一晚的豪华观景房，可以按自己条件去选择，丰俭由人。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>风行's Blog</title><link>https://lijingcheng.github.io/</link><description>Recent content on 风行's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 25 Apr 2024 15:09:29 +0800</lastBuildDate><atom:link href="https://lijingcheng.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>鸿蒙开发指南</title><link>https://lijingcheng.github.io/posts/harmony3/</link><pubDate>Thu, 25 Apr 2024 15:09:29 +0800</pubDate><guid>https://lijingcheng.github.io/posts/harmony3/</guid><description>基础知识 HarmonyOS 主推基于 ArkTS 的声明式开发范式和 Stage 应用模型，开发工具为 DevEco Studio。
+应用程序包 鸿蒙应用采用多 Module 设计机制，支持模块化开发和多设备适配，每一个 Module 可以独立编译，实现特定功能，并在 Module 配置文件中指定适配设备类型，应用市场分发应用包时，会根据设备类型做筛选和匹配，从而将不同的包合理的组合和部署到对应的设备上。
+Module 按照使用场景分为两种类型
+Ability：用于实现应用的功能和特性，编译后生成以 .hap 为后缀的 HAP（Harmony Ability Package）包，HAP 包可以独立安装和运行，一个应用可以包含一个 entry 类型的 HAP 包或在这基础上再包含一个或多个 feature 类型的 HAP 包
+entry：应用的主模块，提供应用的基础功能，编译后生成 entry 类型的 HAP，每个应用分发到同一类型的设备上的应用程序包，只能包含唯一一个 entry 类型的 HAP
+feature：应用的动态特性模块，作为应用能力的扩展，可根据用户需求和设备类型进行选择性安装，编译后生成 feature 类型的 HAP，一个应用中可以包含一个或多个 feature 类型的HAP，也可以不包含
+Library：用于实现代码和资源的共享，Library 类型的 Moudle 可以被其他多个 Moudle 引用
+Static Library：编译后生成以 .har 为后缀的静态共享包 HAR（Harmony Archive）</description></item><item><title>鸿蒙生态应用开发白皮书 V2.0</title><link>https://lijingcheng.github.io/posts/harmony2/</link><pubDate>Wed, 24 Apr 2024 15:09:29 +0800</pubDate><guid>https://lijingcheng.github.io/posts/harmony2/</guid><description>鸿蒙生态应用核心技术理念 HarmonyOS 应用的两种形态
+App：需要安装再使用
+元服务：可以在服务中心发现并使用，也可以通过扫一扫之类的场景主动推荐给用户使用，并且无需安装，秒开体验，还可以以“万能卡片”方式固定在手机屏幕位置上展示服务内容
+一次开发，多端部署 多端开发环境（DevEco Studio） 多端双向预览：提供多种设备的双向预览能力，支持 UI 代码和多设备上预览效果的双向定位修改
+分布式调试：支持跨设备调试，通过断点和调试堆栈来跟踪不同设备之间的交互，用于定位多设备互动场景下的代码缺陷
+分布式调优：支持多设备分布式调用链跟踪、跨设备调用堆栈缝合，同时采集多设备性能数据并进行联合分析
+超级终端模拟：多个模拟器和真机设备可以自由组成超级终端来做分布式调试和测试
+低代码可视化开发：提供 UI 可视化开发能力，支持自由拖拽组件和可视化数据绑定，可快速预览效果
+多端开发能力 多端 UI 适配：通过虚拟像素vp对分辨率进行抽象，统一单位，对设备屏幕水平宽度抽象出四种尺寸：xs、sm、md、lg，分别对应智能穿戴设备、手机和折叠屏手机折叠状态、平板和折叠屏手机展开状态、智慧屏，鸿蒙为适配不同屏幕提供的 UI 布局方式主要分为自适应布局和响应式布局，自适应布局多用于解决页面各区域内的布局差异，响应式布局多用于解决页面各区域间的布局差异
+自适应布局：当外部容器大小发生变化时，容器内元素可根据相对关系自动变化，相对关系包括占比、固定宽高比、显示优先级等，自适应布局常常需要借助 Row 组件、Column 组件或 Flex 组件实现，当前自适应布局能力有：拉伸能力、均分能力、占比能力、缩放能力、延伸能力、隐藏能力、折行能力
+响应式布局：当显示空间大小发生变化时，布局可以根据预设断点、栅格或特定的特征（屏幕方向、窗口宽高）进行自动切换，响应式布局常常与 GridRow 组件、Grid 组件、List 组件、Swiper 组件或 Tab 组件搭配使用，当前响应式布局能力有：断点、媒体查询、栅格布局
+更多开发实例参考文档
+交互事件归一：系统将不同设备的输入映射成归一交互事件，如触摸、键盘、鼠标等
+设备能力抽象：提供接口查询设备是否具备“摄像头”、“蓝牙”等能力，以方便适配不同设备的软硬件能力</description></item><item><title>鸿蒙生态应用安全技术白皮书 V1.0</title><link>https://lijingcheng.github.io/posts/harmony1/</link><pubDate>Tue, 23 Apr 2024 15:09:29 +0800</pubDate><guid>https://lijingcheng.github.io/posts/harmony1/</guid><description>应用安全面临的问题和挑战 诱导用户下载安装恶意应用
+窃取用户数据
+强制推送广告
+利用漏洞攻击其他应用程序
+盗版软件
+华为在应用“开发”、“发布”、“运行”生命周期的这三个阶段来应对上述问题
+应用开发安全 开发者注册和实名认证：合法的开发者可确保鸿蒙应用的来源是可信的，这是创作安全可靠应用的前提
+申请开发者证书：使用证书对应用签名，可以保证应用来源可靠，以及完整性不被破坏，并且可以通过证书关联到经过实名认证的开发者。（签名过程其实就是将开发者证书以私钥方式写进应用，然后将公钥提供给华为，然后在上架和安装时，华为会通过相关的公钥来对应用中的开发者证书进行校验，通过后才可以上架和安装）
+调试证书：开发时使用，只允许运行在指定设备上（做法和苹果的开发证书一样）
+发布证书：上架商店时使用，不要求提供运行设备ID，但必须通过应用市场检测上架后才可以安装（应用市场会对应用重签名）
+申请应用 Profile 文件：Profile 是应用的授权文件，就像应用的身份证，用于 HarmonyOS 对应用进行识别的管理，并对应用关健属性和敏感能力进行管控，文件中包含“包名”、“开发者ID”、“应用的开发证书”等，这个文件会在打包时写到应用安装包中，在应用上架审核和安装时进行校验
+调试 Profile：调试场景使用，包含设备ID列表，只能运行在指定设备上，并且对数量有限制
+发布 Profile：用于上架到应用市场时使用
+代码安全检查：为了减少安全漏洞，避免应用被攻击，增加应用安全性，DevEco Studio 提供了 code linter 来对代码进行规范性检测，同时也会重点对代码的安全性做检查，包括静态代码分析，二进制安全分析检查，重点检测应用攻击面管控不足、权限或证书配置不当等可能会导致的安全风险
+代码混淆：DevEco Studio 提供了混淆功能，可以对类和方法名称做混淆，移除日志打印代码，合并语句，压缩代码体积等，在保证运行时性能无变化的前提下，增加应用被逆向难度，保护开发者核心知识产权（代码）免受恶意逆向分析
+应用发布安全 应用检测与审核：通过静态检测、动态检测、人工检测手段对应用的“权限”、“行为”、“病毒”、“隐私”等方法进行检测，对于不合规的应用会被拒绝上架</description></item><item><title>雨崩徒步</title><link>https://lijingcheng.github.io/posts/yubeng/</link><pubDate>Mon, 26 Feb 2024 10:01:23 +0800</pubDate><guid>https://lijingcheng.github.io/posts/yubeng/</guid><description>雨崩位于云南省迪庆藏族自治州德钦县云岭乡境内，是梅里雪山脚下的藏族村落，分上雨崩和下雨崩两个村子，相距约一公里，从村子出发有多条徒步线路深入雪山，每条线路都可以做到当天往返，所以不需要带帐篷扎营，可以住在村子里的民宿，这里有几十一晚的青旅床位，也有几千一晚的豪华观景房，可以按自己条件去选择，丰俭由人。
 装包物品（35L背包） 身份证、保温杯、充电宝、耳机、充电头和线、零钱（去藏区都会带，用来在寺庙供奉）
 干湿纸巾、洗漱物品、腰包、髌骨带、雪套，冰爪、手电、哨子、墨镜
 冲锋衣、抓绒、薄羽绒马甲、厚长裤、速干长袖、厚袜子、内裤、徒步鞋、棉线帽子、手套
@@ -294,39 +329,4 @@ git clone git://github.com/imathis/octopress.git octopress 安装所需依赖
 cd octopress sudo gem install bundler bundle install 安装默认模板
 rake install 关联 GitHub Pages
 rake setup_github_pages git@github.com:yourname/yourname.github.io.git 配置 Octopress 时建议删除 HTML 和 CSS 中用不到的东西，可提高访问速度
-写博客并发布 新建文章（博客存储为 markdown 文件，位于 \octopress\source\_posts 目录下）</description></item><item><title>鸿蒙开发指南</title><link>https://lijingcheng.github.io/posts/harmony3/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://lijingcheng.github.io/posts/harmony3/</guid><description>基础知识 HarmonyOS 主推基于 ArkTS 的声明式开发范式和 Stage 应用模型，开发工具为 DevEco Studio。
-应用程序包 鸿蒙应用采用多 Module 设计机制，支持模块化开发和多设备适配，每一个 Module 可以独立编译，实现特定功能，并在 Module 配置文件中指定适配设备类型，应用市场分发应用包时，会根据设备类型做筛选和匹配，从而将不同的包合理的组合和部署到对应的设备上。
-Module 按照使用场景分为两种类型
-Ability：用于实现应用的功能和特性，编译后生成以 .hap 为后缀的 HAP（Harmony Ability Package）包，HAP 包可以独立安装和运行，一个应用可以包含一个 entry 类型的 HAP 包或在这基础上再包含一个或多个 feature 类型的 HAP 包
-entry：应用的主模块，提供应用的基础功能，编译后生成 entry 类型的 HAP，每个应用分发到同一类型的设备上的应用程序包，只能包含唯一一个 entry 类型的 HAP
-feature：应用的动态特性模块，作为应用能力的扩展，可根据用户需求和设备类型进行选择性安装，编译后生成 feature 类型的 HAP，一个应用中可以包含一个或多个 feature 类型的HAP，也可以不包含
-Library：用于实现代码和资源的共享，Library 类型的 Moudle 可以被其他多个 Moudle 引用
-Static Library：编译后生成以 .har 为后缀的静态共享包 HAR（Harmony Archive）</description></item><item><title>鸿蒙生态应用安全技术白皮书 V1.0</title><link>https://lijingcheng.github.io/posts/harmony1/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://lijingcheng.github.io/posts/harmony1/</guid><description>应用安全面临的问题和挑战 诱导用户下载安装恶意应用
-窃取用户数据
-强制推送广告
-利用漏洞攻击其他应用程序
-盗版软件
-华为在应用“开发”、“发布”、“运行”生命周期的这三个阶段来应对上述问题
-应用开发安全 开发者注册和实名认证：合法的开发者可确保鸿蒙应用的来源是可信的，这是创作安全可靠应用的前提
-申请开发者证书：使用证书对应用签名，可以保证应用来源可靠，以及完整性不被破坏，并且可以通过证书关联到经过实名认证的开发者。（签名过程其实就是将开发者证书以私钥方式写进应用，然后将公钥提供给华为，然后在上架和安装时，华为会通过相关的公钥来对应用中的开发者证书进行校验，通过后才可以上架和安装）
-调试证书：开发时使用，只允许运行在指定设备上（做法和苹果的开发证书一样）
-发布证书：上架商店时使用，不要求提供运行设备ID，但必须通过应用市场检测上架后才可以安装（应用市场会对应用重签名）
-申请应用 Profile 文件：Profile 是应用的授权文件，就像应用的身份证，用于 HarmonyOS 对应用进行识别的管理，并对应用关健属性和敏感能力进行管控，文件中包含“包名”、“开发者ID”、“应用的开发证书”等，这个文件会在打包时写到应用安装包中，在应用上架审核和安装时进行校验
-调试 Profile：调试场景使用，包含设备ID列表，只能运行在指定设备上，并且对数量有限制
-发布 Profile：用于上架到应用市场时使用
-代码安全检查：为了减少安全漏洞，避免应用被攻击，增加应用安全性，DevEco Studio 提供了 code linter 来对代码进行规范性检测，同时也会重点对代码的安全性做检查，包括静态代码分析，二进制安全分析检查，重点检测应用攻击面管控不足、权限或证书配置不当等可能会导致的安全风险
-代码混淆：DevEco Studio 提供了混淆功能，可以对类和方法名称做混淆，移除日志打印代码，合并语句，压缩代码体积等，在保证运行时性能无变化的前提下，增加应用被逆向难度，保护开发者核心知识产权（代码）免受恶意逆向分析
-应用发布安全 应用检测与审核：通过静态检测、动态检测、人工检测手段对应用的“权限”、“行为”、“病毒”、“隐私”等方法进行检测，对于不合规的应用会被拒绝上架</description></item><item><title>鸿蒙生态应用开发白皮书 V2.0</title><link>https://lijingcheng.github.io/posts/harmony2/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://lijingcheng.github.io/posts/harmony2/</guid><description>鸿蒙生态应用核心技术理念 HarmonyOS 应用的两种形态
-App：需要安装再使用
-元服务：可以在服务中心发现并使用，也可以通过扫一扫之类的场景主动推荐给用户使用，并且无需安装，秒开体验，还可以以“万能卡片”方式固定在手机屏幕位置上展示服务内容
-一次开发，多端部署 多端开发环境（DevEco Studio） 多端双向预览：提供多种设备的双向预览能力，支持 UI 代码和多设备上预览效果的双向定位修改
-分布式调试：支持跨设备调试，通过断点和调试堆栈来跟踪不同设备之间的交互，用于定位多设备互动场景下的代码缺陷
-分布式调优：支持多设备分布式调用链跟踪、跨设备调用堆栈缝合，同时采集多设备性能数据并进行联合分析
-超级终端模拟：多个模拟器和真机设备可以自由组成超级终端来做分布式调试和测试
-低代码可视化开发：提供 UI 可视化开发能力，支持自由拖拽组件和可视化数据绑定，可快速预览效果
-多端开发能力 多端 UI 适配：通过虚拟像素vp对分辨率进行抽象，统一单位，对设备屏幕水平宽度抽象出四种尺寸：xs、sm、md、lg，分别对应智能穿戴设备、手机和折叠屏手机折叠状态、平板和折叠屏手机展开状态、智慧屏，鸿蒙为适配不同屏幕提供的 UI 布局方式主要分为自适应布局和响应式布局，自适应布局多用于解决页面各区域内的布局差异，响应式布局多用于解决页面各区域间的布局差异
-自适应布局：当外部容器大小发生变化时，容器内元素可根据相对关系自动变化，相对关系包括占比、固定宽高比、显示优先级等，自适应布局常常需要借助 Row 组件、Column 组件或 Flex 组件实现，当前自适应布局能力有：拉伸能力、均分能力、占比能力、缩放能力、延伸能力、隐藏能力、折行能力
-响应式布局：当显示空间大小发生变化时，布局可以根据预设断点、栅格或特定的特征（屏幕方向、窗口宽高）进行自动切换，响应式布局常常与 GridRow 组件、Grid 组件、List 组件、Swiper 组件或 Tab 组件搭配使用，当前响应式布局能力有：断点、媒体查询、栅格布局
-更多开发实例参考文档
-交互事件归一：系统将不同设备的输入映射成归一交互事件，如触摸、键盘、鼠标等
-设备能力抽象：提供接口查询设备是否具备“摄像头”、“蓝牙”等能力，以方便适配不同设备的软硬件能力</description></item></channel></rss>
+写博客并发布 新建文章（博客存储为 markdown 文件，位于 \octopress\source\_posts 目录下）</description></item></channel></rss>
