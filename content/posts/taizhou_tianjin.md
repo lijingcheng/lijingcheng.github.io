@@ -45,24 +45,24 @@ draft: false
 - 台州博物馆：台州市内没有什么特别的旅游景点，所以打算去台州博物馆看看，目前这里不用提前预约，但是关门比较早，馆内印象最深的就是“孝孺之死与台州式硬气”的介绍，今天再次坐到男哥电动车后排，虽然一半屁股在外面，但体验感超好，原以为两人就是这个单人共享电动车的极限，后来在另一车上发现有第三人蹲在前面
 
 {{< gallery >}}
-  {{< figure link="/images/sichuan/taizhou1.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/taizhou2.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/taizhou3.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/taizhou4.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/taizhou5.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/taizhou6.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/taizhou7.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/taizhou8.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/taizhou9.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/taizhou10.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/taizhou11.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/taizhou12.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/taizhou13.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/taizhou14.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/taizhou15.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/taizhou16.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/taizhou17.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/taizhou18.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/taizhou1.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/taizhou2.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/taizhou3.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/taizhou4.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/taizhou5.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/taizhou6.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/taizhou7.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/taizhou8.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/taizhou9.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/taizhou10.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/taizhou11.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/taizhou12.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/taizhou13.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/taizhou14.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/taizhou15.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/taizhou16.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/taizhou17.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/taizhou18.jpeg" thumb="-small">}}
 {{< /gallery >}}
 
 {{< load-photoswipe >}}
@@ -84,24 +84,24 @@ draft: false
 - 国家海洋博物馆：目前是世界规模最大的海洋博物馆，展示了人类探索海洋的历史和海洋与生命的演化历程，非常值得花上一整天去参观，记得提前一周在公众号上预约门票，如果没约上，还可以购买博物馆内的收费场馆的票然后再进主馆。
 
 {{< gallery >}}
-  {{< figure link="/images/sichuan/tianjin1.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/tianjin2.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/tianjin3.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/tianjin4.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/tianjin5.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/tianjin6.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/tianjin7.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/tianjin8.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/tianjin9.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/tianjin10.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/tianjin11.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/tianjin12.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/tianjin13.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/tianjin14.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/tianjin15.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/tianjin16.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/tianjin17.jpeg" thumb="-small">}}
-  {{< figure link="/images/sichuan/tianjin18.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/tianjin1.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/tianjin2.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/tianjin3.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/tianjin4.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/tianjin5.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/tianjin6.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/tianjin7.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/tianjin8.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/tianjin9.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/tianjin10.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/tianjin11.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/tianjin12.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/tianjin13.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/tianjin14.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/tianjin15.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/tianjin16.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/tianjin17.jpeg" thumb="-small">}}
+  {{< figure link="/images/202451/tianjin18.jpeg" thumb="-small">}}
 {{< /gallery >}}
 
 ### 天津市区 CityWalk 路线
