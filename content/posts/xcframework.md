@@ -1,5 +1,5 @@
 ---
-title: "开发 Swift XCFramework 静态库"
+title: "Swift XCFramework 静态库"
 date: 2024-06-07 09:49:45 +0800
 draft: false
 ---
