@@ -36,7 +36,7 @@ draft: false
 
 {{< load-photoswipe >}}
 
-休息一天后带孩子走了三峰小环线，用了 8.5 小时，路上没有补给，两个人 7 瓶水，勉强支撑到下山，因为怕渴途中也没敢吃东西...
+休息一天后带孩子走了三峰小环线，用时 8.5 小时，路上没有补给，两个人 7 瓶水，勉强支撑到下山，因为怕渴途中也没敢吃东西...
 
 {{< gallery >}}
   {{< figure link="/images/sanfeng/sanfeng10.jpeg" thumb="-small">}}
