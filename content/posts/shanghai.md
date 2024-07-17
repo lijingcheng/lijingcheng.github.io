@@ -4,7 +4,9 @@ date: 2024-07-16T10:01:23+08:00
 draft: false
 ---
 
-### 照片
+![行程](/images/shanghai/shanghai.png "行程")
+
+-------
 
 {{< gallery >}}
   {{< figure link="/images/shanghai/shanghai1.jpeg" thumb="-small">}}
@@ -25,7 +27,3 @@ draft: false
 {{< /gallery >}}
 
 {{< load-photoswipe >}}
-
-### 行程
-
-![行程](/images/shanghai/shanghai.png "行程")
