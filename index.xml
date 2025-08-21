@@ -1,4 +1,25 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>风行's Blog</title><link>https://lijingcheng.github.io/</link><description>Recent content on 风行's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 11 Jul 2025 10:01:23 +0800</lastBuildDate><atom:link href="https://lijingcheng.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>苏州 · 南浔 · 乌镇 · 杭州</title><link>https://lijingcheng.github.io/posts/suhang/</link><pubDate>Fri, 11 Jul 2025 10:01:23 +0800</pubDate><guid>https://lijingcheng.github.io/posts/suhang/</guid><description>因为想看「黑神话悟空艺术展」，于是把行程定在了杭州，五天假期时间，还可以去附近的苏州看看园林和古镇，以前出去玩都会选择去看大山大河，这次换个感觉，感受下江南的古镇水乡和苏州园林。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>风行's Blog</title><link>https://lijingcheng.github.io/</link><description>Recent content on 风行's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 20 Aug 2025 18:01:23 +0800</lastBuildDate><atom:link href="https://lijingcheng.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>App 埋点 SDK 设计</title><link>https://lijingcheng.github.io/posts/analyticssdk/</link><pubDate>Wed, 20 Aug 2025 18:01:23 +0800</pubDate><guid>https://lijingcheng.github.io/posts/analyticssdk/</guid><description>适用平台 iOS / Android / HarmonyOS（可扩展至 Web、小程序）
+事件采集 Tracker 自动采集 页面曝光，每次露出都触发，支持设置业务参数，页面停留时长，后端根据前端发送的页面曝光时间和后台停留时间计算，页面来源（a-b-c，c-b，b 的来源是 c）
+登录/退出，不发送事件，只修改本地存储的 userId
+App 生命周期（冷启动/热启动/退后台（杀掉），上滑并杀掉 app 会先走“退后台”回调方法，可在这里统计退出事件
+按钮/图片/Cell 点击事件
+手动采集 视图曝光（SDK 提供支持，然后根据需求手动去埋），支持 Banner轮播图/List列表 Item 曝光，曝光比例暂不考虑
+常规业务埋点
+数据处理 DataBuffer 数据内容 基础数据 基础属性（设备/版本/渠道/时间戳(客户端时间)/事件ID和类型/sessionId等），事件ID和sessionId 用于对埋点数据排序，需要在冷启动和切换用户时更新，退到后台达到指定时间再返回到 app 时也需要更新（app和小程序用5分钟，web用30分钟）
+用户属性（匿名ID/用户ID），匿名ID用 UUID + KeyChain 实现，不同端实现方式相似
+埋点平台ID，冷启动和登录后调接口拿，和匿名ID一起存在 Keychain
+业务数据 公共属性（城市/影院）</description></item><item><title>家庭小酒馆</title><link>https://lijingcheng.github.io/posts/xiaojiuguan/</link><pubDate>Wed, 20 Aug 2025 10:01:23 +0800</pubDate><guid>https://lijingcheng.github.io/posts/xiaojiuguan/</guid><description>基酒 基酒是调酒的核心酒精部分，占饮品的主体，有白兰地、威士忌、朗姆酒、伏特加、金酒、龙舌兰。
+利口酒 利口酒用于调味与点缀，如君度橙酒、波士蓝橙等。
+辅料 红石榴糖浆、甘蔗糖浆、薄荷叶、青柠、可乐、橙汁、气泡水、汤力水
+工具 调酒：雪克壶、盎司杯、搅拌勺、压汁器、捣棒
+制冰：冰球、冰块、袋子
+酒杯：柯林杯、玛格丽特杯等
+经典鸡尾酒 玛格丽特：（龙舌兰 45ml、君度 30ml、柠檬汁 15ml、2块冰）shake，杯口沾盐 + 杯口插柠檬片
+自由古巴：满冰，朗姆酒 45ml、柠檬汁 15ml（可选），杯中插入青柠片、可乐补满，提拉一下
+龙舌兰日出：满冰，（龙舌兰 45ml、橙汁 120ml、柠檬汁 15ml、2块冰）shake，红石榴糖浆10ml，提拉 + 柠檬片 + 薄荷叶
+莫吉托：（青柠切小块 + 薄荷叶）放杯内捣一捣，糖浆 20ml，朗姆酒 50ml，满冰，气泡水加满，顶部柠檬块 + 薄荷叶装饰
+金汤力：满冰，金酒 50ml，柠檬汁 15ml，杯中插入柠檬、汤力水加满、提拉一下
+注意 雪克壶在摇之前先开盖，避免壶内气压过大而炸壶。</description></item><item><title>苏州 · 南浔 · 乌镇 · 杭州</title><link>https://lijingcheng.github.io/posts/suhang/</link><pubDate>Fri, 11 Jul 2025 10:01:23 +0800</pubDate><guid>https://lijingcheng.github.io/posts/suhang/</guid><description>因为想看「黑神话悟空艺术展」，于是把行程定在了杭州，五天假期时间，还可以去附近的苏州看看园林和古镇，以前出去玩都会选择去看大山大河，这次换个感觉，感受下江南的古镇水乡和苏州园林。
 苏州首先以42度的高温迎接了我们，在这个城市吃到了松鼠桂鱼，在苏东坡推荐的虎丘景区看了会露天的苏超，逛了两座比较有名的园林：留园和狮子林，打卡了小时候课本里的「枫桥」和「寒山寺」。
 苏州和杭州之间有好几个古镇，选择住在南浔，而不是更有名的乌镇，主要因为南浔相对人少，也想看看百间楼的夜景。实际到了之后，也果然没让人失望：夜晚在水边吃饭喝酒，非常舒服。第二天去杭州前，顺路在乌镇简单逛了一下。
 最后来到了这次出行的主要城市——杭州，去了西湖、飞来峰和灵隐寺，还看了「黑神话悟空艺术展」，很喜欢，在「新周记」吃饭也很满意，好吃又不贵。</description></item><item><title>清明小长假</title><link>https://lijingcheng.github.io/posts/baoding/</link><pubDate>Fri, 04 Apr 2025 15:01:23 +0800</pubDate><guid>https://lijingcheng.github.io/posts/baoding/</guid><description>假期游玩选择了保定，首站参观了中国古动物馆——亚洲规模最大的自然科学类专题博物馆，这里展品丰富，非常推荐，原计划去直隶总督署，但排队的人太多，于是改道沿小路溜达到附近的西大街，在来日方长“救世军”店里喝杯咖啡，静静的浪费一下时间，相比这家店，翡冷翠咖啡店就显得比较嘈杂热闹，主打的驴火咖啡需要排队 1.5 小时才能喝上，于是借了别人的咖啡拍照打卡，然后在店里上了趟厕所后便离开了。
