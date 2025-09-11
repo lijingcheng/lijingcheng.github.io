@@ -11,7 +11,7 @@
 缺陷跟进 跟进 bug 修复，确定修复优先级：影响上线和测试的关键问题需立即修复，次要问题可适当延后。同时，要关注修复质量，避免因修改引入新的问题。
 打包提交审核 协助测试组设计和构建自动化打包流程，并开发与维护打包脚本，同时注意测试环境和线上环境的代码及版本管理，避免混乱。App 应尽量提前提交审核，为可能的拒审预留时间；如被拒，应制定解决方案并重新提交。日常还需关注应用商店审核政策及行业动态，并在手机新系统 beta 版本发布时提前验证应用兼容性。
 维护与优化 持续监控线上 App 的质量数据，如崩溃率和卡顿率，并对重要问题及时修复。同时，根据用户反馈分析问题并制定优化计划，推动功能迭代、性能提升和用户体验改进。此外，项目复盘和总结也是持续改进的重要环节。
-总结 组长除了完成既定工作外，还需处理各种‘三不管’问题，过程中要推动问题落地解决，减少扯皮。同时，组长需参与招聘工作，对候选人不仅考察技术能力，还关注表达能力、思路清晰度、简历真实性、学习能力及团队契合度。组长自己应明确岗位需求，注意形象，保持平等交流，少说多听。</description></item><item><title>App 埋点 SDK 设计</title><link>https://lijingcheng.github.io/posts/analyticssdk/</link><pubDate>Wed, 20 Aug 2025 18:01:23 +0800</pubDate><guid>https://lijingcheng.github.io/posts/analyticssdk/</guid><description>适用平台 iOS / Android / HarmonyOS（可扩展至 Web、小程序）
+总结 组长除了完成既定工作外，还需处理各种‘三不管’问题，过程中要推动问题落地解决，减少扯皮。同时，组长需参与招聘工作，对候选人不仅考察技术能力，还关注表达能力、思路清晰度、简历真实性、学习能力及团队契合度，组长自己要明确岗位需求，注意形象，保持平等交流，少说多听。</description></item><item><title>App 埋点 SDK 设计</title><link>https://lijingcheng.github.io/posts/analyticssdk/</link><pubDate>Wed, 20 Aug 2025 18:01:23 +0800</pubDate><guid>https://lijingcheng.github.io/posts/analyticssdk/</guid><description>适用平台 iOS / Android / HarmonyOS（可扩展至 Web、小程序）
 事件采集 Tracker 自动采集 页面曝光，每次露出都触发，支持设置业务参数，页面停留时长，后端根据前端发送的页面曝光时间和后台停留时间计算，页面来源（a-b-c，c-b，b 的来源是 c）
 登录/退出，不发送事件，只修改本地存储的 userId
 App 生命周期（冷启动/热启动/退后台（杀掉），上滑并杀掉 app 会先走“退后台”回调方法，可在这里统计退出事件
