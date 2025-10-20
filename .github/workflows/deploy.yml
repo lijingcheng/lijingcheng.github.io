@@ -1,45 +1,18 @@
-name: GitHub Pages Deploy
+name: Test Deploy Key
 
-# 当 hugo-branch 分支发生 push 时触发
 on:
-  push:
-    branches:
-      - hugo-branch
+  workflow_dispatch:
 
 jobs:
-  build-deploy:
+  test-key:
     runs-on: ubuntu-latest
-
     steps:
-      # 1️⃣ 拉取代码
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v3
-        with:
-          submodules: true
 
-      # 2️⃣ 设置 Hugo
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
-        with:
-          hugo-version: '0.61.0'
-
-      # 3️⃣ 构建 Hugo 网站
-      - name: Build site
-        run: hugo --minify
-
-      # 4️⃣ 添加 .nojekyll 避免 GitHub Pages 忽略文件
-      - name: Add .nojekyll
-        run: touch ./public/.nojekyll
-
-      # 5️⃣ 检查 public 目录，确保生成成功
-      - name: Check public directory
-        run: ls -la ./public
-
-      # 6️⃣ 部署到 GitHub Pages
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}   # 确保已添加到仓库 deploy keys
-          publish_branch: master                           # 发布目标分支
-          publish_dir: ./public                            # 构建输出目录
-          commit_message: "Deploy Hugo site via GitHub Actions"
+      - name: Test SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.ACTIONS_DEPLOY_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no git@github.com
