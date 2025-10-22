@@ -16,7 +16,7 @@ App 使用原生缓存机制（URLCache），可支持强缓存和协商缓存�
 
 服务端在 API 返回的 Header 中添加 `Cache-Control: max-age=60`
 
-- App 在 60 秒内对该 API 不再请求后端，直接使用本地缓存。（API 可根据情况分别设置max-age或者 no-cache）
+- App 在 60 秒内对该 API 不再请求后端，直接使用本地缓存。（API 可根据情况分别设置 max-age 或者 no-cache）
 
 - 缓存过期后再次请求时才访问后端服务。
 
@@ -48,7 +48,7 @@ App 请求时在 Header 中附加 `If-None-Match: <etag>`
 
 ### iOS 代码样例（其它平台相似）
 
-> 根据版本判断来清缓存
+**根据版本判断来清缓存**
 
 ```swift
 final class CacheVersionManager {
@@ -69,7 +69,7 @@ final class CacheVersionManager {
 }
 ```
 
-> 缓存规则设置
+**缓存规则设置**
 
 ```swift
 let urlCache = URLCache(memoryCapacity: 20 * 1024 * 1024, diskCapacity: 100 * 1024 * 1024, diskPath: "AppAPICache_v\(App.currentVersion)")
@@ -81,9 +81,9 @@ config.urlCache = urlCache
 CacheVersionManager.checkAndClearCacheIfNeeded(cache: urlCache)
 ```
 
-> 测试验证
+**测试验证**
 
-通过抓包观察是否频繁发出请求，或在代码中打印 `response.metrics?.transactionMetrics.last?.resourceFetchType` 查看数据来源。
+通过抓包观察是否频繁发出请求，或在代码中打印 `response.metrics?.transactionMetrics.last?.resourceFetchType` 看数据来源。
 
 ## 总结
 
