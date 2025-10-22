@@ -1,4 +1,14 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>风行's Blog</title><link>https://lijingcheng.github.io/</link><description>Recent content on 风行's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 20 Oct 2025 10:01:23 +0800</lastBuildDate><atom:link href="https://lijingcheng.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>山东自驾（日照 - 青岛 - 威海 - 烟台）</title><link>https://lijingcheng.github.io/posts/shandong/</link><pubDate>Mon, 20 Oct 2025 10:01:23 +0800</pubDate><guid>https://lijingcheng.github.io/posts/shandong/</guid><description>🗓️ Day1 🏙️ 北京 🚗 → 🌊 日照
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>风行's Blog</title><link>https://lijingcheng.github.io/</link><description>Recent content on 风行's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 22 Oct 2025 11:23:29 +0800</lastBuildDate><atom:link href="https://lijingcheng.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>App 接口缓存策略</title><link>https://lijingcheng.github.io/posts/api-cache/</link><pubDate>Wed, 22 Oct 2025 11:23:29 +0800</pubDate><guid>https://lijingcheng.github.io/posts/api-cache/</guid><description>目标 降低后端服务压力，减少重复请求，还能通过使用本地缓存数据来提升页面加载速度。
+缓存策略 App 使用原生缓存机制（URLCache），可支持强缓存和协商缓存（ETag / Last-Modified）。由于协商缓存仍会触发请求到后端，可节省流量，但对减轻服务器压力作用有限，因此先只做强缓存。
+强缓存（Strong Cache） 服务端在 API 返回的 Header 中添加 Cache-Control: max-age=60
+App 在 60 秒内对该 API 不再请求后端，直接使用本地缓存。（API 可根据情况分别设置max-age或者 no-cache）
+缓存过期后再次请求时才访问后端服务。
+仅缓存 GET 类型接口数据，不缓存图片或文件。
+协商缓存（ETag / Last-Modified） App 请求时在 Header 中附加 If-None-Match: &amp;lt;etag&amp;gt;
+后端若数据未变化，返回 304 Not Modified（无 body），App 使用本地缓存内容
+数据有变化时返回新数据，同时更新 etag
+协商缓存能节省流量，但仍会触发请求到服务端，对减轻服务器压力效果有限
+App 实践 设置独立缓存区 创建独立缓存实例，不使用系统提供的全局缓存对象，避免影响三方库或默认 URLSession 的缓存行为，确保缓存策略可控。（WebView 的缓存是独立的，即使使用全局缓存对象也不会影响 H5 页面）</description></item><item><title>山东自驾（日照 - 青岛 - 威海 - 烟台）</title><link>https://lijingcheng.github.io/posts/shandong/</link><pubDate>Mon, 20 Oct 2025 10:01:23 +0800</pubDate><guid>https://lijingcheng.github.io/posts/shandong/</guid><description>🗓️ Day1 🏙️ 北京 🚗 → 🌊 日照
 早上 6:30 出发，晚上 18:30 到日照。路上有点堵，下午犯困后在服务区睡了十分钟回血。后来车机系统提示胎压低，有点担心，服务区又没人修，自己没看出问题。到日照后去维修店一看，原来是系统提示不准确，胎压变高了，夏天跑高速真得多歇歇，不然胎压升太高容易爆胎，也会影响刹车距离。
 到酒店前发现房价从 400 多掉到 300 多，于是退掉重订！出来玩还是要选“可退房”，价格一天能变好几次。晚上去“巧克力渔家”吃饭，点了海肠捞饭、石斑鱼、鲅鱼水饺、螃蟹、生蚝、猪蹄，配半斤汾酒＋一扎青岛鲜啤，喝多了，打车回酒店睡觉。
 🗓️ Day2 🌊 日照 → 🌉 胶州湾跨海大桥 → 🏖️ 青岛
