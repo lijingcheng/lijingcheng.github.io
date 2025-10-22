@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 风行's Blog</title><link>https://lijingcheng.github.io/posts/</link><description>Recent content in Posts on 风行's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 22 Oct 2025 11:23:29 +0800</lastBuildDate><atom:link href="https://lijingcheng.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>App 接口缓存策略</title><link>https://lijingcheng.github.io/posts/api-cache/</link><pubDate>Wed, 22 Oct 2025 11:23:29 +0800</pubDate><guid>https://lijingcheng.github.io/posts/api-cache/</guid><description>目标 降低后端服务压力，减少重复请求，还能通过使用本地缓存数据来提升页面加载速度。
 缓存策略 App 使用原生缓存机制（URLCache），可支持强缓存和协商缓存（ETag / Last-Modified）。由于协商缓存仍会触发请求到后端，可节省流量，但对减轻服务器压力作用有限，因此先只做强缓存。
 强缓存（Strong Cache） 服务端在 API 返回的 Header 中添加 Cache-Control: max-age=60
-App 在 60 秒内对该 API 不再请求后端，直接使用本地缓存。（API 可根据情况分别设置max-age或者 no-cache）
+App 在 60 秒内对该 API 不再请求后端，直接使用本地缓存。（API 可根据情况分别设置 max-age 或者 no-cache）
 缓存过期后再次请求时才访问后端服务。
 仅缓存 GET 类型接口数据，不缓存图片或文件。
 协商缓存（ETag / Last-Modified） App 请求时在 Header 中附加 If-None-Match: &amp;lt;etag&amp;gt;
