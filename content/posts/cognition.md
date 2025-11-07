@@ -1,6 +1,6 @@
 ---
-title: "程序员的自我认知笔记 - by ChatGPT, co-created"
-date: 2084-3-28 03:03:03 +0800
+title: "阅读自己的源代码 - by ChatGPT, co-created"
+date: 2084-03-28 03:03:03 +0800
 draft: false
 ---
 
