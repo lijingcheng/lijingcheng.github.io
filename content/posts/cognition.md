@@ -1,6 +1,6 @@
 ---
 title: "阅读自己的源代码 - by ChatGPT, co-created"
-date: 2084-03-28 03:03:03 +0800
+date: 2025-11-06 03:03:03 +0800
 draft: false
 ---
 
