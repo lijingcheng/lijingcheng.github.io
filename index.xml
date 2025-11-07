@@ -1,4 +1,20 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>风行's Blog</title><link>https://lijingcheng.github.io/</link><description>Recent content on 风行's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 22 Oct 2025 11:23:29 +0800</lastBuildDate><atom:link href="https://lijingcheng.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>App 接口缓存策略</title><link>https://lijingcheng.github.io/posts/api-cache/</link><pubDate>Wed, 22 Oct 2025 11:23:29 +0800</pubDate><guid>https://lijingcheng.github.io/posts/api-cache/</guid><description>目标 降低后端服务压力，减少重复请求，还能通过使用本地缓存数据来提升页面加载速度。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>风行's Blog</title><link>https://lijingcheng.github.io/</link><description>Recent content on 风行's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 06 Nov 2025 03:03:03 +0800</lastBuildDate><atom:link href="https://lijingcheng.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>阅读自己的源代码 - by ChatGPT, co-created</title><link>https://lijingcheng.github.io/posts/cognition/</link><pubDate>Thu, 06 Nov 2025 03:03:03 +0800</pubDate><guid>https://lijingcheng.github.io/posts/cognition/</guid><description>程序员用程序思维观察自己，会发现许多概念与心理学天然对应。我们的情绪系统并不完美，就像旧代码，但只要学会阅读、理解它，就能发现那些“崩溃日志”，其实是自我更新的信号。
+程序开发与心理学的共通逻辑 心理学研究的是心智系统如何运行；程序开发研究的是软件系统如何运行。两种系统的底层逻辑非常一致。
+系统性（输入—处理—输出） 心理学认为，人通过感官接收外界刺激（输入），经过认知与情绪加工（处理），再产生行为（输出）。程序也是如此：数据输入，逻辑处理，结果输出。
+异常与逻辑错误（异常未捕获） 程序崩溃时，我们会去看报错日志；人情绪失控时，也是在输出“异常”。心理问题不是缺陷，而是心智逻辑中的防御性机制出错。比如循环调用（反复纠结）、死锁（压抑情绪）、内存泄漏（过度依附）、崩溃（情绪爆发）。心理咨询和调试过程极其相似：
+觉察（发现错误日志） 追溯（定位逻辑源头） 修正（重写代码或认知） 验证（测试新的行为） 当你能“观察自己”时，其实就像启动了 Debug 模式。你不再只是运行，而是在理解系统的运行方式。
+模块化（子系统组成） 程序里有 Model、View、Controller，各司其职；人的心理也由认知、情绪、意志、行为等子系统构成。
+认知模块：分析、解释、推理 情绪模块：监测环境的意义和威胁 行为模块：执行具体动作 记忆模块：存储和索引经验 防御模块：屏蔽痛苦或危险的输入 当某个模块卡死，系统就会“表现异常”。心理成长的过程，就是让各个子系统之间通信更顺畅。认知不压制情绪，情绪不淹没理智。
+重构（旧逻辑优化） 优秀的程序员不会执着于一段旧代码；成熟的人也不会执着于一种旧信念。重构的目标，不是“让程序更花哨”，而是让它更清晰、易维护、低耦合。心理成长也一样：不是变成另一个人，而是让系统运行得更平稳。
+删除多余依赖（放下不必要的关系） 优化算法（调整思维方式） 提高性能（管理精力与专注） 改善用户体验（学会共情与表达） 抽象与觉察（从执行到理解架构） 当程序员经验足够多，会从“写代码”转向“设计系统”；当一个人觉察力足够高，也会从“反应”转向“观察反应”。心理学称之为元认知，指能看到自己的思维在运行。这和软件架构设计中的“抽象层思维”如出一辙：你不再陷在细节中，而是理解整个系统为什么这样运作。觉察不是改变一行代码，而是理解为什么代码会这样写。那一刻，你不再被自己的系统牵着走，而是成为系统的设计者。
+系统结构与运行机制 封装（心理防御） 程序表现：封装是隐藏内部实现，暴露有限接口，防止外部随意访问。
+心理表现：人用防御机制来保护脆弱的情绪系统，比如回避、合理化、冷漠处理。是自我“私有变量”。
+生活影响：防御让人暂时安全，但长期过度封装，会让他人无法理解你的真实逻辑。要学会“选择性开放接口”，在信任的关系中逐步公开内在变量。
+继承（原生家庭模式） 程序表现：子类自动继承父类的属性与方法。
+心理表现：我们无意识地继承原生家庭的情感模式——比如父母的沟通方式、冲突反应、情绪处理逻辑。
+生活影响：如果父类存在逻辑缺陷（如情绪压抑、控制欲），而你没有重写方法，就会继承旧 bug。心理成长就是主动“override”掉不再适用的模式，重写自己的行为逻辑。
+多态（自我角色切换） 程序表现：同一个接口可在不同对象中表现出不同实现。
+心理表现：我们在不同场景中展现不同面向：在工作中理性、在家庭中温柔、在冲突中防御。</description></item><item><title>App 接口缓存策略</title><link>https://lijingcheng.github.io/posts/api-cache/</link><pubDate>Wed, 22 Oct 2025 11:23:29 +0800</pubDate><guid>https://lijingcheng.github.io/posts/api-cache/</guid><description>目标 降低后端服务压力，减少重复请求，还能通过使用本地缓存数据来提升页面加载速度。
 缓存策略 App 使用原生缓存机制（URLCache），可支持强缓存和协商缓存（ETag / Last-Modified）。由于协商缓存仍会触发请求到后端，可节省流量，但对减轻服务器压力作用有限，因此先只做强缓存。
 强缓存（Strong Cache） 服务端在 API 返回的 Header 中添加 Cache-Control: max-age=60
 App 在 60 秒内对该 API 不再请求后端，直接使用本地缓存。（API 可根据情况分别设置 max-age 或者 no-cache）
