@@ -1,4 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>风行's Blog</title><link>https://lijingcheng.github.io/</link><description>Recent content on 风行's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 06 Nov 2025 03:03:03 +0800</lastBuildDate><atom:link href="https://lijingcheng.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>阅读自己的源代码 - by ChatGPT, co-created</title><link>https://lijingcheng.github.io/posts/cognition/</link><pubDate>Thu, 06 Nov 2025 03:03:03 +0800</pubDate><guid>https://lijingcheng.github.io/posts/cognition/</guid><description>程序员用程序思维观察自己，会发现许多概念与心理学天然对应。我们的情绪系统并不完美，就像旧代码，但只要学会阅读、理解它，就能发现那些“崩溃日志”，其实是自我更新的信号。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>风行's Blog</title><link>https://lijingcheng.github.io/</link><description>Recent content on 风行's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 09 Jan 2026 17:18:29 +0800</lastBuildDate><atom:link href="https://lijingcheng.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>iOS 冷启动 UserDefaults 读取失效：加固环境下的偶发异常分析与解决</title><link>https://lijingcheng.github.io/posts/ud/</link><pubDate>Fri, 09 Jan 2026 17:18:29 +0800</pubDate><guid>https://lijingcheng.github.io/posts/ud/</guid><description>现象描述 App 接入 360 加固后，冷启动极低概率出现业务逻辑异常。经定位，原因是 UserDefaults 在启动早期读取数据返回 nil。
+特征：仅发生在冷启动阶段；运行中正常；加固后触发概率大幅上升。
+误区：初次排查怀疑是加固导致文件损坏或加解密失败，但实施数据迁移方案后问题依旧。
+根因分析 问题的核心在于加固逻辑干扰了 CFPreferences 的初始化进程：
+机制干扰：加固插件在 main 函数执行前进行 Hook 系统函数、内存校验等耗时操作，导致原本瞬时完成的 CFPreferences 缓存重建（rebuild）变为异步耗时过程。
+竞态条件：当 didFinishLaunching 触发时，磁盘文件尚未完成加载解析并映射至内存。此时调用 UserDefaults API，因内存缓存为空且后台同步未完成，直接返回 nil。
+性质：数据并未丢失，只是由于读取时机早于系统完成初始化的时机，产生了“预热未完成”的空值。
+方案选型 舍弃方案：要求加固方优化 Hook 逻辑或强制将 rebuild 改为同步。由于系统底层机制闭源且加固逻辑不可控，这类“硬碰硬”的方案不可行。
+最终解决（双读写备份）：
+持久化备份：在 App 进入后台时，将关键配置同步写入自定义的磁盘文件
+降级兜底：冷启动时，若检测到 UserDefaults 读取为 nil，则立即读取备份文件，并将其回填至 UserDefaults。
+效果：手动回填会直接更新 UserDefaults 的内存缓存，即便此时系统级的异步 rebuild 尚未结束，后续业务读取也能获取正确值，待系统 rebuild 完成后会自动进行数据合并。</description></item><item><title>阅读自己的源代码 - by ChatGPT, co-created</title><link>https://lijingcheng.github.io/posts/cognition/</link><pubDate>Thu, 06 Nov 2025 03:03:03 +0800</pubDate><guid>https://lijingcheng.github.io/posts/cognition/</guid><description>程序员用程序思维观察自己，会发现许多概念与心理学天然对应。我们的情绪系统并不完美，就像旧代码，但只要学会阅读、理解它，就能发现那些“崩溃日志”，其实是自我更新的信号。
 程序开发与心理学的共通逻辑 心理学研究的是心智系统如何运行；程序开发研究的是软件系统如何运行。两种系统的底层逻辑非常一致。
 系统性（输入—处理—输出） 心理学认为，人通过感官接收外界刺激（输入），经过认知与情绪加工（处理），再产生行为（输出）。程序也是如此：数据输入，逻辑处理，结果输出。
 异常与逻辑错误（异常未捕获） 程序崩溃时，我们会去看报错日志；人情绪失控时，也是在输出“异常”。心理问题不是缺陷，而是心智逻辑中的防御性机制出错。比如循环调用（反复纠结）、死锁（压抑情绪）、内存泄漏（过度依附）、崩溃（情绪爆发）。心理咨询和调试过程极其相似：
