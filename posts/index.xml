@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 风行's Blog</title><link>https://lijingcheng.github.io/posts/</link><description>Recent content in Posts on 风行's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 09 Jan 2026 17:18:29 +0800</lastBuildDate><atom:link href="https://lijingcheng.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>加固后 UserDefaults 读取异常的分析与解决</title><link>https://lijingcheng.github.io/posts/ud/</link><pubDate>Fri, 09 Jan 2026 17:18:29 +0800</pubDate><guid>https://lijingcheng.github.io/posts/ud/</guid><description>现象描述 App 接入 360 加固后，冷启动极低概率出现业务逻辑异常。经定位，原因是 UserDefaults 在启动早期读取数据返回 nil。
-特征：仅发生在冷启动阶段；运行中正常；加固后始现概率性异常，此前原生环境从未复现。
+特征：仅发生在冷启动阶段；运行中正常；加固后始现概率性异常，此前原生环境从未出现。
 误区：初次排查怀疑是加固导致文件解密读取失败，但实施数据以明文存储的迁移方案后问题依旧。
 根因分析 问题的核心在于加固逻辑干扰了 CFPreferences 的初始化进程：
 机制干扰：加固插件在 main 函数执行前进行 Hook 系统函数、内存校验等耗时操作，导致原本瞬时完成的 CFPreferences 缓存重建（rebuild）变为异步耗时过程。
