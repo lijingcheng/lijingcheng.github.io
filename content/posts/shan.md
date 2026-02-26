@@ -16,6 +16,15 @@ draft: false
 
 历时3小时40分钟，我们到达南天门。比想象中累一些，最后一段“十八盘”确实名不虚传。台阶陡峭，膝盖还是会疼，这已经不是吃点氨糖就能缓解的了。以后还是要尽量避开这类高台阶的山。在玉皇顶溜达溜达之后，选择乘缆车下山。晚饭直奔海底捞，点了毛肚、豆皮、响铃卷、贡菜、生菜，还有四份肉，结果上桌才发现四份是八盘。本以为点多了，结果吃完后又加了一份。。。
 
+{{< gallery >}}
+  {{< figure link="/images/shan/shan1.jpeg" thumb="-small">}}
+  {{< figure link="/images/shan/shan2.jpeg" thumb="-small">}}
+  {{< figure link="/images/shan/shan3.jpeg" thumb="-small">}}
+  {{< figure link="/images/shan/shan4.jpeg" thumb="-small">}}
+{{< /gallery >}}
+
+{{< load-photoswipe >}}
+
 ## 📍安徽黄山
 
 住：住在宏村附近酒店，后来在黄山上住了两天，其中一天是为了赌一下雪后雾散后的日出
@@ -30,6 +39,15 @@ draft: false
 
 第一站选择南屏村，这里是电影《菊豆》的主要取景地。村子很幽静，只在叶氏祠堂附近见到了游客。我们在村里闲逛许久，一只不知谁家的“导游小狗”，伴着我们穿过了一条又一条小巷。它始终走在前方带路；当发现我们没跟上，还会折返回来，如此反复。在南屏闲逛很久后我们打车前往碧山村。这里将古老的祠堂改造成了碧山书局，被誉为“中国最美书店”，确实很美。但是若将这两个村子整体对比，我还是更喜欢南屏的幽静。
 
+{{< gallery >}}
+  {{< figure link="/images/shan/shan5.jpeg" thumb="-small">}}
+  {{< figure link="/images/shan/shan6.jpeg" thumb="-small">}}
+  {{< figure link="/images/shan/shan7.jpeg" thumb="-small">}}
+  {{< figure link="/images/shan/shan8.jpeg" thumb="-small">}}
+  {{< figure link="/images/shan/shan9.jpeg" thumb="-small">}}
+  {{< figure link="/images/shan/shan10.jpeg" thumb="-small">}}
+{{< /gallery >}}
+
 ### 📍宏村 + 塔川村
 
 我们入住宏村南门附近的酒店。处理完公司的事务后便睡了。第二天一早忙完公司事情，我们正式游览宏村。作为世界文化遗产，宏村最精妙之处就是那套“牛形人工水系”，古人巧妙利用地势，引溪水流经家家户户，并依此构建了月沼（牛胃）与南湖（牛肚），兼顾消防与风水逻辑。来宏村若只是看房子，难免会觉得这里人多嘈杂，不如其他村落清净体验好；但若深入了解这些背景，依然会觉得门票贵了，不过还是值得一来。。。
@@ -37,6 +55,15 @@ draft: false
 从宏村出来，我们扫了一辆共享电动车。先让孩子自己体验下，随后便带着他绕着周边的卢村、塔川、奇墅湖闲逛。在塔川村口，我们钻进后山的竹林转了转，那些碗口粗的翠竹如参天大树般笔直，可能是从《卧虎藏龙》或者更早时喜欢竹林，走在林中的感觉很享受，边走边摸，体验拉满，十分满足。
 
 下午因公司有急事，不得不回酒店处理。待到傍晚，我们再次进宏村去看鱼灯。鱼灯巡游的队伍倒映在月沼中，很是好看。看完后回到酒店，继续工作到零点，举证低绩效人的问题以及自证清白这样的事情很让人不舒服，但又不得不做，不知道过完年要是一起滚蛋后是不是一种解脱。。。
+
+{{< gallery >}}
+  {{< figure link="/images/shan/shan11.jpeg" thumb="-small">}}
+  {{< figure link="/images/shan/shan12.jpeg" thumb="-small">}}
+  {{< figure link="/images/shan/shan13.jpeg" thumb="-small">}}
+  {{< figure link="/images/shan/shan14.jpeg" thumb="-small">}}
+  {{< figure link="/images/shan/shan15.jpeg" thumb="-small">}}
+  {{< figure link="/images/shan/shan16.jpeg" thumb="-small">}}
+{{< /gallery >}}
 
 ### 📍黄山
 
@@ -56,33 +83,7 @@ draft: false
 
 出发前务必核实各索道的检修停运公告，灵活调整上下山路线。还要注意，冬季天都峰与西海大峡谷通常会关闭。此外天都峰与莲花峰采取“五年一轮换”的开放政策，需提前确认当前是谁在“值班”。再有，除非是自驾，否则不推荐从北门进出。北门公共交通极其不便，且去往其他景点的路程极远，费时费力。
 
-### 📍瞻淇村
-
-离开黄山后，我们来到了歙县，下午在号称中国四大古城的徽州古城溜达，这里自秦汉起便是徽州的政治心脏，作为去瞻淇村的中转站还是值得一来，在这看了中国现存唯一的八脚牌坊许国石坊（大学士坊），又参观了陶行知纪念馆。出城后，我们去“面艺世家”吃饭。先是一人一份面，味道不错，然后又各加了一份面和一份煎饺。老板还以为我们加的面是要打包。。。
-
-吃完便打车前往几公里外的瞻淇村看传承了800多年的鱼灯。这里是此行除黄山外，我最期待的一站。我们先在村中闲逛溜达，然后提前在鱼灯巡游最佳位置等待，大概 18:10 就传来锣鼓声；18:30 随着鼓点骤响，巨大的“头鱼”准时从“敦睦堂”游出，那一刻全场沸腾。白天还在村口卖烤肠、炸串的小伙子们，此刻已化身为手持巨型纸糊鱼灯的舞者，在狭窄的民居巷弄里穿街过巷。虽然早有心理准备，知道这里的鱼灯很棒，但当大鱼贴身游过时，还是激动得数次说不出话，此刻热闹得如同过年，所有人都能近距离触碰那份传承，摸摸鱼头，万事不愁、摸摸鱼身，幸福一生、摸摸鱼尾，顺风顺水。。。
-
-从瞻淇村打车回酒店，第二天睡到 11点，躺到 12点，然后继续去“面艺世家”吃面，换了份“鸡杂炒面”，绝了！！！吃完后打车去高铁站附近的西溪南转了转便乘高铁回家，旅程结束。
-
--------
-
 {{< gallery >}}
-  {{< figure link="/images/shan/shan1.jpeg" thumb="-small">}}
-  {{< figure link="/images/shan/shan2.jpeg" thumb="-small">}}
-  {{< figure link="/images/shan/shan3.jpeg" thumb="-small">}}
-  {{< figure link="/images/shan/shan4.jpeg" thumb="-small">}}
-  {{< figure link="/images/shan/shan5.jpeg" thumb="-small">}}
-  {{< figure link="/images/shan/shan6.jpeg" thumb="-small">}}
-  {{< figure link="/images/shan/shan7.jpeg" thumb="-small">}}
-  {{< figure link="/images/shan/shan8.jpeg" thumb="-small">}}
-  {{< figure link="/images/shan/shan9.jpeg" thumb="-small">}}
-  {{< figure link="/images/shan/shan10.jpeg" thumb="-small">}}
-  {{< figure link="/images/shan/shan11.jpeg" thumb="-small">}}
-  {{< figure link="/images/shan/shan12.jpeg" thumb="-small">}}
-  {{< figure link="/images/shan/shan13.jpeg" thumb="-small">}}
-  {{< figure link="/images/shan/shan14.jpeg" thumb="-small">}}
-  {{< figure link="/images/shan/shan15.jpeg" thumb="-small">}}
-  {{< figure link="/images/shan/shan16.jpeg" thumb="-small">}}
   {{< figure link="/images/shan/shan17.jpeg" thumb="-small">}}
   {{< figure link="/images/shan/shan18.jpeg" thumb="-small">}}
   {{< figure link="/images/shan/shan19.jpeg" thumb="-small">}}
@@ -97,6 +98,17 @@ draft: false
   {{< figure link="/images/shan/shan28.jpeg" thumb="-small">}}
   {{< figure link="/images/shan/shan29.jpeg" thumb="-small">}}
   {{< figure link="/images/shan/shan30.jpeg" thumb="-small">}}
+{{< /gallery >}}
+
+### 📍瞻淇村
+
+离开黄山后，我们来到了歙县，下午在号称中国四大古城的徽州古城溜达，这里自秦汉起便是徽州的政治心脏，作为去瞻淇村的中转站还是值得一来，在这看了中国现存唯一的八脚牌坊许国石坊（大学士坊），又参观了陶行知纪念馆。出城后，我们去“面艺世家”吃饭。先是一人一份面，味道不错，然后又各加了一份面和一份煎饺。老板还以为我们加的面是要打包。。。
+
+吃完便打车前往几公里外的瞻淇村看传承了800多年的鱼灯。这里是此行除黄山外，我最期待的一站。我们先在村中闲逛溜达，然后提前在鱼灯巡游最佳位置等待，大概 18:10 就传来锣鼓声；18:30 随着鼓点骤响，巨大的“头鱼”准时从“敦睦堂”游出，那一刻全场沸腾。白天还在村口卖烤肠、炸串的小伙子们，此刻已化身为手持巨型纸糊鱼灯的舞者，在狭窄的民居巷弄里穿街过巷。虽然早有心理准备，知道这里的鱼灯很棒，但当大鱼贴身游过时，还是激动得数次说不出话，此刻热闹得如同过年，所有人都能近距离触碰那份传承，摸摸鱼头，万事不愁、摸摸鱼身，幸福一生、摸摸鱼尾，顺风顺水。。。
+
+从瞻淇村打车回酒店，第二天睡到 11点，躺到 12点，然后继续去“面艺世家”吃面，换了份“鸡杂炒面”，绝了！！！吃完后打车去高铁站附近的西溪南转了转便乘高铁回家，旅程结束。
+
+{{< gallery >}}
   {{< figure link="/images/shan/shan31.jpeg" thumb="-small">}}
   {{< figure link="/images/shan/shan32.jpeg" thumb="-small">}}
   {{< figure link="/images/shan/shan33.jpeg" thumb="-small">}}
@@ -104,5 +116,3 @@ draft: false
   {{< figure link="/images/shan/shan35.jpeg" thumb="-small">}}
   {{< figure link="/images/shan/shan36.jpeg" thumb="-small">}}
 {{< /gallery >}}
-
-{{< load-photoswipe >}}
