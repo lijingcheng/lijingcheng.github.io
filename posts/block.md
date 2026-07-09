@@ -1,7 +1,7 @@
 ---
 title: "了解 Block"
 date: 2015-12-03 15:09:29 +0800
-draft: false
+
 ---
 
 [Block]() 是 Objective-C 语言创建闭包的方式，从 iOS4 开始 block 便在很多场景下替代了 delegate，相对来说 block 的最大优点就是可以使代码集中在一起，提高可读性，但也提高了代码调试的复杂度，并增加了循环引用产生的场景。

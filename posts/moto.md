@@ -1,7 +1,7 @@
 ---
 title: "学习骑摩托车〜"
 date: 2019-03-28 15:02:12 +0800
-draft: false
+
 ---
 
 总结了一些骑摩托车时需要注意的事情，也许能帮助到新手， [开车文章](https://lijingcheng.github.io/posts/car/)中写的大部分内容同样适用于骑摩托车。
