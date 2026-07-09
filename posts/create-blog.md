@@ -1,7 +1,6 @@
 ---
 title: "GitHub Pages + Octopress 搭博客"
 date: 2015-01-04 14:51:02 +0800
-
 ---
 
 [Github Pages](https://pages.github.com) 可用来搭建静态网站，它提供了免费域名、空间、无限流量，并且在世界各地都有较好的访问速度。

@@ -1,7 +1,6 @@
 ---
 title: "使用 xcodebuild 打包 IPA 并上传蒲公英和 TestFlight"
 date: 2016-12-05 18:49:45 +0800
-
 ---
 
 [xcodebuild]() 是苹果提供的项目自动构建工具，包含在 Command Line Tools 中，可以完成 iOS 项目的编译、打包和签名等工作。  

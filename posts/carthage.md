@@ -1,7 +1,6 @@
 ---
 title: "使用 Carthage 做依赖管理"
 date: 2016-12-23 19:18:47 +0800
-
 ---
 
 [Carthage](https://github.com/Carthage/Carthage) 会在帮你下载完第三方依赖库后，通过 xcodebuild 将其编译成动态库，但它不会像 CocoaPods 那样去修改你的项目文件和编译设置，这些都需要你自己去完成。

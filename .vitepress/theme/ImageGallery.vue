@@ -74,15 +74,13 @@ if (typeof window !== 'undefined') {
 
 <style scoped>
 .gallery-container {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
-  justify-content: center;
   margin: 24px 0;
 }
 .gallery-img {
-  width: calc(33.33% - 6px);
-  min-width: 120px;
+  width: 100%;
   height: 150px;
   object-fit: cover;
   border-radius: 6px;
@@ -146,7 +144,7 @@ if (typeof window !== 'undefined') {
 }
 
 @media (max-width: 600px) {
-  .gallery-img { width: calc(50% - 4px); }
+  .gallery-container { grid-template-columns: repeat(2, 1fr); }
   .nav-btn { font-size: 36px; padding: 12px; }
   .prev { left: 4px; }
   .next { right: 4px; }
