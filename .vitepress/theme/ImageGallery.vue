@@ -81,7 +81,7 @@ if (typeof window !== 'undefined') {
 }
 .gallery-img {
   width: 100%;
-  height: 150px;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
   border-radius: 6px;
   cursor: zoom-in;

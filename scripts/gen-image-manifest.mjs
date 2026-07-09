@@ -39,9 +39,21 @@ function scanDir(dir) {
 // 扫描并生成 manifest
 const manifest = scanDir(IMAGES_DIR)
 
-// 每个 gallery 内的图片按文件名排序
+// 自然排序：按文件名中的数字大小排序
+function naturalSort(a, b) {
+  const numA = (a.match(/(\d+)/g) || []).map(Number)
+  const numB = (b.match(/(\d+)/g) || []).map(Number)
+  for (let i = 0; i < Math.max(numA.length, numB.length); i++) {
+    const na = numA[i] || 0
+    const nb = numB[i] || 0
+    if (na !== nb) return na - nb
+  }
+  return a.localeCompare(b)
+}
+
+// 每个 gallery 内的图片按文件名数字大小排序
 for (const key of Object.keys(manifest)) {
-  manifest[key].sort()
+  manifest[key].sort(naturalSort)
 }
 
 writeFileSync(join(process.cwd(), OUTPUT), JSON.stringify(manifest, null, 2))
