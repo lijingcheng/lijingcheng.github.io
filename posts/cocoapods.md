@@ -1,11 +1,12 @@
 ---
 title: "使用 CocoaPods 做依赖管理"
 date: 2015-02-11 15:10:58 +0800
+recommend: false
 ---
 
 [CocoaPods](http://www.cocoapods.org) 可以为 iOS 项目使用的第三方类库和我们自己的私有类库提供依赖管理，我们只需要告诉它要使用的类库名称和版本号，然后再执行一条命令，它就会自动将这个类库的源码下载到本地，并且为工程设置好相应的系统依赖和编译项。
 
-# 准备工作
+## 准备工作
 由于 CocoaPods 是用 ruby 写的，所以需要有 ruby 环境和 git 环境，尽量使用 rvm 来管理 ruby，可避免因权限导致的 gem install 失败问题。
 
 ```
@@ -19,7 +20,7 @@ gem sources -a https://gems.ruby-china.com/ -r https://rubygems.org/
 gem sources -l
 ``` 
 
-# 安装并使用 CocoaPods
+## 安装并使用 CocoaPods
 安装 CocoaPods
 
 ```
@@ -96,7 +97,7 @@ pod update --no-repo-update
 pod deintegrate
 ```
 
-# 让自己的开源项目支持 CocoaPods
+## 让自己的开源项目支持 CocoaPods
 通过 CocoaPods 创建项目会让整个事情变的简单一些
 
 ```
@@ -135,7 +136,7 @@ pod trunk push FMDBHelper.podspec
 pod repo update
 ```
 
-# 通过 CocoaPods 维护私有库
+## 通过 CocoaPods 维护私有库
 可以按[官方指导](https://guides.cocoapods.org/making/private-cocoapods.html)来做，大致步骤与在 GitHub 上维护开源项目相似，区别如下：
 
 - 需要通过 Git 建立自己的 spec 仓库，并在 Podfile 文件中填加 source

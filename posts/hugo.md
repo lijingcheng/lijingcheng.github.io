@@ -1,20 +1,21 @@
 ---
 title: "使用 Hugo + GitHub Actions 升级博客"
 date: 2019-12-11T16:28:43+08:00
+recommend: false
 ---
 
 最近打算更新下博客模板并优化下内容的发布流程，于是放弃了多年不更新的 Octopress，在目前比较流行的静态博客生成工具 Hexo 和 Hugo 之间选择了后者，主要看重的是 Hugo 在发布时速度比较快，并且依赖较少。
 
 关于发布流程，首先打算使用持续集成服务来提高内容发布效率，简化操作步骤，以达到提交 Markdown 源文件到 GitHub 后就能够自动完成博客站点的部署，在 Travis CI 和 GitHub Actions 之间选择了后者，对我来说最看重的就是它可以复用别人写好的 Action 并根据自己的需要来组合使用。
 
-# 安装 Hugo
+## 安装 Hugo
 建议使用 Homebrew 安装 Hugo
 
 ```
 brew install hugo
 ```
 
-# 新建站点
+## 新建站点
 
 ```
 hugo new site blog
@@ -38,7 +39,7 @@ hugo new site blog
 
 - themes 存放网站主题文件
 
-# 安装主题
+## 安装主题
 [Hugo](https://themes.gohugo.io/) 整理了很多开发者制作的主题，安装时直接将主题下载到刚创建的 themes 目录中就可以了，具体方式可参考各主题的介绍说明
 
 ```
@@ -68,13 +69,13 @@ paginate = 10
     url = "https://www.instagram.com/bj_lijingcheng/"
 ```
 
-# 新建文章
+## 新建文章
 
 ```
 hugo new posts/first.md
 ```
 
-# 本地预览
+## 本地预览
 
 ```
 hugo server -D
@@ -82,7 +83,7 @@ hugo server -D
 
 通过 [http://localhost:1313](http://localhost:1313) 查看，发布文章之前需要将文章内的 draft 改为 false
 
-# 发布文章
+## 发布文章
 使用 GitHub Actions 将生成的静态页面发布到 Github Pages，首先要在本地生成 ssh deploy key
 
 ```

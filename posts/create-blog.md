@@ -1,13 +1,14 @@
 ---
 title: "GitHub Pages + Octopress 搭博客"
 date: 2015-01-04 14:51:02 +0800
+recommend: false
 ---
 
 [Github Pages](https://pages.github.com) 可用来搭建静态网站，它提供了免费域名、空间、无限流量，并且在世界各地都有较好的访问速度。
 
 [Octopress](http://octopress.org) 是开源的静态博客系统，可用来为静态网站提供所需的 HTML。
 
-# 准备工作
+## 准备工作
 在 GitHub 上新建名为 yourname.github.io 的版本库，之后可通过 yourname.github.io 域名来访问博客，还需要有 git 和 ruby 环境，尽量使用 rvm 管理 ruby，可避免因权限导致的 gem install 失败问题，记得要设置某个版本为当前使用版本，最后还需要更改 ruby 源，可提高下载速度
 
 ```
@@ -15,7 +16,7 @@ gem sources -a https://gems.ruby-china.com/ -r https://rubygems.org/
 gem sources -l
 ``` 
 
-# Octopress 环境搭建
+## Octopress 环境搭建
 安装 Octopress
 
 ```
@@ -45,7 +46,7 @@ git@github.com:yourname/yourname.github.io.git
 
 配置 [Octopress](http://octopress.org/docs/configuring) 时建议删除 HTML 和 CSS 中用不到的东西，可提高访问速度
 
-# 写博客并发布
+## 写博客并发布
 新建文章（博客存储为 markdown 文件，位于 \octopress\source\\_posts 目录下）
 
 ```

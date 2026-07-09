@@ -1,11 +1,12 @@
 ---
 title: "iOS 多线程开发"
 date: 2015-06-03 15:07:00 +0800
+recommend: false
 ---
 
 合理的线程分配能够提高程序的执行效率和资源利用率，在 iOS 开发中通常使用 GCD 或 Operation Queue 来操作线程，GCD 基于 C API，Operation Queue 是在 GCD 基础上实现的，效率上较 GCD 会差一点点，但代码可读性和易用性较高，简单的任务可用 GCD 去实现，复杂一些的还是推荐使用 Operation Queue 来处理。微小的性能提升远不如写出可维护性高的代码来的实在。
 
-# 一些概念
+## 一些概念
 - 进程和线程
 	- 进程是一个可执行程序，它拥有自己的地址空间，至少有一个线程，也可以包含多个线程，进程内的线程对于其他进程不可见
 	- 线程是执行程序最基本的单元，在进程中负责执行任务并使用进程的地址空间，每个进程至少有一个线程（主线程）
@@ -58,7 +59,7 @@ swap(X, Y); // 线程1
 swap(Y, X); // 线程2
 ```
 
-# NSThread
+## NSThread
 使用 NSThread 创建并操作线程在使用上相对简单一些，但是需要我们自己去管理线程的生命周期。所以总的来说易用性上不如 GCD，功能上不如 Operation Queues。
 
 创建并启动线程
@@ -79,7 +80,7 @@ NSThread *thread = [[NSThread alloc] initWithTarget:self selector:@selector(run:
 
 perform 方法只对拥有 RunLoop 的线程有效，如果创建的线程没有添加 RunLoop，perform 的 selector 将无法执行，如果该线程不存在了，程序会 Crash。
 
-# GCD（Grand Central Dispatch）
+## GCD（Grand Central Dispatch）
 GCD 是苹果为多核的并行计算提出的解决方案，它会自动地利用更多的 CPU 内核（比如双核、四核），最重要的是它会自动管理线程的生命周期（创建线程、调度任务、销毁线程）。同时它基于 C 语言，使用 Block 方式，使用起来更加方便灵活。
 
 最常用的使用方式是通过 dispatch_async 异步执行耗时操作，由于 UIKit 中大部分类都不是线程安全的，所以需要在主队列中处理 UI，在 dispatch 到主队列时 libDispatch 会唤醒主线程的 Runloop，并把 block 中的内容交给 Runloop 来处理，如果 dispatch 到其他线程则由 libDispatch 自己处理，需要注意的是当你监听某个通知并在响应代码里更新 UI 时相关代码也需要放在主线程里，因为发送通知的代码可能不在主线程。
@@ -415,7 +416,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 });
 ```
 
-# Operation Queues
+## Operation Queues
 GCD 提供了更加底层的控制，而操作队列则在 GCD 之上实现了一些方便的功能，这些功能对于我们来说通常是最好最安全的选择，使用时需要将任务封装到一个 NSOperation 对象中，再将它添加到 NSOperationQueue，系统会将 NSOperationQueue 中的 NSOperation 取出并放到线程上执行。
 
 NSOperationQueue 默认是串行队列，可通过设置 maxConcurrentOperationCount 实现并发

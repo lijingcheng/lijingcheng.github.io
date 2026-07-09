@@ -1,6 +1,7 @@
 ---
 title: "App 接口缓存策略"
 date: 2025-10-22 11:23:29 +0800
+recommend: false
 ---
 
 ## 目标

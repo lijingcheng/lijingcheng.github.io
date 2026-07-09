@@ -1,11 +1,12 @@
 ---
 title: "iOS 应用的生命周期"
 date: 2015-03-28 11:23:29 +0800
+recommend: false
 ---
 
 程序的生命周期是指应用程序从启动到结束整个阶段的全过程，点击应用图标打开程序，系统会首先通过 main 函数进行相关设置，然后通过 RunLoop 保持程序能够始终运行并监听处理分发事件，当没有事件发生时 RunLoop 便处于睡眠状态，节省资源。当发生事件后，RunLoop 将事件对象分发给相应视图处理。当用户按下 Home 键，应用会在进入后台后短暂运行，直到被系统挂起。
 
-# main 函数
+## main 函数
 main 函数是 app 的入口函数   
 
 ```objc
@@ -26,7 +27,7 @@ int main(int argc, char * argv[]) {
 	- 最后一个参数为 app 首要类的代理类，它负责实际处理 UIApplication 监听到的应用程序生命周期事件，具体参考 UIApplicationDelegate
 	- main 函数会在初始化 app 后启动主线程及 RunLoop
 
-# RunLoop
+## RunLoop
 RunLoop 能够保持程序始终运行并监听处理分发事件，当没有事件发生时进入休眠状态，有事件发生时系统会将接收到的事件放在一个队列里，然后唤醒 RunLoop 依次处理事件，使用队列不仅可以解决线程同步问题也促使我们要把更新 UI 的代码放在主线程中运行，以免由于多个线程抢占资源产生奇怪的问题。RunLoop 可以接收的事件来自两种不同的来源，分别是输入源和定时源，输入源传递异步事件，事件通常来自于其他线程或程序，如一些 UI 事件等。定时源则传递同步事件，发生在特定时间或者重复的时间间隔，如 NSTimer。
 
 RunLoop 的开启和退出
@@ -73,7 +74,7 @@ RunLoop 的开启和退出
 
 关于 RunLoop 的具体介绍详见[官方文档](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Multithreading/RunLoopManagement/RunLoopManagement.html#//apple_ref/doc/uid/10000057i-CH16-SW1)
 
-# 事件传递&事件响应
+## 事件传递&事件响应
 当发生触摸操作后，系统会将这一事件封装成 UIEvent 对象并放到由 UIApplication 管理的事件队列中，再由 RunLoop 接收事件并传递给触摸点所在的视图，该视图即为 "hit-test视图"，而查找这一视图的过程就叫做 "hit-testing"。hit-testing 过程大致如下: 
  
 - RunLoop 将接收到的事件分发给 UIWindow。
@@ -135,7 +136,7 @@ public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? 
 }
 ```
 
-# 前后台切换
+## 前后台切换
 在程序进入后台后仍然能够在短时间里执行一些代码，然后便进入挂起状态，程序在挂起后仍然会驻留在内存中，但是不能执行代码，直到 iOS 系统内存降低发出警告后才会把相对耗内存的挂起程序清除掉。  
 
 当程序在前后台切换时，系统会调用 UIApplicationDelegate 的相关代理方法并发送通知，我们可以在不同情况下做出不同处理，例如在进入后台时暂停某些操作或存储某些数据，当恢复到前台时再恢复之前的暂停操作或读取之前存储的数据。

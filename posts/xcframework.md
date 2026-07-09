@@ -1,6 +1,7 @@
 ---
 title: "Swift XCFramework 静态库"
 date: 2024-06-07 09:49:45 +0800
+recommend: false
 ---
 
 本文不讨论静态库和动态库区别，只记录使用 Xcode15 创建开发 XCFramework 静态库及使用方式

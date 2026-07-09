@@ -7,7 +7,6 @@ export default defineConfig({
   cleanUrls: true,
   ignoreDeadLinks: ['http://localhost:1313', 'http://localhost:4000'],
   themeConfig: {
-    logo: '/images/avatar.png',
     nav: [
       { text: '首页', link: '/' },
       { text: '文章', link: '/posts/' }

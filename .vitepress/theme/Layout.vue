@@ -44,4 +44,13 @@ function formatDate(dateStr) {
   font-size: 14px;
   color: var(--vp-c-text-2);
 }
+/* 隐藏 VitePress 默认渲染的标题 h1，避免与自定义 header 重复 */
+.vp-doc > h1:first-child {
+  display: none;
+}
+/* 去掉紧跟在 header 后的 h2 上边框，避免出现第二根线 */
+.vp-doc > h2:first-of-type {
+  border-top: none;
+  margin-top: 0;
+}
 </style>
