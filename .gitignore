@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# VitePress build output
+.vitepress/dist/
+.vitepress/cache/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+.sb-*
+
+# Environment
+.env
+.env.local
