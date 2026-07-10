@@ -3,6 +3,9 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "风行的博客",
   description: "个人技术与生活随笔",
+  head: [
+    ['link', { rel: 'icon', href: '/favicon.ico' }]
+  ],
   base: '/',
   cleanUrls: true,
   ignoreDeadLinks: ['http://localhost:1313', 'http://localhost:4000'],

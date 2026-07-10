@@ -10,14 +10,25 @@ const recommended = computed(() => posts.filter(p => p.frontmatter.recommend))
 </script>
 
 <div class="home-page">
+  <div class="clover-left">
+    <span class="clover" style="top:12%;font-size:22px;opacity:.35;transform:rotate(-15deg)">🍀</span>
+    <span class="clover" style="top:32%;font-size:16px;opacity:.25;transform:rotate(20deg)">🍀</span>
+    <span class="clover" style="top:55%;font-size:20px;opacity:.3;transform:rotate(-10deg)">🍀</span>
+    <span class="clover" style="top:75%;font-size:14px;opacity:.2;transform:rotate(25deg)">🍀</span>
+  </div>
+  <div class="clover-right">
+    <span class="clover" style="top:18%;font-size:18px;opacity:.3;transform:rotate(15deg)">🍀</span>
+    <span class="clover" style="top:40%;font-size:24px;opacity:.35;transform:rotate(-20deg)">🍀</span>
+    <span class="clover" style="top:62%;font-size:15px;opacity:.25;transform:rotate(10deg)">🍀</span>
+    <span class="clover" style="top:82%;font-size:20px;opacity:.28;transform:rotate(-15deg)">🍀</span>
+  </div>
   <div class="hero">
     <img class="hero-avatar" src="/images/avatar.png" alt="avatar" />
-    <h1 class="hero-title">你好，我是风行</h1>
-    <p class="hero-subtitle">iOS 开发者</p>
+    <h1 class="hero-title">风行</h1>
     <p class="hero-desc">
-      写代码也看世界，十年来用文字记录技术思考与山川湖海。<br>
-      这里是我的个人博客，分享 iOS 开发中的探索与实践，<br>
-      也记录旅途中的风景与故事。
+      Bug 的不焚者，移动全栈的执掌者<br>
+      掌控三秒区的制空者，跨越群山与雪线的行者<br>
+      即将驶向全球海域、用代码丈量世界的独立出海人
     </p>
   </div>
 
@@ -32,7 +43,7 @@ const recommended = computed(() => posts.filter(p => p.frontmatter.recommend))
 .home-page {
   max-width: 600px;
   margin: 0 auto;
-  padding: 80px 24px 64px;
+  padding: 48px 24px 64px;
 }
 .hero {
   text-align: center;
@@ -41,8 +52,8 @@ const recommended = computed(() => posts.filter(p => p.frontmatter.recommend))
 .hero-avatar {
   display: block;
   margin: 0 auto 24px;
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   border: 3px solid var(--vp-c-divider);
 }
@@ -52,11 +63,6 @@ const recommended = computed(() => posts.filter(p => p.frontmatter.recommend))
   color: var(--vp-c-text-1);
   margin: 0 0 10px;
   letter-spacing: -0.3px;
-}
-.hero-subtitle {
-  font-size: 15px;
-  color: var(--vp-c-text-2);
-  margin: 0 0 20px;
 }
 .hero-desc {
   font-size: 14px;
@@ -77,8 +83,8 @@ const recommended = computed(() => posts.filter(p => p.frontmatter.recommend))
   text-decoration: underline;
 }
 @media (max-width: 480px) {
-  .home-page { padding: 48px 16px 32px; }
-  .hero-avatar { width: 72px; height: 72px; }
+  .home-page { padding: 32px 16px 32px; }
+  .hero-avatar { width: 88px; height: 88px; }
   .hero-title { font-size: 26px; }
 }
 </style>
