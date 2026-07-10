@@ -10,17 +10,19 @@ const recommended = computed(() => posts.filter(p => p.frontmatter.recommend))
 </script>
 
 <div class="home-page">
-  <div class="clover-left">
-    <span class="clover" style="top:12%;font-size:22px;opacity:.35;transform:rotate(-15deg)">🍀</span>
-    <span class="clover" style="top:32%;font-size:16px;opacity:.25;transform:rotate(20deg)">🍀</span>
-    <span class="clover" style="top:55%;font-size:20px;opacity:.3;transform:rotate(-10deg)">🍀</span>
-    <span class="clover" style="top:75%;font-size:14px;opacity:.2;transform:rotate(25deg)">🍀</span>
-  </div>
-  <div class="clover-right">
-    <span class="clover" style="top:18%;font-size:18px;opacity:.3;transform:rotate(15deg)">🍀</span>
-    <span class="clover" style="top:40%;font-size:24px;opacity:.35;transform:rotate(-20deg)">🍀</span>
-    <span class="clover" style="top:62%;font-size:15px;opacity:.25;transform:rotate(10deg)">🍀</span>
-    <span class="clover" style="top:82%;font-size:20px;opacity:.28;transform:rotate(-15deg)">🍀</span>
+  <div class="clovers">
+    <span class="clover" style="left:18%;top:14%;--r:3deg">🍀</span>
+    <span class="clover" style="left:77%;top:7%;--r:12deg">🍀</span>
+    <span class="clover" style="left:19%;top:66%;--r:-34deg">🍀</span>
+    <span class="clover" style="left:66%;top:8%;--r:-34deg">🍀</span>
+    <span class="clover" style="left:75%;top:23%;--r:-1deg">🍀</span>
+    <span class="clover" style="left:30%;top:50%;--r:20deg">🍀</span>
+    <span class="clover" style="left:71%;top:41%;--r:-8deg">🍀</span>
+    <span class="clover" style="left:10%;top:51%;--r:24deg">🍀</span>
+    <span class="clover" style="left:68%;top:18%;--r:-33deg">🍀</span>
+    <span class="clover" style="left:92%;top:49%;--r:1deg">🍀</span>
+    <span class="clover" style="left:16%;top:4%;--r:-21deg">🍀</span>
+    <span class="clover" style="left:22%;top:17%;--r:-29deg">🍀</span>
   </div>
   <div class="hero">
     <img class="hero-avatar" src="/images/avatar.png" alt="avatar" />
@@ -81,6 +83,34 @@ const recommended = computed(() => posts.filter(p => p.frontmatter.recommend))
 }
 .section-more:hover {
   text-decoration: underline;
+}
+.clovers {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -1;
+}
+.clover {
+  position: absolute;
+  display: block;
+  font-size: 20px;
+  opacity: .8;
+  animation: clover-float 7s ease-in-out infinite both;
+  transform: rotate(var(--r, 0deg));
+}
+.clover:nth-child(odd) { animation-delay: -3s; animation-duration: 6s; }
+.clover:nth-child(even) { animation-delay: -1s; animation-duration: 8s; }
+.clover:nth-child(5n+1) { animation-delay: -5s; }
+.clover:nth-child(7n+3) { animation-delay: -2s; }
+@keyframes clover-float {
+  0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+  50% { transform: translateY(-6px) rotate(var(--r, 0deg)); }
+}
+@media (max-width: 860px) {
+  .clovers { display: none; }
 }
 @media (max-width: 480px) {
   .home-page { padding: 32px 16px 32px; }
