@@ -1,5 +1,5 @@
 ---
-title: "阅读自己的源代码 - by ChatGPT, co-created"
+title: "阅读自己的源代码 ｜ Powered by ChatGPT"
 date: 2025-11-06 03:03:03 +0800
 recommend: true
 ---
