@@ -1,5 +1,5 @@
 ---
-title: "SwiftUI 工程化实践：从 MVI 架构到性能优化"
+title: "SwiftUI 工程化实践"
 date: 2026-07-08 15:09:29 +0800
 recommend: true
 ---
@@ -530,8 +530,6 @@ JSON 文件正常加入 Target 无需手动操作，只在 Debug 包中存在。
 ```
 
 在 Preview 里手动设置 `pageState` 即可瞬间看到任何边界状态的 UI，不需要 Mock JSON、不需要跑 App、不需要改代码。
-}
-```
 
 ---
 
