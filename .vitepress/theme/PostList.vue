@@ -10,14 +10,25 @@ const props = defineProps({
   fullDate: { type: Boolean, default: false }
 })
 
+function parseDate(d) {
+  if (!d) return new Date(NaN)
+  // Safari 只认 ISO 8601, 把 'YYYY-MM-DD HH:mm:ss +0800' 转成标准格式
+  let s = String(d).trim()
+  s = s.replace(/^(\d{4}-\d{2}-\d{2}) /, '$1T')
+  s = s.replace(/([+-]\d{2})(\d{2})$/, '$1:$2')
+  return new Date(s)
+}
+
 function formatDate(d) {
-  if (!d) return ''
-  return new Date(d).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })
+  const dt = parseDate(d)
+  if (isNaN(dt)) return ''
+  return dt.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })
 }
 
 function formatFullDate(d) {
-  if (!d) return ''
-  return new Date(d).toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric' })
+  const dt = parseDate(d)
+  if (isNaN(dt)) return ''
+  return dt.toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric' })
 }
 
 const visiblePosts = computed(() => {
@@ -27,7 +38,7 @@ const visiblePosts = computed(() => {
 const groupedPosts = computed(() => {
   const map = {}
   visiblePosts.value.forEach(post => {
-    const year = new Date(post.frontmatter.date).getFullYear()
+    const year = parseDate(post.frontmatter.date).getFullYear()
     if (!map[year]) map[year] = []
     map[year].push(post)
   })

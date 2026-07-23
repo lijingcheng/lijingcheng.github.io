@@ -7,7 +7,12 @@ const { frontmatter } = useData()
 
 function formatDate(dateStr) {
   if (!dateStr) return ''
-  const d = new Date(dateStr)
+  // Safari 只认 ISO 8601, 把 'YYYY-MM-DD HH:mm:ss +0800' 转成标准格式
+  let s = String(dateStr).trim()
+  s = s.replace(/^(\d{4}-\d{2}-\d{2}) /, '$1T')
+  s = s.replace(/([+-]\d{2})(\d{2})$/, '$1:$2')
+  const d = new Date(s)
+  if (isNaN(d)) return ''
   return d.toLocaleDateString('zh-CN', {
     year: 'numeric',
     month: 'long',

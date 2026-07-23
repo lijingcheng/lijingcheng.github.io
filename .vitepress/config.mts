@@ -13,7 +13,8 @@ export default defineConfig({
   themeConfig: {
     nav: [
       { text: '首页', link: '/' },
-      { text: '文章', link: '/posts/' }
+      { text: '归档', link: '/posts/' },
+      { text: '关于我', link: '/about/' }
     ],
     socialLinks: [
       { icon: 'github', link: 'https://github.com/lijingcheng' }
