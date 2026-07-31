@@ -113,12 +113,8 @@ const recommended = computed(() => posts.filter(p => p.frontmatter.recommend))
   </div>
   <div class="hero">
     <img class="hero-avatar" src="/images/avatar.png" alt="avatar" />
-    <h1 class="hero-title">风行</h1>
-    <p class="hero-desc">
-      Bug 的不焚者，移动全栈的执掌者<br>
-      掌控三秒区的制空者，跨越群山与雪线的行者<br>
-      即将驶向全球海域、用代码丈量世界的独立出海人
-    </p>
+    <h1 class="hero-title">风行的博客</h1>
+    <p class="hero-desc">独立开发者的技术与行走随笔</p>
   </div>
 
   <PostList :posts="recommended" :groupByYear="false" :showBadge="false" :card="true" :fullDate="true" />
@@ -149,7 +145,7 @@ const recommended = computed(() => posts.filter(p => p.frontmatter.recommend))
   border: 3px solid var(--vp-c-divider);
 }
 .hero-title {
-  font-size: 32px;
+  font-size: 21px;
   font-weight: 800;
   color: var(--vp-c-text-1);
   margin: 0 0 10px;
@@ -226,6 +222,6 @@ const recommended = computed(() => posts.filter(p => p.frontmatter.recommend))
 @media (max-width: 480px) {
   .home-page { padding: 32px 16px 32px; }
   .hero-avatar { width: 88px; height: 88px; }
-  .hero-title { font-size: 26px; }
+  .hero-title { font-size: 18px; }
 }
 </style>

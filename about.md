@@ -4,10 +4,13 @@ title: 关于我 · About
 
 <div class="about-page">
 
-<p class="about-intro">
-  <em>用技术打磨产品，用脚步丈量山野。</em><br>
-  <em>Building apps, chasing summits.</em>
-</p>
+<div class="about-intro">
+  <img class="about-avatar" src="/images/avatar.png" alt="avatar" />
+  <div class="about-intro-text">
+    <em>用技术打磨产品，用脚步丈量山野。</em><br>
+    <em>Building apps, chasing summits.</em>
+  </div>
+</div>
 
 <div class="about-section">
 
@@ -75,13 +78,24 @@ I chase clean code, but I care more about the person on the other side of the sc
   padding: 48px 24px 64px;
 }
 .about-intro {
-  text-align: center;
-  font-size: 16px;
-  line-height: 2;
-  color: var(--vp-c-text-2);
+  display: flex;
+  align-items: center;
+  gap: 16px;
   margin-bottom: 40px;
   padding-bottom: 32px;
   border-bottom: 1px solid var(--vp-c-divider);
+}
+.about-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid var(--vp-c-divider);
+  flex-shrink: 0;
+}
+.about-intro-text {
+  font-size: 16px;
+  line-height: 2;
+  color: var(--vp-c-text-2);
 }
 .about-section {
   margin-bottom: 36px;
