@@ -7,7 +7,8 @@ export default createContentLoader('posts/*.md', {
       if (!d) return 0
       let s = String(d).trim()
         .replace(/^(\d{4}-\d{2}-\d{2}) /, '$1T')
-        .replace(/([+-]\d{2})(\d{2})(\s|$)/, '$1:$2$3')
+        .replace(/([+-]\d{2})(\d{2})(\s|$)/, '$1:$2')
+        .replace(/\s/g, '')
       const t = new Date(s).getTime()
       return isNaN(t) ? 0 : t
     }

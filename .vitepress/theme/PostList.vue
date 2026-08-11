@@ -13,10 +13,10 @@ const props = defineProps({
 function parseDate(d) {
   if (!d) return new Date(NaN)
   let s = String(d).trim()
-  // 空格分隔的 'YYYY-MM-DD HH:mm:ss +0800' → 'YYYY-MM-DDTHH:mm:ss +0800'
+  // 归一化为标准 ISO：'YYYY-MM-DD HH:mm:ss +0800' → 'YYYY-MM-DDTHH:mm:ss+08:00'
   s = s.replace(/^(\d{4}-\d{2}-\d{2}) /, '$1T')
-  // 时区 +0800 → +08:00（兼容 Safari / 标准 ISO）
-  s = s.replace(/([+-]\d{2})(\d{2})(\s|$)/, '$1:$2$3')
+  s = s.replace(/([+-]\d{2})(\d{2})(\s|$)/, '$1:$2')
+  s = s.replace(/\s/g, '')
   return new Date(s)
 }
 
