@@ -6,7 +6,20 @@ layout: home
 import { data as posts } from './.vitepress/posts.data.mts'
 import { computed } from 'vue'
 
-const recommended = computed(() => posts.filter(p => p.frontmatter.recommend))
+const toTime = (d) => {
+  if (!d) return 0
+  let s = String(d).trim()
+    .replace(/^(\d{4}-\d{2}-\d{2}) /, '$1T')
+    .replace(/([+-]\d{2})(\d{2})(\s|$)/, '$1:$2')
+    .replace(/\s/g, '')
+  const t = new Date(s).getTime()
+  return isNaN(t) ? 0 : t
+}
+
+const recommended = computed(() =>
+  posts.filter(p => p.frontmatter.recommend)
+        .sort((a, b) => toTime(b.frontmatter.date) - toTime(a.frontmatter.date))
+)
 </script>
 
 <div class="home-page">

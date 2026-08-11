@@ -54,26 +54,26 @@ const groupedPosts = computed(() => {
       <template v-for="[year, posts] in groupedPosts" :key="year">
         <h2 class="year-heading">{{ year }}</h2>
         <div class="post-list">
-          <div v-for="post in posts" :key="post.url" class="post-item" :class="{ card: card }">
-            <a :href="post.url" class="post-link">
+          <a v-for="post in posts" :key="post.url" :href="post.url" class="post-item" :class="{ card: card }">
+            <span class="post-link">
               {{ post.frontmatter.title }}
               <span v-if="showBadge && post.frontmatter.recommend" class="post-badge">荐</span>
-            </a>
+            </span>
             <span class="post-time">{{ fullDate ? formatFullDate(post.frontmatter.date) : formatDate(post.frontmatter.date) }}</span>
-          </div>
+          </a>
         </div>
       </template>
     </template>
     <!-- 不分年模式 -->
     <template v-else>
       <div class="post-list">
-        <div v-for="post in visiblePosts" :key="post.url" class="post-item" :class="{ card: card }">
-          <a :href="post.url" class="post-link">
+        <a v-for="post in visiblePosts" :key="post.url" :href="post.url" class="post-item" :class="{ card: card }">
+          <span class="post-link">
             {{ post.frontmatter.title }}
             <span v-if="showBadge && post.frontmatter.recommend" class="post-badge">荐</span>
-          </a>
+          </span>
           <span class="post-time">{{ fullDate ? formatFullDate(post.frontmatter.date) : formatDate(post.frontmatter.date) }}</span>
-        </div>
+        </a>
       </div>
     </template>
   </div>
@@ -101,6 +101,8 @@ const groupedPosts = computed(() => {
   align-items: center;
   padding: 12px 0;
   border-bottom: 1px solid var(--vp-c-divider);
+  text-decoration: none;
+  color: var(--vp-c-text-1);
 }
 .post-item.card {
   background: var(--vp-c-bg-soft);
@@ -120,10 +122,8 @@ const groupedPosts = computed(() => {
 .post-link {
   font-size: 15px;
   font-weight: 500;
-  color: var(--vp-c-text-1);
-  text-decoration: none;
 }
-.post-link:hover {
+.post-item:hover .post-link {
   color: var(--vp-c-brand-1);
 }
 .post-badge {
