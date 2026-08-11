@@ -12,10 +12,11 @@ const props = defineProps({
 
 function parseDate(d) {
   if (!d) return new Date(NaN)
-  // Safari 只认 ISO 8601, 把 'YYYY-MM-DD HH:mm:ss +0800' 转成标准格式
   let s = String(d).trim()
+  // 空格分隔的 'YYYY-MM-DD HH:mm:ss +0800' → 'YYYY-MM-DDTHH:mm:ss +0800'
   s = s.replace(/^(\d{4}-\d{2}-\d{2}) /, '$1T')
-  s = s.replace(/([+-]\d{2})(\d{2})$/, '$1:$2')
+  // 时区 +0800 → +08:00（兼容 Safari / 标准 ISO）
+  s = s.replace(/([+-]\d{2})(\d{2})(\s|$)/, '$1:$2$3')
   return new Date(s)
 }
 
