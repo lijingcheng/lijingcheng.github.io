@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://lijingcheng.github.io/sitemap.xml
