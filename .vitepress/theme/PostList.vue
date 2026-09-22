@@ -12,6 +12,7 @@ const props = defineProps({
 
 function parseDate(d) {
   if (!d) return new Date(NaN)
+  if (d instanceof Date) return d
   let s = String(d).trim()
   // 归一化为标准 ISO：'YYYY-MM-DD HH:mm:ss +0800' → 'YYYY-MM-DDTHH:mm:ss+08:00'
   s = s.replace(/^(\d{4}-\d{2}-\d{2}) /, '$1T')

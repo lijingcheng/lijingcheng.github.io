@@ -5,6 +5,7 @@ export default createContentLoader('posts/*.md', {
   transform(raw) {
     const toTime = (d) => {
       if (!d) return 0
+      if (d instanceof Date) return d.getTime()
       let s = String(d).trim()
         .replace(/^(\d{4}-\d{2}-\d{2}) /, '$1T')
         .replace(/([+-]\d{2})(\d{2})(\s|$)/, '$1:$2')
