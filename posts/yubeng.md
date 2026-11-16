@@ -129,4 +129,4 @@ recommend: true
 
 ## 最后附上线路图
 
-![雨崩线路图](/images/yubeng/yubeng0.png "雨崩线路图")
+![雨崩线路图](/images/yubeng/yubeng0.webp "雨崩线路图")

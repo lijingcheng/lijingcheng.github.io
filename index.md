@@ -125,7 +125,7 @@ const recommended = computed(() =>
     </div>
   </div>
   <div class="hero">
-    <img class="hero-avatar" src="/images/avatar.png" alt="avatar" />
+    <img class="hero-avatar" src="/images/avatar.webp" alt="avatar" />
     <h1 class="hero-title">风行的博客</h1>
     <p class="hero-desc">独立开发者的技术与行走随笔</p>
   </div>

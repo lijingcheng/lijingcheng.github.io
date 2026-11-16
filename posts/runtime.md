@@ -21,7 +21,7 @@ Runtime 是使用 C 和汇编实现的运行时代码库，Objective-C 中有很
 
 - metaclass：在 Objc 中，类本身也是对象，实例对象的 isa 指向它所属的类，而类对象的 isa 指向元类 (metaclass)，元类的 isa 直接指向根元类，根元类的isa指向它自己，它们之间的关系如下图所示。
 
-![](/images/runtime_class.jpeg)
+![](/images/runtime_class.webp)
 
 ## 消息传递 (Messaging)
 Objective-C 对于调用对象的某个方法这种行为叫做给对象发送消息，实际上就是沿着它的 isa 指针去查找真正的函数地址。下面我们来了解一下这个过程：

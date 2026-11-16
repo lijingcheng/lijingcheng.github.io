@@ -18,7 +18,7 @@ recommend: false
 
 华为在应用“开发”、“发布”、“运行”生命周期的这三个阶段来应对上述问题
 
-![鸿蒙安全管控措施](/images/harmony/safe.png "鸿蒙安全管控措施")
+![鸿蒙安全管控措施](/images/harmony/safe.webp "鸿蒙安全管控措施")
 
 ### 应用开发安全
 

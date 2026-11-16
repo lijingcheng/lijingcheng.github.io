@@ -5,7 +5,7 @@ title: 关于我 · About
 <div class="about-page">
 
 <div class="about-intro">
-  <img class="about-avatar" src="/images/avatar.png" alt="avatar" />
+  <img class="about-avatar" src="/images/avatar.webp" alt="avatar" />
   <div class="about-intro-text">
     <em>用技术打磨产品，用脚步丈量山野。</em><br>
     <em>Building apps, chasing summits.</em>

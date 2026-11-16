@@ -4,7 +4,7 @@ date: 2024-07-16T10:01:23+08:00
 recommend: false
 ---
 
-![行程](/images/shanghai/shanghai.png "行程")
+![行程](/images/shanghai/shanghai.webp "行程")
 
 -------
 

@@ -4,6 +4,7 @@ node_modules/
 # VitePress build output
 .vitepress/dist/
 .vitepress/cache/
+.vitepress/.temp/
 .vitepress/image-manifest.json
 
 # OS generated files

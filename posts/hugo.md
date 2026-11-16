@@ -59,7 +59,7 @@ paginate = 10
 
 [params]
   author = "风行"
-  avatar = "images/avatar.png"
+  avatar = "images/avatar.webp"
   description = "一直在学习的大龄程序员"
   [[params.social]]
     name = "github"

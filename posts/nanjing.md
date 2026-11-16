@@ -62,4 +62,4 @@ recommend: false
 
 ## 最后附上景点地铁路线图
 
-![景点地铁路线图](/images/nanjing/nanjing0.png "景点地铁路线图")
+![景点地铁路线图](/images/nanjing/nanjing0.webp "景点地铁路线图")

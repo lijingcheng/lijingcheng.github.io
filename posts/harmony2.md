@@ -12,7 +12,7 @@ HarmonyOS 应用的两种形态
 
 - 元服务：可以在服务中心发现并使用，也可以通过扫一扫之类的场景主动推荐给用户使用，并且无需安装，秒开体验，还可以以“万能卡片”方式固定在手机屏幕位置上展示服务内容
 
-![鸿蒙核心技术理念](/images/harmony/core.png "鸿蒙核心技术理念")
+![鸿蒙核心技术理念](/images/harmony/core.webp "鸿蒙核心技术理念")
 
 ### 一次开发，多端部署
 
@@ -212,7 +212,7 @@ HUAWEI DevEco Studio 提供了一站式鸿蒙生态应用、元服务开发能�
 
 HUAWEI AppGallery Connect 为开发者提供了全球化、全场景一站式应用分发能力，并为开发者提供质量、安全、工程管理等领域的能力。
 
-![一站式分发能力](/images/harmony/distribution.png "一站式分发能力")
+![一站式分发能力](/images/harmony/distribution.webp "一站式分发能力")
 
 #### 快速上架
 
@@ -220,7 +220,7 @@ AppGallery Connect 作为开发者统一提交入口，集成证书管理、项�
 
 - 证书颁发
 
-![签名方案](/images/harmony/sign.png "签名方案")
+![签名方案](/images/harmony/sign.webp "签名方案")
 
 - 统一上架：上架前需要提供应用基本信息、AppGallery Connect 会对基本信息和 App 中使用的 API、资源、SDK 接入情况进行检查
 

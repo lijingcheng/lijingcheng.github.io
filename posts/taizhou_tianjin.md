@@ -66,4 +66,4 @@ recommend: false
 
 ## 天津市区 CityWalk 路线
 
-![天津市区 CityWalk 路线](/images/202451/tianjin0.png "天津市区 CityWalk 路线")
+![天津市区 CityWalk 路线](/images/202451/tianjin0.webp "天津市区 CityWalk 路线")

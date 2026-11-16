@@ -65,7 +65,7 @@ ARC 带来的变化
 - 给对象发送 autorelease 消息时，计数在当前自动释放池代码块结束时减 1
 - 当对象的计数为 0 时将被销毁
 
-![](/images/retaincount.jpeg)
+![](/images/retaincount.webp)
 
 ## 属性修饰符
 
@@ -247,7 +247,7 @@ class AutoreleasePoolPage {
 
 通过下面这张图可以更好的理解这些细节
 
-![](/images/autorelease_pool.jpeg)
+![](/images/autorelease_pool.webp)
 
 ## Swift 中的内存管理
 Swift 使用 ARC 机制来跟踪和管理内存，并且只针对拥有引用计数的 class 实例，和 OC 相似它有 strong、weak、unnowned 三个关键字，默认为 strong。Swift 可以通过弱引用和无主引用来解决循环引用问题，它们都允许循环引用中的一个实例强引用而另外一个实例不保持强引用。

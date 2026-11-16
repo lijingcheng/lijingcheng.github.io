@@ -28,11 +28,11 @@ Module 按照使用场景分为两种类型
   
     - 两者区别：HAR 如果被多个 Moudle 引用，那么编译产物中会存在多份相同拷贝，应用包大小会增加，HSP 只会存在一份，HAR 还可以独立打包发布供其他应用使用，HSP 不可以
 
-![HARHSP](/images/harmony/HARHSP.png "HARHSP")
+![HARHSP](/images/harmony/HARHSP.webp "HARHSP")
 
 在 DevEco Studio 中创建工程后，项目结构如下
 
-![工程结构](/images/harmony/project.png "工程结构")
+![工程结构](/images/harmony/project.webp "工程结构")
 
 - AppScope/[app.json5](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/app-configuration-file-0000001820999529)
 
@@ -50,7 +50,7 @@ Module 按照使用场景分为两种类型
 
 一个应用中所有 .hap 与 .hsp 文件合在一起称为 Bundle，当应用发布上架到市场时，需要要将 Bundle 打包成 .app 后辍的 App Pack 文件，DevEco Studio 会生成 pack.info 文件用于描述 app 包内相关 HAP 和 HSP 信息，.app 包以及 .har 和 .hsp 都签名后就可以上架分发安装了。
 
-![编译发布与上架部署流程图](/images/harmony/build.png "编译发布与上架部署流程图")
+![编译发布与上架部署流程图](/images/harmony/build.webp "编译发布与上架部署流程图")
 
 ### 动态 import
 

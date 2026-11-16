@@ -12,4 +12,4 @@ recommend: false
 
 -------
 
-![marquez](/images/marquez/marquez0.jpeg "marquez")
+![marquez](/images/marquez/marquez0.webp "marquez")

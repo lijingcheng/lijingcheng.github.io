@@ -159,4 +159,4 @@ PS：新手飞无人机如何避免炸机
 
 ## 最后附上线路图
 
-![新疆线路图](/images/xinjiang/xinjiang0.png "新疆线路图")
+![新疆线路图](/images/xinjiang/xinjiang0.webp "新疆线路图")

@@ -86,4 +86,4 @@ recommend: false
 
 ## 导图版
 
-![App 埋点 SDK 设计思维导图](/images/analytics.png "App 埋点 SDK 设计思维导图")
+![App 埋点 SDK 设计思维导图](/images/analytics.webp "App 埋点 SDK 设计思维导图")
